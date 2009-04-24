@@ -1,0 +1,529 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
+		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
+		28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
+		BC146A9B0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC146A9A0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m */; };
+		BC1EF3830E36BD6100B09043 /* SLSMoleculeSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC1EF3820E36BD6100B09043 /* SLSMoleculeSearchViewController.m */; };
+		BC2CF8650E5784ED00653418 /* SLSMolecule+PDB.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */; };
+		BC37E7CA0E14779E00E11F4F /* SLSMolecule.m in Sources */ = {isa = PBXBuildFile; fileRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */; };
+		BC4E97C20E69F736006CD291 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BC4E97C10E69F736006CD291 /* libsqlite3.0.dylib */; };
+		BC4E97FA0E69F8E1006CD291 /* molecules.sql in Resources */ = {isa = PBXBuildFile; fileRef = BC4E97F90E69F8E1006CD291 /* molecules.sql */; };
+		BC4FB6670E4E875900B316CD /* VCTitleCase.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4FB6660E4E875900B316CD /* VCTitleCase.m */; };
+		BC4FB75D0E4F6BB000B316CD /* greenButton.png in Resources */ = {isa = PBXBuildFile; fileRef = BC4FB75C0E4F6BAF00B316CD /* greenButton.png */; };
+		BC4FB7BA0E4F80DB00B316CD /* redButton.png in Resources */ = {isa = PBXBuildFile; fileRef = BC4FB7B90E4F80DB00B316CD /* redButton.png */; };
+		BC5BB79C0E200C3B0001DFD0 /* 1BNA.pdb.gz in Resources */ = {isa = PBXBuildFile; fileRef = BC5BB79B0E200C3B0001DFD0 /* 1BNA.pdb.gz */; };
+		BC5BB7DF0E2020B10001DFD0 /* 1EVE.pdb.gz in Resources */ = {isa = PBXBuildFile; fileRef = BC5BB7DD0E2020B10001DFD0 /* 1EVE.pdb.gz */; };
+		BC5BB8BD0E204DC20001DFD0 /* SLSMoleculeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC5BB8BC0E204DC20001DFD0 /* SLSMoleculeDetailViewController.m */; };
+		BC5BBBFA0E216A170001DFD0 /* 1TRZ.pdb.gz in Resources */ = {isa = PBXBuildFile; fileRef = BC5BBBF90E216A170001DFD0 /* 1TRZ.pdb.gz */; };
+		BC5BBCD40E219AB90001DFD0 /* MoleculesIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = BC5BBCD30E219AB90001DFD0 /* MoleculesIcon.png */; };
+		BC61CAFC0E2317EE0074BE04 /* 4TRA.pdb.gz in Resources */ = {isa = PBXBuildFile; fileRef = BC61CAFB0E2317EE0074BE04 /* 4TRA.pdb.gz */; };
+		BC61CC310E2463180074BE04 /* SLSCellTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC61CC2E0E2463180074BE04 /* SLSCellTextView.m */; };
+		BC61CC320E2463180074BE04 /* SLSTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC61CC300E2463180074BE04 /* SLSTextViewController.m */; };
+		BCC2812A0E1B1FCD00978ECA /* NSData+Gzip.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC281290E1B1FCD00978ECA /* NSData+Gzip.m */; };
+		BCC286C10E1D8F9300978ECA /* SLSMoleculeAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286BE0E1D8F9300978ECA /* SLSMoleculeAppDelegate.m */; };
+		BCC286C20E1D8F9300978ECA /* SLSMoleculeRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */; };
+		BCC286C80E1D8FB100978ECA /* SLSMoleculeGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */; };
+		BCC286CA0E1D8FB100978ECA /* SLSMoleculeGLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */; };
+		BCC286D20E1D905400978ECA /* SLSMoleculeDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286CD0E1D905400978ECA /* SLSMoleculeDownloadViewController.m */; };
+		BCC286D40E1D905400978ECA /* SLSMoleculeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */; };
+		BCC8FE800EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC8FE7F0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m */; };
+		BCDC9F7E0EB3751C00ADCFA5 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F7D0EB3751C00ADCFA5 /* MainWindow.xib */; };
+		BCDC9F810EB375AE00ADCFA5 /* SLSMoleculeGLView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F800EB375AE00ADCFA5 /* SLSMoleculeGLView.xib */; };
+		BCDC9F840EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F830EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib */; };
+		BCDC9F9D0EB37B3400ADCFA5 /* Localized.strings in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F9C0EB37B3400ADCFA5 /* Localized.strings */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		1D6058910D05DD3D006BFB54 /* Molecules.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Molecules.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		28AD733E0D9D9553002E5188 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		28FD14FF0DC6FC520079059D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		28FD15070DC6FC5B0079059D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = English; path = English.lproj/Info.plist; sourceTree = "<group>"; };
+		BC146A990EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeCustomDownloadViewController.h; sourceTree = "<group>"; };
+		BC146A9A0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeCustomDownloadViewController.m; sourceTree = "<group>"; };
+		BC1EF3810E36BD6100B09043 /* SLSMoleculeSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeSearchViewController.h; sourceTree = "<group>"; };
+		BC1EF3820E36BD6100B09043 /* SLSMoleculeSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeSearchViewController.m; sourceTree = "<group>"; };
+		BC2CF8630E5784EC00653418 /* SLSMolecule+PDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SLSMolecule+PDB.h"; sourceTree = "<group>"; };
+		BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SLSMolecule+PDB.m"; sourceTree = "<group>"; };
+		BC37E7C80E14779E00E11F4F /* SLSMolecule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMolecule.h; sourceTree = "<group>"; };
+		BC37E7C90E14779E00E11F4F /* SLSMolecule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMolecule.m; sourceTree = "<group>"; };
+		BC4E97C10E69F736006CD291 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		BC4E97F90E69F8E1006CD291 /* molecules.sql */ = {isa = PBXFileReference; lastKnownFileType = file; path = molecules.sql; sourceTree = "<group>"; };
+		BC4FB6650E4E875900B316CD /* VCTitleCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCTitleCase.h; sourceTree = "<group>"; };
+		BC4FB6660E4E875900B316CD /* VCTitleCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCTitleCase.m; sourceTree = "<group>"; };
+		BC4FB75C0E4F6BAF00B316CD /* greenButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = greenButton.png; sourceTree = "<group>"; };
+		BC4FB7B90E4F80DB00B316CD /* redButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redButton.png; sourceTree = "<group>"; };
+		BC5BB79B0E200C3B0001DFD0 /* 1BNA.pdb.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = 1BNA.pdb.gz; sourceTree = "<group>"; };
+		BC5BB7DD0E2020B10001DFD0 /* 1EVE.pdb.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = 1EVE.pdb.gz; sourceTree = "<group>"; };
+		BC5BB8BB0E204DC20001DFD0 /* SLSMoleculeDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeDetailViewController.h; sourceTree = "<group>"; };
+		BC5BB8BC0E204DC20001DFD0 /* SLSMoleculeDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeDetailViewController.m; sourceTree = "<group>"; };
+		BC5BBBF90E216A170001DFD0 /* 1TRZ.pdb.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = 1TRZ.pdb.gz; sourceTree = "<group>"; };
+		BC5BBCD30E219AB90001DFD0 /* MoleculesIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MoleculesIcon.png; sourceTree = "<group>"; };
+		BC61CAFB0E2317EE0074BE04 /* 4TRA.pdb.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = 4TRA.pdb.gz; sourceTree = "<group>"; };
+		BC61CC2D0E2463180074BE04 /* SLSCellTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSCellTextView.h; sourceTree = "<group>"; };
+		BC61CC2E0E2463180074BE04 /* SLSCellTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSCellTextView.m; sourceTree = "<group>"; };
+		BC61CC2F0E2463180074BE04 /* SLSTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSTextViewController.h; sourceTree = "<group>"; };
+		BC61CC300E2463180074BE04 /* SLSTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSTextViewController.m; sourceTree = "<group>"; };
+		BCC281280E1B1FCD00978ECA /* NSData+Gzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Gzip.h"; sourceTree = "<group>"; };
+		BCC281290E1B1FCD00978ECA /* NSData+Gzip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Gzip.m"; sourceTree = "<group>"; };
+		BCC286BD0E1D8F9300978ECA /* SLSMoleculeAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeAppDelegate.h; sourceTree = SOURCE_ROOT; };
+		BCC286BE0E1D8F9300978ECA /* SLSMoleculeAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeAppDelegate.m; sourceTree = SOURCE_ROOT; };
+		BCC286BF0E1D8F9300978ECA /* SLSMoleculeRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeRootViewController.h; sourceTree = SOURCE_ROOT; };
+		BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeRootViewController.m; sourceTree = SOURCE_ROOT; };
+		BCC286C30E1D8FB100978ECA /* SLSMoleculeGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeGLView.h; sourceTree = SOURCE_ROOT; };
+		BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeGLView.m; sourceTree = SOURCE_ROOT; };
+		BCC286C50E1D8FB100978ECA /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SLSMoleculeGLView.xib; sourceTree = "<group>"; };
+		BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeGLViewController.h; sourceTree = SOURCE_ROOT; };
+		BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeGLViewController.m; sourceTree = SOURCE_ROOT; };
+		BCC286CB0E1D905400978ECA /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SLSMoleculeDownloadView.xib; sourceTree = "<group>"; };
+		BCC286CC0E1D905400978ECA /* SLSMoleculeDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeDownloadViewController.h; sourceTree = "<group>"; };
+		BCC286CD0E1D905400978ECA /* SLSMoleculeDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeDownloadViewController.m; sourceTree = "<group>"; };
+		BCC286CF0E1D905400978ECA /* SLSMoleculeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeTableViewController.h; sourceTree = SOURCE_ROOT; };
+		BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeTableViewController.m; sourceTree = SOURCE_ROOT; };
+		BCC286D50E1D909600978ECA /* Molecules_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Molecules_Prefix.pch; sourceTree = SOURCE_ROOT; };
+		BCC8FE7E0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeDataSourceViewController.h; sourceTree = "<group>"; };
+		BCC8FE7F0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeDataSourceViewController.m; sourceTree = "<group>"; };
+		BCDC9F7F0EB3753600ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = French.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		BCDC9F820EB375B600ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = French.lproj/SLSMoleculeGLView.xib; sourceTree = "<group>"; };
+		BCDC9F850EB375D500ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = French.lproj/SLSMoleculeDownloadView.xib; sourceTree = "<group>"; };
+		BCDC9F870EB3760300ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = French; path = French.lproj/Info.plist; sourceTree = "<group>"; };
+		BCDC9F9A0EB37B1E00ADCFA5 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localized.strings; sourceTree = "<group>"; };
+		BCDC9F9E0EB37B4100ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localized.strings; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1D60588F0D05DD3D006BFB54 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
+				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
+				1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */,
+				28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */,
+				28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */,
+				BC4E97C20E69F736006CD291 /* libsqlite3.0.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1D6058910D05DD3D006BFB54 /* Molecules.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				BCC7617D0E0EF8260050DD95 /* Data Model */,
+				BCC7617C0E0EF8180050DD95 /* Application Control */,
+				BCC7617B0E0EF7F10050DD95 /* 3D Molecule Display */,
+				BCC8FE7C0EC7E44D00853857 /* Searching and Retrieving Molecules */,
+				BCC709540E19C6580054D0EB /* Downloaded Molecules Table */,
+				BC5BB99E0E207ED10001DFD0 /* Molecule Details View  */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = CustomTemplate;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				BCC286D50E1D909600978ECA /* Molecules_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BCDC9F9C0EB37B3400ADCFA5 /* Localized.strings */,
+				BC4E97F90E69F8E1006CD291 /* molecules.sql */,
+				BC4FB7B90E4F80DB00B316CD /* redButton.png */,
+				BC4FB75C0E4F6BAF00B316CD /* greenButton.png */,
+				BC61CAFB0E2317EE0074BE04 /* 4TRA.pdb.gz */,
+				BC5BBCD30E219AB90001DFD0 /* MoleculesIcon.png */,
+				BC5BBBF90E216A170001DFD0 /* 1TRZ.pdb.gz */,
+				BC5BB7DD0E2020B10001DFD0 /* 1EVE.pdb.gz */,
+				BC5BB79B0E200C3B0001DFD0 /* 1BNA.pdb.gz */,
+				BCDC9F860EB375FB00ADCFA5 /* Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BC4E97C10E69F736006CD291 /* libsqlite3.0.dylib */,
+				28FD15070DC6FC5B0079059D /* QuartzCore.framework */,
+				28FD14FF0DC6FC520079059D /* OpenGLES.framework */,
+				1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */,
+				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
+				1D30AB110D05D00D00671497 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BC5BB99E0E207ED10001DFD0 /* Molecule Details View  */ = {
+			isa = PBXGroup;
+			children = (
+				BC61CC2D0E2463180074BE04 /* SLSCellTextView.h */,
+				BC61CC2E0E2463180074BE04 /* SLSCellTextView.m */,
+				BC61CC2F0E2463180074BE04 /* SLSTextViewController.h */,
+				BC61CC300E2463180074BE04 /* SLSTextViewController.m */,
+				BC5BB8BB0E204DC20001DFD0 /* SLSMoleculeDetailViewController.h */,
+				BC5BB8BC0E204DC20001DFD0 /* SLSMoleculeDetailViewController.m */,
+			);
+			name = "Molecule Details View ";
+			sourceTree = "<group>";
+		};
+		BCC709540E19C6580054D0EB /* Downloaded Molecules Table */ = {
+			isa = PBXGroup;
+			children = (
+				BCC286CF0E1D905400978ECA /* SLSMoleculeTableViewController.h */,
+				BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */,
+			);
+			name = "Downloaded Molecules Table";
+			sourceTree = "<group>";
+		};
+		BCC7617B0E0EF7F10050DD95 /* 3D Molecule Display */ = {
+			isa = PBXGroup;
+			children = (
+				BCC286C30E1D8FB100978ECA /* SLSMoleculeGLView.h */,
+				BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */,
+				BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */,
+				BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */,
+				BCDC9F800EB375AE00ADCFA5 /* SLSMoleculeGLView.xib */,
+			);
+			name = "3D Molecule Display";
+			sourceTree = "<group>";
+		};
+		BCC7617C0E0EF8180050DD95 /* Application Control */ = {
+			isa = PBXGroup;
+			children = (
+				BCC286BD0E1D8F9300978ECA /* SLSMoleculeAppDelegate.h */,
+				BCC286BE0E1D8F9300978ECA /* SLSMoleculeAppDelegate.m */,
+				BCC286BF0E1D8F9300978ECA /* SLSMoleculeRootViewController.h */,
+				BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */,
+				BCDC9F7D0EB3751C00ADCFA5 /* MainWindow.xib */,
+			);
+			name = "Application Control";
+			sourceTree = "<group>";
+		};
+		BCC7617D0E0EF8260050DD95 /* Data Model */ = {
+			isa = PBXGroup;
+			children = (
+				BC2CF8630E5784EC00653418 /* SLSMolecule+PDB.h */,
+				BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */,
+				BC4FB6650E4E875900B316CD /* VCTitleCase.h */,
+				BC4FB6660E4E875900B316CD /* VCTitleCase.m */,
+				BC37E7C80E14779E00E11F4F /* SLSMolecule.h */,
+				BC37E7C90E14779E00E11F4F /* SLSMolecule.m */,
+				BCC281280E1B1FCD00978ECA /* NSData+Gzip.h */,
+				BCC281290E1B1FCD00978ECA /* NSData+Gzip.m */,
+			);
+			name = "Data Model";
+			sourceTree = "<group>";
+		};
+		BCC8FE7C0EC7E44D00853857 /* Searching and Retrieving Molecules */ = {
+			isa = PBXGroup;
+			children = (
+				BC1EF3810E36BD6100B09043 /* SLSMoleculeSearchViewController.h */,
+				BC1EF3820E36BD6100B09043 /* SLSMoleculeSearchViewController.m */,
+				BCC286CC0E1D905400978ECA /* SLSMoleculeDownloadViewController.h */,
+				BCC286CD0E1D905400978ECA /* SLSMoleculeDownloadViewController.m */,
+				BCDC9F830EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib */,
+				BCC8FE7E0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.h */,
+				BCC8FE7F0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m */,
+				BC146A990EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.h */,
+				BC146A9A0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m */,
+			);
+			name = "Searching and Retrieving Molecules";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1D6058900D05DD3D006BFB54 /* Molecules */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Molecules" */;
+			buildPhases = (
+				1D60588D0D05DD3D006BFB54 /* Resources */,
+				1D60588E0D05DD3D006BFB54 /* Sources */,
+				1D60588F0D05DD3D006BFB54 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Molecules;
+			productName = PortaMol;
+			productReference = 1D6058910D05DD3D006BFB54 /* Molecules.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Molecules" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1D6058900D05DD3D006BFB54 /* Molecules */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1D60588D0D05DD3D006BFB54 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCDC9F7E0EB3751C00ADCFA5 /* MainWindow.xib in Resources */,
+				BCDC9F810EB375AE00ADCFA5 /* SLSMoleculeGLView.xib in Resources */,
+				BCDC9F840EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib in Resources */,
+				BC5BB79C0E200C3B0001DFD0 /* 1BNA.pdb.gz in Resources */,
+				BC5BB7DF0E2020B10001DFD0 /* 1EVE.pdb.gz in Resources */,
+				BC5BBBFA0E216A170001DFD0 /* 1TRZ.pdb.gz in Resources */,
+				BC5BBCD40E219AB90001DFD0 /* MoleculesIcon.png in Resources */,
+				BC61CAFC0E2317EE0074BE04 /* 4TRA.pdb.gz in Resources */,
+				BC4FB75D0E4F6BB000B316CD /* greenButton.png in Resources */,
+				BC4FB7BA0E4F80DB00B316CD /* redButton.png in Resources */,
+				BC4E97FA0E69F8E1006CD291 /* molecules.sql in Resources */,
+				BCDC9F9D0EB37B3400ADCFA5 /* Localized.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1D60588E0D05DD3D006BFB54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
+				BC37E7CA0E14779E00E11F4F /* SLSMolecule.m in Sources */,
+				BCC2812A0E1B1FCD00978ECA /* NSData+Gzip.m in Sources */,
+				BCC286C10E1D8F9300978ECA /* SLSMoleculeAppDelegate.m in Sources */,
+				BCC286C20E1D8F9300978ECA /* SLSMoleculeRootViewController.m in Sources */,
+				BCC286C80E1D8FB100978ECA /* SLSMoleculeGLView.m in Sources */,
+				BCC286CA0E1D8FB100978ECA /* SLSMoleculeGLViewController.m in Sources */,
+				BCC286D20E1D905400978ECA /* SLSMoleculeDownloadViewController.m in Sources */,
+				BCC286D40E1D905400978ECA /* SLSMoleculeTableViewController.m in Sources */,
+				BC5BB8BD0E204DC20001DFD0 /* SLSMoleculeDetailViewController.m in Sources */,
+				BC61CC310E2463180074BE04 /* SLSCellTextView.m in Sources */,
+				BC61CC320E2463180074BE04 /* SLSTextViewController.m in Sources */,
+				BC1EF3830E36BD6100B09043 /* SLSMoleculeSearchViewController.m in Sources */,
+				BC4FB6670E4E875900B316CD /* VCTitleCase.m in Sources */,
+				BC2CF8650E5784ED00653418 /* SLSMolecule+PDB.m in Sources */,
+				BCC8FE800EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m in Sources */,
+				BC146A9B0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		BCDC9F7D0EB3751C00ADCFA5 /* MainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				28AD733E0D9D9553002E5188 /* English */,
+				BCDC9F7F0EB3753600ADCFA5 /* French */,
+			);
+			name = MainWindow.xib;
+			sourceTree = "<group>";
+		};
+		BCDC9F800EB375AE00ADCFA5 /* SLSMoleculeGLView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BCC286C50E1D8FB100978ECA /* English */,
+				BCDC9F820EB375B600ADCFA5 /* French */,
+			);
+			name = SLSMoleculeGLView.xib;
+			sourceTree = "<group>";
+		};
+		BCDC9F830EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BCC286CB0E1D905400978ECA /* English */,
+				BCDC9F850EB375D500ADCFA5 /* French */,
+			);
+			name = SLSMoleculeDownloadView.xib;
+			sourceTree = "<group>";
+		};
+		BCDC9F860EB375FB00ADCFA5 /* Info.plist */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8D1107310486CEB800E47090 /* English */,
+				BCDC9F870EB3760300ADCFA5 /* French */,
+			);
+			name = Info.plist;
+			sourceTree = "<group>";
+		};
+		BCDC9F9C0EB37B3400ADCFA5 /* Localized.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BCDC9F9A0EB37B1E00ADCFA5 /* English */,
+				BCDC9F9E0EB37B4100ADCFA5 /* French */,
+			);
+			name = Localized.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1D6058940D05DD3E006BFB54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
+				INFOPLIST_FILE = English.lproj/Info.plist;
+				PRODUCT_NAME = Molecules;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = DefaultProfileUuid;
+			};
+			name = Debug;
+		};
+		1D6058950D05DD3E006BFB54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
+				INFOPLIST_FILE = English.lproj/Info.plist;
+				PRODUCT_NAME = Molecules;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "500DAB97-6B23-43B6-9993-DF558595C088";
+			};
+			name = Release;
+		};
+		BC78D1AC0E1FDC0600BD9B0B /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Brad Larson";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Brad Larson";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_LDFLAGS = "-lz";
+				PREBINDING = NO;
+				PROVISIONING_PROFILE = "08655F68-DDB9-4791-ACDD-F2F8D167B8A0";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "08655F68-DDB9-4791-ACDD-F2F8D167B8A0";
+				SDKROOT = iphoneos2.0;
+			};
+			name = Distribution;
+		};
+		BC78D1AD0E1FDC0600BD9B0B /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Brad Larson";
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
+				INFOPLIST_FILE = English.lproj/Info.plist;
+				PRODUCT_NAME = Molecules;
+				PROVISIONING_PROFILE = "9064BE37-C309-452C-B7C0-B01298BABFF1";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "08655F68-DDB9-4791-ACDD-F2F8D167B8A0";
+			};
+			name = Distribution;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos2.0]" = "Don't Code Sign";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-lz";
+				PREBINDING = NO;
+				PROVISIONING_PROFILE = DefaultProfileUuid;
+				SDKROOT = iphonesimulator2.0;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Brad Larson";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos2.0]" = "iPhone Developer: Brad Larson";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_THUMB_SUPPORT = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_LDFLAGS = "-lz";
+				PREBINDING = NO;
+				PROVISIONING_PROFILE = "500DAB97-6B23-43B6-9993-DF558595C088";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "500DAB97-6B23-43B6-9993-DF558595C088";
+				"PROVISIONING_PROFILE[sdk=iphoneos2.0]" = "500DAB97-6B23-43B6-9993-DF558595C088";
+				SDKROOT = iphoneos2.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Molecules" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D6058940D05DD3E006BFB54 /* Debug */,
+				1D6058950D05DD3E006BFB54 /* Release */,
+				BC78D1AD0E1FDC0600BD9B0B /* Distribution */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Molecules" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+				BC78D1AC0E1FDC0600BD9B0B /* Distribution */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

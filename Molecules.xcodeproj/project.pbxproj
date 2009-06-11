@@ -17,7 +17,7 @@
 		BC1EF3830E36BD6100B09043 /* SLSMoleculeSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC1EF3820E36BD6100B09043 /* SLSMoleculeSearchViewController.m */; };
 		BC2CF8650E5784ED00653418 /* SLSMolecule+PDB.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */; };
 		BC37E7CA0E14779E00E11F4F /* SLSMolecule.m in Sources */ = {isa = PBXBuildFile; fileRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */; };
-		BC4E97C20E69F736006CD291 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BC4E97C10E69F736006CD291 /* libsqlite3.0.dylib */; };
+		BC4E97C20E69F736006CD291 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BC4E97C10E69F736006CD291 /* libsqlite3.dylib */; };
 		BC4E97FA0E69F8E1006CD291 /* molecules.sql in Resources */ = {isa = PBXBuildFile; fileRef = BC4E97F90E69F8E1006CD291 /* molecules.sql */; };
 		BC4FB6670E4E875900B316CD /* VCTitleCase.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4FB6660E4E875900B316CD /* VCTitleCase.m */; };
 		BC4FB75D0E4F6BB000B316CD /* greenButton.png in Resources */ = {isa = PBXBuildFile; fileRef = BC4FB75C0E4F6BAF00B316CD /* greenButton.png */; };
@@ -62,7 +62,7 @@
 		BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SLSMolecule+PDB.m"; sourceTree = "<group>"; };
 		BC37E7C80E14779E00E11F4F /* SLSMolecule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMolecule.h; sourceTree = "<group>"; };
 		BC37E7C90E14779E00E11F4F /* SLSMolecule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMolecule.m; sourceTree = "<group>"; };
-		BC4E97C10E69F736006CD291 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		BC4E97C10E69F736006CD291 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		BC4E97F90E69F8E1006CD291 /* molecules.sql */ = {isa = PBXFileReference; lastKnownFileType = file; path = molecules.sql; sourceTree = "<group>"; };
 		BC4FB6650E4E875900B316CD /* VCTitleCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCTitleCase.h; sourceTree = "<group>"; };
 		BC4FB6660E4E875900B316CD /* VCTitleCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCTitleCase.m; sourceTree = "<group>"; };
@@ -116,7 +116,7 @@
 				1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */,
 				28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */,
 				28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */,
-				BC4E97C20E69F736006CD291 /* libsqlite3.0.dylib in Frameworks */,
+				BC4E97C20E69F736006CD291 /* libsqlite3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,7 +177,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BC4E97C10E69F736006CD291 /* libsqlite3.0.dylib */,
+				BC4E97C10E69F736006CD291 /* libsqlite3.dylib */,
 				28FD15070DC6FC5B0079059D /* QuartzCore.framework */,
 				28FD14FF0DC6FC520079059D /* OpenGLES.framework */,
 				1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */,
@@ -410,7 +410,6 @@
 				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
 				INFOPLIST_FILE = English.lproj/Info.plist;
 				PRODUCT_NAME = Molecules;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = DefaultProfileUuid;
 			};
 			name = Debug;
 		};
@@ -423,7 +422,6 @@
 				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
 				INFOPLIST_FILE = English.lproj/Info.plist;
 				PRODUCT_NAME = Molecules;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "500DAB97-6B23-43B6-9993-DF558595C088";
 			};
 			name = Release;
 		};
@@ -443,6 +441,7 @@
 				PROVISIONING_PROFILE = "08655F68-DDB9-4791-ACDD-F2F8D167B8A0";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "08655F68-DDB9-4791-ACDD-F2F8D167B8A0";
 				SDKROOT = iphoneos2.0;
+				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Distribution;
 		};
@@ -456,7 +455,6 @@
 				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
 				INFOPLIST_FILE = English.lproj/Info.plist;
 				PRODUCT_NAME = Molecules;
-				PROVISIONING_PROFILE = "9064BE37-C309-452C-B7C0-B01298BABFF1";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "08655F68-DDB9-4791-ACDD-F2F8D167B8A0";
 			};
 			name = Distribution;
@@ -474,8 +472,8 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = DefaultProfileUuid;
 				SDKROOT = iphonesimulator2.0;
+				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Debug;
 		};
@@ -494,9 +492,9 @@
 				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "500DAB97-6B23-43B6-9993-DF558595C088";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "500DAB97-6B23-43B6-9993-DF558595C088";
 				"PROVISIONING_PROFILE[sdk=iphoneos2.0]" = "500DAB97-6B23-43B6-9993-DF558595C088";
 				SDKROOT = iphoneos2.0;
+				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Release;
 		};

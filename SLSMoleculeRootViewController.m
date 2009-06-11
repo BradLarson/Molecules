@@ -17,8 +17,6 @@
 
 @implementation SLSMoleculeRootViewController
 
-@synthesize glViewController;
-
 #pragma mark -
 #pragma mark Initialiation and breakdown
 

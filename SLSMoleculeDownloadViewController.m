@@ -63,7 +63,7 @@
 	
 	[pdbDownloadButton setTitle:NSLocalizedStringFromTable(@"Download", @"Localized", nil) forState:UIControlStateNormal];	
 	[pdbDownloadButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-	[pdbDownloadButton setFont:[UIFont boldSystemFontOfSize:14.0]];
+	//[pdbDownloadButton setFont:[UIFont boldSystemFontOfSize:14.0]];
 	
 	UIImage *newImage = [[UIImage imageNamed:@"greenButton.png"] stretchableImageWithLeftCapWidth:12.0f topCapHeight:0.0f];
 	[pdbDownloadButton setBackgroundImage:newImage forState:UIControlStateNormal];

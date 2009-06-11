@@ -104,8 +104,8 @@
 		if (cell == nil) 
 		{		
 			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"SearchInProgress"] autorelease];
-			cell.textColor = [UIColor blackColor];
-			cell.font = [UIFont boldSystemFontOfSize:12.0];
+			cell.textLabel.textColor = [UIColor blackColor];
+			cell.textLabel.font = [UIFont boldSystemFontOfSize:12.0];
 			
 			//		CGRect frame = CGRectMake(CGRectGetMaxX(cell.contentView.bounds) - 250.0, 5.0, 240.0, 32.0);
 //			CGRect frame = CGRectMake(CGRectGetMaxX(cell.contentView.bounds) - 70.0, 14.0, 32.0, 32.0);
@@ -116,12 +116,12 @@
 			[cell.contentView addSubview:spinningIndicator];
 			[spinningIndicator release];
 			cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.font = [UIFont systemFontOfSize:16.0];
+			cell.textLabel.font = [UIFont systemFontOfSize:16.0];
 		}
 		if (titleRetrievalConnection != nil)
-			cell.text = NSLocalizedStringFromTable(@"Retrieving titles...", @"Localized", nil);
+			cell.textLabel.text = NSLocalizedStringFromTable(@"Retrieving titles...", @"Localized", nil);
 		else
-			cell.text = NSLocalizedStringFromTable(@"Searching...", @"Localized", nil);
+			cell.textLabel.text = NSLocalizedStringFromTable(@"Searching...", @"Localized", nil);
 	}
 	else if (searchResultTitles == nil)
 		cell = nil;
@@ -132,9 +132,9 @@
 		if (cell == nil) 
 		{		
 			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"NoResults"] autorelease];
-			cell.textColor = [UIColor blackColor];
-			cell.font = [UIFont systemFontOfSize:16.0];
-			cell.text = NSLocalizedStringFromTable(@"No results", @"Localized", nil);
+			cell.textLabel.textColor = [UIColor blackColor];
+			cell.textLabel.font = [UIFont systemFontOfSize:16.0];
+			cell.textLabel.text = NSLocalizedStringFromTable(@"No results", @"Localized", nil);
 			cell.accessoryType = UITableViewCellAccessoryNone;
 		}
 	}
@@ -144,8 +144,8 @@
 		if (cell == nil) 
 		{		
 			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:NSLocalizedStringFromTable(@"Results", @"Localized", nil)] autorelease];
-			cell.textColor = [UIColor blackColor];
-			cell.font = [UIFont boldSystemFontOfSize:12.0];
+			cell.textLabel.textColor = [UIColor blackColor];
+			cell.textLabel.font = [UIFont boldSystemFontOfSize:12.0];
 			
 			//		CGRect frame = CGRectMake(CGRectGetMaxX(cell.contentView.bounds) - 250.0, 5.0, 240.0, 32.0);
 			CGRect frame = CGRectMake(CGRectGetMaxX(cell.contentView.bounds) - 250.0f, 5.0f, 240.0f, 48.0f);
@@ -163,7 +163,7 @@
 		if (searchResultTitles != nil)
 		{	
 			NSString *cellTitle = [searchResultTitles objectAtIndex:[indexPath row]];
-			cell.text = [dictionaryToAssociatePDBCodesAndTitles objectForKey:cellTitle];
+			cell.textLabel.text = [dictionaryToAssociatePDBCodesAndTitles objectForKey:cellTitle];
 			
 			UILabel *valueLabel = (UILabel *)[cell viewWithTag:1];
 			valueLabel.text = cellTitle;
@@ -173,7 +173,7 @@
 		else
 		{
 			cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.text = @"";
+			cell.textLabel.text = @"";
 		}
 	}
 

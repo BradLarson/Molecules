@@ -163,25 +163,25 @@
 		{
 			case 0:
 			{
-				cell.text = NSLocalizedStringFromTable(@"File name", @"Localized", nil);
+				cell.textLabel.text = NSLocalizedStringFromTable(@"File name", @"Localized", nil);
 				UILabel *valueLabel = (UILabel *)[cell viewWithTag:1];
 				valueLabel.text = molecule.filename;
 			}; break;
 			case 1:
 			{
-				cell.text = NSLocalizedStringFromTable(@"Number of atoms", @"Localized", nil);
+				cell.textLabel.text = NSLocalizedStringFromTable(@"Number of atoms", @"Localized", nil);
 				UILabel *valueLabel = (UILabel *)[cell viewWithTag:1];
 				valueLabel.text = [NSString stringWithFormat:@"%d", molecule.numberOfAtoms];
 			}; break;
 			case 2:
 			{
-				cell.text =NSLocalizedStringFromTable(@"Number of structures", @"Localized", nil);
+				cell.textLabel.text =NSLocalizedStringFromTable(@"Number of structures", @"Localized", nil);
 				UILabel *valueLabel = (UILabel *)[cell viewWithTag:1];
 				valueLabel.text = [NSString stringWithFormat:@"%d", molecule.numberOfStructures];
 			}; break;
 			case 3:
 			{
-				cell.text = NSLocalizedStringFromTable(@"Current structure", @"Localized", nil);
+				cell.textLabel.text = NSLocalizedStringFromTable(@"Current structure", @"Localized", nil);
 				UILabel *valueLabel = (UILabel *)[cell viewWithTag:1];
 				valueLabel.text = [NSString stringWithFormat:@"%d", molecule.numberOfStructureBeingDisplayed];
 			}; break;
@@ -194,7 +194,7 @@
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:MyIdentifier] autorelease];
 	}
-	cell.text = [self textForIndexPath:indexPath];
+	cell.textLabel.text = [self textForIndexPath:indexPath];
 	
 	
 //	static NSString *DetailedTextCell = @"DetailedTextCell";

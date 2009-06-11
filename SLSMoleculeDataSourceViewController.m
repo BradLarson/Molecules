@@ -57,16 +57,16 @@
 	if (cell == nil) 
 	{
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:NSLocalizedStringFromTable(@"Download", @"Localized", nil)] autorelease];
-		cell.textColor = [UIColor blackColor];
+		cell.textLabel.textColor = [UIColor blackColor];
 	}		
 	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	cell.textColor = [UIColor blackColor];
+	cell.textLabel.textColor = [UIColor blackColor];
 
 	switch (index)
 	{
-		case 0: cell.text = NSLocalizedStringFromTable(@"RCSB Protein Data Bank", @"Localized", nil); break;
-		case 1: cell.text = NSLocalizedStringFromTable(@"Custom location", @"Localized", nil); break;
+		case 0: cell.textLabel.text = NSLocalizedStringFromTable(@"RCSB Protein Data Bank", @"Localized", nil); break;
+		case 1: cell.textLabel.text = NSLocalizedStringFromTable(@"Custom location", @"Localized", nil); break;
 	}
 
     return cell;

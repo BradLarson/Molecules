@@ -18,9 +18,9 @@ NSString* kSLSCellTextView_ID = @"SLSCellTextViewID";
 
 @synthesize view;
 
-- (id)initWithFrame:(CGRect)aRect reuseIdentifier:(NSString *)identifier
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)identifier
 {
-	self = [super initWithFrame:aRect reuseIdentifier:identifier];
+	self = [super initWithStyle:style reuseIdentifier:identifier];
 	if (self)
 	{
 		// turn off selection use

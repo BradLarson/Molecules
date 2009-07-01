@@ -440,7 +440,7 @@
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "08655F68-DDB9-4791-ACDD-F2F8D167B8A0";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "08655F68-DDB9-4791-ACDD-F2F8D167B8A0";
-				SDKROOT = iphoneos2.0;
+				SDKROOT = iphoneos3.0;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Distribution;
@@ -472,7 +472,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
-				SDKROOT = iphonesimulator2.0;
+				SDKROOT = iphonesimulator3.0;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Debug;
@@ -493,7 +493,7 @@
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "500DAB97-6B23-43B6-9993-DF558595C088";
 				"PROVISIONING_PROFILE[sdk=iphoneos2.0]" = "500DAB97-6B23-43B6-9993-DF558595C088";
-				SDKROOT = iphoneos2.0;
+				SDKROOT = iphoneos3.0;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Release;

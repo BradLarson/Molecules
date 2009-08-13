@@ -447,15 +447,14 @@ void normalize(GLfloat *v)
 	}
 }
 
-- (void)addNormal:(GLfixed *)newNormal;
+- (void)addNormal:(GLfloat *)newNormal;
 {
-	[m_normalArray appendBytes:newNormal length:(sizeof(GLfixed) * 3)];	
-// TODO: Check number of normals against vertices
+	[m_normalArray appendBytes:newNormal length:(sizeof(GLfloat) * 3)];	
 }
 
-- (void)addVertex:(GLfixed *)newVertex;
+- (void)addVertex:(GLfloat *)newVertex;
 {
-	[m_vertexArray appendBytes:newVertex length:(sizeof(GLfixed) * 3)];
+	[m_vertexArray appendBytes:newVertex length:(sizeof(GLfloat) * 3)];
 	m_numVertices++;
 	totalNumberOfVertices++;
 }
@@ -507,7 +506,7 @@ void normalize(GLfloat *v)
 
 - (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint;
 {
-	GLfixed newVertex[3];
+	GLfloat newVertex[3];
 	GLubyte newColor[4];
 	GLfloat atomRadius = 0.4f;
 
@@ -575,7 +574,7 @@ void normalize(GLfloat *v)
 			newColor[2] = 51;
 			newColor[3] = 255;
 			atomRadius = 2.00f;
-		}
+		}; break;
 		case SILICON:
 		{
 			newColor[0] = 240;
@@ -603,20 +602,21 @@ void normalize(GLfloat *v)
 	int currentCounter;
 	for (currentCounter = 0; currentCounter < 12; currentCounter++)
 	{
-		newVertex[0] = [self floatToFixed:(vdata[currentCounter][0])];
-		newVertex[1] = [self floatToFixed:(vdata[currentCounter][1])];
-		newVertex[2] = [self floatToFixed:(vdata[currentCounter][2])];
-		
-		// Add sphere normal
-		[self addNormal:newVertex];
-
 		// Adjust radius and shift to match center
-		newVertex[0] = [self floatToFixed:((vdata[currentCounter][0] * atomRadius) + newPoint.x)];
-		newVertex[1] = [self floatToFixed:((vdata[currentCounter][1] * atomRadius) + newPoint.y)];
-		newVertex[2] = [self floatToFixed:((vdata[currentCounter][2] * atomRadius) + newPoint.z)];
-		
+		newVertex[0] = (vdata[currentCounter][0] * atomRadius) + newPoint.x;
+		newVertex[1] = (vdata[currentCounter][1] * atomRadius) + newPoint.y;
+		newVertex[2] = (vdata[currentCounter][2] * atomRadius) + newPoint.z;
+
 		// Add vertex from table
 		[self addVertex:newVertex];
+
+		// Just use original icosahedron for normals
+		newVertex[0] = vdata[currentCounter][0];
+		newVertex[1] = vdata[currentCounter][1];
+		newVertex[2] = vdata[currentCounter][2];
+		
+		// Add sphere normal
+		[self addNormal:newVertex];		
 		
 		// Add a color corresponding to this vertex
 		[self addColor:newColor];
@@ -667,7 +667,7 @@ void normalize(GLfloat *v)
 	for (edgeCounter = 0; edgeCounter < 4; edgeCounter++)
 	{
 		SLS3DPoint calculatedNormal;
-		GLfixed edgeNormal[3], edgeVertex[3];
+		GLfloat edgeNormal[3], edgeVertex[3];
 		
 		if (xyHypotenuse == 0)
 		{
@@ -690,23 +690,24 @@ void normalize(GLfloat *v)
 			calculatedNormal.x = calculatedNormal.x * xDifference / xzHypotenuse - bondEdges[edgeCounter][2] * zDifference / xzHypotenuse;
 		}
 		
-		edgeNormal[0] = [self floatToFixed:calculatedNormal.x];
-		edgeNormal[1] = [self floatToFixed:calculatedNormal.y];
-		edgeNormal[2] = [self floatToFixed:calculatedNormal.z];
+		edgeVertex[0] = (calculatedNormal.x * bondRadius) + startPoint.x;
+		edgeVertex[1] = (calculatedNormal.y * bondRadius) + startPoint.y;
+		edgeVertex[2] = (calculatedNormal.z * bondRadius) + startPoint.z;
+		[self addVertex:edgeVertex];
+
+		edgeNormal[0] = calculatedNormal.x;
+		edgeNormal[1] = calculatedNormal.y;
+		edgeNormal[2] = calculatedNormal.z;
 		
 		[self addNormal:edgeNormal];
 		[self addColor:bondColor];
-		edgeVertex[0] = [self floatToFixed:((calculatedNormal.x * bondRadius) + startPoint.x)];
-		edgeVertex[1] = [self floatToFixed:((calculatedNormal.y * bondRadius) + startPoint.y)];
-		edgeVertex[2] = [self floatToFixed:((calculatedNormal.z * bondRadius) + startPoint.z)];
-		[self addVertex:edgeVertex];
 		
+		edgeVertex[0] = (calculatedNormal.x * bondRadius) + endPoint.x;
+		edgeVertex[1] = (calculatedNormal.y * bondRadius) + endPoint.y;
+		edgeVertex[2] = (calculatedNormal.z * bondRadius) + endPoint.z;
+		[self addVertex:edgeVertex];
 		[self addNormal:edgeNormal];
 		[self addColor:bondColor];
-		edgeVertex[0] = [self floatToFixed:((calculatedNormal.x * bondRadius) + endPoint.x)];
-		edgeVertex[1] = [self floatToFixed:((calculatedNormal.y * bondRadius) + endPoint.y)];
-		edgeVertex[2] = [self floatToFixed:((calculatedNormal.z * bondRadius) + endPoint.z)];
-		[self addVertex:edgeVertex];
 	}
 
 	int currentCounter;
@@ -722,11 +723,6 @@ void normalize(GLfloat *v)
 		}
 	}
 	
-}
-
-- (GLfixed)floatToFixed:(GLfloat)aValue;
-{ 
-	return (GLfixed) (aValue * 65536.0f); 
 }
 
 #pragma mark -
@@ -1306,7 +1302,7 @@ void normalize(GLfloat *v)
 		glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferHandle[bufferIndex]); 
 
 		NSData *currentVertexBuffer = [m_vertexArrays objectAtIndex:bufferIndex];
-		GLfixed *vertexBuffer = (GLfixed *)[currentVertexBuffer bytes];
+		GLfloat *vertexBuffer = (GLfloat *)[currentVertexBuffer bytes];
 		glBufferData(GL_ARRAY_BUFFER, [currentVertexBuffer length], vertexBuffer, GL_STATIC_DRAW); 
 		glBindBuffer(GL_ARRAY_BUFFER, 0); 
 	}
@@ -1320,7 +1316,7 @@ void normalize(GLfloat *v)
 		glBindBuffer(GL_ARRAY_BUFFER, m_normalBufferHandle[bufferIndex]); 
 
 		NSData *currentNormalBuffer = [m_normalArrays objectAtIndex:bufferIndex];
-		GLfixed *normalBuffer = (GLfixed *)[currentNormalBuffer bytes];
+		GLfloat *normalBuffer = (GLfloat *)[currentNormalBuffer bytes];
 		glBufferData(GL_ARRAY_BUFFER, [currentNormalBuffer length], normalBuffer, GL_STATIC_DRAW); 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}	
@@ -1355,10 +1351,10 @@ void normalize(GLfloat *v)
 	{
 		// Bind the buffers
 		glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferHandle[bufferIndex]); 
-		glVertexPointer(3, GL_FIXED, 0, NULL); 
+		glVertexPointer(3, GL_FLOAT, 0, NULL); 
 		
 		glBindBuffer(GL_ARRAY_BUFFER, m_normalBufferHandle[bufferIndex]); 
-		glNormalPointer(GL_FIXED, 0, NULL); 
+		glNormalPointer(GL_FLOAT, 0, NULL); 
 		
 		glBindBuffer(GL_ARRAY_BUFFER, m_colorBufferHandle[bufferIndex]); 
 		glColorPointer(4, GL_UNSIGNED_BYTE, 0, NULL);

@@ -316,9 +316,9 @@
 		case SEQUENCE_SECTION:
 			text = molecule.sequence;
 			break;
-//		default:
-//			result = 43.0;
-//			break;
+		default:
+			text = @"";
+			break;
 	}
 	
 	return [text stringByReplacingOccurrencesOfString:@"\n" withString:@" "];

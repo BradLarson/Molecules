@@ -62,10 +62,10 @@ Note that setting the view non-opaque will only work if the EAGL surface has an 
 - (void)drawViewByRotatingAroundX:(float)xRotation rotatingAroundY:(float)yRotation scaling:(float)scaleFactor translationInX:(float)xTranslation translationInY:(float)yTranslation;
 - (void)configureLighting;
 - (void)handleFinishOfMoleculeRendering:(NSNotification *)note;
-- (void)convertFixedPointMatrix:(GLfixed *)fixedPointMatrix to3DTransform:(CATransform3D *)transform3D;
-- (void)convert3DTransform:(CATransform3D *)transform3D toFixedPointMatrix:(GLfixed *)fixedPointMatrix;
+- (void)convertMatrix:(GLfloat *)matrix to3DTransform:(CATransform3D *)transform3D;
+- (void)convert3DTransform:(CATransform3D *)transform3D toMatrix:(GLfloat *)matrix;
 - (void)print3DTransform:(CATransform3D *)transform3D;
-- (void)printFixedPointMatrix:(GLfixed *)fixedPointMatrix;
+- (void)printMatrix:(GLfloat *)fixedPointMatrix;
 
 // Touch handling
 - (float)distanceBetweenTouches:(NSSet *)touches;

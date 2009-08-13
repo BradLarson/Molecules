@@ -91,14 +91,13 @@ void normalize(GLfloat *v);
 
 // Molecule 3-D geometry generation
 + (void)setBondColor:(GLubyte *)bondColor forResidueType:(SLSResidueType)residueType;
-- (void)addNormal:(GLfixed *)newNormal;
-- (void)addVertex:(GLfixed *)newVertex;
+- (void)addNormal:(GLfloat *)newNormal;
+- (void)addVertex:(GLfloat *)newVertex;
 - (void)addIndex:(GLushort *)newIndex;
 - (void)addColor:(GLubyte *)newColor;
 - (void)addIcosahedronFaceWithVertex1:(GLfloat *)a vertex2:(GLfloat *)b vertex3:(GLfloat *)c divisions:(int)div radius:(float)r;
 - (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint;
 - (void)addBondToVertexBuffersWithStartPoint:(SLS3DPoint)startPoint endPoint:(SLS3DPoint)endPoint bondColor:(GLubyte *)bondColor bondType:(SLSBondType)bondType;
-- (GLfixed)floatToFixed:(GLfloat) aValue;
 
 // Database methods
 + (BOOL)beginTransactionWithDatabase:(sqlite3 *)database;

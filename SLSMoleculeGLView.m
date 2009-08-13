@@ -17,7 +17,7 @@
 #import "SLSMolecule.h"
 
 #define USE_DEPTH_BUFFER 1
-//#define RUN_OPENGL_BENCHMARKS
+#define RUN_OPENGL_BENCHMARKS
 
 // A class extension to declare private methods
 @interface SLSMoleculeGLView ()
@@ -66,19 +66,6 @@
 			return nil;
 		}
 		
-//		NSData *matrixData = [[NSUserDefaults standardUserDefaults] objectForKey:@"matrixData"];
-//		if (matrixData != nil)
-//		{
-//			float *currentModelViewMatrix = (float *)[matrixData bytes];
-////			NSLog(@"Reading matrix");
-////			NSLog(@"___________________________");
-////			NSLog(@"|%f,%f,%f,%f|", currentModelViewMatrix[0], currentModelViewMatrix[1], currentModelViewMatrix[2], currentModelViewMatrix[3]);
-////			NSLog(@"|%f,%f,%f,%f|", currentModelViewMatrix[4], currentModelViewMatrix[5], currentModelViewMatrix[6], currentModelViewMatrix[7]);
-////			NSLog(@"|%f,%f,%f,%f|", currentModelViewMatrix[8], currentModelViewMatrix[9], currentModelViewMatrix[10], currentModelViewMatrix[11]);
-////			NSLog(@"|%f,%f,%f,%f|", currentModelViewMatrix[12], currentModelViewMatrix[13], currentModelViewMatrix[14], currentModelViewMatrix[15]);
-////			NSLog(@"___________________________");			
-//		}
-
 		previousScale = 1.0f;
 		instantObjectScale = 1.0f;
 		instantXRotation = 1.0f;
@@ -89,12 +76,14 @@
 		twoFingersAreMoving = NO;
 		pinchGestureUnderway = NO;
 		
-//		[self drawViewByRotatingAroundX:0.0 rotatingAroundY:0.0 scaling:1.0 translationInX:0.0 translationInY:0.0];
 		[self clearScreen];
 		isFirstDrawingOfMolecule = YES;
 		
-		GLfixed currentModelViewMatrix[16]  = {45146,47441,2485,0,-25149,26775,-54274,0,-40303,36435,36650,0,0,0,0,65536};
-		[self convertFixedPointMatrix:currentModelViewMatrix to3DTransform:&currentCalculatedMatrix];
+		GLfloat currentModelViewMatrix[16]  = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
+
+//		GLfloat currentModelViewMatrix[16]  = {1.0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 1.0};
+
+		[self convertMatrix:currentModelViewMatrix to3DTransform:&currentCalculatedMatrix];
 
 		infoButton = [[UIButton buttonWithType:UIButtonTypeInfoLight] retain];
 		infoButton.frame = CGRectMake(320 - 70, 460 - 70, 70, 70);
@@ -154,7 +143,6 @@
 
 - (void)drawViewByRotatingAroundX:(float)xRotation rotatingAroundY:(float)yRotation scaling:(float)scaleFactor translationInX:(float)xTranslation translationInY:(float)yTranslation;
 {
-
 	[EAGLContext setCurrentContext:context];
 	
 	glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
@@ -165,14 +153,18 @@
 	glLoadIdentity();
 	glOrthof(-1.0f, 1.0f, -1.5f, 1.5f, -10.0f, 4.0f);
 	
-	GLfixed currentModelViewMatrix[16]  = {45146,47441,2485,0,-25149,26775,-54274,0,-40303,36435,36650,0,0,0,0,65536};
+//	GLfloat currentModelViewMatrix[16]  = {1.0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 1.0};
+	GLfloat currentModelViewMatrix[16]  = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
+	
+	
+	
 	glMatrixMode(GL_MODELVIEW);
 
 	// Reset rotation system
 	if (isFirstDrawingOfMolecule)
 	{
 		glLoadIdentity();
-		glMultMatrixx(currentModelViewMatrix);
+		glMultMatrixf(currentModelViewMatrix);
 		[self configureLighting];
 		
 		isFirstDrawingOfMolecule = NO;
@@ -209,9 +201,9 @@
 //		NSLog(@"Value out of range: %f", temporaryMatrix.m11);
 	
 	// Finally, set the new matrix that has been calculated from the Core Animation transform
-	[self convert3DTransform:&currentCalculatedMatrix toFixedPointMatrix:currentModelViewMatrix];
+	[self convert3DTransform:&currentCalculatedMatrix toMatrix:currentModelViewMatrix];
 
-	glLoadMatrixx(currentModelViewMatrix);
+	glLoadMatrixf(currentModelViewMatrix);
 	
 	// Black background, with depth buffer enabled
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -227,22 +219,22 @@
 
 - (void)configureLighting;
 {
-	const GLfixed			lightAmbient[] = {13107, 13107, 13107, 65535};
-	const GLfixed			lightDiffuse[] = {65535, 65535, 65535, 65535};
-	const GLfixed			matAmbient[] = {65535, 65535, 65535, 65535};
-	const GLfixed			matDiffuse[] = {65535, 65535, 65535, 65535};	
-	const GLfixed			lightPosition[] = {30535, -30535, 0, 0}; 
-	const GLfixed			lightShininess = 20;	
+	const GLfloat			lightAmbient[] = {0.2, 0.2, 0.2, 1.0};
+	const GLfloat			lightDiffuse[] = {1.0, 1.0, 1.0, 1.0};
+	const GLfloat			matAmbient[] = {1.0, 1.0, 1.0, 1.0};
+	const GLfloat			matDiffuse[] = {1.0, 1.0, 1.0, 1.0};	
+	const GLfloat			lightPosition[] = {0.466, -0.466, 0, 0}; 
+	const GLfloat			lightShininess = 20.0;	
 	
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_COLOR_MATERIAL);
-	glMaterialxv(GL_FRONT_AND_BACK, GL_AMBIENT, matAmbient);
-	glMaterialxv(GL_FRONT_AND_BACK, GL_DIFFUSE, matDiffuse);
-	glMaterialx(GL_FRONT_AND_BACK, GL_SHININESS, lightShininess);
-	glLightxv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
-	glLightxv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
-	glLightxv(GL_LIGHT0, GL_POSITION, lightPosition); 		
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, matAmbient);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, matDiffuse);
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, lightShininess);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition); 		
 	
 	glEnable(GL_DEPTH_TEST);
 	
@@ -258,7 +250,9 @@
 	NSLog(NSLocalizedStringFromTable(@"Vertices: %d", @"Localized", nil), moleculeToDisplay.totalNumberOfVertices);
 	CFAbsoluteTime elapsedTime, startTime = CFAbsoluteTimeGetCurrent();
 	unsigned int testCounter;
-	for (testCounter = 0; testCounter < 100; testCounter++)
+#define NUMBER_OF_FRAMES_FOR_TESTING 100
+
+	for (testCounter = 0; testCounter < NUMBER_OF_FRAMES_FOR_TESTING; testCounter++)
 	{
 		// Do something		
 		[self drawViewByRotatingAroundX:1.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
@@ -266,31 +260,32 @@
 	elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
 	// ElapsedTime contains seconds (or fractions thereof as decimals)
 	NSLog(NSLocalizedStringFromTable(@"Elapsed time: %f", @"Localized", nil), elapsedTime);
+	NSLog(@"Triangles per second: %f", (CGFloat)moleculeToDisplay.totalNumberOfTriangles * (CGFloat)NUMBER_OF_FRAMES_FOR_TESTING / elapsedTime);
 #endif
 	
 }
 
-- (void)convertFixedPointMatrix:(GLfixed *)fixedPointMatrix to3DTransform:(CATransform3D *)transform3D;
+- (void)convertMatrix:(GLfloat *)matrix to3DTransform:(CATransform3D *)transform3D;
 {
-	transform3D->m11 = (CGFloat)fixedPointMatrix[0] / 65536.0f;
-	transform3D->m12 = (CGFloat)fixedPointMatrix[1] / 65536.0f;
-	transform3D->m13 = (CGFloat)fixedPointMatrix[2] / 65536.0f;
-	transform3D->m14 = (CGFloat)fixedPointMatrix[3] / 65536.0f;
-	transform3D->m21 = (CGFloat)fixedPointMatrix[4] / 65536.0f;
-	transform3D->m22 = (CGFloat)fixedPointMatrix[5] / 65536.0f;
-	transform3D->m23 = (CGFloat)fixedPointMatrix[6] / 65536.0f;
-	transform3D->m24 = (CGFloat)fixedPointMatrix[7] / 65536.0f;
-	transform3D->m31 = (CGFloat)fixedPointMatrix[8] / 65536.0f;
-	transform3D->m32 = (CGFloat)fixedPointMatrix[9] / 65536.0f;
-	transform3D->m33 = (CGFloat)fixedPointMatrix[10] / 65536.0f;
-	transform3D->m34 = (CGFloat)fixedPointMatrix[11] / 65536.0f;
-	transform3D->m41 = (CGFloat)fixedPointMatrix[12] / 65536.0f;
-	transform3D->m42 = (CGFloat)fixedPointMatrix[13] / 65536.0f;
-	transform3D->m43 = (CGFloat)fixedPointMatrix[14] / 65536.0f;
-	transform3D->m44 = (CGFloat)fixedPointMatrix[15] / 65536.0f;
+	transform3D->m11 = (CGFloat)matrix[0];
+	transform3D->m12 = (CGFloat)matrix[1];
+	transform3D->m13 = (CGFloat)matrix[2];
+	transform3D->m14 = (CGFloat)matrix[3];
+	transform3D->m21 = (CGFloat)matrix[4];
+	transform3D->m22 = (CGFloat)matrix[5];
+	transform3D->m23 = (CGFloat)matrix[6];
+	transform3D->m24 = (CGFloat)matrix[7];
+	transform3D->m31 = (CGFloat)matrix[8];
+	transform3D->m32 = (CGFloat)matrix[9];
+	transform3D->m33 = (CGFloat)matrix[10];
+	transform3D->m34 = (CGFloat)matrix[11];
+	transform3D->m41 = (CGFloat)matrix[12];
+	transform3D->m42 = (CGFloat)matrix[13];
+	transform3D->m43 = (CGFloat)matrix[14];
+	transform3D->m44 = (CGFloat)matrix[15];
 }
 
-- (void)convert3DTransform:(CATransform3D *)transform3D toFixedPointMatrix:(GLfixed *)fixedPointMatrix;
+- (void)convert3DTransform:(CATransform3D *)transform3D toMatrix:(GLfloat *)matrix;
 {
 //	struct CATransform3D
 //	{
@@ -300,24 +295,23 @@
 //		CGFloat m41, m42, m43, m44;
 //	};
 	
-	fixedPointMatrix[0] = (GLfixed)(transform3D->m11 * 65536.0);
-	fixedPointMatrix[1] = (GLfixed)(transform3D->m12 * 65536.0);
-	fixedPointMatrix[2] = (GLfixed)(transform3D->m13 * 65536.0);
-	fixedPointMatrix[3] = (GLfixed)(transform3D->m14 * 65536.0);
-	fixedPointMatrix[4] = (GLfixed)(transform3D->m21 * 65536.0);
-	fixedPointMatrix[5] = (GLfixed)(transform3D->m22 * 65536.0);
-	fixedPointMatrix[6] = (GLfixed)(transform3D->m23 * 65536.0);
-	fixedPointMatrix[7] = (GLfixed)(transform3D->m24 * 65536.0);
-	fixedPointMatrix[8] = (GLfixed)(transform3D->m31 * 65536.0);
-	fixedPointMatrix[9] = (GLfixed)(transform3D->m32 * 65536.0);
-	fixedPointMatrix[10] = (GLfixed)(transform3D->m33 * 65536.0);
-	fixedPointMatrix[11] = (GLfixed)(transform3D->m34 * 65536.0);
-	fixedPointMatrix[12] = (GLfixed)(transform3D->m41 * 65536.0);
-	fixedPointMatrix[13] = (GLfixed)(transform3D->m42 * 65536.0);
-	fixedPointMatrix[14] = (GLfixed)(transform3D->m43 * 65536.0);
-	fixedPointMatrix[15] = (GLfixed)(transform3D->m44 * 65536.0);
+	matrix[0] = (GLfloat)transform3D->m11;
+	matrix[1] = (GLfloat)transform3D->m12;
+	matrix[2] = (GLfloat)transform3D->m13;
+	matrix[3] = (GLfloat)transform3D->m14;
+	matrix[4] = (GLfloat)transform3D->m21;
+	matrix[5] = (GLfloat)transform3D->m22;
+	matrix[6] = (GLfloat)transform3D->m23;
+	matrix[7] = (GLfloat)transform3D->m24;
+	matrix[8] = (GLfloat)transform3D->m31;
+	matrix[9] = (GLfloat)transform3D->m32;
+	matrix[10] = (GLfloat)transform3D->m33;
+	matrix[11] = (GLfloat)transform3D->m34;
+	matrix[12] = (GLfloat)transform3D->m41;
+	matrix[13] = (GLfloat)transform3D->m42;
+	matrix[14] = (GLfloat)transform3D->m43;
+	matrix[15] = (GLfloat)transform3D->m44;
 }
-
 
 - (void)print3DTransform:(CATransform3D *)transform3D;
 {
@@ -329,13 +323,13 @@
 	NSLog(@"___________________________");			
 }
 
-- (void)printFixedPointMatrix:(GLfixed *)fixedPointMatrix;
+- (void)printMatrix:(GLfloat *)matrix;
 {
 	NSLog(@"___________________________");
-	NSLog(@"|%d,%d,%d,%d|", fixedPointMatrix[0], fixedPointMatrix[1], fixedPointMatrix[2], fixedPointMatrix[3]);
-	NSLog(@"|%d,%d,%d,%d|", fixedPointMatrix[4], fixedPointMatrix[5], fixedPointMatrix[6], fixedPointMatrix[7]);
-	NSLog(@"|%d,%d,%d,%d|", fixedPointMatrix[8], fixedPointMatrix[9], fixedPointMatrix[10], fixedPointMatrix[11]);
-	NSLog(@"|%d,%d,%d,%d|", fixedPointMatrix[12], fixedPointMatrix[13], fixedPointMatrix[14], fixedPointMatrix[15]);
+	NSLog(@"|%f,%f,%f,%f|", matrix[0], matrix[1], matrix[2], matrix[3]);
+	NSLog(@"|%f,%f,%f,%f|", matrix[4], matrix[5], matrix[6], matrix[7]);
+	NSLog(@"|%f,%f,%f,%f|", matrix[8], matrix[9], matrix[10], matrix[11]);
+	NSLog(@"|%f,%f,%f,%f|", matrix[12], matrix[13], matrix[14], matrix[15]);
 	NSLog(@"___________________________");			
 }
 
@@ -502,6 +496,12 @@
 				buttonTitle2 = NSLocalizedStringFromTable(@"Spacefilling", @"Localized", nil);
 				cancelButtonTitle = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
 			}; break;
+			default:
+			{
+				buttonTitle1 = NSLocalizedStringFromTable(@"Spacefilling", @"Localized", nil);
+				buttonTitle2 = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
+				cancelButtonTitle = NSLocalizedStringFromTable(@"Ball-and-stick", @"Localized", nil);
+			};
 		}
 
 		// If the rendering process has not finished, prevent you from changing the visualization mode

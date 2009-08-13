@@ -32,7 +32,12 @@
 	strm.zalloc = Z_NULL;
 	strm.zfree = Z_NULL;
 	
-	if (inflateInit2(&strm, (15+32)) != Z_OK) return nil;
+	if (inflateInit2(&strm, (15+32)) != Z_OK) 
+	{
+		[gzippedData release];
+		[decompressed release];
+		return nil;
+	}
 	while (!done)
 	{
 		// Make sure we have enough room and reset the lengths.

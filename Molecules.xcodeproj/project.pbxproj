@@ -410,6 +410,7 @@
 				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
 				INFOPLIST_FILE = English.lproj/Info.plist;
 				PRODUCT_NAME = Molecules;
+				RUN_CLANG_STATIC_ANALYZER = YES;
 			};
 			name = Debug;
 		};
@@ -422,6 +423,7 @@
 				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
 				INFOPLIST_FILE = English.lproj/Info.plist;
 				PRODUCT_NAME = Molecules;
+				RUN_CLANG_STATIC_ANALYZER = YES;
 			};
 			name = Release;
 		};
@@ -440,6 +442,7 @@
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "08655F68-DDB9-4791-ACDD-F2F8D167B8A0";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "08655F68-DDB9-4791-ACDD-F2F8D167B8A0";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos3.0;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
@@ -456,6 +459,7 @@
 				INFOPLIST_FILE = English.lproj/Info.plist;
 				PRODUCT_NAME = Molecules;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "08655F68-DDB9-4791-ACDD-F2F8D167B8A0";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 			};
 			name = Distribution;
 		};
@@ -472,6 +476,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphonesimulator3.0;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
@@ -493,6 +498,7 @@
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "500DAB97-6B23-43B6-9993-DF558595C088";
 				"PROVISIONING_PROFILE[sdk=iphoneos2.0]" = "500DAB97-6B23-43B6-9993-DF558595C088";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos3.0;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};

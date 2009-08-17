@@ -112,8 +112,6 @@ void normalize(GLfloat *v)
 	
 	m_vertexBufferHandle = NULL;
 	m_indexBufferHandle = NULL;
-	m_normalBufferHandle = NULL;
-	m_colorBufferHandle = NULL;
 	isBeingDisplayed = NO;
 	isRenderingCancelled = NO;
 	
@@ -449,7 +447,7 @@ void normalize(GLfloat *v)
 
 - (void)addNormal:(GLfloat *)newNormal;
 {
-	[m_normalArray appendBytes:newNormal length:(sizeof(GLfloat) * 3)];	
+	[m_vertexArray appendBytes:newNormal length:(sizeof(GLfloat) * 3)];	
 }
 
 - (void)addVertex:(GLfloat *)newVertex;
@@ -467,7 +465,7 @@ void normalize(GLfloat *v)
 
 - (void)addColor:(GLubyte *)newColor;
 {
-	[m_colorArray appendBytes:newColor length:(sizeof(GLubyte) * 4)];
+	[m_vertexArray appendBytes:newColor length:(sizeof(GLubyte) * 4)];
 }
 
 - (void)addIcosahedronFaceWithVertex1:(GLfloat *)a vertex2:(GLfloat *)b vertex3:(GLfloat *)c divisions:(int)div radius:(float)r;
@@ -632,9 +630,7 @@ void normalize(GLfloat *v)
 			indexHolder = baseToAddToIndices + tindices[currentCounter][internalCounter];
 			[self addIndex:&indexHolder];
 		}
-	}
-	
-//	usleep(1000);
+	}	
 }
 
 - (void)addBondToVertexBuffersWithStartPoint:(SLS3DPoint)startPoint endPoint:(SLS3DPoint)endPoint bondColor:(GLubyte *)bondColor bondType:(SLSBondType)bondType;
@@ -1177,19 +1173,13 @@ void normalize(GLfloat *v)
 	if (m_vertexArray != nil)
 	{
 		[m_vertexArray release];
-		[m_normalArray release];
 		[m_indexArray release];
-		[m_colorArray release];
 	}
 	m_vertexArray = [[NSMutableData alloc] init];
-	m_normalArray = [[NSMutableData alloc] init];
 	m_indexArray = [[NSMutableData alloc] init];
-	m_colorArray = [[NSMutableData alloc] init];
 	m_numberOfVertexBuffers++;
 	[m_vertexArrays addObject:m_vertexArray];
-	[m_normalArrays addObject:m_normalArray];
 	[m_indexArrays addObject:m_indexArray];
-	[m_colorArrays addObject:m_colorArray];
 	m_numVertices = 0;
 	m_numIndices = 0;
 }
@@ -1202,9 +1192,7 @@ void normalize(GLfloat *v)
 	[self performSelectorOnMainThread:@selector(showStatusIndicator) withObject:nil waitUntilDone:NO];
 
 	m_vertexArrays = [[NSMutableArray alloc] init];
-	m_normalArrays = [[NSMutableArray alloc] init];
 	m_indexArrays = [[NSMutableArray alloc] init];
-	m_colorArrays = [[NSMutableArray alloc] init];
 
 	m_numberOfVertexBuffers = 0;
 	[self addVertexBuffer];
@@ -1253,13 +1241,6 @@ void normalize(GLfloat *v)
 		m_vertexArray = nil;
 		[m_vertexArrays release];	
 		
-		[m_normalArray release];			
-		m_normalArray = nil;
-		[m_normalArrays release];			
-		
-		[m_colorArray release];			
-		m_colorArray = nil;
-		[m_colorArrays release];					
 	}
 	
 
@@ -1273,9 +1254,7 @@ void normalize(GLfloat *v)
 - (void)bindVertexBuffersForMolecule;
 {
 	m_vertexBufferHandle = (GLuint *) malloc(sizeof(GLuint) * m_numberOfVertexBuffers);
-	m_normalBufferHandle = (GLuint *) malloc(sizeof(GLuint) * m_numberOfVertexBuffers);
 	m_indexBufferHandle = (GLuint *) malloc(sizeof(GLuint) * m_numberOfVertexBuffers);
-	m_colorBufferHandle = (GLuint *) malloc(sizeof(GLuint) * m_numberOfVertexBuffers);
 	m_numberOfIndicesForBuffers = (unsigned int *) malloc(sizeof(unsigned int) * m_numberOfVertexBuffers);
 
 	unsigned int bufferIndex;
@@ -1289,7 +1268,7 @@ void normalize(GLfloat *v)
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, [currentIndexBuffer length], indexBuffer, GL_STATIC_DRAW);     
 		m_numberOfIndicesForBuffers[bufferIndex] = ([currentIndexBuffer length] / sizeof(GLushort));
 		
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Is this necessary?
+//		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Is this necessary?
 	}	
 	// Now that the data is in the OpenGL buffer, can release the NSData
     [m_indexArray release];	
@@ -1304,64 +1283,34 @@ void normalize(GLfloat *v)
 		NSData *currentVertexBuffer = [m_vertexArrays objectAtIndex:bufferIndex];
 		GLfloat *vertexBuffer = (GLfloat *)[currentVertexBuffer bytes];
 		glBufferData(GL_ARRAY_BUFFER, [currentVertexBuffer length], vertexBuffer, GL_STATIC_DRAW); 
-		glBindBuffer(GL_ARRAY_BUFFER, 0); 
+//		glBindBuffer(GL_ARRAY_BUFFER, 0); 
 	}
 	[m_vertexArray release];
 	m_vertexArray = nil;
 	[m_vertexArrays release];	
-	
-	for (bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
-	{	
-		glGenBuffers(1, &m_normalBufferHandle[bufferIndex]); 
-		glBindBuffer(GL_ARRAY_BUFFER, m_normalBufferHandle[bufferIndex]); 
-
-		NSData *currentNormalBuffer = [m_normalArrays objectAtIndex:bufferIndex];
-		GLfloat *normalBuffer = (GLfloat *)[currentNormalBuffer bytes];
-		glBufferData(GL_ARRAY_BUFFER, [currentNormalBuffer length], normalBuffer, GL_STATIC_DRAW); 
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}	
-    [m_normalArray release];			
-	m_normalArray = nil;
-    [m_normalArrays release];			
-
-	for (bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
-	{	
-		glGenBuffers(1, &m_colorBufferHandle[bufferIndex]); 
-		glBindBuffer(GL_ARRAY_BUFFER, m_colorBufferHandle[bufferIndex]); 
-		
-		NSData *currentColorBuffer = [m_colorArrays objectAtIndex:bufferIndex];
-		GLubyte *colorBuffer = (GLubyte *)[currentColorBuffer bytes];
-		glBufferData(GL_ARRAY_BUFFER, [currentColorBuffer length], colorBuffer, GL_STATIC_DRAW); 
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}	
-    [m_colorArray release];			
-	m_colorArray = nil;
-    [m_colorArrays release];			
-	
 }
 
 - (void)drawMolecule;
 {
-	glEnableClientState (GL_VERTEX_ARRAY);
-	glEnableClientState (GL_NORMAL_ARRAY);
-	glEnableClientState (GL_COLOR_ARRAY);
+//	glEnableClientState (GL_VERTEX_ARRAY);
+//	glEnableClientState (GL_NORMAL_ARRAY);
+//	glEnableClientState (GL_COLOR_ARRAY);
 	
 	unsigned int bufferIndex;
 	for (bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
 	{
 		// Bind the buffers
 		glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferHandle[bufferIndex]); 
-		glVertexPointer(3, GL_FLOAT, 0, NULL); 
-		
-		glBindBuffer(GL_ARRAY_BUFFER, m_normalBufferHandle[bufferIndex]); 
-		glNormalPointer(GL_FLOAT, 0, NULL); 
-		
-		glBindBuffer(GL_ARRAY_BUFFER, m_colorBufferHandle[bufferIndex]); 
-		glColorPointer(4, GL_UNSIGNED_BYTE, 0, NULL);
+		glVertexPointer(3, GL_FLOAT, 28, (char *)NULL + 0); 		
+		glNormalPointer(GL_FLOAT, 28, (char *)NULL + 12); 
+//		glNormalPointer(GL_FLOAT, 28, (char *)NULL + 0); 		
+		glColorPointer(4, GL_UNSIGNED_BYTE, 28, (char *)NULL + 24);
 		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBufferHandle[bufferIndex]);    
 
 		// Do the actual drawing to the screen
+//		glDrawElements(GL_TRIANGLE_STRIP,m_numberOfIndicesForBuffers[bufferIndex],GL_UNSIGNED_SHORT, NULL);
+//		glDrawElements(GL_TRIANGLES,m_numberOfIndicesForBuffers[bufferIndex] / 3,GL_UNSIGNED_SHORT, NULL);
 		glDrawElements(GL_TRIANGLES,m_numberOfIndicesForBuffers[bufferIndex],GL_UNSIGNED_SHORT, NULL);
 		
 		// Unbind the buffers
@@ -1370,9 +1319,9 @@ void normalize(GLfloat *v)
 	}
 	
 
-	glDisableClientState (GL_COLOR_ARRAY);	
-	glDisableClientState (GL_VERTEX_ARRAY);
-	glDisableClientState (GL_NORMAL_ARRAY);	
+//	glDisableClientState (GL_COLOR_ARRAY);	
+//	glDisableClientState (GL_VERTEX_ARRAY);
+//	glDisableClientState (GL_NORMAL_ARRAY);	
 }
 
 - (void)freeVertexBuffers;
@@ -1384,19 +1333,13 @@ void normalize(GLfloat *v)
 	{
 		glDeleteBuffers(1, &m_indexBufferHandle[bufferIndex]);
 		glDeleteBuffers(1, &m_vertexBufferHandle[bufferIndex]);
-		glDeleteBuffers(1, &m_normalBufferHandle[bufferIndex]);
-		glDeleteBuffers(1, &m_colorBufferHandle[bufferIndex]);
 	}
 
 	
 	if (m_vertexBufferHandle != NULL)
 		free(m_vertexBufferHandle);
-	if (m_normalBufferHandle != NULL)
-		free(m_normalBufferHandle);
 	if (m_indexBufferHandle != NULL)
 		free(m_indexBufferHandle);
-	if (m_colorBufferHandle != NULL)
-		free(m_colorBufferHandle);
 	if (m_numberOfIndicesForBuffers != NULL)
 		free(m_numberOfIndicesForBuffers);
 	

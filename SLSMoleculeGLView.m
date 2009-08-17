@@ -213,7 +213,7 @@
 		[moleculeToDisplay drawMolecule];
 	
 	// Draw buffered scene (?)
-	glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
+//	glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
 	[context presentRenderbuffer:GL_RENDERBUFFER_OES];
 }
 
@@ -236,10 +236,25 @@
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition); 		
 	
+#ifdef USE_DEPTH_BUFFER
 	glEnable(GL_DEPTH_TEST);
+#else
+	glDisable(GL_DEPTH_TEST);
+#endif
 	
 	glShadeModel(GL_SMOOTH);
-	glEnable(GL_NORMALIZE);			
+	glDisable(GL_NORMALIZE);		
+	glEnable(GL_RESCALE_NORMAL);		
+
+	glEnableClientState (GL_VERTEX_ARRAY);
+	glEnableClientState (GL_NORMAL_ARRAY);
+	glEnableClientState (GL_COLOR_ARRAY);
+	
+	glDisable(GL_ALPHA_TEST);
+//	glEnable(GL_CULL_FACE);
+//	glEnable(GL_FOG);
+//	glEnable(GL_LINE_SMOOTH);
+
 }
 
 - (void)handleFinishOfMoleculeRendering:(NSNotification *)note;
@@ -261,6 +276,7 @@
 	// ElapsedTime contains seconds (or fractions thereof as decimals)
 	NSLog(NSLocalizedStringFromTable(@"Elapsed time: %f", @"Localized", nil), elapsedTime);
 	NSLog(@"Triangles per second: %f", (CGFloat)moleculeToDisplay.totalNumberOfTriangles * (CGFloat)NUMBER_OF_FRAMES_FOR_TESTING / elapsedTime);
+	NSLog(@"Layer frame: %@", NSStringFromCGRect(self.layer.frame));
 #endif
 	
 }
@@ -354,13 +370,13 @@
 	glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_WIDTH_OES, &backingWidth);
 	glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_HEIGHT_OES, &backingHeight);
 	
-	if (USE_DEPTH_BUFFER) {
+#ifdef USE_DEPTH_BUFFER
 		glGenRenderbuffersOES(1, &depthRenderbuffer);
 		glBindRenderbufferOES(GL_RENDERBUFFER_OES, depthRenderbuffer);
 		glRenderbufferStorageOES(GL_RENDERBUFFER_OES, GL_DEPTH_COMPONENT16_OES, backingWidth, backingHeight);
 		glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_DEPTH_ATTACHMENT_OES, GL_RENDERBUFFER_OES, depthRenderbuffer);
-	}
-
+#endif
+	
 	if(glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES) != GL_FRAMEBUFFER_COMPLETE_OES) 
 	{
 		return NO;
@@ -514,13 +530,6 @@
 			[actionSheet showInView:self];
 			[actionSheet release];
 		}		
-	}
-	else if ([[touches anyObject] tapCount] >= 1)
-	{
-		// Check for touches near the information button, because hits aren't being registered properly
-		CGPoint currentTouchPosition = [[touches anyObject] locationInView:self];
-		if ( (currentTouchPosition.x > 268) && (currentTouchPosition.y > 410) )
-			[self.delegate toggleView];
 	}
 	
     NSMutableSet *remainingTouches = [[[event touchesForView:self] mutableCopy] autorelease];

@@ -49,10 +49,10 @@ void normalize(GLfloat *v);
 
 	// OpenGL vertex buffer objects
 	unsigned int *m_numberOfIndicesForBuffers;
-	GLuint *m_vertexBufferHandle, *m_normalBufferHandle, *m_indexBufferHandle, *m_colorBufferHandle;
-	NSMutableArray *m_vertexArrays, *m_normalArrays, *m_indexArrays, *m_colorArrays;
+	GLuint *m_vertexBufferHandle, *m_indexBufferHandle;
+	NSMutableArray *m_vertexArrays, *m_indexArrays;
 	unsigned int m_numberOfVertexBuffers;
-	NSMutableData *m_vertexArray, *m_normalArray, *m_indexArray, *m_colorArray;
+	NSMutableData *m_vertexArray, *m_indexArray;
 	unsigned int m_numVertices, m_numIndices;
 	
 	// OpenGL performance tuning statistics

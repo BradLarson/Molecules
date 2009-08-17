@@ -72,6 +72,7 @@
 
 #pragma mark -
 #pragma mark Molecule download delegate methods
+
 - (void)moleculeDownloadController:(SLSMoleculeDownloadViewController *)moleculeDownloadViewController didAddMolecule:(NSData *)moleculeData withFilename:(NSString *)filename;
 {
 	if (moleculeData != nil)
@@ -144,13 +145,11 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:@"Download"];
 		if (cell == nil) 
 		{
-			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"Download"] autorelease];
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Download"] autorelease];
 			cell.textLabel.textColor = [UIColor blackColor];
-//			cell.textColor = [UIColor blackColor];
 		}		
 		
 		cell.textLabel.text = NSLocalizedStringFromTable(@"Download new molecules", @"Localized", nil);
-//		cell.text = NSLocalizedStringFromTable(@"Download new molecules", @"Localized", nil);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		cell.textLabel.textColor = [UIColor blackColor];
 	}
@@ -159,21 +158,8 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:@"Molecules"];
 		if (cell == nil) 
 		{
-			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"Molecules"] autorelease];
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Molecules"] autorelease];
 			cell.textLabel.textColor = [UIColor blackColor];
-			cell.textLabel.font = [UIFont boldSystemFontOfSize:12.0];
-			
-			CGRect frame = CGRectMake(CGRectGetMaxX(cell.contentView.bounds) - 230.0f, 5.0f, 220.0f, 32.0f);
-			UILabel *valueLabel = [[UILabel alloc] initWithFrame:frame];
-			[valueLabel setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];
-			valueLabel.tag = 1;
-			valueLabel.textAlignment = UITextAlignmentLeft;
-			valueLabel.textColor = [UIColor blackColor];
-			valueLabel.font = [UIFont systemFontOfSize:16.0];
-			valueLabel.numberOfLines = 1;
-			valueLabel.highlightedTextColor = [UIColor whiteColor];
-			[cell.contentView addSubview:valueLabel];
-			[valueLabel release];
 		}
 		
 		if ((index - 1) == selectedIndex)
@@ -181,22 +167,15 @@
 		else
 			cell.textLabel.textColor = [UIColor blackColor];
 
-		NSString *labelForLeftOfName = [[molecules objectAtIndex:(index-1)] filenameWithoutExtension];
-		if ([labelForLeftOfName length] > 4)
-			labelForLeftOfName = [[labelForLeftOfName substringToIndex:3] stringByAppendingString:@".."];
-		cell.textLabel.text = labelForLeftOfName;
+		cell.textLabel.text = [[molecules objectAtIndex:(index-1)] compound];
+
+		NSString *fileNameWithoutExtension = [[molecules objectAtIndex:(index-1)] filenameWithoutExtension];
+		cell.detailTextLabel.text = fileNameWithoutExtension;
 		
-		UILabel *valueLabel = (UILabel *)[cell viewWithTag:1];
-//		valueLabel.text = [NSString stringWithFormat:@"%@ (%@)", [[molecules objectAtIndex:(index-1)] compound], [[molecules objectAtIndex:(index-1)] title]];
-		valueLabel.text = [[molecules objectAtIndex:(index-1)] compound];
-		valueLabel.textColor = cell.textLabel.textColor;
 		
 		cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	}
-//    NSString *imagePath = [[NSBundle mainBundle] pathForResource:[cell.text lowercaseString]
-//                                                          ofType:@"png"];
-//    UIImage *icon = [UIImage imageWithContentsOfFile:imagePath];
-//    cell.image = icon;
+
     return cell;
 }
 

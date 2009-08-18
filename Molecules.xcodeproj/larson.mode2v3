@@ -241,7 +241,7 @@
 						<key>_historyCapacity</key>
 						<integer>10</integer>
 						<key>bookmark</key>
-						<string>BC19FFA710398514001E70C2</string>
+						<string>BC19FFAF10398672001E70C2</string>
 						<key>history</key>
 						<array>
 							<string>BC19FF7B1038EE3C001E70C2</string>
@@ -282,7 +282,7 @@
 						<key>_historyCapacity</key>
 						<integer>10</integer>
 						<key>bookmark</key>
-						<string>BC19FFA810398514001E70C2</string>
+						<string>BC19FFB010398672001E70C2</string>
 						<key>history</key>
 						<array>
 							<string>BC19FF631038ECEC001E70C2</string>
@@ -323,7 +323,7 @@
 						<key>_historyCapacity</key>
 						<integer>10</integer>
 						<key>bookmark</key>
-						<string>BC19FFA910398514001E70C2</string>
+						<string>BC19FFB110398672001E70C2</string>
 						<key>history</key>
 						<array>
 							<string>BC19FE3A103777EF001E70C2</string>
@@ -438,7 +438,7 @@
 										</array>
 									</array>
 									<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-									<string>{{0, 261}, {371, 453}}</string>
+									<string>{{0, 0}, {371, 453}}</string>
 								</dict>
 								<key>PBXTopSmartGroupGIDs</key>
 								<array/>
@@ -631,7 +631,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>272205076.97893298</real>
+	<real>272205426.28594798</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>

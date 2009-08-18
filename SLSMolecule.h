@@ -48,7 +48,7 @@ void normalize(GLfloat *v);
 	BOOL stillCountingAtomsInFirstStructure;
 
 	// OpenGL vertex buffer objects
-	unsigned int *m_numberOfIndicesForBuffers;
+	unsigned int *m_numberOfIndicesForBuffers, *m_numberOfVerticesForBuffers;
 	GLuint *m_vertexBufferHandle, *m_indexBufferHandle;
 	NSMutableArray *m_vertexArrays, *m_indexArrays;
 	unsigned int m_numberOfVertexBuffers;

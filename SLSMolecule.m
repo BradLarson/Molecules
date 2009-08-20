@@ -42,18 +42,83 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 
 static GLfloat vdata[12][3] = 
 {    
-	{-X, 0.0f, Z}, {X, 0.0f, Z}, {-X, 0.0f, -Z}, {X, 0.0f, -Z},    
-	{0.0f, Z, X}, {0.0f, Z, -X}, {0.0f, -Z, X}, {0.0f, -Z, -X},    
-	{Z, X, 0.0f}, {-Z, X, 0.0f}, {Z, -X, 0.0f}, {-Z, -X, 0.0f} 
+	{-X, 0.0f, Z}, 
+	{0.0f, Z, X}, 
+	{X, 0.0f, Z}, 
+	{-Z, X, 0.0f}, 	
+	{0.0f, Z, -X}, 
+	{Z, X, 0.0f}, 
+	{Z, -X, 0.0f}, 
+	{X, 0.0f, -Z},
+	{-X, 0.0f, -Z},
+	{0.0f, -Z, -X},
+    {0.0f, -Z, X},
+	{-Z, -X, 0.0f} 
 };
 
 static GLushort tindices[20][3] = 
 { 
-	{0,4,1}, {0,9,4}, {9,5,4}, {4,5,8}, {4,8,1},    
-	{8,10,1}, {8,3,10}, {5,3,8}, {5,2,3}, {2,7,3},    
-	{7,10,3}, {7,6,10}, {7,11,6}, {11,0,6}, {0,1,6}, 
-	{6,1,10}, {9,0,11}, {9,11,2}, {9,2,5}, {7,2,11} 
+	{0,1,2},
+	{0,3,1},
+	{3,4,1},
+	{1,4,5},
+	{1,5,2},    
+	{5,6,2},
+	{5,7,6},
+	{4,7,5},
+	{4,8,7},
+	{8,9,7},    
+	{9,6,7},
+	{9,10,6},
+	{9,11,10},
+	{11,0,10},
+	{0,2,10}, 
+	{10,2,6},
+	{3,0,11},
+	{3,11,8},
+	{3,8,4},
+	{9,8,11} 
 };
+
+/*static GLfloat vdata[12][3] = 
+{    
+	{-X, 0.0f, Z}, 
+	{X, 0.0f, Z}, 
+	{-X, 0.0f, -Z}, 
+	{X, 0.0f, -Z},    
+	{0.0f, Z, X}, 
+	{0.0f, Z, -X}, 
+	{0.0f, -Z, X}, 
+	{0.0f, -Z, -X},    
+	{Z, X, 0.0f}, 
+	{-Z, X, 0.0f}, 
+	{Z, -X, 0.0f}, 
+	{-Z, -X, 0.0f} 
+};
+
+static GLushort tindices[20][3] = 
+{ 
+	{0,4,1},
+	{0,9,4},
+	{9,5,4},
+	{4,5,8},
+	{4,8,1},    
+	{8,10,1},
+	{8,3,10},
+	{5,3,8},
+	{5,2,3},
+	{2,7,3},    
+	{7,10,3},
+	{7,6,10},
+	{7,11,6},
+	{11,0,6},
+	{0,1,6}, 
+	{6,1,10},
+	{9,0,11},
+	{9,11,2},
+	{9,2,5},
+	{7,2,11} 
+};*/
 
 #pragma mark -
 #pragma mark Bond edge tables
@@ -94,7 +159,6 @@ void normalize(GLfloat *v)
 	m_numberOfVertexBuffers = 0;
 	m_vertexArray = nil;
 	m_numberOfIndicesForBuffers = NULL;
-	m_numberOfVerticesForBuffers = NULL;
 	totalNumberOfVertices = 0;
 	totalNumberOfTriangles = 0;
 	numberOfStructures = 1;
@@ -222,8 +286,11 @@ void normalize(GLfloat *v)
 	
 	scaleAdjustmentForX = 1.5 / (maximumXPosition - minimumXPosition);
 	scaleAdjustmentForY = 1.5 / (maximumYPosition - minimumYPosition);
+	scaleAdjustmentForZ = 1.5 / (maximumZPosition - minimumZPosition);
 	if (scaleAdjustmentForY < scaleAdjustmentForX)
 		scaleAdjustmentForX = scaleAdjustmentForY;
+	if (scaleAdjustmentForZ < scaleAdjustmentForX)
+		scaleAdjustmentForX = scaleAdjustmentForZ;
 		
 	return self;
 }
@@ -251,7 +318,20 @@ void normalize(GLfloat *v)
 {
 	// All buffers are deallocated after they are bound to their OpenGL counterparts,
 	// but we still need to delete the OpenGL buffers themselves when done
+	if (m_numberOfIndicesForBuffers != NULL)
+	{
+		free(m_numberOfIndicesForBuffers);
+//		m_numberOfVertexBuffers = NULL;
+	}
 
+	if (m_vertexBufferHandle != NULL)
+		[self freeVertexBuffers];
+	[m_vertexArrays release];
+	[m_indexArrays release];
+	[m_vertexArray release];
+	[m_indexArray release];
+	
+	
 	[title release];
 	[filename release];
 	[filenameWithoutExtension release];
@@ -449,12 +529,33 @@ void normalize(GLfloat *v)
 
 - (void)addNormal:(GLfloat *)newNormal;
 {
-	[m_vertexArray appendBytes:newNormal length:(sizeof(GLfloat) * 3)];	
+	GLshort shortNormals[4];
+	shortNormals[0] = (GLshort)round(newNormal[0] * 32767.0f);
+	
+	shortNormals[1] = (GLshort)round(newNormal[1] * 32767.0f);
+	shortNormals[2] = (GLshort)round(newNormal[2] * 32767.0f);
+	shortNormals[3] = 0;
+	
+	[m_vertexArray appendBytes:shortNormals length:(sizeof(GLshort) * 4)];	
+//	[m_vertexArray appendBytes:newNormal length:(sizeof(GLfloat) * 3)];	
 }
 
 - (void)addVertex:(GLfloat *)newVertex;
 {
-	[m_vertexArray appendBytes:newVertex length:(sizeof(GLfloat) * 3)];
+	GLshort shortVertex[4];
+	shortVertex[0] = (GLshort)round(newVertex[0] * 32767.0f);
+	shortVertex[1] = (GLshort)round(newVertex[1] * 32767.0f);
+	shortVertex[2] = (GLshort)round(newVertex[2] * 32767.0f);
+	shortVertex[3] = 0;
+	
+	if ( ((newVertex[0] < -1.0f) || (newVertex[0] > 1.0f)) || ((newVertex[1] < -1.0f) || (newVertex[1] > 1.0f)) || ((newVertex[2] < -1.0f) || (newVertex[2] > 1.0f)) )
+	{
+		NSLog(@"Vertex outside range: %f, %f, %f", newVertex[0], newVertex[1], newVertex[2]);
+	}
+	
+	[m_vertexArray appendBytes:shortVertex length:(sizeof(GLshort) * 4)];	
+
+//	[m_vertexArray appendBytes:newVertex length:(sizeof(GLfloat) * 3)];
 	m_numVertices++;
 	totalNumberOfVertices++;
 }
@@ -468,40 +569,6 @@ void normalize(GLfloat *v)
 - (void)addColor:(GLubyte *)newColor;
 {
 	[m_vertexArray appendBytes:newColor length:(sizeof(GLubyte) * 4)];
-}
-
-- (void)addIcosahedronFaceWithVertex1:(GLfloat *)a vertex2:(GLfloat *)b vertex3:(GLfloat *)c divisions:(int)div radius:(float)r;
-{
-    if (div<=0) 
-	{
-//        glNormal3fv(a); 
-//		glVertex3f(a[0]*r, a[1]*r, a[2]*r);
-//        glNormal3fv(b); 
-//		glVertex3f(b[0]*r, b[1]*r, b[2]*r);
-//        glNormal3fv(c); 
-//		glVertex3f(c[0]*r, c[1]*r, c[2]*r);
-    } 
-	else 
-	{
-        GLfloat ab[3], ac[3], bc[3];
-        for (int i=0;i<3;i++) 
-		{
-            ab[i]=(a[i]+b[i])/2;
-            ac[i]=(a[i]+c[i])/2;
-            bc[i]=(b[i]+c[i])/2;
-        }
-        normalize(ab); 
-		normalize(ac); 
-		normalize(bc);
-		[self addIcosahedronFaceWithVertex1:a vertex2:ab vertex3:ac divisions:(div-1) radius:r];
-		[self addIcosahedronFaceWithVertex1:b vertex2:bc vertex3:ab divisions:(div-1) radius:r];
-		[self addIcosahedronFaceWithVertex1:c vertex2:ac vertex3:bc divisions:(div-1) radius:r];
-		[self addIcosahedronFaceWithVertex1:ab vertex2:bc vertex3:ac divisions:(div-1) radius:r];
-//        drawtri(a, ab, ac, div-1, r);
-//        drawtri(b, bc, ab, div-1, r);
-//        drawtri(c, ac, bc, div-1, r);
-//        drawtri(ab, bc, ac, div-1, r);
-    }  
 }
 
 - (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint;
@@ -1258,91 +1325,68 @@ void normalize(GLfloat *v)
 	m_vertexBufferHandle = (GLuint *) malloc(sizeof(GLuint) * m_numberOfVertexBuffers);
 	m_indexBufferHandle = (GLuint *) malloc(sizeof(GLuint) * m_numberOfVertexBuffers);
 	if (m_numberOfIndicesForBuffers != NULL)
+	{
 		free(m_numberOfIndicesForBuffers);
-
-	if (m_numberOfVerticesForBuffers != NULL)
-		free(m_numberOfVerticesForBuffers);
+//		m_numberOfVertexBuffers = null;
+	}
 	
 	m_numberOfIndicesForBuffers = (unsigned int *) malloc(sizeof(unsigned int) * m_numberOfVertexBuffers);
-	m_numberOfVerticesForBuffers = (unsigned int *) malloc(sizeof(unsigned int) * m_numberOfVertexBuffers);
 	
 	unsigned int bufferIndex;
 	for (bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
 	{
-/*		glGenBuffers(1, &m_indexBufferHandle[bufferIndex]); 
+		glGenBuffers(1, &m_indexBufferHandle[bufferIndex]); 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBufferHandle[bufferIndex]);   
 
 		NSData *currentIndexBuffer = [m_indexArrays objectAtIndex:bufferIndex];
 		GLushort *indexBuffer = (GLushort *)[currentIndexBuffer bytes];
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, [currentIndexBuffer length], indexBuffer, GL_STATIC_DRAW);     */
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, [currentIndexBuffer length], indexBuffer, GL_STATIC_DRAW);     
 
-		NSData *currentIndexBuffer = [m_indexArrays objectAtIndex:bufferIndex];
 		m_numberOfIndicesForBuffers[bufferIndex] = ([currentIndexBuffer length] / sizeof(GLushort));		
 	}	
 	// Now that the data is in the OpenGL buffer, can release the NSData
 
-//    [m_indexArray release];	
-//	m_indexArray = nil;
-//	[m_indexArrays release];
+    [m_indexArray release];	
+	m_indexArray = nil;
+	[m_indexArrays release];
+	m_indexArrays = nil;
 	
 	for (bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
 	{	
-/*		glGenBuffers(1, &m_vertexBufferHandle[bufferIndex]); 
+		glGenBuffers(1, &m_vertexBufferHandle[bufferIndex]); 
 		glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferHandle[bufferIndex]); 
 
 		NSData *currentVertexBuffer = [m_vertexArrays objectAtIndex:bufferIndex];
-		GLfloat *vertexBuffer = (GLfloat *)[currentVertexBuffer bytes];
-		glBufferData(GL_ARRAY_BUFFER, [currentVertexBuffer length], vertexBuffer, GL_STATIC_DRAW); */
+		glBufferData(GL_ARRAY_BUFFER, [currentVertexBuffer length], (void *)[currentVertexBuffer bytes], GL_STATIC_DRAW); 
 
-		NSData *currentVertexBuffer = [m_vertexArrays objectAtIndex:bufferIndex];
-		m_numberOfVerticesForBuffers[bufferIndex] = ([currentVertexBuffer length] / (3 * sizeof(GLfloat)));
-		
 //		glBindBuffer(GL_ARRAY_BUFFER, 0); 
 	}
-//	[m_vertexArray release];
-//	m_vertexArray = nil;
-//	[m_vertexArrays release];	
+	[m_vertexArray release];
+	m_vertexArray = nil;
+	[m_vertexArrays release];	
+	m_vertexArrays = nil;
 }
 
 - (void)drawMolecule;
 {
-//	glEnableClientState (GL_VERTEX_ARRAY);
-//	glEnableClientState (GL_NORMAL_ARRAY);
-//	glEnableClientState (GL_COLOR_ARRAY);
-	
 	unsigned int bufferIndex;
 	for (bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
 	{
 		// Bind the buffers
-//		glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferHandle[bufferIndex]); 
-//		glVertexPointer(3, GL_FLOAT, 28, (char *)NULL + 0); 		
-//		glNormalPointer(GL_FLOAT, 28, (char *)NULL + 12); 
-//		glNormalPointer(GL_FLOAT, 28, (char *)NULL + 0); 		
-//		glColorPointer(4, GL_UNSIGNED_BYTE, 28, (char *)NULL + 24);
+		glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferHandle[bufferIndex]); 
+		glVertexPointer(3, GL_SHORT, 20, (char *)NULL + 0); 		
+		glNormalPointer(GL_SHORT, 20, (char *)NULL + 8); 
+		glColorPointer(4, GL_UNSIGNED_BYTE, 20, (char *)NULL + 16);
 		
-//		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBufferHandle[bufferIndex]);    
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBufferHandle[bufferIndex]);    
 
 		// Do the actual drawing to the screen
-//		glDrawElements(GL_TRIANGLE_STRIP,m_numberOfIndicesForBuffers[bufferIndex],GL_UNSIGNED_SHORT, NULL);
-//		glDrawElements(GL_TRIANGLES,m_numberOfIndicesForBuffers[bufferIndex] / 3,GL_UNSIGNED_SHORT, NULL);
-		
-		NSData *currentIndexBuffer = [m_indexArrays objectAtIndex:bufferIndex];
-		NSData *currentVertexBuffer = [m_vertexArrays objectAtIndex:bufferIndex];
-//m_numberOfVerticesForBuffers[bufferIndex]
-		glVertexPointer(3, GL_FLOAT, 28, (char *)[currentVertexBuffer bytes] + 0);
-		glNormalPointer(GL_FLOAT, 28, (char *)[currentVertexBuffer bytes] + 12);
-		glColorPointer(4, GL_UNSIGNED_BYTE, 28, (char *)[currentVertexBuffer bytes] + 24);
-		glDrawElements(GL_TRIANGLES, m_numberOfIndicesForBuffers[bufferIndex], GL_UNSIGNED_SHORT, [currentIndexBuffer bytes]);
+		glDrawElements(GL_TRIANGLES,m_numberOfIndicesForBuffers[bufferIndex],GL_UNSIGNED_SHORT, NULL);
 		
 		// Unbind the buffers
-//		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
-//		glBindBuffer(GL_ARRAY_BUFFER, 0); 
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
+		glBindBuffer(GL_ARRAY_BUFFER, 0); 
 	}
-	
-
-//	glDisableClientState (GL_COLOR_ARRAY);	
-//	glDisableClientState (GL_VERTEX_ARRAY);
-//	glDisableClientState (GL_NORMAL_ARRAY);	
 }
 
 - (void)freeVertexBuffers;
@@ -1358,11 +1402,20 @@ void normalize(GLfloat *v)
 
 	
 	if (m_vertexBufferHandle != NULL)
+	{
 		free(m_vertexBufferHandle);
+		m_vertexBufferHandle = NULL;
+	}
 	if (m_indexBufferHandle != NULL)
+	{
 		free(m_indexBufferHandle);
+		m_indexBufferHandle = NULL;
+	}
 	if (m_numberOfIndicesForBuffers != NULL)
+	{
 		free(m_numberOfIndicesForBuffers);
+		m_numberOfIndicesForBuffers = NULL;
+	}
 	
 	totalNumberOfTriangles = 0;
 	totalNumberOfVertices = 0;
@@ -1405,4 +1458,5 @@ void normalize(GLfloat *v)
 	// Start with a new render for the current visualization type
 	self.isBeingDisplayed = YES;
 }
+
 @end

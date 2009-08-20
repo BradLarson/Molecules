@@ -48,7 +48,7 @@ void normalize(GLfloat *v);
 	BOOL stillCountingAtomsInFirstStructure;
 
 	// OpenGL vertex buffer objects
-	unsigned int *m_numberOfIndicesForBuffers, *m_numberOfVerticesForBuffers;
+	unsigned int *m_numberOfIndicesForBuffers;
 	GLuint *m_vertexBufferHandle, *m_indexBufferHandle;
 	NSMutableArray *m_vertexArrays, *m_indexArrays;
 	unsigned int m_numberOfVertexBuffers;
@@ -65,7 +65,7 @@ void normalize(GLfloat *v);
 	// Molecule properties for scaling and translation
 	float centerOfMassInX, centerOfMassInY, centerOfMassInZ;
 	float minimumXPosition, maximumXPosition, minimumYPosition, maximumYPosition, minimumZPosition, maximumZPosition;
-	float scaleAdjustmentForX, scaleAdjustmentForY;
+	float scaleAdjustmentForX, scaleAdjustmentForY, scaleAdjustmentForZ;
 	
 	// Database values
 	sqlite3 *database;
@@ -95,7 +95,6 @@ void normalize(GLfloat *v);
 - (void)addVertex:(GLfloat *)newVertex;
 - (void)addIndex:(GLushort *)newIndex;
 - (void)addColor:(GLubyte *)newColor;
-- (void)addIcosahedronFaceWithVertex1:(GLfloat *)a vertex2:(GLfloat *)b vertex3:(GLfloat *)c divisions:(int)div radius:(float)r;
 - (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint;
 - (void)addBondToVertexBuffersWithStartPoint:(SLS3DPoint)startPoint endPoint:(SLS3DPoint)endPoint bondColor:(GLubyte *)bondColor bondType:(SLSBondType)bondType;
 

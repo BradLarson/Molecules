@@ -656,8 +656,11 @@ static NSDictionary *pdbResidueLookupTable;
 		centerOfMassInZ = tallyForCenterOfMassInZ / (float)numberOfAtoms;
 		scaleAdjustmentForX = 1.5 / (maximumXPosition - minimumXPosition);
 		scaleAdjustmentForY = 1.5 / (maximumYPosition - minimumYPosition);
+		scaleAdjustmentForZ = 1.5 / (maximumZPosition - minimumZPosition);
 		if (scaleAdjustmentForY < scaleAdjustmentForX)
 			scaleAdjustmentForX = scaleAdjustmentForY;
+		if (scaleAdjustmentForZ < scaleAdjustmentForX)
+			scaleAdjustmentForX = scaleAdjustmentForZ;
 	}
 	
 	// Convert the strings to title case and strip off the ;s at the end of lines

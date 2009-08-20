@@ -27,9 +27,7 @@ Note that setting the view non-opaque will only work if the EAGL surface has an 
 @public
 	SLSMolecule *moleculeToDisplay;
 	SLSMoleculeRootViewController *delegate;
-	
-	UIButton *infoButton;
-	
+		
 @private
 	/* The pixel dimensions of the backbuffer */
 	GLint backingWidth;
@@ -62,6 +60,7 @@ Note that setting the view non-opaque will only work if the EAGL surface has an 
 - (void)drawViewByRotatingAroundX:(float)xRotation rotatingAroundY:(float)yRotation scaling:(float)scaleFactor translationInX:(float)xTranslation translationInY:(float)yTranslation;
 - (void)configureLighting;
 - (void)handleFinishOfMoleculeRendering:(NSNotification *)note;
+- (void)runOpenGLBenchmarks;
 - (void)convertMatrix:(GLfloat *)matrix to3DTransform:(CATransform3D *)transform3D;
 - (void)convert3DTransform:(CATransform3D *)transform3D toMatrix:(GLfloat *)matrix;
 - (void)print3DTransform:(CATransform3D *)transform3D;

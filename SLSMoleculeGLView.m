@@ -34,29 +34,28 @@
 
 @synthesize context;
 
-// You must implement this
+// Override the class method to return the OpenGL layer, as opposed to the normal CALayer
 + (Class) layerClass 
 {
 	return [CAEAGLLayer class];
 }
 
-
 #pragma mark -
 #pragma mark Initialization and breakdown
 
-//The GL view is stored in the nib file. When it's unarchived it's sent -initWithCoder:
-- (id)initWithCoder:(NSCoder*)coder 
+- (id)initWithFrame:(CGRect)aRect
 {
-	if ((self = [super initWithCoder:coder])) 
+	if ((self = [super initWithFrame:aRect])) 
 	{
 		self.multipleTouchEnabled = YES;
+		self.opaque = YES;
 		
 		// Do OpenGL Core Animation layer setup
 		CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
 		
 		eaglLayer.opaque = YES;
 		eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-		   [NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];
+										[NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];
 		
 		context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
 		
@@ -66,6 +65,7 @@
 			return nil;
 		}
 		
+		// Initialize values for the touch interaction
 		previousScale = 1.0f;
 		instantObjectScale = 1.0f;
 		instantXRotation = 1.0f;
@@ -76,22 +76,18 @@
 		twoFingersAreMoving = NO;
 		pinchGestureUnderway = NO;
 		
+		// Set up the initial model view matrix for the rendering
 		[self clearScreen];
 		isFirstDrawingOfMolecule = YES;
 		
 		GLfloat currentModelViewMatrix[16]  = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
-
-//		GLfloat currentModelViewMatrix[16]  = {1.0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 1.0};
-
+		
+		//		GLfloat currentModelViewMatrix[16]  = {1.0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 1.0};
+		
 		[self convertMatrix:currentModelViewMatrix to3DTransform:&currentCalculatedMatrix];
-
-		infoButton = [[UIButton buttonWithType:UIButtonTypeInfoLight] retain];
-		infoButton.frame = CGRectMake(320 - 70, 460 - 70, 70, 70);
-		[infoButton addTarget:self action:@selector(switchToTableView) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-		[self addSubview:infoButton];
-
+		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleFinishOfMoleculeRendering:) name:@"MoleculeRenderingEnded" object:nil];
-
+		
 	}
 	return self;
 }
@@ -113,8 +109,6 @@
 	
 	[context release];	
 
-	[infoButton release];
-	
 	[super dealloc];
 }
 
@@ -138,6 +132,10 @@
 {
 	if (moleculeToDisplay.isDoneRendering == NO)
 		return;
+	
+	GLfloat currentModelViewMatrix[16]  = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
+	[self convertMatrix:currentModelViewMatrix to3DTransform:&currentCalculatedMatrix];
+		
 	[self drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
 }
 
@@ -148,11 +146,14 @@
 	glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
 	glViewport(0, 0, backingWidth, backingHeight);
 	glScissor(0, 0, backingWidth, backingHeight);
-	
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-//	glOrthof(-1.0f, 1.0f, -1.5f, 1.5f, -10.0f, 4.0f);
-	glOrthof(-32768.0f, 32768.0f, -1.5f * 32768.0f, 1.5f * 32768.0f, -10.0f * 32768.0f, 4.0f * 32768.0f);
+
+	if (isFirstDrawingOfMolecule)
+	{
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		//	glOrthof(-1.0f, 1.0f, -1.5f, 1.5f, -10.0f, 4.0f);
+		glOrthof(-32768.0f, 32768.0f, -1.5f * 32768.0f, 1.5f * 32768.0f, -10.0f * 32768.0f, 4.0f * 32768.0f);
+	}
 	
 //	GLfloat currentModelViewMatrix[16]  = {1.0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 1.0};
 	GLfloat currentModelViewMatrix[16]  = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
@@ -214,7 +215,6 @@
 		[moleculeToDisplay drawMolecule];
 	
 	// Draw buffered scene (?)
-//	glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
 	[context presentRenderbuffer:GL_RENDERBUFFER_OES];
 }
 
@@ -239,6 +239,7 @@
 	
 #ifdef USE_DEPTH_BUFFER
 	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
 #else
 	glDisable(GL_DEPTH_TEST);
 #endif
@@ -254,21 +255,30 @@
 	glDisable(GL_ALPHA_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);
-//	glEnable(GL_FOG);
+
+	//	glEnable(GL_FOG);
 //	glEnable(GL_LINE_SMOOTH);
+
 
 }
 
 - (void)handleFinishOfMoleculeRendering:(NSNotification *)note;
 {
 	[self drawView];
+	
 #ifdef RUN_OPENGL_BENCHMARKS
+	[self performSelector:@selector(runOpenGLBenchmarks) withObject:nil afterDelay:0.5];
+#endif	
+}
+
+- (void)runOpenGLBenchmarks;
+{
 	NSLog(NSLocalizedStringFromTable(@"Triangles: %d", @"Localized", nil), moleculeToDisplay.totalNumberOfTriangles);
 	NSLog(NSLocalizedStringFromTable(@"Vertices: %d", @"Localized", nil), moleculeToDisplay.totalNumberOfVertices);
 	CFAbsoluteTime elapsedTime, startTime = CFAbsoluteTimeGetCurrent();
 	unsigned int testCounter;
 #define NUMBER_OF_FRAMES_FOR_TESTING 100
-
+	
 	for (testCounter = 0; testCounter < NUMBER_OF_FRAMES_FOR_TESTING; testCounter++)
 	{
 		// Do something		
@@ -279,8 +289,6 @@
 	NSLog(NSLocalizedStringFromTable(@"Elapsed time: %f", @"Localized", nil), elapsedTime);
 	NSLog(@"Triangles per second: %f", (CGFloat)moleculeToDisplay.totalNumberOfTriangles * (CGFloat)NUMBER_OF_FRAMES_FOR_TESTING / elapsedTime);
 	NSLog(@"Layer frame: %@", NSStringFromCGRect(self.layer.frame));
-#endif
-	
 }
 
 - (void)convertMatrix:(GLfloat *)matrix to3DTransform:(CATransform3D *)transform3D;
@@ -384,6 +392,8 @@
 		return NO;
 	}
 	
+	glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
+
 	return YES;
 }
 
@@ -484,11 +494,6 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event 
 {
-//	if ([[touches anyObject] tapCount] >= 2) 
-//	{
-//		// Double-touch toggles the views
-//		[self.delegate toggleView];
-//	}
 	if ([[touches anyObject] tapCount] >= 2)
 	{
 		NSString *buttonTitle1;

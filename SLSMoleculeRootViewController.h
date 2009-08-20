@@ -19,15 +19,11 @@
 @interface SLSMoleculeRootViewController : UIViewController <MoleculeCustomDownloadDelegate>
 {
 	SLSMoleculeGLViewController *glViewController;
-	IBOutlet UINavigationController *tableNavigationController;
-	IBOutlet UIToolbar *moleculeDownloadToolbar;
+	UINavigationController *tableNavigationController;
 	SLSMoleculeTableViewController *tableViewController;
 	SLSMolecule *bufferedMolecule, *previousMolecule;
 	NSMutableArray *molecules;
 	
-	IBOutlet UIActivityIndicatorView *scanningActivityIndicator;
-	IBOutlet UIProgressView *renderingProgressIndicator;
-	IBOutlet UILabel *renderingActivityLabel;
 	BOOL toggleViewDisabled;
 	
 	sqlite3 *database;
@@ -37,13 +33,7 @@
 @property (nonatomic, assign) sqlite3 *database;
 @property (nonatomic, retain) NSMutableArray *molecules;
 
-// Interface updates
-- (void)showScanningIndicator:(NSNotification *)note;
-- (void)updateScanningIndicator:(NSNotification *)note;
-- (void)hideScanningIndicator:(NSNotification *)note;
-- (void)showRenderingIndicator:(NSNotification *)note;
-- (void)updateRenderingIndicator:(NSNotification *)note;
-- (void)hideRenderingIndicator:(NSNotification *)note;
+// Manage the switching of views
 - (void)toggleView;
 
 // Passthroughs for managing molecules

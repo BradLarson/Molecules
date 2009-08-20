@@ -14,8 +14,19 @@
 
 @interface SLSMoleculeGLViewController : UIViewController 
 {
+	UIActivityIndicatorView *scanningActivityIndicator;
+	UIProgressView *renderingProgressIndicator;
+	UILabel *renderingActivityLabel;	
 }
 
 - (void)selectedMoleculeDidChange:(SLSMolecule *)newMolecule;
+
+// Interface updates
+- (void)showScanningIndicator:(NSNotification *)note;
+- (void)updateScanningIndicator:(NSNotification *)note;
+- (void)hideScanningIndicator:(NSNotification *)note;
+- (void)showRenderingIndicator:(NSNotification *)note;
+- (void)updateRenderingIndicator:(NSNotification *)note;
+- (void)hideRenderingIndicator:(NSNotification *)note;
 
 @end

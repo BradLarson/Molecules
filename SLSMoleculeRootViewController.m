@@ -20,6 +20,14 @@
 #pragma mark -
 #pragma mark Initialiation and breakdown
 
+- (id)init; 
+{
+    if (self = [super init]) 
+	{
+    }
+    return self;
+}
+
 - (void)dealloc 
 {
 	[tableViewController release];
@@ -30,29 +38,15 @@
 
 - (void)viewDidLoad 
 {
-	// Set up an observer that catches the molecule update notifications and shows and updates the rendering indicator
-	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-	[nc addObserver:self selector:@selector(showRenderingIndicator:) name:@"MoleculeRenderingStarted" object:nil];
-	[nc addObserver:self selector:@selector(updateRenderingIndicator:) name:@"MoleculeRenderingUpdate" object:nil];
-	[nc addObserver:self selector:@selector(hideRenderingIndicator:) name:@"MoleculeRenderingEnded" object:nil];
-
-	[nc addObserver:self selector:@selector(showScanningIndicator:) name:@"FileLoadingStarted" object:nil];
-	[nc addObserver:self selector:@selector(updateScanningIndicator:) name:@"FileLoadingUpdate" object:nil];
-	[nc addObserver:self selector:@selector(hideScanningIndicator:) name:@"FileLoadingEnded" object:nil];
-	
-	
 	toggleViewDisabled = NO;
 
-	SLSMoleculeGLViewController *viewController = [[SLSMoleculeGLViewController alloc] initWithNibName:@"SLSMoleculeGLView" bundle:nil];
+	SLSMoleculeGLViewController *viewController = [[SLSMoleculeGLViewController alloc] initWithNibName:nil bundle:nil];
 	self.glViewController = viewController;
 	[viewController release];
 	
 	[self.view addSubview:glViewController.view];
 	[(SLSMoleculeGLView *)glViewController.view setDelegate:self];
-
-	[renderingProgressIndicator setProgress:0.0f];
 }
-
 
 - (void)loadTableViewController 
 {	
@@ -73,54 +67,6 @@
 	tableFrame.origin.y -= 20;
 	tableView.frame = tableFrame;
 	toggleViewDisabled = NO;
-}
-
-#pragma mark -
-#pragma mark Interface updates
-
-- (void)showScanningIndicator:(NSNotification *)note;
-{
-	renderingActivityLabel.text = [note object];
-	SLSMoleculeGLView *glView = (SLSMoleculeGLView *)glViewController.view;
-	[self.view insertSubview:scanningActivityIndicator aboveSubview:glView];
-	[self.view insertSubview:renderingActivityLabel aboveSubview:glView];
-}
-
-- (void)updateScanningIndicator:(NSNotification *)note;
-{
-	
-}
-
-- (void)hideScanningIndicator:(NSNotification *)note;
-{
-	[renderingActivityLabel removeFromSuperview];
-	[scanningActivityIndicator removeFromSuperview];	
-}
-
-- (void)showRenderingIndicator:(NSNotification *)note;
-{
-	renderingActivityLabel.text = NSLocalizedStringFromTable(@"Rendering...", @"Localized", nil);
-	SLSMoleculeGLView *glView = (SLSMoleculeGLView *)glViewController.view;
-	[glView clearScreen];
-	[renderingProgressIndicator setProgress:0.0];
-	[self.view insertSubview:renderingProgressIndicator aboveSubview:glView];
-	[self.view insertSubview:renderingActivityLabel aboveSubview:glView];
-}
-
-- (void)updateRenderingIndicator:(NSNotification *)note;
-{
-	float percentComplete = [(NSNumber *)[note object] floatValue];
-
-	if ((percentComplete - renderingProgressIndicator.progress) > 0.01f)
-	{
-		renderingProgressIndicator.progress = percentComplete;
-	}
-}
-
-- (void)hideRenderingIndicator:(NSNotification *)note;
-{
-	[renderingActivityLabel removeFromSuperview];
-	[renderingProgressIndicator removeFromSuperview];
 }
 
 - (IBAction)toggleView 

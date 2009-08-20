@@ -17,8 +17,8 @@
 
 @interface SLSMoleculeAppDelegate : NSObject <UIApplicationDelegate> 
 {
-	IBOutlet UIWindow *window;
-	IBOutlet SLSMoleculeRootViewController *rootViewController;
+	UIWindow *window;
+	SLSMoleculeRootViewController *rootViewController;
 
 	NSMutableData *downloadedFileContents;
 	NSString *nameOfDownloadedMolecule;

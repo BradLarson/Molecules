@@ -27,21 +27,29 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application 
 {	
+	//Initialize the application window
+	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	if (!window) 
+	{
+		[self release];
+		return;
+	}
+	window.backgroundColor = [UIColor blackColor];
+
+	rootViewController = [[SLSMoleculeRootViewController alloc] init];
+	
+	[window addSubview:rootViewController.view];
+    [window makeKeyAndVisible];
+	[window layoutSubviews];	
+	
+	// Start the initialization of the database, if necessary
 	isHandlingCustomURLMoleculeDownload = NO;
 	downloadedFileContents = nil;
 	initialDatabaseLoadLock = [[NSLock alloc] init];
+
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
-
-	// This lets the little network activity indicator in the top status bar show when something is being sent or received
-	
-	[self performSelectorInBackground:@selector(loadInitialMoleculesFromDisk) withObject:nil];
-	
-	[window addSubview:[rootViewController view]];
-	[window makeKeyAndVisible];
-	
-//	UIApplication* app = [UIApplication sharedApplication];
-//	[self application:app handleOpenURL:[NSURL URLWithString:@"molecules://www.sunsetlakesoftware.com/sites/default/files/xenonPump.pdb"]];
+	[self performSelectorInBackground:@selector(loadInitialMoleculesFromDisk) withObject:nil];	
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application 
@@ -52,8 +60,8 @@
 - (void)dealloc 
 {
 	[initialDatabaseLoadLock release];
-	[rootViewController release];
 	[molecules release];
+	[rootViewController release];
 	[window release];
 	[super dealloc];
 }

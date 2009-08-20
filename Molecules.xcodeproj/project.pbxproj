@@ -38,8 +38,6 @@
 		BCC286D20E1D905400978ECA /* SLSMoleculeDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286CD0E1D905400978ECA /* SLSMoleculeDownloadViewController.m */; };
 		BCC286D40E1D905400978ECA /* SLSMoleculeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */; };
 		BCC8FE800EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC8FE7F0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m */; };
-		BCDC9F7E0EB3751C00ADCFA5 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F7D0EB3751C00ADCFA5 /* MainWindow.xib */; };
-		BCDC9F810EB375AE00ADCFA5 /* SLSMoleculeGLView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F800EB375AE00ADCFA5 /* SLSMoleculeGLView.xib */; };
 		BCDC9F840EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F830EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib */; };
 		BCDC9F9D0EB37B3400ADCFA5 /* Localized.strings in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F9C0EB37B3400ADCFA5 /* Localized.strings */; };
 /* End PBXBuildFile section */
@@ -49,7 +47,6 @@
 		1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* Molecules.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Molecules.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		28AD733E0D9D9553002E5188 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainWindow.xib; sourceTree = "<group>"; };
 		28FD14FF0DC6FC520079059D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		28FD15070DC6FC5B0079059D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -87,7 +84,6 @@
 		BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeRootViewController.m; sourceTree = SOURCE_ROOT; };
 		BCC286C30E1D8FB100978ECA /* SLSMoleculeGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeGLView.h; sourceTree = SOURCE_ROOT; };
 		BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeGLView.m; sourceTree = SOURCE_ROOT; };
-		BCC286C50E1D8FB100978ECA /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SLSMoleculeGLView.xib; sourceTree = "<group>"; };
 		BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeGLViewController.h; sourceTree = SOURCE_ROOT; };
 		BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeGLViewController.m; sourceTree = SOURCE_ROOT; };
 		BCC286CB0E1D905400978ECA /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SLSMoleculeDownloadView.xib; sourceTree = "<group>"; };
@@ -98,8 +94,6 @@
 		BCC286D50E1D909600978ECA /* Molecules_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Molecules_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		BCC8FE7E0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeDataSourceViewController.h; sourceTree = "<group>"; };
 		BCC8FE7F0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeDataSourceViewController.m; sourceTree = "<group>"; };
-		BCDC9F7F0EB3753600ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = French.lproj/MainWindow.xib; sourceTree = "<group>"; };
-		BCDC9F820EB375B600ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = French.lproj/SLSMoleculeGLView.xib; sourceTree = "<group>"; };
 		BCDC9F850EB375D500ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = French.lproj/SLSMoleculeDownloadView.xib; sourceTree = "<group>"; };
 		BCDC9F870EB3760300ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = French; path = French.lproj/Info.plist; sourceTree = "<group>"; };
 		BCDC9F9A0EB37B1E00ADCFA5 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localized.strings; sourceTree = "<group>"; };
@@ -134,8 +128,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				BCC7617D0E0EF8260050DD95 /* Data Model */,
 				BCC7617C0E0EF8180050DD95 /* Application Control */,
+				BCC7617D0E0EF8260050DD95 /* Data Model */,
 				BCC7617B0E0EF7F10050DD95 /* 3D Molecule Display */,
 				BCC8FE7C0EC7E44D00853857 /* Searching and Retrieving Molecules */,
 				BCC709540E19C6580054D0EB /* Downloaded Molecules Table */,
@@ -216,7 +210,6 @@
 				BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */,
 				BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */,
 				BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */,
-				BCDC9F800EB375AE00ADCFA5 /* SLSMoleculeGLView.xib */,
 			);
 			name = "3D Molecule Display";
 			sourceTree = "<group>";
@@ -228,7 +221,6 @@
 				BCC286BE0E1D8F9300978ECA /* SLSMoleculeAppDelegate.m */,
 				BCC286BF0E1D8F9300978ECA /* SLSMoleculeRootViewController.h */,
 				BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */,
-				BCDC9F7D0EB3751C00ADCFA5 /* MainWindow.xib */,
 			);
 			name = "Application Control";
 			sourceTree = "<group>";
@@ -309,8 +301,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BCDC9F7E0EB3751C00ADCFA5 /* MainWindow.xib in Resources */,
-				BCDC9F810EB375AE00ADCFA5 /* SLSMoleculeGLView.xib in Resources */,
 				BCDC9F840EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib in Resources */,
 				BC5BB79C0E200C3B0001DFD0 /* 1BNA.pdb.gz in Resources */,
 				BC5BB7DF0E2020B10001DFD0 /* 1EVE.pdb.gz in Resources */,
@@ -354,24 +344,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		BCDC9F7D0EB3751C00ADCFA5 /* MainWindow.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				28AD733E0D9D9553002E5188 /* English */,
-				BCDC9F7F0EB3753600ADCFA5 /* French */,
-			);
-			name = MainWindow.xib;
-			sourceTree = "<group>";
-		};
-		BCDC9F800EB375AE00ADCFA5 /* SLSMoleculeGLView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				BCC286C50E1D8FB100978ECA /* English */,
-				BCDC9F820EB375B600ADCFA5 /* French */,
-			);
-			name = SLSMoleculeGLView.xib;
-			sourceTree = "<group>";
-		};
 		BCDC9F830EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -406,14 +378,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "Don't Code Sign";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos3.0]" = "Don't Code Sign";
 				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
 				INFOPLIST_FILE = English.lproj/Info.plist;
 				PRODUCT_NAME = Molecules;
-				RUN_CLANG_STATIC_ANALYZER = YES;
 			};
 			name = Debug;
 		};
@@ -421,12 +393,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos2.0]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos3.0]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
 				INFOPLIST_FILE = English.lproj/Info.plist;
 				PRODUCT_NAME = Molecules;
-				RUN_CLANG_STATIC_ANALYZER = YES;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos2.0]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos3.0]" = "";
 			};
 			name = Release;
 		};
@@ -437,7 +416,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Brad Larson";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Brad Larson";
 				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_THUMB_SUPPORT = NO;
+				GCC_THUMB_SUPPORT = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -456,14 +435,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Brad Larson";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos3.0]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
 				INFOPLIST_FILE = English.lproj/Info.plist;
 				PRODUCT_NAME = Molecules;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "08655F68-DDB9-4791-ACDD-F2F8D167B8A0";
-				RUN_CLANG_STATIC_ANALYZER = YES;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos3.0]" = "";
 			};
 			name = Distribution;
 		};
@@ -471,7 +453,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos2.0]" = "Don't Code Sign";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -493,7 +475,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Brad Larson";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos2.0]" = "iPhone Developer: Brad Larson";
 				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_THUMB_SUPPORT = NO;
+				GCC_THUMB_SUPPORT = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;

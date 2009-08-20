@@ -252,7 +252,8 @@
 	glEnableClientState (GL_COLOR_ARRAY);
 	
 	glDisable(GL_ALPHA_TEST);
-//	glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
 //	glEnable(GL_FOG);
 //	glEnable(GL_LINE_SMOOTH);
 

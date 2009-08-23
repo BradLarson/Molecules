@@ -79,7 +79,6 @@
 }
 
 - (void)didReceiveMemoryWarning {
-	[super didReceiveMemoryWarning];
 }
 
 #pragma mark -
@@ -308,6 +307,7 @@
 				case 0: text = molecule.journalTitle; break;
 				case 1: text = molecule.journalAuthor; break;
 				case 2: text = molecule.journalReference; break;
+				default: text = @""; break;
 			}
 		}; break;
         case SOURCE_SECTION:

@@ -29,6 +29,7 @@
 	IBOutlet UIActivityIndicatorView *webLoadingIndicator;
 	long long downloadFileSize;
 	BOOL downloadCancelled;
+	NSURLConnection *downloadConnection;
 	
 	id<MoleculeDownloadDelegate> delegate;
 

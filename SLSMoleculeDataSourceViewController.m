@@ -163,11 +163,10 @@
 - (void)viewDidDisappear:(BOOL)animated {
 }
 */
-/*
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+
+- (void)didReceiveMemoryWarning 
+{
 }
-*/
 
 #pragma mark -
 #pragma mark Accessors

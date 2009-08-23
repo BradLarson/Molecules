@@ -7,15 +7,15 @@
 		);
 	};
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
-		activeBuildConfigurationName = Debug;
+		activeBuildConfigurationName = Release;
 		activeExecutable = BC896C170DE11BD500B184F0 /* Molecules */;
-		activeSDKPreference = iphonesimulator3.0;
+		activeSDKPreference = iphoneos3.0;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* Molecules */;
 		addToTargets = (
 			1D6058900D05DD3D006BFB54 /* Molecules */,
 		);
 		breakpoints = (
-			BC88C6CA0ECB3E2800BC122D /* SLSMoleculeRootViewController.m:188 */,
+			BC88C6CA0ECB3E2800BC122D /* SLSMoleculeRootViewController.m:189 */,
 		);
 		codeSenseManager = BC896C200DE11BFE00B184F0 /* Code sense */;
 		executables = (
@@ -132,16 +132,102 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 272486011;
-			PBXWorkspaceStateSaveDate = 272486011;
+			PBXPerProjectTemplateStateSaveDate = 272662322;
+			PBXWorkspaceStateSaveDate = 272662322;
 		};
 		perUserProjectItems = {
-			BCDCAE58103DC7F8001B04E8 = BCDCAE58103DC7F8001B04E8 /* PBXTextBookmark */;
-			BCDCAE5C103DC7F8001B04E8 = BCDCAE5C103DC7F8001B04E8 /* PBXTextBookmark */;
-			BCFF458F103DCE7500C2D81A = BCFF458F103DCE7500C2D81A /* PBXTextBookmark */;
-			BCFF4590103DCE7500C2D81A = BCFF4590103DCE7500C2D81A /* PBXTextBookmark */;
-			BCFF459D103DCE7F00C2D81A /* PBXTextBookmark */ = BCFF459D103DCE7F00C2D81A /* PBXTextBookmark */;
-			BCFF459E103DCE7F00C2D81A /* PBXTextBookmark */ = BCFF459E103DCE7F00C2D81A /* PBXTextBookmark */;
+			BC6430D8103EE22D0039AF37 = BC6430D8103EE22D0039AF37 /* PBXBookmark */;
+			BC643105103EEA6F0039AF37 = BC643105103EEA6F0039AF37 /* PBXTextBookmark */;
+			BCF494D810407F3900BE82D5 /* PBXTextBookmark */ = BCF494D810407F3900BE82D5 /* PBXTextBookmark */;
+			BCF494DC1040802D00BE82D5 /* PBXTextBookmark */ = BCF494DC1040802D00BE82D5 /* PBXTextBookmark */;
+			BCF494E5104082A500BE82D5 /* PBXTextBookmark */ = BCF494E5104082A500BE82D5 /* PBXTextBookmark */;
+			BCF494EA104082B800BE82D5 /* PBXTextBookmark */ = BCF494EA104082B800BE82D5 /* PBXTextBookmark */;
+			BCF494EB104082C100BE82D5 /* PBXTextBookmark */ = BCF494EB104082C100BE82D5 /* PBXTextBookmark */;
+			BCF494EE104082C100BE82D5 /* PBXTextBookmark */ = BCF494EE104082C100BE82D5 /* PBXTextBookmark */;
+			BCF494EF1040831600BE82D5 /* PBXTextBookmark */ = BCF494EF1040831600BE82D5 /* PBXTextBookmark */;
+			BCF494F01040831600BE82D5 /* PBXTextBookmark */ = BCF494F01040831600BE82D5 /* PBXTextBookmark */;
+			BCF494FC104086FC00BE82D5 /* PBXTextBookmark */ = BCF494FC104086FC00BE82D5 /* PBXTextBookmark */;
+			BCF495001040889700BE82D5 /* PBXBookmark */ = BCF495001040889700BE82D5 /* PBXBookmark */;
+			BCF495051040896500BE82D5 /* PBXTextBookmark */ = BCF495051040896500BE82D5 /* PBXTextBookmark */;
+			BCF495081040897600BE82D5 /* PBXTextBookmark */ = BCF495081040897600BE82D5 /* PBXTextBookmark */;
+			BCF4950B1040898200BE82D5 /* PBXTextBookmark */ = BCF4950B1040898200BE82D5 /* PBXTextBookmark */;
+			BCF4950E1040899F00BE82D5 /* PBXTextBookmark */ = BCF4950E1040899F00BE82D5 /* PBXTextBookmark */;
+			BCF4951210408B4200BE82D5 /* PBXTextBookmark */ = BCF4951210408B4200BE82D5 /* PBXTextBookmark */;
+			BCF4951D10408CBA00BE82D5 /* PBXTextBookmark */ = BCF4951D10408CBA00BE82D5 /* PBXTextBookmark */;
+			BCF4951E10408CBA00BE82D5 /* PBXTextBookmark */ = BCF4951E10408CBA00BE82D5 /* PBXTextBookmark */;
+			BCF49528104096F800BE82D5 /* XCBuildMessageTextBookmark */ = BCF49528104096F800BE82D5 /* XCBuildMessageTextBookmark */;
+			BCF4952B1040970700BE82D5 /* PBXTextBookmark */ = BCF4952B1040970700BE82D5 /* PBXTextBookmark */;
+			BCF4952E1040970800BE82D5 /* PBXTextBookmark */ = BCF4952E1040970800BE82D5 /* PBXTextBookmark */;
+			BCF495311040970900BE82D5 /* PBXTextBookmark */ = BCF495311040970900BE82D5 /* PBXTextBookmark */;
+			BCF495321040970900BE82D5 /* PBXTextBookmark */ = BCF495321040970900BE82D5 /* PBXTextBookmark */;
+			BCF4953710409AA000BE82D5 /* XCBuildMessageTextBookmark */ = BCF4953710409AA000BE82D5 /* XCBuildMessageTextBookmark */;
+			BCF4953A10409AAB00BE82D5 /* XCBuildMessageTextBookmark */ = BCF4953A10409AAB00BE82D5 /* XCBuildMessageTextBookmark */;
+			BCF4953B10409AAB00BE82D5 /* PBXTextBookmark */ = BCF4953B10409AAB00BE82D5 /* PBXTextBookmark */;
+			BCF4953C10409AAB00BE82D5 /* PBXTextBookmark */ = BCF4953C10409AAB00BE82D5 /* PBXTextBookmark */;
+			BCF4953F10409AAD00BE82D5 /* PBXTextBookmark */ = BCF4953F10409AAD00BE82D5 /* PBXTextBookmark */;
+			BCF4954010409AAD00BE82D5 /* PBXTextBookmark */ = BCF4954010409AAD00BE82D5 /* PBXTextBookmark */;
+			BCF4954110409AAD00BE82D5 /* PBXTextBookmark */ = BCF4954110409AAD00BE82D5 /* PBXTextBookmark */;
+			BCF4954210409AAD00BE82D5 /* PBXTextBookmark */ = BCF4954210409AAD00BE82D5 /* PBXTextBookmark */;
+			BCF4954A1040BA7400BE82D5 /* XCBuildMessageTextBookmark */ = BCF4954A1040BA7400BE82D5 /* XCBuildMessageTextBookmark */;
+			BCF4954B1040BA7400BE82D5 /* PBXTextBookmark */ = BCF4954B1040BA7400BE82D5 /* PBXTextBookmark */;
+			BCF4954C1040BA7400BE82D5 /* PBXTextBookmark */ = BCF4954C1040BA7400BE82D5 /* PBXTextBookmark */;
+			BCF495501040BA7400BE82D5 /* PBXTextBookmark */ = BCF495501040BA7400BE82D5 /* PBXTextBookmark */;
+			BCF495511040BA7400BE82D5 /* PBXTextBookmark */ = BCF495511040BA7400BE82D5 /* PBXTextBookmark */;
+			BCF495521040BA7400BE82D5 /* PBXTextBookmark */ = BCF495521040BA7400BE82D5 /* PBXTextBookmark */;
+			BCF495551040BAB400BE82D5 /* PBXTextBookmark */ = BCF495551040BAB400BE82D5 /* PBXTextBookmark */;
+			BCF495561040BAB400BE82D5 /* PBXTextBookmark */ = BCF495561040BAB400BE82D5 /* PBXTextBookmark */;
+			BCF495571040BAB500BE82D5 /* PBXTextBookmark */ = BCF495571040BAB500BE82D5 /* PBXTextBookmark */;
+			BCF495581040BAB500BE82D5 /* PBXTextBookmark */ = BCF495581040BAB500BE82D5 /* PBXTextBookmark */;
+			BCF4955F1040BACF00BE82D5 /* PBXTextBookmark */ = BCF4955F1040BACF00BE82D5 /* PBXTextBookmark */;
+			BCF495601040BACF00BE82D5 /* PBXTextBookmark */ = BCF495601040BACF00BE82D5 /* PBXTextBookmark */;
+			BCF495631040BAEA00BE82D5 /* PBXTextBookmark */ = BCF495631040BAEA00BE82D5 /* PBXTextBookmark */;
+			BCF4956A1040BB6400BE82D5 /* PBXTextBookmark */ = BCF4956A1040BB6400BE82D5 /* PBXTextBookmark */;
+			BCF4956B1040BB6400BE82D5 /* PBXTextBookmark */ = BCF4956B1040BB6400BE82D5 /* PBXTextBookmark */;
+			BCF495701040BCBC00BE82D5 /* PBXTextBookmark */ = BCF495701040BCBC00BE82D5 /* PBXTextBookmark */;
+			BCF495711040BCBC00BE82D5 /* PBXTextBookmark */ = BCF495711040BCBC00BE82D5 /* PBXTextBookmark */;
+			BCF495741040BD3400BE82D5 /* PBXTextBookmark */ = BCF495741040BD3400BE82D5 /* PBXTextBookmark */;
+			BCF495751040BD3400BE82D5 /* PBXTextBookmark */ = BCF495751040BD3400BE82D5 /* PBXTextBookmark */;
+			BCF4957A1040BD6C00BE82D5 /* PBXTextBookmark */ = BCF4957A1040BD6C00BE82D5 /* PBXTextBookmark */;
+			BCF4957B1040BD6C00BE82D5 /* PBXTextBookmark */ = BCF4957B1040BD6C00BE82D5 /* PBXTextBookmark */;
+			BCF4957E1040BF1900BE82D5 /* PBXTextBookmark */ = BCF4957E1040BF1900BE82D5 /* PBXTextBookmark */;
+			BCF4957F1040BF1900BE82D5 /* PBXTextBookmark */ = BCF4957F1040BF1900BE82D5 /* PBXTextBookmark */;
+			BCF495831040BFED00BE82D5 /* PBXTextBookmark */ = BCF495831040BFED00BE82D5 /* PBXTextBookmark */;
+			BCF495841040BFED00BE82D5 /* PBXTextBookmark */ = BCF495841040BFED00BE82D5 /* PBXTextBookmark */;
+			BCF495881040C10300BE82D5 /* PBXTextBookmark */ = BCF495881040C10300BE82D5 /* PBXTextBookmark */;
+			BCF495891040C10300BE82D5 /* PBXTextBookmark */ = BCF495891040C10300BE82D5 /* PBXTextBookmark */;
+			BCF4958D1040C1B800BE82D5 /* PBXTextBookmark */ = BCF4958D1040C1B800BE82D5 /* PBXTextBookmark */;
+			BCF4958E1040C1B800BE82D5 /* PBXTextBookmark */ = BCF4958E1040C1B800BE82D5 /* PBXTextBookmark */;
+			BCF495921040C2C700BE82D5 /* PBXTextBookmark */ = BCF495921040C2C700BE82D5 /* PBXTextBookmark */;
+			BCF495931040C2C700BE82D5 /* PBXTextBookmark */ = BCF495931040C2C700BE82D5 /* PBXTextBookmark */;
+			BCF495971040C38800BE82D5 /* PBXTextBookmark */ = BCF495971040C38800BE82D5 /* PBXTextBookmark */;
+			BCF495981040C38800BE82D5 /* PBXTextBookmark */ = BCF495981040C38800BE82D5 /* PBXTextBookmark */;
+			BCF4959C1040C40900BE82D5 /* PBXTextBookmark */ = BCF4959C1040C40900BE82D5 /* PBXTextBookmark */;
+			BCF4959D1040C40900BE82D5 /* PBXTextBookmark */ = BCF4959D1040C40900BE82D5 /* PBXTextBookmark */;
+			BCF495AB1040D13E00BE82D5 /* XCBuildMessageTextBookmark */ = BCF495AB1040D13E00BE82D5 /* XCBuildMessageTextBookmark */;
+			BCF495AE1040D15300BE82D5 /* PBXTextBookmark */ = BCF495AE1040D15300BE82D5 /* PBXTextBookmark */;
+			BCF495D51040DD9D00BE82D5 /* XCBuildMessageTextBookmark */ = BCF495D51040DD9D00BE82D5 /* XCBuildMessageTextBookmark */;
+			BCF495D61040DE7700BE82D5 /* PBXTextBookmark */ = BCF495D61040DE7700BE82D5 /* PBXTextBookmark */;
+			BCF495D71040DE7700BE82D5 /* PBXTextBookmark */ = BCF495D71040DE7700BE82D5 /* PBXTextBookmark */;
+			BCF495D81040DE7700BE82D5 /* XCBuildMessageTextBookmark */ = BCF495D81040DE7700BE82D5 /* XCBuildMessageTextBookmark */;
+			BCF495D91040DE7700BE82D5 /* PBXTextBookmark */ = BCF495D91040DE7700BE82D5 /* PBXTextBookmark */;
+			BCF495DA1040DE7700BE82D5 /* PBXTextBookmark */ = BCF495DA1040DE7700BE82D5 /* PBXTextBookmark */;
+			BCF495DD1040DE7900BE82D5 /* PBXTextBookmark */ = BCF495DD1040DE7900BE82D5 /* PBXTextBookmark */;
+			BCF495F91040E73D00BE82D5 /* PBXTextBookmark */ = BCF495F91040E73D00BE82D5 /* PBXTextBookmark */;
+			BCF495FA1040E73D00BE82D5 /* PBXTextBookmark */ = BCF495FA1040E73D00BE82D5 /* PBXTextBookmark */;
+			BCF495FB1040E73D00BE82D5 /* XCBuildMessageTextBookmark */ = BCF495FB1040E73D00BE82D5 /* XCBuildMessageTextBookmark */;
+			BCF495FC1040E73D00BE82D5 /* PBXTextBookmark */ = BCF495FC1040E73D00BE82D5 /* PBXTextBookmark */;
+			BCF495FD1040E73D00BE82D5 /* PBXTextBookmark */ = BCF495FD1040E73D00BE82D5 /* PBXTextBookmark */;
+			BCF496001040E7A900BE82D5 /* XCBuildMessageTextBookmark */ = BCF496001040E7A900BE82D5 /* XCBuildMessageTextBookmark */;
+			BCF496031040E80C00BE82D5 /* XCBuildMessageTextBookmark */ = BCF496031040E80C00BE82D5 /* XCBuildMessageTextBookmark */;
+			BCF496081040E88A00BE82D5 /* PBXTextBookmark */ = BCF496081040E88A00BE82D5 /* PBXTextBookmark */;
+			BCF496091040E88A00BE82D5 /* PBXTextBookmark */ = BCF496091040E88A00BE82D5 /* PBXTextBookmark */;
+			BCF4960C1040E88A00BE82D5 /* PBXTextBookmark */ = BCF4960C1040E88A00BE82D5 /* PBXTextBookmark */;
+			BCF4960F1040E88A00BE82D5 /* PBXTextBookmark */ = BCF4960F1040E88A00BE82D5 /* PBXTextBookmark */;
+			BCF496101040E88A00BE82D5 /* PBXTextBookmark */ = BCF496101040E88A00BE82D5 /* PBXTextBookmark */;
+			BCF496111040E88A00BE82D5 /* PBXTextBookmark */ = BCF496111040E88A00BE82D5 /* PBXTextBookmark */;
+			BCF496121040E88A00BE82D5 /* PBXTextBookmark */ = BCF496121040E88A00BE82D5 /* PBXTextBookmark */;
+			BCF496131040E88F00BE82D5 /* PBXTextBookmark */ = BCF496131040E88F00BE82D5 /* PBXTextBookmark */;
+			BCF496161040E89200BE82D5 /* PBXTextBookmark */ = BCF496161040E89200BE82D5 /* PBXTextBookmark */;
 		};
 		sourceControlManager = BC896C1F0DE11BFE00B184F0 /* Source Control */;
 		userBookmarkGroup = BCB290D0103CE78B00F0EA2A /* PBXBookmarkGroup */;
@@ -174,31 +260,31 @@
 	};
 	BC146A9A0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1643, 2184}}";
-			sepNavSelRange = "{2327, 4}";
-			sepNavVisRange = "{1703, 1496}";
+			sepNavIntBoundsRect = "{{0, 0}, {1643, 2496}}";
+			sepNavSelRange = "{2176, 0}";
+			sepNavVisRange = "{1703, 952}";
 			sepNavWindowFrame = "{{115, 0}, {881, 778}}";
 		};
 	};
 	BC1EF3810E36BD6100B09043 /* SLSMoleculeSearchViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {928, 681}}";
-			sepNavSelRange = "{509, 0}";
-			sepNavVisRange = "{0, 857}";
-			sepNavWindowFrame = "{{217, 0}, {987, 778}}";
+			sepNavIntBoundsRect = "{{0, 0}, {928, 706}}";
+			sepNavSelRange = "{1012, 0}";
+			sepNavVisRange = "{0, 1047}";
+			sepNavWindowFrame = "{{7, 0}, {987, 778}}";
 		};
 	};
 	BC1EF3820E36BD6100B09043 /* SLSMoleculeSearchViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {928, 5648}}";
-			sepNavSelRange = "{1011, 0}";
-			sepNavVisRange = "{203, 1389}";
+			sepNavIntBoundsRect = "{{0, 0}, {1608, 6368}}";
+			sepNavSelRange = "{10593, 0}";
+			sepNavVisRange = "{9894, 1498}";
 			sepNavWindowFrame = "{{7, 0}, {987, 778}}";
 		};
 	};
 	BC2CF8630E5784EC00653418 /* SLSMolecule+PDB.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1096, 683}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1096, 706}}";
 			sepNavSelRange = "{379, 0}";
 			sepNavVisRange = "{0, 621}";
 			sepNavWindowFrame = "{{541, 0}, {993, 778}}";
@@ -206,26 +292,27 @@
 	};
 	BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1727, 13296}}";
-			sepNavSelRange = "{50433, 19}";
-			sepNavVisRange = "{49839, 1475}";
+			sepNavIntBoundsRect = "{{0, 0}, {1601, 12560}}";
+			sepNavSelRange = "{50204, 0}";
+			sepNavVisRange = "{50175, 291}";
 			sepNavWindowFrame = "{{67, 0}, {1155, 778}}";
 		};
 	};
 	BC37E7C80E14779E00E11F4F /* SLSMolecule.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1244, 2176}}";
-			sepNavSelRange = "{1689, 0}";
-			sepNavVisRange = "{1293, 1557}";
+			sepNavIntBoundsRect = "{{0, 0}, {1125, 2224}}";
+			sepNavSelRange = "{1758, 20}";
+			sepNavVisRange = "{1280, 1601}";
 			sepNavWindowFrame = "{{72, 0}, {1155, 778}}";
 		};
 	};
 	BC37E7C90E14779E00E11F4F /* SLSMolecule.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1041, 23424}}";
-			sepNavSelRange = "{44775, 20}";
-			sepNavVisRange = "{45016, 390}";
-			sepNavWindowFrame = "{{59, 0}, {957, 778}}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{2181, 105}\";\n            s = 0;\n        },\n                {\n            r = \"{2363, 852}\";\n            s = 0;\n        },\n                {\n            r = \"{3299, 1631}\";\n            s = 0;\n        },\n                {\n            r = \"{5037, 2986}\";\n            s = 0;\n        },\n                {\n            r = \"{8051, 733}\";\n            s = 0;\n        },\n                {\n            r = \"{8805, 763}\";\n            s = 0;\n        },\n                {\n            r = \"{9629, 302}\";\n            s = 0;\n        },\n                {\n            r = \"{10082, 2740}\";\n            s = 0;\n        },\n                {\n            r = \"{12866, 378}\";\n            s = 0;\n        },\n                {\n            r = \"{13288, 674}\";\n            s = 0;\n        },\n                {\n            r = \"{14005, 80}\";\n            s = 0;\n        },\n                {\n            r = \"{14127, 69}\";\n            s = 0;\n        },\n                {\n            r = \"{14283, 2944}\";\n            s = 0;\n        },\n                {\n            r = \"{17392, 2860}\";\n            s = 0;\n        },\n                {\n            r = \"{20360, 305}\";\n            s = 0;\n        },\n                {\n            r = \"{20725, 300}\";\n            s = 0;\n        },\n                {\n            r = \"{21057, 996}\";\n            s = 0;\n        },\n                {\n            r = \"{22138, 2289}\";\n            s = 0;\n        },\n                {\n            r = \"{24518, 1094}\";\n            s = 0;\n        },\n                {\n            r = \"{25780, 1559}\";\n            s = 0;\n        },\n                {\n            r = \"{27608, 1791}\";\n            s = 0;\n        },\n                {\n            r = \"{29448, 2171}\";\n            s = 0;\n        },\n                {\n            r = \"{36463, 2958}\";\n            s = 0;\n        },\n                {\n            r = \"{39511, 103}\";\n            s = 0;\n        },\n                {\n            r = \"{39649, 200}\";\n            s = 0;\n        },\n                {\n            r = \"{39882, 101}\";\n            s = 0;\n        },\n                {\n            r = \"{40065, 331}\";\n            s = 0;\n        },\n                {\n            r = \"{40424, 1453}\";\n            s = 0;\n        },\n                {\n            r = \"{41919, 1699}\";\n            s = 0;\n        },\n                {\n            r = \"{43644, 703}\";\n            s = 0;\n        },\n                {\n            r = \"{44378, 649}\";\n            s = 0;\n        },\n                {\n            r = \"{45624, 247}\";\n            s = 0;\n        },\n                {\n            r = \"{45955, 267}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 46230}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1398, 4944}}";
+			sepNavSelRange = "{4058, 20}";
+			sepNavVisRange = "{3971, 330}";
+			sepNavWindowFrame = "{{200, 0}, {957, 778}}";
 		};
 	};
 	BC4FB6650E4E875900B316CD /* VCTitleCase.h */ = {
@@ -264,10 +351,10 @@
 	};
 	BC5BB8BC0E204DC20001DFD0 /* SLSMoleculeDetailViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {939, 5792}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{379, 1194}";
-			sepNavWindowFrame = "{{787, 198}, {998, 777}}";
+			sepNavIntBoundsRect = "{{0, 0}, {939, 5920}}";
+			sepNavSelRange = "{8848, 0}";
+			sepNavVisRange = "{8304, 918}";
+			sepNavWindowFrame = "{{229, 1}, {998, 777}}";
 		};
 	};
 	BC61CC2D0E2463180074BE04 /* SLSCellTextView.h */ = {
@@ -302,7 +389,21 @@
 			sepNavWindowFrame = "{{15, -4}, {998, 777}}";
 		};
 	};
-	BC88C6CA0ECB3E2800BC122D /* SLSMoleculeRootViewController.m:188 */ = {
+	BC6430D8103EE22D0039AF37 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */;
+	};
+	BC643105103EEA6F0039AF37 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */;
+		name = "SLSMoleculeGLView.m: 11";
+		rLen = 0;
+		rLoc = 384;
+		rType = 0;
+		vrLen = 1067;
+		vrLoc = 44;
+	};
+	BC88C6CA0ECB3E2800BC122D /* SLSMoleculeRootViewController.m:189 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
 		);
@@ -314,7 +415,7 @@
 		functionName = "-customURLSelectedForMoleculeDownload:";
 		hitCount = 0;
 		ignoreCount = 0;
-		lineNumber = 188;
+		lineNumber = 189;
 		location = Molecules;
 		modificationTime = 272482615.486942;
 		originalNumberOfMultipleMatches = 1;
@@ -378,7 +479,7 @@
 		isa = PBXTextBookmark;
 		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
 		rLen = 20;
-		rLoc = 44775;
+		rLoc = 44649;
 		rType = 0;
 	};
 	BCC281280E1B1FCD00978ECA /* NSData+Gzip.h */ = {
@@ -391,92 +492,92 @@
 	};
 	BCC281290E1B1FCD00978ECA /* NSData+Gzip.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {950, 1744}}";
-			sepNavSelRange = "{1498, 0}";
-			sepNavVisRange = "{1465, 270}";
+			sepNavIntBoundsRect = "{{0, 0}, {894, 1792}}";
+			sepNavSelRange = "{1527, 0}";
+			sepNavVisRange = "{702, 1094}";
 			sepNavWindowFrame = "{{170, 0}, {891, 778}}";
 		};
 	};
 	BCC286BD0E1D8F9300978ECA /* SLSMoleculeAppDelegate.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {924, 912}}";
-			sepNavSelRange = "{541, 0}";
-			sepNavVisRange = "{32, 1323}";
-			sepNavWindowFrame = "{{59, 0}, {983, 778}}";
+			sepNavIntBoundsRect = "{{0, 0}, {924, 928}}";
+			sepNavSelRange = "{620, 0}";
+			sepNavVisRange = "{337, 1271}";
+			sepNavWindowFrame = "{{216, 0}, {983, 778}}";
 		};
 	};
 	BCC286BE0E1D8F9300978ECA /* SLSMoleculeAppDelegate.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{1530, 33}\";\n            s = 0;\n        },\n                {\n            r = \"{9538, 3}\";\n            s = 0;\n        },\n                {\n            r = \"{12144, 243}\";\n            s = 0;\n        },\n                {\n            r = \"{15683, 285}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 17731}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {924, 8160}}";
-			sepNavSelRange = "{1167, 0}";
-			sepNavVisRange = "{502, 1159}";
-			sepNavWindowFrame = "{{216, 240}, {983, 778}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1881, 8448}}";
+			sepNavSelRange = "{12250, 0}";
+			sepNavVisRange = "{11451, 1192}";
+			sepNavWindowFrame = "{{216, 0}, {983, 778}}";
 		};
 	};
 	BCC286BF0E1D8F9300978ECA /* SLSMoleculeRootViewController.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1096, 752}}";
-			sepNavSelRange = "{1136, 0}";
-			sepNavVisRange = "{0, 1363}";
+			sepNavSelRange = "{1137, 43}";
+			sepNavVisRange = "{0, 1385}";
 			sepNavWindowFrame = "{{57, 0}, {1155, 778}}";
 		};
 	};
 	BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{723, 118}\";\n            s = 0;\n        },\n                {\n            r = \"{1229, 937}\";\n            s = 0;\n        },\n                {\n            r = \"{2194, 1490}\";\n            s = 0;\n        },\n                {\n            r = \"{3782, 299}\";\n            s = 0;\n        },\n                {\n            r = \"{4148, 542}\";\n            s = 0;\n        },\n                {\n            r = \"{4852, 109}\";\n            s = 0;\n        },\n                {\n            r = \"{4998, 150}\";\n            s = 0;\n        },\n                {\n            r = \"{5183, 178}\";\n            s = 0;\n        },\n                {\n            r = \"{5401, 93}\";\n            s = 0;\n        },\n                {\n            r = \"{5652, 541}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 6317}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1096, 1296}}";
-			sepNavSelRange = "{750, 0}";
-			sepNavVisRange = "{388, 856}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{844, 118}\";\n            s = 0;\n        },\n                {\n            r = \"{1286, 937}\";\n            s = 0;\n        },\n                {\n            r = \"{4239, 542}\";\n            s = 0;\n        },\n                {\n            r = \"{4943, 109}\";\n            s = 0;\n        },\n                {\n            r = \"{5334, 93}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 6317}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1174, 2624}}";
+			sepNavSelRange = "{2323, 0}";
+			sepNavVisRange = "{1741, 1381}";
 			sepNavWindowFrame = "{{57, 0}, {1155, 778}}";
 		};
 	};
 	BCC286C30E1D8FB100978ECA /* SLSMoleculeGLView.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {831, 1344}}";
-			sepNavSelRange = "{1009, 0}";
-			sepNavVisRange = "{860, 276}";
+			sepNavIntBoundsRect = "{{0, 0}, {1071, 736}}";
+			sepNavSelRange = "{801, 0}";
+			sepNavVisRange = "{0, 1357}";
 			sepNavWindowFrame = "{{62, 0}, {1130, 778}}";
 		};
 	};
 	BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1398, 11280}}";
-			sepNavSelRange = "{4867, 0}";
-			sepNavVisRange = "{4232, 1967}";
-			sepNavWindowFrame = "{{546, 213}, {1130, 778}}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{939, 30}\";\n            s = 0;\n        },\n                {\n            r = \"{2519, 1187}\";\n            s = 0;\n        },\n                {\n            r = \"{3731, 314}\";\n            s = 0;\n        },\n                {\n            r = \"{4076, 201}\";\n            s = 0;\n        },\n                {\n            r = \"{4310, 154}\";\n            s = 0;\n        },\n                {\n            r = \"{4497, 53}\";\n            s = 0;\n        },\n                {\n            r = \"{4644, 1173}\";\n            s = 0;\n        },\n                {\n            r = \"{5849, 250}\";\n            s = 0;\n        },\n                {\n            r = \"{6171, 118}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 6297}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1223, 2000}}";
+			sepNavSelRange = "{2552, 29}";
+			sepNavVisRange = "{2281, 545}";
+			sepNavWindowFrame = "{{62, 0}, {1130, 778}}";
 		};
 	};
 	BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1096, 706}}";
-			sepNavSelRange = "{589, 0}";
-			sepNavVisRange = "{0, 1013}";
+			sepNavIntBoundsRect = "{{0, 0}, {1096, 1232}}";
+			sepNavSelRange = "{434, 0}";
+			sepNavVisRange = "{0, 1552}";
 			sepNavWindowFrame = "{{15, 0}, {1155, 778}}";
 		};
 	};
 	BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1096, 2464}}";
-			sepNavSelRange = "{3961, 0}";
-			sepNavVisRange = "{2998, 1481}";
-			sepNavWindowFrame = "{{670, 18}, {1155, 778}}";
+			sepNavIntBoundsRect = "{{0, 0}, {950, 11504}}";
+			sepNavSelRange = "{22065, 0}";
+			sepNavVisRange = "{20927, 485}";
+			sepNavWindowFrame = "{{15, 0}, {1155, 778}}";
 		};
 	};
 	BCC286CC0E1D905400978ECA /* SLSMoleculeDownloadViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1237, 770}}";
-			sepNavSelRange = "{1504, 227}";
-			sepNavVisRange = "{60, 1671}";
-			sepNavWindowFrame = "{{174, 0}, {1173, 777}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1237, 896}}";
+			sepNavSelRange = "{1118, 0}";
+			sepNavVisRange = "{311, 1453}";
+			sepNavWindowFrame = "{{23, 0}, {1173, 777}}";
 		};
 	};
 	BCC286CD0E1D905400978ECA /* SLSMoleculeDownloadViewController.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{482, 348}\";\n            s = 0;\n        },\n                {\n            r = \"{852, 169}\";\n            s = 0;\n        },\n                {\n            r = \"{2717, 109}\";\n            s = 0;\n        },\n                {\n            r = \"{4270, 350}\";\n            s = 0;\n        },\n                {\n            r = \"{8757, 112}\";\n            s = 0;\n        },\n                {\n            r = \"{8900, 362}\";\n            s = 0;\n        },\n                {\n            r = \"{11588, 345}\";\n            s = 0;\n        },\n                {\n            r = \"{12040, 173}\";\n            s = 0;\n        },\n                {\n            r = \"{12267, 146}\";\n            s = 0;\n        },\n                {\n            r = \"{12492, 182}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 12745}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1636, 4304}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 358}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{482, 348}\";\n            s = 0;\n        },\n                {\n            r = \"{852, 169}\";\n            s = 0;\n        },\n                {\n            r = \"{2717, 109}\";\n            s = 0;\n        },\n                {\n            r = \"{4121, 350}\";\n            s = 0;\n        },\n                {\n            r = \"{8603, 112}\";\n            s = 0;\n        },\n                {\n            r = \"{11494, 345}\";\n            s = 0;\n        },\n                {\n            r = \"{11946, 173}\";\n            s = 0;\n        },\n                {\n            r = \"{12173, 146}\";\n            s = 0;\n        },\n                {\n            r = \"{12398, 182}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 12651}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1769, 4400}}";
+			sepNavSelRange = "{7285, 0}";
+			sepNavVisRange = "{6404, 1681}";
 			sepNavWindowFrame = "{{23, 0}, {1173, 777}}";
 		};
 	};
@@ -490,10 +591,10 @@
 	};
 	BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{668, 654}\";\n            s = 0;\n        },\n                {\n            r = \"{1347, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{1369, 41}\";\n            s = 0;\n        },\n                {\n            r = \"{1490, 30}\";\n            s = 0;\n        },\n                {\n            r = \"{1565, 318}\";\n            s = 0;\n        },\n                {\n            r = \"{1919, 150}\";\n            s = 0;\n        },\n                {\n            r = \"{2313, 1975}\";\n            s = 0;\n        },\n                {\n            r = \"{4446, 222}\";\n            s = 0;\n        },\n                {\n            r = \"{4845, 1342}\";\n            s = 0;\n        },\n                {\n            r = \"{6281, 34}\";\n            s = 0;\n        },\n                {\n            r = \"{6412, 282}\";\n            s = 0;\n        },\n                {\n            r = \"{6807, 459}\";\n            s = 0;\n        },\n                {\n            r = \"{7461, 120}\";\n            s = 0;\n        },\n                {\n            r = \"{7775, 765}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 8714}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1237, 1392}}";
-			sepNavSelRange = "{1771, 0}";
-			sepNavVisRange = "{899, 1436}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{668, 654}\";\n            s = 0;\n        },\n                {\n            r = \"{1347, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{1369, 41}\";\n            s = 0;\n        },\n                {\n            r = \"{1623, 318}\";\n            s = 0;\n        },\n                {\n            r = \"{2222, 1975}\";\n            s = 0;\n        },\n                {\n            r = \"{4355, 222}\";\n            s = 0;\n        },\n                {\n            r = \"{4754, 1342}\";\n            s = 0;\n        },\n                {\n            r = \"{6190, 34}\";\n            s = 0;\n        },\n                {\n            r = \"{6321, 282}\";\n            s = 0;\n        },\n                {\n            r = \"{6716, 459}\";\n            s = 0;\n        },\n                {\n            r = \"{7370, 120}\";\n            s = 0;\n        },\n                {\n            r = \"{7684, 765}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 8623}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1237, 1424}}";
+			sepNavSelRange = "{885, 0}";
+			sepNavVisRange = "{510, 1042}";
 			sepNavWindowFrame = "{{18, 0}, {1155, 778}}";
 		};
 	};
@@ -507,10 +608,10 @@
 	};
 	BCC8FE7F0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1132, 2464}}";
-			sepNavSelRange = "{1572, 0}";
-			sepNavVisRange = "{944, 1734}";
-			sepNavWindowFrame = "{{790, 21}, {881, 778}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1237, 2944}}";
+			sepNavSelRange = "{4473, 0}";
+			sepNavVisRange = "{3906, 637}";
+			sepNavWindowFrame = "{{346, 0}, {881, 778}}";
 		};
 	};
 	BCDC9F870EB3760300ADCFA5 /* French */ = {
@@ -529,64 +630,876 @@
 			sepNavWindowFrame = "{{61, 353}, {881, 778}}";
 		};
 	};
-	BCDCAE58103DC7F8001B04E8 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
-		name = "SLSMoleculeGLViewController.m: 50";
-		rLen = 0;
-		rLoc = 2079;
-		rType = 0;
-		vrLen = 2074;
-		vrLoc = 583;
-	};
-	BCDCAE5C103DC7F8001B04E8 /* PBXTextBookmark */ = {
+	BCF494D810407F3900BE82D5 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */;
-		name = "SLSMoleculeGLView.m: 157";
+		name = "SLSMoleculeGLView.m: 11";
 		rLen = 0;
-		rLoc = 4867;
+		rLoc = 384;
 		rType = 0;
-		vrLen = 1967;
-		vrLoc = 4232;
+		vrLen = 1067;
+		vrLoc = 44;
 	};
-	BCFF458F103DCE7500C2D81A /* PBXTextBookmark */ = {
+	BCF494DC1040802D00BE82D5 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
-		name = "SLSMoleculeGLViewController.m: 102";
-		rLen = 0;
-		rLoc = 3961;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		rLen = 10;
+		rLoc = 41791;
 		rType = 0;
-		vrLen = 1481;
-		vrLoc = 2998;
 	};
-	BCFF4590103DCE7500C2D81A /* PBXTextBookmark */ = {
+	BCF494E5104082A500BE82D5 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */;
-		name = "SLSMoleculeGLView.m: 157";
-		rLen = 0;
-		rLoc = 4867;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1276";
+		rLen = 10;
+		rLoc = 41791;
 		rType = 0;
-		vrLen = 1967;
-		vrLoc = 4232;
+		vrLen = 291;
+		vrLoc = 41681;
 	};
-	BCFF459D103DCE7F00C2D81A /* PBXTextBookmark */ = {
+	BCF494EA104082B800BE82D5 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
-		name = "SLSMoleculeGLViewController.m: 102";
-		rLen = 0;
-		rLoc = 3961;
+		fRef = BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */;
+		rLen = 19;
+		rLoc = 3828;
 		rType = 0;
-		vrLen = 1481;
-		vrLoc = 2998;
 	};
-	BCFF459E103DCE7F00C2D81A /* PBXTextBookmark */ = {
+	BCF494EB104082C100BE82D5 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */;
-		name = "SLSMoleculeGLView.m: 157";
+		name = "SLSMoleculeGLView.m: 11";
 		rLen = 0;
-		rLoc = 4867;
+		rLoc = 384;
 		rType = 0;
-		vrLen = 1967;
-		vrLoc = 4232;
+		vrLen = 1067;
+		vrLoc = 44;
+	};
+	BCF494EE104082C100BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */;
+		name = "SLSMoleculeRootViewController.m: 124";
+		rLen = 19;
+		rLoc = 3828;
+		rType = 0;
+		vrLen = 4556;
+		vrLoc = 844;
+	};
+	BCF494EF1040831600BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */;
+		name = "SLSMoleculeGLView.m: 11";
+		rLen = 0;
+		rLoc = 384;
+		rType = 0;
+		vrLen = 1067;
+		vrLoc = 44;
+	};
+	BCF494F01040831600BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */;
+		name = "SLSMoleculeRootViewController.m: 131";
+		rLen = 0;
+		rLoc = 4172;
+		rType = 0;
+		vrLen = 4550;
+		vrLoc = 844;
+	};
+	BCF494FC104086FC00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */;
+		name = "SLSMoleculeRootViewController.m: 124";
+		rLen = 19;
+		rLoc = 3828;
+		rType = 0;
+		vrLen = 1846;
+		vrLoc = 2169;
+	};
+	BCF495001040889700BE82D5 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+	};
+	BCF495051040896500BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 248";
+		rLen = 0;
+		rLoc = 7778;
+		rType = 0;
+		vrLen = 2372;
+		vrLoc = 6399;
+	};
+	BCF495081040897600BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 248";
+		rLen = 0;
+		rLoc = 7777;
+		rType = 0;
+		vrLen = 2372;
+		vrLoc = 6399;
+	};
+	BCF4950B1040898200BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 248";
+		rLen = 0;
+		rLoc = 7777;
+		rType = 0;
+		vrLen = 2371;
+		vrLoc = 6399;
+	};
+	BCF4950E1040899F00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 248";
+		rLen = 0;
+		rLoc = 7777;
+		rType = 0;
+		vrLen = 2372;
+		vrLoc = 6399;
+	};
+	BCF4951210408B4200BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+	};
+	BCF4951D10408CBA00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */;
+		name = "SLSMoleculeRootViewController.m: 168";
+		rLen = 0;
+		rLoc = 5294;
+		rType = 0;
+		vrLen = 287;
+		vrLoc = 4995;
+	};
+	BCF4951E10408CBA00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF49528104096F800BE82D5 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'libraryMenuButton' undeclared (first use in this function)";
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 80;
+		rType = 1;
+	};
+	BCF4952B1040970700BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF4952E1040970800BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF495311040970900BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		name = "SLSMoleculeGLViewController.h: 32";
+		rLen = 72;
+		rLoc = 1608;
+		rType = 0;
+		vrLen = 1086;
+		vrLoc = 0;
+	};
+	BCF495321040970900BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 60";
+		rLen = 0;
+		rLoc = 3644;
+		rType = 0;
+		vrLen = 2386;
+		vrLoc = 1268;
+	};
+	BCF4953710409AA000BE82D5 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'SLSMoleculeGLViewController' may not respond to '-drawViewByRotatingAroundX:rotatingAroundY:scaling:translationInX:translationInY:'";
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 197;
+		rType = 1;
+	};
+	BCF4953A10409AAB00BE82D5 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'SLSMoleculeGLViewController' may not respond to '-drawViewByRotatingAroundX:rotatingAroundY:scaling:translationInX:translationInY:'";
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 197;
+		rType = 1;
+	};
+	BCF4953B10409AAB00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 164";
+		rLen = 0;
+		rLoc = 6985;
+		rType = 0;
+		vrLen = 294;
+		vrLoc = 5748;
+	};
+	BCF4953C10409AAB00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF4953F10409AAD00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 164";
+		rLen = 0;
+		rLoc = 6985;
+		rType = 0;
+		vrLen = 282;
+		vrLoc = 5748;
+	};
+	BCF4954010409AAD00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF4954110409AAD00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		name = "SLSMoleculeGLViewController.h: 35";
+		rLen = 28;
+		rLoc = 1680;
+		rType = 0;
+		vrLen = 1144;
+		vrLoc = 0;
+	};
+	BCF4954210409AAD00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 164";
+		rLen = 0;
+		rLoc = 6993;
+		rType = 0;
+		vrLen = 1533;
+		vrLoc = 4809;
+	};
+	BCF4954A1040BA7400BE82D5 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'isAutorotating' undeclared (first use in this function)";
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 62;
+		rType = 1;
+	};
+	BCF4954B1040BA7400BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 199";
+		rLen = 0;
+		rLoc = 24872;
+		rType = 0;
+		vrLen = 383;
+		vrLoc = 1377;
+	};
+	BCF4954C1040BA7400BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF495501040BA7400BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 39";
+		rLen = 0;
+		rLoc = 1591;
+		rType = 0;
+		vrLen = 2166;
+		vrLoc = 444;
+	};
+	BCF495511040BA7400BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		name = "SLSMoleculeGLViewController.h: 20";
+		rLen = 0;
+		rLoc = 788;
+		rType = 0;
+		vrLen = 1160;
+		vrLoc = 0;
+	};
+	BCF495521040BA7400BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		name = "SLSMoleculeGLViewController.h: 38";
+		rLen = 0;
+		rLoc = 2557;
+		rType = 0;
+		vrLen = 1160;
+		vrLoc = 0;
+	};
+	BCF495551040BAB400BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 199";
+		rLen = 0;
+		rLoc = 24872;
+		rType = 0;
+		vrLen = 363;
+		vrLoc = 1221;
+	};
+	BCF495561040BAB400BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF495571040BAB500BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		name = "SLSMoleculeGLViewController.h: 38";
+		rLen = 0;
+		rLoc = 2557;
+		rType = 0;
+		vrLen = 1160;
+		vrLoc = 0;
+	};
+	BCF495581040BAB500BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 151";
+		rLen = 0;
+		rLoc = 6496;
+		rType = 0;
+		vrLen = 1061;
+		vrLoc = 5096;
+	};
+	BCF4955F1040BACF00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 199";
+		rLen = 0;
+		rLoc = 24872;
+		rType = 0;
+		vrLen = 341;
+		vrLoc = 1614;
+	};
+	BCF495601040BACF00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF495631040BAEA00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 151";
+		rLen = 0;
+		rLoc = 6496;
+		rType = 0;
+		vrLen = 1064;
+		vrLoc = 5096;
+	};
+	BCF4956A1040BB6400BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 201";
+		rLen = 0;
+		rLoc = 24872;
+		rType = 0;
+		vrLen = 363;
+		vrLoc = 1221;
+	};
+	BCF4956B1040BB6400BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF495701040BCBC00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 201";
+		rLen = 0;
+		rLoc = 24872;
+		rType = 0;
+		vrLen = 492;
+		vrLoc = 1633;
+	};
+	BCF495711040BCBC00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF495741040BD3400BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 204";
+		rLen = 0;
+		rLoc = 24872;
+		rType = 0;
+		vrLen = 363;
+		vrLoc = 1221;
+	};
+	BCF495751040BD3400BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF4957A1040BD6C00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 204";
+		rLen = 0;
+		rLoc = 24872;
+		rType = 0;
+		vrLen = 308;
+		vrLoc = 1614;
+	};
+	BCF4957B1040BD6C00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2438;
+		vrLoc = 29401;
+	};
+	BCF4957E1040BF1900BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 204";
+		rLen = 0;
+		rLoc = 24872;
+		rType = 0;
+		vrLen = 487;
+		vrLoc = 1614;
+	};
+	BCF4957F1040BF1900BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF495831040BFED00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 204";
+		rLen = 0;
+		rLoc = 24872;
+		rType = 0;
+		vrLen = 487;
+		vrLoc = 1614;
+	};
+	BCF495841040BFED00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF495881040C10300BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 204";
+		rLen = 0;
+		rLoc = 24872;
+		rType = 0;
+		vrLen = 487;
+		vrLoc = 1614;
+	};
+	BCF495891040C10300BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF4958D1040C1B800BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 204";
+		rLen = 0;
+		rLoc = 24872;
+		rType = 0;
+		vrLen = 487;
+		vrLoc = 1614;
+	};
+	BCF4958E1040C1B800BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF495921040C2C700BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 204";
+		rLen = 0;
+		rLoc = 24872;
+		rType = 0;
+		vrLen = 487;
+		vrLoc = 1614;
+	};
+	BCF495931040C2C700BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF495971040C38800BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 204";
+		rLen = 0;
+		rLoc = 24872;
+		rType = 0;
+		vrLen = 487;
+		vrLoc = 1614;
+	};
+	BCF495981040C38800BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF4959C1040C40900BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 204";
+		rLen = 0;
+		rLoc = 24872;
+		rType = 0;
+		vrLen = 487;
+		vrLoc = 1614;
+	};
+	BCF4959D1040C40900BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF495AB1040D13E00BE82D5 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Expected ')' before 'GLfloat'";
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 50;
+		rType = 1;
+	};
+	BCF495AE1040D15300BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		name = "SLSMoleculeGLViewController.h: 52";
+		rLen = 0;
+		rLoc = 1741;
+		rType = 0;
+		vrLen = 1668;
+		vrLoc = 896;
+	};
+	BCF495D51040DD9D00BE82D5 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'SLSMoleculeRootViewController' may not respond to '-toggleView'";
+		fRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 54;
+		rType = 1;
+	};
+	BCF495D61040DE7700BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 706";
+		rLen = 0;
+		rLoc = 24872;
+		rType = 0;
+		vrLen = 349;
+		vrLoc = 1666;
+	};
+	BCF495D71040DE7700BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		name = "SLSMoleculeGLViewController.h: 25";
+		rLen = 0;
+		rLoc = 736;
+		rType = 0;
+		vrLen = 377;
+		vrLoc = 547;
+	};
+	BCF495D81040DE7700BE82D5 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Potential leak of an object allocated on line 432 and stored into 'currentResidueType'";
+		fRef = BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 652;
+		rType = 1;
+	};
+	BCF495D91040DE7700BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */;
+		name = "SLSMolecule+PDB.m: 653";
+		rLen = 0;
+		rLoc = 50204;
+		rType = 0;
+		vrLen = 291;
+		vrLoc = 50175;
+	};
+	BCF495DA1040DE7700BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF495DD1040DE7900BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */;
+		name = "SLSMoleculeTableViewController.m: 55";
+		rLen = 0;
+		rLoc = 1492;
+		rType = 0;
+		vrLen = 5533;
+		vrLoc = 510;
+	};
+	BCF495F91040E73D00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */;
+		name = "SLSMolecule+PDB.m: 653";
+		rLen = 0;
+		rLoc = 50204;
+		rType = 0;
+		vrLen = 291;
+		vrLoc = 50175;
+	};
+	BCF495FA1040E73D00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */;
+		name = "SLSMoleculeRootViewController.m: 165";
+		rLen = 0;
+		rLoc = 5126;
+		rType = 0;
+		vrLen = 239;
+		vrLoc = 5071;
+	};
+	BCF495FB1040E73D00BE82D5 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Class 'SLSMoleculeGLViewController' does not implement the 'UIActionSheetDelegate' protocol";
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 584;
+		rType = 1;
+	};
+	BCF495FC1040E73D00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 585";
+		rLen = 0;
+		rLoc = 22065;
+		rType = 0;
+		vrLen = 490;
+		vrLoc = 20867;
+	};
+	BCF495FD1040E73D00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */;
+		name = "SLSMolecule.m: 1003";
+		rLen = 20;
+		rLoc = 31658;
+		rType = 0;
+		vrLen = 2500;
+		vrLoc = 29401;
+	};
+	BCF496001040E7A900BE82D5 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'SLSMoleculeGLViewController' may not respond to '-selectedMoleculeDidChange:'";
+		fRef = BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 111;
+		rType = 1;
+	};
+	BCF496031040E80C00BE82D5 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Passing argument 1 of 'locationInView:' from distinct Objective-C type";
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 402;
+		rType = 1;
+	};
+	BCF496081040E88A00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		name = "SLSMoleculeGLViewController.h: 38";
+		rLen = 0;
+		rLoc = 1247;
+		rType = 0;
+		vrLen = 1610;
+		vrLoc = 947;
+	};
+	BCF496091040E88A00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 600";
+		rLen = 0;
+		rLoc = 22639;
+		rType = 0;
+		vrLen = 1484;
+		vrLoc = 21676;
+	};
+	BCF4960C1040E88A00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */;
+		name = "SLSMoleculeRootViewController.m: 132";
+		rLen = 0;
+		rLoc = 4172;
+		rType = 0;
+		vrLen = 1444;
+		vrLoc = 2794;
+	};
+	BCF4960F1040E88A00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 585";
+		rLen = 67;
+		rLoc = 22065;
+		rType = 0;
+		vrLen = 1771;
+		vrLoc = 21159;
+	};
+	BCF496101040E88A00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		rLen = 0;
+		rLoc = 9223372036854775767;
+		rType = 0;
+	};
+	BCF496111040E88A00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		name = "SLSMoleculeGLViewController.h: 17";
+		rLen = 0;
+		rLoc = 538;
+		rType = 0;
+		vrLen = 1608;
+		vrLoc = 0;
+	};
+	BCF496121040E88A00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */;
+		name = "SLSMoleculeTableViewController.m: 56";
+		rLen = 0;
+		rLoc = 1578;
+		rType = 0;
+		vrLen = 5679;
+		vrLoc = 510;
+	};
+	BCF496131040E88F00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 585";
+		rLen = 0;
+		rLoc = 22065;
+		rType = 0;
+		vrLen = 490;
+		vrLoc = 20927;
+	};
+	BCF496161040E89200BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 585";
+		rLen = 0;
+		rLoc = 22065;
+		rType = 0;
+		vrLen = 490;
+		vrLoc = 20927;
 	};
 }

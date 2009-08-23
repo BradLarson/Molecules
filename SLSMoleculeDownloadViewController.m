@@ -86,8 +86,6 @@
 
 - (void)didReceiveMemoryWarning 
 {
-	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-	// Release anything that's not essential, such as cached data
 }
 
 #pragma mark -
@@ -199,8 +197,8 @@
 	NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:locationOfRemotePDBFile]
 											  cachePolicy:NSURLRequestUseProtocolCachePolicy
 										  timeoutInterval:60.0];
-	NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
-	if (theConnection) 
+	downloadConnection = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
+	if (downloadConnection) 
 	{
 		// Create the NSMutableData that will hold
 		// the received data
@@ -223,6 +221,9 @@
 
 - (void)downloadCompleted;
 {
+	[downloadConnection release];
+	downloadConnection = nil;
+	
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
 	[downloadedFileContents release];

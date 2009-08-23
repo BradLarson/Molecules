@@ -50,10 +50,13 @@
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
 	[self performSelectorInBackground:@selector(loadInitialMoleculesFromDisk) withObject:nil];	
+	
+	
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application 
 {
+	[rootViewController cancelMoleculeLoading];
 	[self disconnectFromDatabase];
 }
 
@@ -120,7 +123,7 @@
     // Close the database.
     if (sqlite3_close(database) != SQLITE_OK) 
 	{
-		NSAssert1(0,NSLocalizedStringFromTable(@"Error: failed to close database with message '%s'.", @"Localized", nil), sqlite3_errmsg(database));
+		//NSAssert1(0,NSLocalizedStringFromTable(@"Error: failed to close database with message '%s'.", @"Localized", nil), sqlite3_errmsg(database));
     }
 }
 
@@ -337,8 +340,8 @@
 	NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:locationOfRemotePDBFile]
 											  cachePolicy:NSURLRequestUseProtocolCachePolicy
 										  timeoutInterval:60.0f];
-	NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
-	if (theConnection) 
+	downloadConnection = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
+	if (downloadConnection) 
 	{
 		downloadedFileContents = [[NSMutableData data] retain];
 	} 
@@ -355,6 +358,9 @@
 
 - (void)downloadCompleted;
 {
+	[downloadConnection release];
+	downloadConnection = nil;
+	
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
 	[downloadedFileContents release];

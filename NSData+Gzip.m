@@ -51,7 +51,11 @@
 		if (status == Z_STREAM_END) done = YES;
 		else if (status != Z_OK) break;
 	}
-	if (inflateEnd (&strm) != Z_OK) return nil;
+	if (inflateEnd (&strm) != Z_OK) 
+	{
+		[decompressed release];
+		return nil;
+	}
 	
 	// Set real length.
 	[decompressed setLength: strm.total_out];

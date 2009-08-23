@@ -34,7 +34,7 @@
 @property (nonatomic, retain) NSMutableArray *molecules;
 
 // Manage the switching of views
-- (void)toggleView;
+- (void)toggleView:(NSNotification *)note;
 
 // Passthroughs for managing molecules
 - (void)loadInitialMolecule;

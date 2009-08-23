@@ -20,6 +20,7 @@
 	UIWindow *window;
 	SLSMoleculeRootViewController *rootViewController;
 
+	NSURLConnection *downloadConnection;
 	NSMutableData *downloadedFileContents;
 	NSString *nameOfDownloadedMolecule;
 	BOOL downloadCancelled;

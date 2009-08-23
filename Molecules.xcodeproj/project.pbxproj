@@ -40,6 +40,7 @@
 		BCC8FE800EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC8FE7F0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m */; };
 		BCDC9F840EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F830EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib */; };
 		BCDC9F9D0EB37B3400ADCFA5 /* Localized.strings in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F9C0EB37B3400ADCFA5 /* Localized.strings */; };
+		BCF495221040945400BE82D5 /* RotationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = BCF495211040945400BE82D5 /* RotationIcon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -98,6 +99,7 @@
 		BCDC9F870EB3760300ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = French; path = French.lproj/Info.plist; sourceTree = "<group>"; };
 		BCDC9F9A0EB37B1E00ADCFA5 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localized.strings; sourceTree = "<group>"; };
 		BCDC9F9E0EB37B4100ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localized.strings; sourceTree = "<group>"; };
+		BCF495211040945400BE82D5 /* RotationIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RotationIcon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +156,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BCF495211040945400BE82D5 /* RotationIcon.png */,
 				BCDC9F9C0EB37B3400ADCFA5 /* Localized.strings */,
 				BC4E97F90E69F8E1006CD291 /* molecules.sql */,
 				BC4FB7B90E4F80DB00B316CD /* redButton.png */,
@@ -311,6 +314,7 @@
 				BC4FB7BA0E4F80DB00B316CD /* redButton.png in Resources */,
 				BC4E97FA0E69F8E1006CD291 /* molecules.sql in Resources */,
 				BCDC9F9D0EB37B3400ADCFA5 /* Localized.strings in Resources */,
+				BCF495221040945400BE82D5 /* RotationIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

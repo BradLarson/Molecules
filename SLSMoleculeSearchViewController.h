@@ -17,13 +17,16 @@
 	id<MoleculeDownloadDelegate> delegate;
 	NSMutableArray *searchResultTitles, *searchResultPDBCodes;
 	NSMutableData *downloadedFileContents;
-	NSURLConnection *searchResultRetrievalConnection;
+	NSURLConnection *searchResultRetrievalConnection, *nextResultsRetrievalConnection;
+	NSUInteger currentPageOfResults;
 	BOOL searchCancelled;
 }
 
 @property (readwrite, assign) id<MoleculeDownloadDelegate> delegate;
 
 // Performing search
-- (void)processSearchResults;
+- (BOOL)performSearchWithKeyword:(NSString *)keyword;
+- (void)processSearchResultsAppendingNewData:(BOOL)appendData;
+- (BOOL)grabNextSetOfSearchResults;
 
 @end

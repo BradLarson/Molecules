@@ -245,7 +245,7 @@ void normalize(GLfloat *v)
 	
 	scaleAdjustmentForX = 1.5 / (maximumXPosition - minimumXPosition);
 	scaleAdjustmentForY = 1.5 / (maximumYPosition - minimumYPosition);
-	scaleAdjustmentForZ = 1.5 / (maximumZPosition - minimumZPosition);
+	scaleAdjustmentForZ = (1.5 * 1.25) / (maximumZPosition - minimumZPosition);
 	if (scaleAdjustmentForY < scaleAdjustmentForX)
 		scaleAdjustmentForX = scaleAdjustmentForY;
 	if (scaleAdjustmentForZ < scaleAdjustmentForX)
@@ -1017,14 +1017,8 @@ void normalize(GLfloat *v)
 	sqlite3_bind_int(retrieveAtomSQLStatement, 1, databaseKey);
 	sqlite3_bind_int(retrieveAtomSQLStatement, 2, numberOfStructureBeingDisplayed);
 	
-	while (sqlite3_step(retrieveAtomSQLStatement) == SQLITE_ROW) 
+	while ((sqlite3_step(retrieveAtomSQLStatement) == SQLITE_ROW) && !isRenderingCancelled)
 	{
-		if (isRenderingCancelled)
-		{
-			sqlite3_reset(retrieveAtomSQLStatement);
-			return;
-		}
-
 		//(id,molecule,residue,structure,element,x,y,z);"
 		if ( (currentFeatureBeingRendered % 100) == 0)
 			[self performSelectorOnMainThread:@selector(updateStatusIndicator) withObject:nil waitUntilDone:NO];
@@ -1070,14 +1064,8 @@ void normalize(GLfloat *v)
 	sqlite3_bind_int(retrieveBondSQLStatement, 1, databaseKey);
 	sqlite3_bind_int(retrieveBondSQLStatement, 2, numberOfStructureBeingDisplayed);
 
-	while (sqlite3_step(retrieveBondSQLStatement) == SQLITE_ROW) 
+	while ((sqlite3_step(retrieveBondSQLStatement) == SQLITE_ROW) && !isRenderingCancelled)
 	{
-		if (isRenderingCancelled)
-		{
-			sqlite3_reset(retrieveBondSQLStatement);			
-			return;
-		}
-
 		//(id ,molecule ,residue ,structure ,bond_type ,start_x ,start_y ,start_z ,end_x ,end_y ,end_z )
 		
 		// TODO: Determine if rendering a particular structure, if not don't render atom 

@@ -389,7 +389,10 @@ static NSDictionary *pdbResidueLookupTable;
 	}
 
 	if (pdbData == nil)
+	{
+		[atomCoordinates release];
 		return NO;
+	}
 	
 	// Wrap all SQLite write operations in a BEGIN, COMMIT block to make writing one operation
 	[SLSMolecule beginTransactionWithDatabase:database];

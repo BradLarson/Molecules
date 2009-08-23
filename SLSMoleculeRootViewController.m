@@ -24,6 +24,7 @@
 {
     if (self = [super init]) 
 	{
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toggleView:) name:@"ToggleView" object:nil];
     }
     return self;
 }
@@ -45,7 +46,6 @@
 	[viewController release];
 	
 	[self.view addSubview:glViewController.view];
-	[(SLSMoleculeGLView *)glViewController.view setDelegate:self];
 }
 
 - (void)loadTableViewController 
@@ -69,7 +69,7 @@
 	toggleViewDisabled = NO;
 }
 
-- (IBAction)toggleView 
+- (void)toggleView:(NSNotification *)note;
 {	
 	if (molecules == nil)
 		return;
@@ -109,7 +109,7 @@
 		if (bufferedMolecule != previousMolecule)
 		{
 			previousMolecule = bufferedMolecule;
-			[glViewController selectedMoleculeDidChange:bufferedMolecule];
+			glViewController.moleculeToDisplay = bufferedMolecule;
 		}
 		else
 			previousMolecule.isBeingDisplayed = YES;
@@ -126,7 +126,9 @@
 	NSInteger indexOfInitialMolecule = [[NSUserDefaults standardUserDefaults] integerForKey:@"indexOfLastSelectedMolecule"];
 	if (indexOfInitialMolecule >= [molecules count])
 		indexOfInitialMolecule = 0;
-	[glViewController selectedMoleculeDidChange:[molecules objectAtIndex:indexOfInitialMolecule]];
+	
+	if ([molecules count] > 0)
+		glViewController.moleculeToDisplay = [molecules objectAtIndex:indexOfInitialMolecule];
 }
 
 - (void)selectedMoleculeDidChange:(NSInteger)newMoleculeIndex;
@@ -156,16 +158,15 @@
 
 - (void)didReceiveMemoryWarning 
 {
-	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-	// Release anything that's not essential, such as cached data
 }
 
 - (void)cancelMoleculeLoading;
 {
-	SLSMoleculeGLView *glView = (SLSMoleculeGLView *)glViewController.view;
-
-	if (!glView.moleculeToDisplay.isDoneRendering)
-		glView.moleculeToDisplay.isRenderingCancelled = YES;
+	if (!glViewController.moleculeToDisplay.isDoneRendering)
+	{
+		glViewController.moleculeToDisplay.isRenderingCancelled = YES;
+		[NSThread sleepForTimeInterval:0.1];
+	}
 }
 
 - (void)updateTableListOfMolecules;
@@ -180,7 +181,7 @@
 - (void)customURLSelectedForMoleculeDownload:(NSURL *)customURLForMoleculeDownload;
 {
 	bufferedMolecule = nil;
-	[self toggleView];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleView" object:nil];
 	//molecules://www.sunsetlakesoftware.com/sites/default/files/xenonPump.pdb
 	//html://www.sunsetlakesoftware.com/sites/default/files/xenonPump.pdb
 	

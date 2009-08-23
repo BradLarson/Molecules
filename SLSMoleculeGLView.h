@@ -13,22 +13,14 @@
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
-#import <QuartzCore/QuartzCore.h>
-#import "SLSMoleculeRootViewController.h"
-@class SLSMolecule;
 
 /*
 This class wraps the CAEAGLLayer from CoreAnimation into a convenient UIView subclass.
 The view content is basically an EAGL surface you render your OpenGL scene into.
 Note that setting the view non-opaque will only work if the EAGL surface has an alpha channel.
 */
-@interface SLSMoleculeGLView : UIView <UIActionSheetDelegate>
-{	
-@public
-	SLSMolecule *moleculeToDisplay;
-	SLSMoleculeRootViewController *delegate;
-		
-@private
+@interface SLSMoleculeGLView : UIView
+{		
 	/* The pixel dimensions of the backbuffer */
 	GLint backingWidth;
 	GLint backingHeight;
@@ -39,36 +31,15 @@ Note that setting the view non-opaque will only work if the EAGL surface has an 
 	GLuint viewRenderbuffer, viewFramebuffer;
 	
 	/* OpenGL name for the depth buffer that is attached to viewFramebuffer, if it exists (0 if it does not exist) */
-	GLuint depthRenderbuffer;
-	
-	float startingTouchDistance, previousScale;
-	float instantObjectScale, instantXRotation, instantYRotation, instantXTranslation, instantYTranslation, instantZTranslation;
-	CGPoint lastMovementPosition, previousDirectionOfPanning;
-	BOOL twoFingersAreMoving, pinchGestureUnderway;
-	
-	CATransform3D currentCalculatedMatrix;
-	
-	BOOL isFirstDrawingOfMolecule;
+	GLuint depthRenderbuffer;	
 }
 
-@property (readwrite, retain) SLSMolecule *moleculeToDisplay;
-@property (readwrite, assign) SLSMoleculeRootViewController *delegate;
-
 // OpenGL drawing
-- (void)clearScreen;
-- (void)drawView;
-- (void)drawViewByRotatingAroundX:(float)xRotation rotatingAroundY:(float)yRotation scaling:(float)scaleFactor translationInX:(float)xTranslation translationInY:(float)yTranslation;
 - (void)configureLighting;
-- (void)handleFinishOfMoleculeRendering:(NSNotification *)note;
-- (void)runOpenGLBenchmarks;
-- (void)convertMatrix:(GLfloat *)matrix to3DTransform:(CATransform3D *)transform3D;
-- (void)convert3DTransform:(CATransform3D *)transform3D toMatrix:(GLfloat *)matrix;
-- (void)print3DTransform:(CATransform3D *)transform3D;
-- (void)printMatrix:(GLfloat *)fixedPointMatrix;
+- (void)clearScreen;
+- (void)startDrawingFrame;
+- (void)configureProjection;
+- (void)presentRenderBuffer;
 
-// Touch handling
-- (float)distanceBetweenTouches:(NSSet *)touches;
-- (CGPoint)commonDirectionOfTouches:(NSSet *)touches;
-- (IBAction)switchToTableView;
 
 @end

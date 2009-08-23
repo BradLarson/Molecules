@@ -228,6 +228,32 @@
 			BCF496121040E88A00BE82D5 /* PBXTextBookmark */ = BCF496121040E88A00BE82D5 /* PBXTextBookmark */;
 			BCF496131040E88F00BE82D5 /* PBXTextBookmark */ = BCF496131040E88F00BE82D5 /* PBXTextBookmark */;
 			BCF496161040E89200BE82D5 /* PBXTextBookmark */ = BCF496161040E89200BE82D5 /* PBXTextBookmark */;
+			BCF496201040E96900BE82D5 /* PBXTextBookmark */ = BCF496201040E96900BE82D5 /* PBXTextBookmark */;
+			BCF496231040E97B00BE82D5 /* PBXTextBookmark */ = BCF496231040E97B00BE82D5 /* PBXTextBookmark */;
+			BCF496241040E97B00BE82D5 /* PBXTextBookmark */ = BCF496241040E97B00BE82D5 /* PBXTextBookmark */;
+			BCF4962B1040EA2000BE82D5 /* PBXTextBookmark */ = BCF4962B1040EA2000BE82D5 /* PBXTextBookmark */;
+			BCF4962C1040EA2000BE82D5 /* PBXTextBookmark */ = BCF4962C1040EA2000BE82D5 /* PBXTextBookmark */;
+			BCF496341040EADD00BE82D5 /* PBXTextBookmark */ = BCF496341040EADD00BE82D5 /* PBXTextBookmark */;
+			BCF496351040EADD00BE82D5 /* PBXTextBookmark */ = BCF496351040EADD00BE82D5 /* PBXTextBookmark */;
+			BCF496391040EB3100BE82D5 /* PBXTextBookmark */ = BCF496391040EB3100BE82D5 /* PBXTextBookmark */;
+			BCF4963A1040EB3100BE82D5 /* PBXTextBookmark */ = BCF4963A1040EB3100BE82D5 /* PBXTextBookmark */;
+			BCF4964F1040F08C00BE82D5 /* PBXTextBookmark */ = BCF4964F1040F08C00BE82D5 /* PBXTextBookmark */;
+			BCF496501040F08C00BE82D5 /* PBXTextBookmark */ = BCF496501040F08C00BE82D5 /* PBXTextBookmark */;
+			BCF496511040F1F300BE82D5 /* PBXTextBookmark */ = BCF496511040F1F300BE82D5 /* PBXTextBookmark */;
+			BCF496521040F1F300BE82D5 /* PBXTextBookmark */ = BCF496521040F1F300BE82D5 /* PBXTextBookmark */;
+			BCF496581040F24A00BE82D5 /* PBXBookmark */ = BCF496581040F24A00BE82D5 /* PBXBookmark */;
+			BCF4968F1040F69200BE82D5 /* XCBuildMessageTextBookmark */ = BCF4968F1040F69200BE82D5 /* XCBuildMessageTextBookmark */;
+			BCF496921040F6BE00BE82D5 /* XCBuildMessageTextBookmark */ = BCF496921040F6BE00BE82D5 /* XCBuildMessageTextBookmark */;
+			BCF496931040F6BE00BE82D5 /* PBXTextBookmark */ = BCF496931040F6BE00BE82D5 /* PBXTextBookmark */;
+			BCF496941040F6BE00BE82D5 /* PBXTextBookmark */ = BCF496941040F6BE00BE82D5 /* PBXTextBookmark */;
+			BCF496991040F6F700BE82D5 /* PBXTextBookmark */ = BCF496991040F6F700BE82D5 /* PBXTextBookmark */;
+			BCF4969A1040F6F700BE82D5 /* PBXTextBookmark */ = BCF4969A1040F6F700BE82D5 /* PBXTextBookmark */;
+			BCF4969B1040F6F700BE82D5 /* PBXTextBookmark */ = BCF4969B1040F6F700BE82D5 /* PBXTextBookmark */;
+			BCF4969E1040F6F700BE82D5 /* PBXTextBookmark */ = BCF4969E1040F6F700BE82D5 /* PBXTextBookmark */;
+			BCF4969F1040F6F700BE82D5 /* PBXTextBookmark */ = BCF4969F1040F6F700BE82D5 /* PBXTextBookmark */;
+			BCF496A21040F6F700BE82D5 /* PBXTextBookmark */ = BCF496A21040F6F700BE82D5 /* PBXTextBookmark */;
+			BCF496A51040F6FD00BE82D5 /* PBXTextBookmark */ = BCF496A51040F6FD00BE82D5 /* PBXTextBookmark */;
+			BCF496A61040F6FD00BE82D5 /* PBXTextBookmark */ = BCF496A61040F6FD00BE82D5 /* PBXTextBookmark */;
 		};
 		sourceControlManager = BC896C1F0DE11BFE00B184F0 /* Source Control */;
 		userBookmarkGroup = BCB290D0103CE78B00F0EA2A /* PBXBookmarkGroup */;
@@ -284,34 +310,34 @@
 	};
 	BC2CF8630E5784EC00653418 /* SLSMolecule+PDB.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1096, 706}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1096, 683}}";
 			sepNavSelRange = "{379, 0}";
 			sepNavVisRange = "{0, 621}";
-			sepNavWindowFrame = "{{541, 0}, {993, 778}}";
+			sepNavWindowFrame = "{{67, 0}, {1155, 778}}";
 		};
 	};
 	BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1601, 12560}}";
-			sepNavSelRange = "{50204, 0}";
-			sepNavVisRange = "{50175, 291}";
+			sepNavIntBoundsRect = "{{0, 0}, {1517, 11776}}";
+			sepNavSelRange = "{36678, 0}";
+			sepNavVisRange = "{36965, 1601}";
 			sepNavWindowFrame = "{{67, 0}, {1155, 778}}";
 		};
 	};
 	BC37E7C80E14779E00E11F4F /* SLSMolecule.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1125, 2224}}";
-			sepNavSelRange = "{1758, 20}";
-			sepNavVisRange = "{1280, 1601}";
+			sepNavIntBoundsRect = "{{0, 0}, {1125, 2208}}";
+			sepNavSelRange = "{38, 293}";
+			sepNavVisRange = "{0, 1717}";
 			sepNavWindowFrame = "{{72, 0}, {1155, 778}}";
 		};
 	};
 	BC37E7C90E14779E00E11F4F /* SLSMolecule.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{2181, 105}\";\n            s = 0;\n        },\n                {\n            r = \"{2363, 852}\";\n            s = 0;\n        },\n                {\n            r = \"{3299, 1631}\";\n            s = 0;\n        },\n                {\n            r = \"{5037, 2986}\";\n            s = 0;\n        },\n                {\n            r = \"{8051, 733}\";\n            s = 0;\n        },\n                {\n            r = \"{8805, 763}\";\n            s = 0;\n        },\n                {\n            r = \"{9629, 302}\";\n            s = 0;\n        },\n                {\n            r = \"{10082, 2740}\";\n            s = 0;\n        },\n                {\n            r = \"{12866, 378}\";\n            s = 0;\n        },\n                {\n            r = \"{13288, 674}\";\n            s = 0;\n        },\n                {\n            r = \"{14005, 80}\";\n            s = 0;\n        },\n                {\n            r = \"{14127, 69}\";\n            s = 0;\n        },\n                {\n            r = \"{14283, 2944}\";\n            s = 0;\n        },\n                {\n            r = \"{17392, 2860}\";\n            s = 0;\n        },\n                {\n            r = \"{20360, 305}\";\n            s = 0;\n        },\n                {\n            r = \"{20725, 300}\";\n            s = 0;\n        },\n                {\n            r = \"{21057, 996}\";\n            s = 0;\n        },\n                {\n            r = \"{22138, 2289}\";\n            s = 0;\n        },\n                {\n            r = \"{24518, 1094}\";\n            s = 0;\n        },\n                {\n            r = \"{25780, 1559}\";\n            s = 0;\n        },\n                {\n            r = \"{27608, 1791}\";\n            s = 0;\n        },\n                {\n            r = \"{29448, 2171}\";\n            s = 0;\n        },\n                {\n            r = \"{36463, 2958}\";\n            s = 0;\n        },\n                {\n            r = \"{39511, 103}\";\n            s = 0;\n        },\n                {\n            r = \"{39649, 200}\";\n            s = 0;\n        },\n                {\n            r = \"{39882, 101}\";\n            s = 0;\n        },\n                {\n            r = \"{40065, 331}\";\n            s = 0;\n        },\n                {\n            r = \"{40424, 1453}\";\n            s = 0;\n        },\n                {\n            r = \"{41919, 1699}\";\n            s = 0;\n        },\n                {\n            r = \"{43644, 703}\";\n            s = 0;\n        },\n                {\n            r = \"{44378, 649}\";\n            s = 0;\n        },\n                {\n            r = \"{45624, 247}\";\n            s = 0;\n        },\n                {\n            r = \"{45955, 267}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 46230}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1398, 4944}}";
-			sepNavSelRange = "{4058, 20}";
-			sepNavVisRange = "{3971, 330}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{2181, 105}\";\n            s = 0;\n        },\n                {\n            r = \"{2363, 852}\";\n            s = 0;\n        },\n                {\n            r = \"{3299, 1631}\";\n            s = 0;\n        },\n                {\n            r = \"{8051, 733}\";\n            s = 0;\n        },\n                {\n            r = \"{8805, 763}\";\n            s = 0;\n        },\n                {\n            r = \"{9629, 302}\";\n            s = 0;\n        },\n                {\n            r = \"{10082, 2740}\";\n            s = 0;\n        },\n                {\n            r = \"{12866, 378}\";\n            s = 0;\n        },\n                {\n            r = \"{13288, 674}\";\n            s = 0;\n        },\n                {\n            r = \"{14005, 80}\";\n            s = 0;\n        },\n                {\n            r = \"{14127, 69}\";\n            s = 0;\n        },\n                {\n            r = \"{20360, 305}\";\n            s = 0;\n        },\n                {\n            r = \"{20725, 300}\";\n            s = 0;\n        },\n                {\n            r = \"{21057, 996}\";\n            s = 0;\n        },\n                {\n            r = \"{22138, 2289}\";\n            s = 0;\n        },\n                {\n            r = \"{24518, 1094}\";\n            s = 0;\n        },\n                {\n            r = \"{25780, 1559}\";\n            s = 0;\n        },\n                {\n            r = \"{27608, 1791}\";\n            s = 0;\n        },\n                {\n            r = \"{29448, 2171}\";\n            s = 0;\n        },\n                {\n            r = \"{36463, 2958}\";\n            s = 0;\n        },\n                {\n            r = \"{39511, 103}\";\n            s = 0;\n        },\n                {\n            r = \"{39649, 200}\";\n            s = 0;\n        },\n                {\n            r = \"{39882, 101}\";\n            s = 0;\n        },\n                {\n            r = \"{40065, 331}\";\n            s = 0;\n        },\n                {\n            r = \"{40424, 1453}\";\n            s = 0;\n        },\n                {\n            r = \"{41919, 1699}\";\n            s = 0;\n        },\n                {\n            r = \"{43644, 703}\";\n            s = 0;\n        },\n                {\n            r = \"{44378, 649}\";\n            s = 0;\n        },\n                {\n            r = \"{45624, 247}\";\n            s = 0;\n        },\n                {\n            r = \"{45955, 267}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 46230}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1566, 9296}}";
+			sepNavSelRange = "{5185, 0}";
+			sepNavVisRange = "{3814, 1891}";
 			sepNavWindowFrame = "{{200, 0}, {957, 778}}";
 		};
 	};
@@ -320,14 +346,14 @@
 			sepNavIntBoundsRect = "{{0, 0}, {822, 703}}";
 			sepNavSelRange = "{203, 18}";
 			sepNavVisRange = "{0, 824}";
-			sepNavWindowFrame = "{{16, -2}, {881, 775}}";
+			sepNavWindowFrame = "{{16, 0}, {881, 775}}";
 		};
 	};
 	BC4FB6660E4E875900B316CD /* VCTitleCase.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {820, 2800}}";
+			sepNavIntBoundsRect = "{{0, 0}, {822, 2848}}";
 			sepNavSelRange = "{3006, 0}";
-			sepNavVisRange = "{463, 1947}";
+			sepNavVisRange = "{463, 1946}";
 			sepNavWindowFrame = "{{312, 3}, {881, 775}}";
 		};
 	};
@@ -534,33 +560,34 @@
 	BCC286C30E1D8FB100978ECA /* SLSMoleculeGLView.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1071, 736}}";
-			sepNavSelRange = "{801, 0}";
+			sepNavSelRange = "{1225, 17}";
 			sepNavVisRange = "{0, 1357}";
 			sepNavWindowFrame = "{{62, 0}, {1130, 778}}";
 		};
 	};
 	BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{939, 30}\";\n            s = 0;\n        },\n                {\n            r = \"{2519, 1187}\";\n            s = 0;\n        },\n                {\n            r = \"{3731, 314}\";\n            s = 0;\n        },\n                {\n            r = \"{4076, 201}\";\n            s = 0;\n        },\n                {\n            r = \"{4310, 154}\";\n            s = 0;\n        },\n                {\n            r = \"{4497, 53}\";\n            s = 0;\n        },\n                {\n            r = \"{4644, 1173}\";\n            s = 0;\n        },\n                {\n            r = \"{5849, 250}\";\n            s = 0;\n        },\n                {\n            r = \"{6171, 118}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 6297}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1223, 2000}}";
-			sepNavSelRange = "{2552, 29}";
-			sepNavVisRange = "{2281, 545}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{939, 30}\";\n            s = 0;\n        },\n                {\n            r = \"{2519, 1187}\";\n            s = 0;\n        },\n                {\n            r = \"{3731, 314}\";\n            s = 0;\n        },\n                {\n            r = \"{4310, 154}\";\n            s = 0;\n        },\n                {\n            r = \"{4497, 53}\";\n            s = 0;\n        },\n                {\n            r = \"{4644, 1173}\";\n            s = 0;\n        },\n                {\n            r = \"{5849, 250}\";\n            s = 0;\n        },\n                {\n            r = \"{6171, 118}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 6297}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1223, 2080}}";
+			sepNavSelRange = "{2549, 0}";
+			sepNavVisRange = "{1997, 917}";
 			sepNavWindowFrame = "{{62, 0}, {1130, 778}}";
 		};
 	};
 	BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1096, 1232}}";
-			sepNavSelRange = "{434, 0}";
-			sepNavVisRange = "{0, 1552}";
+			sepNavIntBoundsRect = "{{0, 0}, {1279, 1216}}";
+			sepNavSelRange = "{1259, 52}";
+			sepNavVisRange = "{702, 1728}";
 			sepNavWindowFrame = "{{15, 0}, {1155, 778}}";
 		};
 	};
 	BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {950, 11504}}";
-			sepNavSelRange = "{22065, 0}";
-			sepNavVisRange = "{20927, 485}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{674, 2002}\";\n            s = 0;\n        },\n                {\n            r = \"{2697, 49}\";\n            s = 0;\n        },\n                {\n            r = \"{2772, 1141}\";\n            s = 0;\n        },\n                {\n            r = \"{4026, 710}\";\n            s = 0;\n        },\n                {\n            r = \"{4796, 3}\";\n            s = 0;\n        },\n                {\n            r = \"{4857, 238}\";\n            s = 0;\n        },\n                {\n            r = \"{5154, 800}\";\n            s = 0;\n        },\n                {\n            r = \"{6015, 201}\";\n            s = 0;\n        },\n                {\n            r = \"{6275, 242}\";\n            s = 0;\n        },\n                {\n            r = \"{6619, 365}\";\n            s = 0;\n        },\n                {\n            r = \"{7130, 647}\";\n            s = 0;\n        },\n                {\n            r = \"{7865, 819}\";\n            s = 0;\n        },\n                {\n            r = \"{8743, 476}\";\n            s = 0;\n        },\n                {\n            r = \"{9262, 370}\";\n            s = 0;\n        },\n                {\n            r = \"{9709, 452}\";\n            s = 0;\n        },\n                {\n            r = \"{10347, 3147}\";\n            s = 0;\n        },\n                {\n            r = \"{13527, 945}\";\n            s = 0;\n        },\n                {\n            r = \"{14601, 144}\";\n            s = 0;\n        },\n                {\n            r = \"{14843, 441}\";\n            s = 0;\n        },\n                {\n            r = \"{15342, 1852}\";\n            s = 0;\n        },\n                {\n            r = \"{17970, 2238}\";\n            s = 0;\n        },\n                {\n            r = \"{20278, 2370}\";\n            s = 0;\n        },\n                {\n            r = \"{23224, 738}\";\n            s = 0;\n        },\n                {\n            r = \"{24113, 109}\";\n            s = 0;\n        },\n                {\n            r = \"{24259, 1}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 24914}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1279, 2928}}";
+			sepNavSelRange = "{4439, 0}";
+			sepNavVisRange = "{864, 1512}";
 			sepNavWindowFrame = "{{15, 0}, {1155, 778}}";
 		};
 	};
@@ -791,7 +818,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 80;
+		rLoc = 84;
 		rType = 1;
 	};
 	BCF4952B1040970700BE82D5 /* PBXTextBookmark */ = {
@@ -819,7 +846,7 @@
 		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
 		name = "SLSMoleculeGLViewController.h: 32";
 		rLen = 72;
-		rLoc = 1608;
+		rLoc = 1673;
 		rType = 0;
 		vrLen = 1086;
 		vrLoc = 0;
@@ -829,7 +856,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 60";
 		rLen = 0;
-		rLoc = 3644;
+		rLoc = 3773;
 		rType = 0;
 		vrLen = 2386;
 		vrLoc = 1268;
@@ -839,8 +866,8 @@
 		comments = "'SLSMoleculeGLViewController' may not respond to '-drawViewByRotatingAroundX:rotatingAroundY:scaling:translationInX:translationInY:'";
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
-		rLen = 1;
-		rLoc = 197;
+		rLen = 0;
+		rLoc = 191;
 		rType = 1;
 	};
 	BCF4953A10409AAB00BE82D5 /* XCBuildMessageTextBookmark */ = {
@@ -848,8 +875,8 @@
 		comments = "'SLSMoleculeGLViewController' may not respond to '-drawViewByRotatingAroundX:rotatingAroundY:scaling:translationInX:translationInY:'";
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
-		rLen = 1;
-		rLoc = 197;
+		rLen = 0;
+		rLoc = 191;
 		rType = 1;
 	};
 	BCF4953B10409AAB00BE82D5 /* PBXTextBookmark */ = {
@@ -857,7 +884,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 164";
 		rLen = 0;
-		rLoc = 6985;
+		rLoc = 6987;
 		rType = 0;
 		vrLen = 294;
 		vrLoc = 5748;
@@ -877,7 +904,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 164";
 		rLen = 0;
-		rLoc = 6985;
+		rLoc = 6987;
 		rType = 0;
 		vrLen = 282;
 		vrLoc = 5748;
@@ -896,8 +923,8 @@
 		isa = PBXTextBookmark;
 		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
 		name = "SLSMoleculeGLViewController.h: 35";
-		rLen = 28;
-		rLoc = 1680;
+		rLen = 0;
+		rLoc = 1745;
 		rType = 0;
 		vrLen = 1144;
 		vrLoc = 0;
@@ -907,7 +934,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 164";
 		rLen = 0;
-		rLoc = 6993;
+		rLoc = 6987;
 		rType = 0;
 		vrLen = 1533;
 		vrLoc = 4809;
@@ -918,7 +945,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 62;
+		rLoc = 59;
 		rType = 1;
 	};
 	BCF4954B1040BA7400BE82D5 /* PBXTextBookmark */ = {
@@ -926,7 +953,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 199";
 		rLen = 0;
-		rLoc = 24872;
+		rLoc = 24914;
 		rType = 0;
 		vrLen = 383;
 		vrLoc = 1377;
@@ -946,7 +973,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 39";
 		rLen = 0;
-		rLoc = 1591;
+		rLoc = 1596;
 		rType = 0;
 		vrLen = 2166;
 		vrLoc = 444;
@@ -966,7 +993,7 @@
 		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
 		name = "SLSMoleculeGLViewController.h: 38";
 		rLen = 0;
-		rLoc = 2557;
+		rLoc = 2594;
 		rType = 0;
 		vrLen = 1160;
 		vrLoc = 0;
@@ -976,7 +1003,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 199";
 		rLen = 0;
-		rLoc = 24872;
+		rLoc = 24914;
 		rType = 0;
 		vrLen = 363;
 		vrLoc = 1221;
@@ -996,7 +1023,7 @@
 		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
 		name = "SLSMoleculeGLViewController.h: 38";
 		rLen = 0;
-		rLoc = 2557;
+		rLoc = 2594;
 		rType = 0;
 		vrLen = 1160;
 		vrLoc = 0;
@@ -1006,7 +1033,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 151";
 		rLen = 0;
-		rLoc = 6496;
+		rLoc = 6625;
 		rType = 0;
 		vrLen = 1061;
 		vrLoc = 5096;
@@ -1016,7 +1043,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 199";
 		rLen = 0;
-		rLoc = 24872;
+		rLoc = 24914;
 		rType = 0;
 		vrLen = 341;
 		vrLoc = 1614;
@@ -1036,7 +1063,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 151";
 		rLen = 0;
-		rLoc = 6496;
+		rLoc = 6625;
 		rType = 0;
 		vrLen = 1064;
 		vrLoc = 5096;
@@ -1046,7 +1073,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 201";
 		rLen = 0;
-		rLoc = 24872;
+		rLoc = 24914;
 		rType = 0;
 		vrLen = 363;
 		vrLoc = 1221;
@@ -1066,7 +1093,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 201";
 		rLen = 0;
-		rLoc = 24872;
+		rLoc = 24914;
 		rType = 0;
 		vrLen = 492;
 		vrLoc = 1633;
@@ -1086,7 +1113,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 204";
 		rLen = 0;
-		rLoc = 24872;
+		rLoc = 24914;
 		rType = 0;
 		vrLen = 363;
 		vrLoc = 1221;
@@ -1106,7 +1133,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 204";
 		rLen = 0;
-		rLoc = 24872;
+		rLoc = 24914;
 		rType = 0;
 		vrLen = 308;
 		vrLoc = 1614;
@@ -1126,7 +1153,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 204";
 		rLen = 0;
-		rLoc = 24872;
+		rLoc = 24914;
 		rType = 0;
 		vrLen = 487;
 		vrLoc = 1614;
@@ -1146,7 +1173,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 204";
 		rLen = 0;
-		rLoc = 24872;
+		rLoc = 24914;
 		rType = 0;
 		vrLen = 487;
 		vrLoc = 1614;
@@ -1166,7 +1193,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 204";
 		rLen = 0;
-		rLoc = 24872;
+		rLoc = 24914;
 		rType = 0;
 		vrLen = 487;
 		vrLoc = 1614;
@@ -1186,7 +1213,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 204";
 		rLen = 0;
-		rLoc = 24872;
+		rLoc = 24914;
 		rType = 0;
 		vrLen = 487;
 		vrLoc = 1614;
@@ -1206,7 +1233,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 204";
 		rLen = 0;
-		rLoc = 24872;
+		rLoc = 24914;
 		rType = 0;
 		vrLen = 487;
 		vrLoc = 1614;
@@ -1226,7 +1253,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 204";
 		rLen = 0;
-		rLoc = 24872;
+		rLoc = 24914;
 		rType = 0;
 		vrLen = 487;
 		vrLoc = 1614;
@@ -1246,7 +1273,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 204";
 		rLen = 0;
-		rLoc = 24872;
+		rLoc = 24914;
 		rType = 0;
 		vrLen = 487;
 		vrLoc = 1614;
@@ -1267,7 +1294,7 @@
 		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 50;
+		rLoc = 51;
 		rType = 1;
 	};
 	BCF495AE1040D15300BE82D5 /* PBXTextBookmark */ = {
@@ -1275,7 +1302,7 @@
 		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
 		name = "SLSMoleculeGLViewController.h: 52";
 		rLen = 0;
-		rLoc = 1741;
+		rLoc = 1778;
 		rType = 0;
 		vrLen = 1668;
 		vrLoc = 896;
@@ -1294,7 +1321,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 706";
 		rLen = 0;
-		rLoc = 24872;
+		rLoc = 24914;
 		rType = 0;
 		vrLen = 349;
 		vrLoc = 1666;
@@ -1315,7 +1342,7 @@
 		fRef = BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 652;
+		rLoc = 658;
 		rType = 1;
 	};
 	BCF495D91040DE7700BE82D5 /* PBXTextBookmark */ = {
@@ -1323,7 +1350,7 @@
 		fRef = BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */;
 		name = "SLSMolecule+PDB.m: 653";
 		rLen = 0;
-		rLoc = 50204;
+		rLoc = 50377;
 		rType = 0;
 		vrLen = 291;
 		vrLoc = 50175;
@@ -1353,7 +1380,7 @@
 		fRef = BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */;
 		name = "SLSMolecule+PDB.m: 653";
 		rLen = 0;
-		rLoc = 50204;
+		rLoc = 50377;
 		rType = 0;
 		vrLen = 291;
 		vrLoc = 50175;
@@ -1374,7 +1401,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 584;
+		rLoc = 580;
 		rType = 1;
 	};
 	BCF495FC1040E73D00BE82D5 /* PBXTextBookmark */ = {
@@ -1382,7 +1409,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 585";
 		rLen = 0;
-		rLoc = 22065;
+		rLoc = 22068;
 		rType = 0;
 		vrLen = 490;
 		vrLoc = 20867;
@@ -1412,7 +1439,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 402;
+		rLoc = 389;
 		rType = 1;
 	};
 	BCF496081040E88A00BE82D5 /* PBXTextBookmark */ = {
@@ -1420,7 +1447,7 @@
 		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
 		name = "SLSMoleculeGLViewController.h: 38";
 		rLen = 0;
-		rLoc = 1247;
+		rLoc = 1312;
 		rType = 0;
 		vrLen = 1610;
 		vrLoc = 947;
@@ -1430,7 +1457,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 600";
 		rLen = 0;
-		rLoc = 22639;
+		rLoc = 22642;
 		rType = 0;
 		vrLen = 1484;
 		vrLoc = 21676;
@@ -1450,7 +1477,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 585";
 		rLen = 67;
-		rLoc = 22065;
+		rLoc = 22068;
 		rType = 0;
 		vrLen = 1771;
 		vrLoc = 21159;
@@ -1459,7 +1486,7 @@
 		isa = PBXTextBookmark;
 		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
 		rLen = 0;
-		rLoc = 9223372036854775767;
+		rLoc = 9223372036854775804;
 		rType = 0;
 	};
 	BCF496111040E88A00BE82D5 /* PBXTextBookmark */ = {
@@ -1487,7 +1514,7 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 585";
 		rLen = 0;
-		rLoc = 22065;
+		rLoc = 22068;
 		rType = 0;
 		vrLen = 490;
 		vrLoc = 20927;
@@ -1497,9 +1524,272 @@
 		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
 		name = "SLSMoleculeGLViewController.m: 585";
 		rLen = 0;
-		rLoc = 22065;
+		rLoc = 22068;
 		rType = 0;
 		vrLen = 490;
 		vrLoc = 20927;
+	};
+	BCF496201040E96900BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		rLen = 13;
+		rLoc = 3083;
+		rType = 0;
+	};
+	BCF496231040E97B00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 585";
+		rLen = 0;
+		rLoc = 22068;
+		rType = 0;
+		vrLen = 385;
+		vrLoc = 21105;
+	};
+	BCF496241040E97B00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 74";
+		rLen = 13;
+		rLoc = 3083;
+		rType = 0;
+		vrLen = 780;
+		vrLoc = 2642;
+	};
+	BCF4962B1040EA2000BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 585";
+		rLen = 0;
+		rLoc = 22068;
+		rType = 0;
+		vrLen = 547;
+		vrLoc = 21127;
+	};
+	BCF4962C1040EA2000BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 74";
+		rLen = 13;
+		rLoc = 3083;
+		rType = 0;
+		vrLen = 780;
+		vrLoc = 2642;
+	};
+	BCF496341040EADD00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 585";
+		rLen = 0;
+		rLoc = 22068;
+		rType = 0;
+		vrLen = 547;
+		vrLoc = 21127;
+	};
+	BCF496351040EADD00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 74";
+		rLen = 13;
+		rLoc = 3083;
+		rType = 0;
+		vrLen = 780;
+		vrLoc = 2642;
+	};
+	BCF496391040EB3100BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 585";
+		rLen = 0;
+		rLoc = 22068;
+		rType = 0;
+		vrLen = 547;
+		vrLoc = 21127;
+	};
+	BCF4963A1040EB3100BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 74";
+		rLen = 13;
+		rLoc = 3083;
+		rType = 0;
+		vrLen = 780;
+		vrLoc = 2642;
+	};
+	BCF4964F1040F08C00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 585";
+		rLen = 0;
+		rLoc = 22068;
+		rType = 0;
+		vrLen = 541;
+		vrLoc = 21127;
+	};
+	BCF496501040F08C00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 74";
+		rLen = 13;
+		rLoc = 3083;
+		rType = 0;
+		vrLen = 778;
+		vrLoc = 2642;
+	};
+	BCF496511040F1F300BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 585";
+		rLen = 0;
+		rLoc = 22068;
+		rType = 0;
+		vrLen = 547;
+		vrLoc = 21127;
+	};
+	BCF496521040F1F300BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 74";
+		rLen = 13;
+		rLoc = 3083;
+		rType = 0;
+		vrLen = 780;
+		vrLoc = 2642;
+	};
+	BCF496531040F23300BE82D5 /* SLSMoleculeAutorotationOperation.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1000, 706}}";
+			sepNavSelRange = "{554, 0}";
+			sepNavVisRange = "{0, 576}";
+		};
+	};
+	BCF496541040F23300BE82D5 /* SLSMoleculeAutorotationOperation.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1034, 784}}";
+			sepNavSelRange = "{865, 0}";
+			sepNavVisRange = "{59, 982}";
+		};
+	};
+	BCF496581040F24A00BE82D5 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = BC37E7C80E14779E00E11F4F /* SLSMolecule.h */;
+	};
+	BCF4968F1040F69200BE82D5 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'isAutorotationCancelled' undeclared (first use in this function)";
+		fRef = BCF496541040F23300BE82D5 /* SLSMoleculeAutorotationOperation.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 32;
+		rType = 1;
+	};
+	BCF496921040F6BE00BE82D5 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Incomplete implementation of class 'SLSMoleculeGLViewController'";
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 694;
+		rType = 1;
+	};
+	BCF496931040F6BE00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 684";
+		rLen = 0;
+		rLoc = 24909;
+		rType = 0;
+		vrLen = 203;
+		vrLoc = 24492;
+	};
+	BCF496941040F6BE00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 685";
+		rLen = 0;
+		rLoc = 24914;
+		rType = 0;
+		vrLen = 468;
+		vrLoc = 2952;
+	};
+	BCF496991040F6F700BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		name = "SLSMoleculeGLViewController.h: 38";
+		rLen = 52;
+		rLoc = 1259;
+		rType = 0;
+		vrLen = 1728;
+		vrLoc = 702;
+	};
+	BCF4969A1040F6F700BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 684";
+		rLen = 0;
+		rLoc = 24909;
+		rType = 0;
+		vrLen = 7499;
+		vrLoc = 17196;
+	};
+	BCF4969B1040F6F700BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 657";
+		rLen = 0;
+		rLoc = 24344;
+		rType = 0;
+		vrLen = 7537;
+		vrLoc = 17196;
+	};
+	BCF4969E1040F6F700BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCF496531040F23300BE82D5 /* SLSMoleculeAutorotationOperation.h */;
+		name = "SLSMoleculeAutorotationOperation.h: 21";
+		rLen = 0;
+		rLoc = 554;
+		rType = 0;
+		vrLen = 576;
+		vrLoc = 0;
+	};
+	BCF4969F1040F6F700BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCF496541040F23300BE82D5 /* SLSMoleculeAutorotationOperation.m */;
+		name = "SLSMoleculeAutorotationOperation.m: 41";
+		rLen = 0;
+		rLoc = 865;
+		rType = 0;
+		vrLen = 982;
+		vrLoc = 59;
+	};
+	BCF496A21040F6F700BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC37E7C80E14779E00E11F4F /* SLSMolecule.h */;
+		name = "SLSMolecule.h: 5";
+		rLen = 293;
+		rLoc = 38;
+		rType = 0;
+		vrLen = 1828;
+		vrLoc = 0;
+	};
+	BCF496A51040F6FD00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 685";
+		rLen = 0;
+		rLoc = 24909;
+		rType = 0;
+		vrLen = 128;
+		vrLoc = 24605;
+	};
+	BCF496A61040F6FD00BE82D5 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 686";
+		rLen = 0;
+		rLoc = 24914;
+		rType = 0;
+		vrLen = 468;
+		vrLoc = 2952;
 	};
 }

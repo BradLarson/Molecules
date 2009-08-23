@@ -23,8 +23,9 @@
 
 	SLSMolecule *moleculeToDisplay;
 	CATransform3D currentCalculatedMatrix;
-	BOOL isAutorotating, isAutorotationCancelled;
+	BOOL isAutorotating;
 	BOOL isFirstDrawingOfMolecule, isFrameRenderingFinished;
+	NSOperationQueue *autorotationQueue;
 
 	// Touch-handling 
 	float startingTouchDistance, previousScale;
@@ -34,6 +35,7 @@
 }
 
 @property (readwrite, retain) SLSMolecule *moleculeToDisplay;
+@property (readonly) BOOL isFrameRenderingFinished;
 
 // Display indicator control
 - (void)showScanningIndicator:(NSNotification *)note;
@@ -45,7 +47,6 @@
 
 // Autorotation of molecule
 - (void)startOrStopAutorotation:(id)sender;
-- (void)autoRotationThread;
 
 // OpenGL matrix helper methods
 - (void)convertMatrix:(GLfloat *)matrix to3DTransform:(CATransform3D *)transform3D;

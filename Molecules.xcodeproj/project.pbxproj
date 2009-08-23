@@ -41,6 +41,7 @@
 		BCDC9F840EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F830EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib */; };
 		BCDC9F9D0EB37B3400ADCFA5 /* Localized.strings in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F9C0EB37B3400ADCFA5 /* Localized.strings */; };
 		BCF495221040945400BE82D5 /* RotationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = BCF495211040945400BE82D5 /* RotationIcon.png */; };
+		BCF496551040F23300BE82D5 /* SLSMoleculeAutorotationOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BCF496541040F23300BE82D5 /* SLSMoleculeAutorotationOperation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +101,8 @@
 		BCDC9F9A0EB37B1E00ADCFA5 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localized.strings; sourceTree = "<group>"; };
 		BCDC9F9E0EB37B4100ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localized.strings; sourceTree = "<group>"; };
 		BCF495211040945400BE82D5 /* RotationIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RotationIcon.png; sourceTree = "<group>"; };
+		BCF496531040F23300BE82D5 /* SLSMoleculeAutorotationOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeAutorotationOperation.h; sourceTree = "<group>"; };
+		BCF496541040F23300BE82D5 /* SLSMoleculeAutorotationOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeAutorotationOperation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,7 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				BCC7617C0E0EF8180050DD95 /* Application Control */,
-				BCC7617D0E0EF8260050DD95 /* Data Model */,
+				BCC7617D0E0EF8260050DD95 /* Molecules */,
 				BCC7617B0E0EF7F10050DD95 /* 3D Molecule Display */,
 				BCC8FE7C0EC7E44D00853857 /* Searching and Retrieving Molecules */,
 				BCC709540E19C6580054D0EB /* Downloaded Molecules Table */,
@@ -213,6 +216,8 @@
 				BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */,
 				BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */,
 				BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */,
+				BCF496531040F23300BE82D5 /* SLSMoleculeAutorotationOperation.h */,
+				BCF496541040F23300BE82D5 /* SLSMoleculeAutorotationOperation.m */,
 			);
 			name = "3D Molecule Display";
 			sourceTree = "<group>";
@@ -228,7 +233,7 @@
 			name = "Application Control";
 			sourceTree = "<group>";
 		};
-		BCC7617D0E0EF8260050DD95 /* Data Model */ = {
+		BCC7617D0E0EF8260050DD95 /* Molecules */ = {
 			isa = PBXGroup;
 			children = (
 				BC2CF8630E5784EC00653418 /* SLSMolecule+PDB.h */,
@@ -240,7 +245,7 @@
 				BCC281280E1B1FCD00978ECA /* NSData+Gzip.h */,
 				BCC281290E1B1FCD00978ECA /* NSData+Gzip.m */,
 			);
-			name = "Data Model";
+			name = Molecules;
 			sourceTree = "<group>";
 		};
 		BCC8FE7C0EC7E44D00853857 /* Searching and Retrieving Molecules */ = {
@@ -342,6 +347,7 @@
 				BC2CF8650E5784ED00653418 /* SLSMolecule+PDB.m in Sources */,
 				BCC8FE800EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m in Sources */,
 				BC146A9B0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m in Sources */,
+				BCF496551040F23300BE82D5 /* SLSMoleculeAutorotationOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,16 +11,12 @@
 #import "SLSMoleculeGLViewController.h"
 #import "SLSMoleculeGLView.h"
 #import "SLSMolecule.h"
+#import "SLSMoleculeAutorotationOperation.h"
 
 @implementation SLSMoleculeGLViewController
 
 #pragma mark -
 #pragma mark Initialization and teardown
-
-- (void)dealloc 
-{
-	[super dealloc];
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
 {
@@ -61,9 +57,17 @@
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleFinishOfMoleculeRendering:) name:@"MoleculeRenderingEnded" object:nil];
 		
+		autorotationQueue = [[NSOperationQueue alloc] init];
 	}
 	return self;
 }
+
+- (void)dealloc 
+{
+	[autorotationQueue release];
+	[super dealloc];
+}
+
 
 - (void)viewDidLoad 
 {
@@ -71,7 +75,7 @@
 	
 	UIButton *infoButton = [[UIButton buttonWithType:UIButtonTypeInfoLight] retain];
 	infoButton.frame = CGRectMake(320.0f - 70.0f, 460.0f - 70.0f, 70.0f, 70.0f);
-	[infoButton addTarget:glView action:@selector(switchToTableView) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+	[infoButton addTarget:self action:@selector(switchToTableView) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
 	[glView addSubview:infoButton];
 	[infoButton release];
 
@@ -174,32 +178,15 @@
 {
 	if (isAutorotating)
 	{
-		isAutorotationCancelled = YES;
+		[autorotationQueue cancelAllOperations];
+		[autorotationQueue waitUntilAllOperationsAreFinished];
 	}
 	else
 	{
-		[self performSelectorInBackground:@selector(autoRotationThread) withObject:nil];
+		SLSMoleculeAutorotationOperation *autorotationOperation = [[SLSMoleculeAutorotationOperation alloc] initWithViewController:self];
+		[autorotationQueue addOperation:autorotationOperation];
 	}
 	isAutorotating = !isAutorotating;
-}
-
-- (void)autoRotationThread;
-{
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	isAutorotationCancelled = NO;
-	float degreesCounter = 0.0f;
-	
-	while (!isAutorotationCancelled)
-	{
-		[NSThread sleepForTimeInterval:1.0f / 30.0f];
-		degreesCounter += 1.0f;
-		if (isFrameRenderingFinished)
-		{
-			[self drawViewByRotatingAroundX:degreesCounter rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
-			degreesCounter = 0.0f;
-		}
-	}
-	[pool release];
 }
 
 #pragma mark -
@@ -466,6 +453,9 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+	if (isAutorotating)
+		[self startOrStopAutorotation:nil];
+
     NSMutableSet *currentTouches = [[[event touchesForView:self.view] mutableCopy] autorelease];
     [currentTouches minusSet:touches];
 	
@@ -485,6 +475,9 @@
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 {
+	if (isAutorotating)
+		[self startOrStopAutorotation:nil];
+
 	if ([[event touchesForView:self.view] count] > 1) // Pinch gesture, possibly two-finger movement
 	{
 		CGPoint directionOfPanning = CGPointZero;
@@ -544,6 +537,9 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event 
 {
+	if (isAutorotating)
+		[self startOrStopAutorotation:nil];
+
 	if ([[touches anyObject] tapCount] >= 2)
 	{
 		NSString *buttonTitle1;
@@ -613,6 +609,9 @@
 
 - (IBAction)switchToTableView;
 {
+	if (isAutorotating)
+		[self startOrStopAutorotation:nil];
+
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleView" object:nil];
 }
 
@@ -667,6 +666,7 @@
 #pragma mark Accessors
 
 @synthesize moleculeToDisplay;
+@synthesize isFrameRenderingFinished;
 
 - (void)setMoleculeToDisplay:(SLSMolecule *)newMolecule;
 {
@@ -674,8 +674,6 @@
 	{
 		return;
 	}
-	if (isAutorotating)
-		[self startOrStopAutorotation:nil];
 	
 	moleculeToDisplay.isBeingDisplayed = NO;
 	[moleculeToDisplay release];

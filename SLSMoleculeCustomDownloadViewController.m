@@ -147,6 +147,18 @@
 }
 
 #pragma mark -
+#pragma mark UIViewController methods
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	urlInput.delegate = nil;
+	webView.delegate = nil;
+
+	[super viewWillDisappear:animated];
+}
+
+
+#pragma mark -
 #pragma mark Accessors
 
 @synthesize delegate;

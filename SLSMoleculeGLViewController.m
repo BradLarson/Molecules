@@ -64,10 +64,10 @@
 
 - (void)dealloc 
 {
+	[rotationButton release];
 	[autorotationQueue release];
 	[super dealloc];
 }
-
 
 - (void)viewDidLoad 
 {
@@ -79,11 +79,15 @@
 	[glView addSubview:infoButton];
 	[infoButton release];
 
-	UIButton *rotationButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	rotationButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	
 	UIImage *rotationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIcon" ofType:@"png"]];
 	[rotationButton setImage:rotationImage forState:UIControlStateNormal];
 	[rotationImage release];
+
+	UIImage *selectedRotationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIconSelected" ofType:@"png"]];
+	[rotationButton setImage:selectedRotationImage forState:UIControlStateSelected];
+	[selectedRotationImage release];
 	
 	rotationButton.showsTouchWhenHighlighted = YES;
 	[rotationButton addTarget:self action:@selector(startOrStopAutorotation:) forControlEvents:UIControlEventTouchUpInside];
@@ -180,11 +184,14 @@
 	{
 		[autorotationQueue cancelAllOperations];
 		[autorotationQueue waitUntilAllOperationsAreFinished];
+		rotationButton.selected = NO;
 	}
 	else
 	{
+		rotationButton.selected = YES;
 		SLSMoleculeAutorotationOperation *autorotationOperation = [[SLSMoleculeAutorotationOperation alloc] initWithViewController:self];
 		[autorotationQueue addOperation:autorotationOperation];
+		[autorotationOperation release];
 	}
 	isAutorotating = !isAutorotating;
 }

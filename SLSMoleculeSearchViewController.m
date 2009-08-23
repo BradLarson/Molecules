@@ -28,7 +28,7 @@
 		self.view.frame = [[UIScreen mainScreen] applicationFrame];
 		self.view.autoresizesSubviews = YES;
 
-		UISearchBar *keywordSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+		keywordSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
 		keywordSearchBar.placeholder = NSLocalizedStringFromTable(@"Search for molecules", @"Localized", nil);
 		keywordSearchBar.delegate = self;
 		keywordSearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -37,7 +37,6 @@
 		self.navigationItem.rightBarButtonItem = nil;
 
 		self.tableView.tableHeaderView = keywordSearchBar;
-		[keywordSearchBar release];
 		
 		downloadedFileContents = nil;
 		searchResultTitles = nil;
@@ -52,6 +51,7 @@
 
 - (void)dealloc 
 {
+	[keywordSearchBar release];
 	[searchResultRetrievalConnection release];
 	[searchResultTitles release];
 	[searchResultPDBCodes release];
@@ -315,6 +315,16 @@
 
 - (void)didReceiveMemoryWarning 
 {
+}
+
+#pragma mark -
+#pragma mark UIViewController methods
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	keywordSearchBar.delegate = self;
+	
+	[super viewWillDisappear:animated];
 }
 
 #pragma mark -

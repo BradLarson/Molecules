@@ -36,6 +36,16 @@
 }
 
 @property(nonatomic, assign) id<MoleculeDownloadDelegate> delegate;
+@property(nonatomic, retain) IBOutlet UIView *pdbDownloadDisplayView, *pdbInformationWebView;
+@property(nonatomic, retain) IBOutlet UILabel *moleculeTitleText, *downloadStatusText;
+@property(nonatomic, retain) IBOutlet UIButton *pdbInformationDisplayButton, *pdbDownloadButton;
+@property(nonatomic, retain) IBOutlet UIProgressView *downloadStatusBar;
+@property(nonatomic, retain) IBOutlet UIActivityIndicatorView *indefiniteDownloadIndicator;
+@property(nonatomic, retain) IBOutlet UIWebView *pdbCodeSearchWebView;
+@property(nonatomic, retain) IBOutlet UILabel *webLoadingLabel;
+@property(nonatomic, retain) IBOutlet UIActivityIndicatorView *webLoadingIndicator;
+
+
 
 - (id)initWithPDBCode:(NSString *)pdbCode andTitle:(NSString *)title;
 

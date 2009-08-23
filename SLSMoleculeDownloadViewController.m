@@ -32,6 +32,18 @@
 
 - (void)dealloc;
 {
+	self.pdbDownloadDisplayView = nil;
+	self.pdbInformationWebView = nil;
+	self.moleculeTitleText = nil;
+	self.downloadStatusText = nil;
+	self.pdbInformationDisplayButton = nil;
+	self.pdbDownloadButton = nil;
+	self.downloadStatusBar = nil;
+	self.indefiniteDownloadIndicator = nil;
+	self.pdbCodeSearchWebView = nil;
+	self.webLoadingLabel = nil;
+	self.webLoadingIndicator = nil;
+	
 	[self cancelDownload];
 	[codeForCurrentlyDownloadingProtein release];
 	[titleForCurrentlyDownloadingProtein release];
@@ -124,7 +136,8 @@
 	[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.view cache:YES];
 	
 	self.navigationItem.rightBarButtonItem = nil;
-	
+	pdbCodeSearchWebView.delegate = nil;
+
 	[pdbInformationWebView removeFromSuperview];
 	[self.view addSubview:pdbDownloadDisplayView];
 	
@@ -224,13 +237,12 @@
 	[downloadConnection release];
 	downloadConnection = nil;
 	
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
 	[downloadedFileContents release];
 	downloadedFileContents = nil;
 	downloadStatusBar.hidden = YES;
-	[indefiniteDownloadIndicator stopAnimating];
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+	[indefiniteDownloadIndicator stopAnimating];
 	downloadStatusText.hidden = YES;
 
 	[self enableControls:YES];
@@ -331,9 +343,27 @@
 }
 
 #pragma mark -
+#pragma mark UIViewController methods
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	pdbCodeSearchWebView.delegate = nil;
+	
+	[super viewWillDisappear:animated];
+}
+
+#pragma mark -
 #pragma mark Accessors
 
 @synthesize delegate;
+@synthesize pdbDownloadDisplayView, pdbInformationWebView;
+@synthesize moleculeTitleText, downloadStatusText;
+@synthesize pdbInformationDisplayButton, pdbDownloadButton;
+@synthesize downloadStatusBar;
+@synthesize indefiniteDownloadIndicator;
+@synthesize pdbCodeSearchWebView;
+@synthesize webLoadingLabel;
+@synthesize webLoadingIndicator;
 
 
 @end

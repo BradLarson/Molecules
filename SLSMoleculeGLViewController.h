@@ -20,6 +20,7 @@
 	UIActivityIndicatorView *scanningActivityIndicator;
 	UIProgressView *renderingProgressIndicator;
 	UILabel *renderingActivityLabel;
+	UIButton *rotationButton;
 
 	SLSMolecule *moleculeToDisplay;
 	CATransform3D currentCalculatedMatrix;

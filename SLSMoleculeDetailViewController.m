@@ -145,17 +145,10 @@
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:StatisticsCellIdentifier];
 		if (cell == nil) 
 		{
-			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:StatisticsCellIdentifier] autorelease];
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:StatisticsCellIdentifier] autorelease];
 			
-			CGRect frame = CGRectMake(CGRectGetMaxX(cell.contentView.bounds) - 170.0f, 5.0f, 160.0f, 32.0f);
-			UILabel *valueLabel = [[UILabel alloc] initWithFrame:frame];
-            [valueLabel setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];
-			valueLabel.tag = 1;
-			valueLabel.textAlignment = UITextAlignmentRight;
-			valueLabel.textColor = [UIColor colorWithRed:50.0f/255.0f green:79.0f/255.0f blue:133.0f/255.0f alpha:1.0f];
-            valueLabel.highlightedTextColor = [UIColor whiteColor];
-			[cell.contentView addSubview:valueLabel];
-			[valueLabel release];
+			cell.detailTextLabel.textColor = [UIColor colorWithRed:50.0f/255.0f green:79.0f/255.0f blue:133.0f/255.0f alpha:1.0f];
+            cell.detailTextLabel.highlightedTextColor = [UIColor whiteColor];			
 		}
 		
 		switch (indexPath.row)
@@ -163,26 +156,22 @@
 			case 0:
 			{
 				cell.textLabel.text = NSLocalizedStringFromTable(@"File name", @"Localized", nil);
-				UILabel *valueLabel = (UILabel *)[cell viewWithTag:1];
-				valueLabel.text = molecule.filename;
+				cell.detailTextLabel.text = molecule.filename;
 			}; break;
 			case 1:
 			{
 				cell.textLabel.text = NSLocalizedStringFromTable(@"Number of atoms", @"Localized", nil);
-				UILabel *valueLabel = (UILabel *)[cell viewWithTag:1];
-				valueLabel.text = [NSString stringWithFormat:@"%d", molecule.numberOfAtoms];
+				cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", molecule.numberOfAtoms];
 			}; break;
 			case 2:
 			{
 				cell.textLabel.text =NSLocalizedStringFromTable(@"Number of structures", @"Localized", nil);
-				UILabel *valueLabel = (UILabel *)[cell viewWithTag:1];
-				valueLabel.text = [NSString stringWithFormat:@"%d", molecule.numberOfStructures];
+				cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", molecule.numberOfStructures];
 			}; break;
 			case 3:
 			{
 				cell.textLabel.text = NSLocalizedStringFromTable(@"Current structure", @"Localized", nil);
-				UILabel *valueLabel = (UILabel *)[cell viewWithTag:1];
-				valueLabel.text = [NSString stringWithFormat:@"%d", molecule.numberOfStructureBeingDisplayed];
+				cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", molecule.numberOfStructureBeingDisplayed];
 			}; break;
 		}
 		return cell;

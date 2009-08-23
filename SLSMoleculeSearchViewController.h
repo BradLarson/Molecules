@@ -15,6 +15,7 @@
 @interface SLSMoleculeSearchViewController : UITableViewController <MoleculeDownloadDelegate, UISearchBarDelegate>
 {
 	id<MoleculeDownloadDelegate> delegate;
+	UISearchBar *keywordSearchBar;
 	NSMutableArray *searchResultTitles, *searchResultPDBCodes;
 	NSMutableData *downloadedFileContents;
 	NSURLConnection *searchResultRetrievalConnection, *nextResultsRetrievalConnection;

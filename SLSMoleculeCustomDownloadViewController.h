@@ -10,11 +10,10 @@
 
 @protocol MoleculeCustomDownloadDelegate;
 
-@interface SLSMoleculeCustomDownloadViewController : UIViewController <UIWebViewDelegate, UITextFieldDelegate>
+@interface SLSMoleculeCustomDownloadViewController : UIViewController <UITextFieldDelegate>
 {
 	id <MoleculeCustomDownloadDelegate> delegate;
 	UITextField *urlInput;
-	UIWebView *webView;
 //	UIActivityIndicatorView *downloadActivityIndicator;
 }
 

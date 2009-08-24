@@ -66,7 +66,7 @@
 	switch (index)
 	{
 		case 0: cell.textLabel.text = NSLocalizedStringFromTable(@"RCSB Protein Data Bank", @"Localized", nil); break;
-		case 1: cell.textLabel.text = NSLocalizedStringFromTable(@"Custom location", @"Localized", nil); break;
+		case 1: cell.textLabel.text = NSLocalizedStringFromTable(@"Custom Location", @"Localized", nil); break;
 	}
 
     return cell;

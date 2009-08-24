@@ -507,10 +507,10 @@ void normalize(GLfloat *v)
 	shortVertex[2] = (GLshort)round(newVertex[2] * 32767.0f);
 	shortVertex[3] = 0;
 	
-	if ( ((newVertex[0] < -1.0f) || (newVertex[0] > 1.0f)) || ((newVertex[1] < -1.0f) || (newVertex[1] > 1.0f)) || ((newVertex[2] < -1.0f) || (newVertex[2] > 1.0f)) )
-	{
-		NSLog(@"Vertex outside range: %f, %f, %f", newVertex[0], newVertex[1], newVertex[2]);
-	}
+//	if ( ((newVertex[0] < -1.0f) || (newVertex[0] > 1.0f)) || ((newVertex[1] < -1.0f) || (newVertex[1] > 1.0f)) || ((newVertex[2] < -1.0f) || (newVertex[2] > 1.0f)) )
+//	{
+//		NSLog(@"Vertex outside range: %f, %f, %f", newVertex[0], newVertex[1], newVertex[2]);
+//	}
 	
 	[m_vertexArray appendBytes:shortVertex length:(sizeof(GLshort) * 4)];	
 
@@ -625,8 +625,7 @@ void normalize(GLfloat *v)
 	
 	atomRadius *= scaleAdjustmentForX;
 
-	int currentCounter;
-	for (currentCounter = 0; currentCounter < 12; currentCounter++)
+	for (int currentCounter = 0; currentCounter < 12; currentCounter++)
 	{
 		// Adjust radius and shift to match center
 		newVertex[0] = (vdata[currentCounter][0] * atomRadius) + newPoint.x;
@@ -649,11 +648,10 @@ void normalize(GLfloat *v)
 	}
 	
 	GLushort indexHolder;
-	for (currentCounter = 0; currentCounter < 20; currentCounter++)
+	for (int currentCounter = 0; currentCounter < 20; currentCounter++)
 	{
-		int internalCounter;
 		totalNumberOfTriangles++;
-		for (internalCounter = 0; internalCounter < 3; internalCounter++)
+		for (unsigned int internalCounter = 0; internalCounter < 3; internalCounter++)
 		{
 			indexHolder = baseToAddToIndices + tindices[currentCounter][internalCounter];
 			[self addIndex:&indexHolder];
@@ -687,8 +685,7 @@ void normalize(GLfloat *v)
 	
 	
 	// Do first edge vertices, colors, and normals
-	unsigned int edgeCounter;
-	for (edgeCounter = 0; edgeCounter < 4; edgeCounter++)
+	for (unsigned int edgeCounter = 0; edgeCounter < 4; edgeCounter++)
 	{
 		SLS3DPoint calculatedNormal;
 		GLfloat edgeNormal[3], edgeVertex[3];
@@ -734,13 +731,11 @@ void normalize(GLfloat *v)
 		[self addColor:bondColor];
 	}
 
-	int currentCounter;
-	for (currentCounter = 0; currentCounter < 8; currentCounter++)
+	for (unsigned int currentCounter = 0; currentCounter < 8; currentCounter++)
 	{
-		int internalCounter;
 		totalNumberOfTriangles++;
 
-		for (internalCounter = 0; internalCounter < 3; internalCounter++)
+		for (unsigned int internalCounter = 0; internalCounter < 3; internalCounter++)
 		{
 			GLushort indexHolder = baseToAddToIndices + bondIndices[currentCounter][internalCounter];
 			[self addIndex:&indexHolder];
@@ -1279,8 +1274,7 @@ void normalize(GLfloat *v)
 	
 	m_numberOfIndicesForBuffers = (unsigned int *) malloc(sizeof(unsigned int) * m_numberOfVertexBuffers);
 	
-	unsigned int bufferIndex;
-	for (bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
+	for (unsigned int bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
 	{
 		glGenBuffers(1, &m_indexBufferHandle[bufferIndex]); 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBufferHandle[bufferIndex]);   
@@ -1298,7 +1292,7 @@ void normalize(GLfloat *v)
 	[m_indexArrays release];
 	m_indexArrays = nil;
 	
-	for (bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
+	for (unsigned int bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
 	{	
 		glGenBuffers(1, &m_vertexBufferHandle[bufferIndex]); 
 		glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferHandle[bufferIndex]); 
@@ -1316,8 +1310,7 @@ void normalize(GLfloat *v)
 
 - (void)drawMolecule;
 {
-	unsigned int bufferIndex;
-	for (bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
+	for (unsigned int bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
 	{
 		// Bind the buffers
 		glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferHandle[bufferIndex]); 
@@ -1340,8 +1333,7 @@ void normalize(GLfloat *v)
 {
 	if (isRenderingCancelled)
 		return;
-	unsigned int bufferIndex;
-	for (bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
+	for (unsigned int bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
 	{
 		glDeleteBuffers(1, &m_indexBufferHandle[bufferIndex]);
 		glDeleteBuffers(1, &m_vertexBufferHandle[bufferIndex]);

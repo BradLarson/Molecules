@@ -19,15 +19,26 @@
 {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) 
 	{
-        // Custom initialization
-		self.view.frame = [[UIScreen mainScreen] applicationFrame];
-		self.view.autoresizesSubviews = YES;
+		self.title = NSLocalizedStringFromTable(@"Custom Location", @"Localized", @"");		
+		self.navigationItem.rightBarButtonItem = nil;
 		
-		urlInput = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, 40.0f, 200.0f, 30.0f)];
+		UIView *mainView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+		mainView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+		mainView.autoresizesSubviews = YES;
+		self.view = mainView;
+		
+		UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, 20.0f, mainView.bounds.size.width - 40.0f, 60.0f)];
+		descriptionLabel.text = NSLocalizedStringFromTable(@"Type or paste in the location of the custom molecule and press Go to begin the download.", @"Localized", @"");
+		descriptionLabel.numberOfLines = 3;
+		descriptionLabel.backgroundColor = [UIColor clearColor];
+		[mainView addSubview:descriptionLabel];
+		[descriptionLabel release];
+		
+		urlInput = [[UITextField alloc] initWithFrame:CGRectMake(20.0f, 100.0f, mainView.bounds.size.width - 40.0f, 30.0f)];
 		urlInput.placeholder = NSLocalizedStringFromTable(@"Molecule location", @"Localized", nil);
 		urlInput.delegate = self;
 		urlInput.adjustsFontSizeToFitWidth = YES;
-		urlInput.font = [UIFont systemFontOfSize:14];
+//		urlInput.font = [UIFont systemFontOfSize:14];
 		urlInput.borderStyle = UITextBorderStyleRoundedRect;
 		urlInput.keyboardType = UIKeyboardTypeURL;
 		urlInput.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -35,21 +46,17 @@
 		urlInput.returnKeyType = UIReturnKeyGo;
 		urlInput.enablesReturnKeyAutomatically = YES;
 		
-		self.navigationItem.titleView = urlInput;
+		[mainView addSubview:urlInput];
+		[urlInput becomeFirstResponder];
 		
-		self.navigationItem.rightBarButtonItem = nil;
-		
-		webView = [[UIWebView alloc] initWithFrame:self.view.frame];
-		webView.delegate = self;
-		webView.scalesPageToFit = YES;
-		self.view = webView;
+		[mainView release];
+
     }
     return self;
 }
 
 - (void)dealloc 
 {
-	[webView release];
 	[urlInput release];
     [super dealloc];
 }
@@ -120,7 +127,6 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-	[urlInput resignFirstResponder];
 	
 	// Either load the url in the web view or start the download process of the new molecule
 
@@ -131,15 +137,15 @@
 	
 	if ([SLSMolecule isFiletypeSupportedForFile:urlInput.text])
 	{
+		[urlInput resignFirstResponder];
 		[self.delegate customURLSelectedForMoleculeDownload:[NSURL URLWithString:urlString]];
 	}
 	else
 	{
-		// Check to make sure that the urlInput has http:// at the beginning
-		NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]
-												  cachePolicy:NSURLRequestUseProtocolCachePolicy
-											  timeoutInterval:60.0];
-		[webView loadRequest:theRequest];
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error in loading custom location", @"Localized", nil) message:NSLocalizedStringFromTable(@"The address does not contain a file of a supported molecule type.", @"Localized", nil)
+													   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil];
+		[alert show];
+		[alert release];
 		
 	}
 	
@@ -152,7 +158,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
 	urlInput.delegate = nil;
-	webView.delegate = nil;
 
 	[super viewWillDisappear:animated];
 }

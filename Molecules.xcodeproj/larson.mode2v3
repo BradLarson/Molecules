@@ -227,25 +227,24 @@
 			<key>Content</key>
 			<dict>
 				<key>PBXProjectModuleGUID</key>
-				<string>BC1DCA551041E8100001C92F</string>
+				<string>BCFB61871042247C00267EB9</string>
 				<key>PBXProjectModuleLabel</key>
-				<string>SLSMoleculeDownloadViewController.m</string>
+				<string>SLSMoleculeSearchViewController.m</string>
 				<key>PBXSplitModuleInNavigatorKey</key>
 				<dict>
 					<key>Split0</key>
 					<dict>
 						<key>PBXProjectModuleGUID</key>
-						<string>BC1DCA561041E8100001C92F</string>
+						<string>BCFB61881042247C00267EB9</string>
 						<key>PBXProjectModuleLabel</key>
-						<string>SLSMoleculeDownloadViewController.m</string>
+						<string>SLSMoleculeSearchViewController.m</string>
 						<key>_historyCapacity</key>
 						<integer>10</integer>
 						<key>bookmark</key>
-						<string>BC1DCA591041E8100001C92F</string>
+						<string>BCFB61A31042262F00267EB9</string>
 						<key>history</key>
 						<array>
-							<string>BC1DCA571041E8100001C92F</string>
-							<string>BC1DCA581041E8100001C92F</string>
+							<string>BCFB617C1042246600267EB9</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -257,11 +256,11 @@
 			<key>Geometry</key>
 			<dict>
 				<key>Frame</key>
-				<string>{{0, 20}, {1173, 736}}</string>
+				<string>{{0, 20}, {987, 737}}</string>
 				<key>PBXModuleWindowStatusBarHidden2</key>
 				<false/>
 				<key>RubberWindowFrame</key>
-				<string>23 0 1173 777 0 0 1280 778 </string>
+				<string>7 0 987 778 0 0 1280 778 </string>
 			</dict>
 		</dict>
 	</array>
@@ -350,13 +349,11 @@
 									<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 									<array>
 										<array>
-											<integer>26</integer>
-											<integer>22</integer>
 											<integer>0</integer>
 										</array>
 									</array>
 									<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-									<string>{{0, 250}, {371, 453}}</string>
+									<string>{{0, 0}, {371, 453}}</string>
 								</dict>
 								<key>PBXTopSmartGroupGIDs</key>
 								<array/>
@@ -528,8 +525,8 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>BC1DCA531041E8100001C92F</string>
-				<string>BC1DCA541041E8100001C92F</string>
+				<string>BCFB61041042138900267EB9</string>
+				<string>BCFB61051042138900267EB9</string>
 				<string>1C9437FD063B20B00039CFAC</string>
 				<string>1C9437FE063B20B00039CFAC</string>
 				<string>1C9437FF063B20B00039CFAC</string>
@@ -549,7 +546,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>272754704.32326102</real>
+	<real>272770607.29792202</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>
@@ -564,11 +561,12 @@
 	<integer>0</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>1C530D54069F1CE1000CFCEE</string>
 		<string>1C530D52069F1CE1000CFCEE</string>
+		<string>1C530D5B069F1CE1000CFCEE</string>
+		<string>BCFB61871042247C00267EB9</string>
 		<string>/Users/larson/Development/Molecules/Molecules.xcodeproj</string>
-		<string>1C530D57069F1CE1000CFCEE</string>
-		<string>BC1DCA551041E8100001C92F</string>
 	</array>
 	<key>WindowString</key>
 	<string>20 233 388 539 0 0 1280 778 </string>
@@ -731,7 +729,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string></string>
+								<string>SLSMoleculeSearchViewController.m</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -748,6 +746,8 @@
 							<string>203pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -787,7 +787,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C530D52069F1CE1000CFCEE</string>
-				<string>BC1DCA5A1041E8100001C92F</string>
+				<string>BCFB61061042138900267EB9</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -907,13 +907,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C530D54069F1CE1000CFCEE</string>
-				<string>BC1DCA5B1041E8100001C92F</string>
+				<string>BCFB611C104215CC00267EB9</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>BC1DCA5C1041E8100001C92F</string>
-				<string>BC1DCA5D1041E8100001C92F</string>
-				<string>BC1DCA5E1041E8100001C92F</string>
-				<string>BC1DCA5F1041E8100001C92F</string>
-				<string>BC1DCA601041E8100001C92F</string>
+				<string>BCFB611D104215CC00267EB9</string>
+				<string>BCFB611E104215CC00267EB9</string>
+				<string>BCFB611F104215CC00267EB9</string>
+				<string>BCFB6120104215CC00267EB9</string>
+				<string>BCFB6121104215CC00267EB9</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>
@@ -945,7 +945,7 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CDD528C0622207200134675</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>SLSMolecule.m</string>
+										<string>&lt;No Editor&gt;</string>
 										<key>StatusBarVisibility</key>
 										<true/>
 									</dict>
@@ -1003,8 +1003,8 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C530D57069F1CE1000CFCEE</string>
-				<string>BC1DCA611041E8100001C92F</string>
-				<string>BC1DCA621041E8100001C92F</string>
+				<string>BCFB61681042219E00267EB9</string>
+				<string>BCFB61691042219E00267EB9</string>
 				<string>1CDD528C0622207200134675</string>
 				<string>1CD0528E0623707200166675</string>
 			</array>
@@ -1013,7 +1013,7 @@
 			<key>WindowToolGUID</key>
 			<string>1C530D57069F1CE1000CFCEE</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>Identifier</key>
@@ -1069,7 +1069,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C530D5B069F1CE1000CFCEE</string>
-				<string>BCF494FF1040871700BE82D5</string>
+				<string>BCFB6122104215CC00267EB9</string>
 				<string>1C78EAAC065D492600B07095</string>
 			</array>
 			<key>ToolbarConfiguration</key>

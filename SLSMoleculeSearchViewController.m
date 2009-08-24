@@ -32,6 +32,7 @@
 		keywordSearchBar.placeholder = NSLocalizedStringFromTable(@"Search for molecules", @"Localized", nil);
 		keywordSearchBar.delegate = self;
 		keywordSearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+		[keywordSearchBar becomeFirstResponder];
 				
 		self.navigationItem.title = NSLocalizedStringFromTable(@"Protein Data Bank", @"Localized", nil);
 		self.navigationItem.rightBarButtonItem = nil;
@@ -113,7 +114,15 @@
 	NSString *titlesAndPDBCodeString = [[NSString alloc] initWithData:downloadedFileContents encoding:NSASCIIStringEncoding];
 	[downloadedFileContents release];
 	downloadedFileContents = nil;
-	
+
+	if ([[[titlesAndPDBCodeString substringToIndex:5] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""])
+	{
+		// No results match this query
+		currentPageOfResults = 1;
+		[titlesAndPDBCodeString release];
+		[self.tableView reloadData];		
+		return;
+	}
 
 	NSUInteger length = [titlesAndPDBCodeString length];
 	NSUInteger lineStart = 0, lineEnd = 0, contentsEnd = 0;

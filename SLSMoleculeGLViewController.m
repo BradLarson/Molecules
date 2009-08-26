@@ -107,6 +107,8 @@
 {
 	scanningActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 	scanningActivityIndicator.frame = CGRectMake(142.0f, 212.0f, 37.0f, 37.0f);
+	scanningActivityIndicator.hidesWhenStopped = YES;
+	[scanningActivityIndicator startAnimating];
 	
 	renderingActivityLabel = [[UILabel alloc] initWithFrame:CGRectMake(51.0f, 176.0f, 219.0f, 21.0f)];
 	renderingActivityLabel.font = [UIFont systemFontOfSize:17.0f];
@@ -342,7 +344,7 @@
 	// Black background, with depth buffer enabled
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+
 	if (moleculeToDisplay.isDoneRendering)
 		[moleculeToDisplay drawMolecule];
 	
@@ -373,10 +375,16 @@
 
 - (void)handleFinishOfMoleculeRendering:(NSNotification *)note;
 {
-	[self drawView];
+	[(SLSMoleculeGLView *)self.view clearScreen];
+	[NSThread sleepForTimeInterval:0.1];
+
+	GLfloat currentModelViewMatrix[16]  = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
+	[self convertMatrix:currentModelViewMatrix to3DTransform:&currentCalculatedMatrix];
 	
 #ifdef RUN_OPENGL_BENCHMARKS
 	[self performSelector:@selector(runOpenGLBenchmarks) withObject:nil afterDelay:0.5];
+#else
+	[self startOrStopAutorotation:self];	
 #endif	
 }
 
@@ -410,9 +418,7 @@
 
 - (CGPoint)commonDirectionOfTouches:(NSSet *)touches;
 {
-	
 	// Check to make sure that both fingers are moving in the same direction
-	// Get vector for
 	
 	int currentStage = 0;
 	CGPoint currentLocationOfTouch1, currentLocationOfTouch2, previousLocationOfTouch1, previousLocationOfTouch2;
@@ -445,15 +451,16 @@
 	directionOfTouch2.y = previousLocationOfTouch2.y - currentLocationOfTouch2.y;	
 	
 	// A two-finger movement should result in the direction of both touches being positive or negative at the same time in X and Y
-	if (!( (directionOfTouch1.x <= 0) && (directionOfTouch2.x <= 0) || (directionOfTouch1.x >= 0) && (directionOfTouch2.x >= 0) ))
+	if (!( ((directionOfTouch1.x <= 0) && (directionOfTouch2.x <= 0)) || ((directionOfTouch1.x >= 0) && (directionOfTouch2.x >= 0)) ))
 		return CGPointZero;
-	if (!( (directionOfTouch1.y <= 0) && (directionOfTouch2.y <= 0) || (directionOfTouch1.y >= 0) && (directionOfTouch2.y >= 0) ))
+	if (!( ((directionOfTouch1.y <= 0) && (directionOfTouch2.y <= 0)) || ((directionOfTouch1.y >= 0) && (directionOfTouch2.y >= 0)) ))
 		return CGPointZero;
 	
 	// The movement ranges are averaged out 
-	commonDirection.x = ((directionOfTouch1.x + directionOfTouch1.x) / 2.0f) / 240.0f;
-	commonDirection.y = ((directionOfTouch1.y + directionOfTouch1.y) / 2.0f) / 240.0f;
+	commonDirection.x = ((directionOfTouch1.x + directionOfTouch1.x) / 2.0f) * 200.0f;
+	commonDirection.y = ((directionOfTouch1.y + directionOfTouch1.y) / 2.0f) * 200.0f;
 	
+
 	return commonDirection;
 }
 
@@ -471,7 +478,9 @@
 	{
 		startingTouchDistance = [self distanceBetweenTouches:totalTouches];
 		previousScale = 1.0f;
-		previousDirectionOfPanning = CGPointMake(0.0f, 0.0f);
+		twoFingersAreMoving = NO;
+		pinchGestureUnderway = NO;
+		previousDirectionOfPanning = CGPointZero;
 	}
 	else
 	{
@@ -609,12 +618,16 @@
     [self touchesEnded:touches withEvent:event];
 }
 
-
 #pragma mark -
 #pragma mark Interface methods
 
 - (IBAction)switchToTableView;
 {
+	if (moleculeToDisplay.isDoneRendering == NO)
+	{
+		return;
+	}
+	
 	if (isAutorotating)
 		[self startOrStopAutorotation:nil];
 

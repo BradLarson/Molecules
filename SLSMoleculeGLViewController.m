@@ -64,36 +64,13 @@
 
 - (void)dealloc 
 {
-	[rotationButton release];
 	[autorotationQueue release];
 	[super dealloc];
 }
 
-- (void)viewDidLoad 
+- (void)loadView 
 {
 	SLSMoleculeGLView *glView = [[SLSMoleculeGLView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	
-	UIButton *infoButton = [[UIButton buttonWithType:UIButtonTypeInfoLight] retain];
-	infoButton.frame = CGRectMake(320.0f - 70.0f, 460.0f - 70.0f, 70.0f, 70.0f);
-	[infoButton addTarget:self action:@selector(switchToTableView) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-	[glView addSubview:infoButton];
-	[infoButton release];
-
-	rotationButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	
-	UIImage *rotationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIcon" ofType:@"png"]];
-	[rotationButton setImage:rotationImage forState:UIControlStateNormal];
-	[rotationImage release];
-
-	UIImage *selectedRotationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIconSelected" ofType:@"png"]];
-	[rotationButton setImage:selectedRotationImage forState:UIControlStateSelected];
-	[selectedRotationImage release];
-	
-	rotationButton.showsTouchWhenHighlighted = YES;
-	[rotationButton addTarget:self action:@selector(startOrStopAutorotation:) forControlEvents:UIControlEventTouchUpInside];
-	rotationButton.frame = CGRectMake(0.0f, 460.0f - 70.0f, 70.0f, 70.0f);
-	rotationButton.clipsToBounds = NO;
-	[glView addSubview:rotationButton];
 	
 	self.view = glView;
 	
@@ -186,11 +163,11 @@
 	{
 		[autorotationQueue cancelAllOperations];
 		[autorotationQueue waitUntilAllOperationsAreFinished];
-		rotationButton.selected = NO;
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleRotationSelected" object:[NSNumber numberWithBool:NO]];
 	}
 	else
 	{
-		rotationButton.selected = YES;
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleRotationSelected" object:[NSNumber numberWithBool:YES]];
 		SLSMoleculeAutorotationOperation *autorotationOperation = [[SLSMoleculeAutorotationOperation alloc] initWithViewController:self];
 		[autorotationQueue addOperation:autorotationOperation];
 		[autorotationOperation release];

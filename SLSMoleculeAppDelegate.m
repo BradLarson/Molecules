@@ -10,6 +10,7 @@
 
 #import "SLSMoleculeAppDelegate.h"
 #import "SLSMoleculeRootViewController.h"
+#import "SLSMoleculeiPadRootViewController.h"
 #import "SLSMolecule.h"
 #import "NSData+Gzip.h"
 
@@ -25,18 +26,26 @@
 #pragma mark -
 #pragma mark Initialization / teardown
 
-- (void)applicationDidFinishLaunching:(UIApplication *)application 
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions   
 {	
 	//Initialize the application window
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	if (!window) 
 	{
 		[self release];
-		return;
+		return NO;
 	}
 	window.backgroundColor = [UIColor blackColor];
 
-	rootViewController = [[SLSMoleculeRootViewController alloc] init];
+	if ([SLSMoleculeAppDelegate isRunningOniPad])
+	{
+		rootViewController = [[SLSMoleculeiPadRootViewController alloc] init];
+	}
+	else
+	{
+		rootViewController = [[SLSMoleculeRootViewController alloc] init];
+	}
+	
 	
 	[window addSubview:rootViewController.view];
     [window makeKeyAndVisible];
@@ -51,7 +60,7 @@
 
 	[self performSelectorInBackground:@selector(loadInitialMoleculesFromDisk) withObject:nil];	
 	
-	
+	return YES;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application 
@@ -67,6 +76,22 @@
 	[rootViewController release];
 	[window release];
 	[super dealloc];
+}
+
+#pragma mark -
+#pragma mark Device-specific interface control
+
++ (BOOL)isRunningOniPad;
+{
+	if ([[UIDevice currentDevice] respondsToSelector:@selector(userInterfaceIdiom)])
+	{
+		if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+		{
+			return YES;
+		}
+	}
+	
+	return NO;
 }
 
 #pragma mark -

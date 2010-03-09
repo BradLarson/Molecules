@@ -25,20 +25,30 @@
     if (self = [super init]) 
 	{
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toggleView:) name:@"ToggleView" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toggleRotationButton:) name:@"ToggleRotationSelected" object:nil];
     }
     return self;
 }
 
 - (void)dealloc 
 {
+	[rotationButton release];
+
 	[tableViewController release];
 	[glViewController release];
 	[tableNavigationController release];
 	[super dealloc];
 }
 
-- (void)viewDidLoad 
+- (void)loadView 
 {
+	CGRect mainScreenFrame = [[UIScreen mainScreen] applicationFrame];
+	
+	UIView *backgroundView = [[UIView alloc] initWithFrame:mainScreenFrame];
+	backgroundView.backgroundColor = [UIColor whiteColor];
+		
+	self.view = backgroundView;
+	[backgroundView release];
 	toggleViewDisabled = NO;
 
 	SLSMoleculeGLViewController *viewController = [[SLSMoleculeGLViewController alloc] initWithNibName:nil bundle:nil];
@@ -46,6 +56,28 @@
 	[viewController release];
 	
 	[self.view addSubview:glViewController.view];
+	
+	UIButton *infoButton = [[UIButton buttonWithType:UIButtonTypeInfoLight] retain];
+	infoButton.frame = CGRectMake(320.0f - 70.0f, 460.0f - 70.0f, 70.0f, 70.0f);
+	[infoButton addTarget:self action:@selector(switchToTableView) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+	[glViewController.view addSubview:infoButton];
+	[infoButton release];
+	
+	rotationButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	
+	UIImage *rotationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIcon" ofType:@"png"]];
+	[rotationButton setImage:rotationImage forState:UIControlStateNormal];
+	[rotationImage release];
+	
+	UIImage *selectedRotationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIconSelected" ofType:@"png"]];
+	[rotationButton setImage:selectedRotationImage forState:UIControlStateSelected];
+	[selectedRotationImage release];
+	
+	rotationButton.showsTouchWhenHighlighted = YES;
+	[rotationButton addTarget:glViewController.view action:@selector(startOrStopAutorotation:) forControlEvents:UIControlEventTouchUpInside];
+	rotationButton.frame = CGRectMake(0.0f, 460.0f - 70.0f, 70.0f, 70.0f);
+	rotationButton.clipsToBounds = NO;
+	[glViewController.view addSubview:rotationButton];
 }
 
 - (void)loadTableViewController 
@@ -173,6 +205,22 @@
 {
 	UITableView *tableView = (UITableView *)tableViewController.view;
 	[tableView reloadData];
+}
+
+
+#pragma mark -
+#pragma mark Manage the switching of rotation state
+
+- (void)toggleRotationButton:(NSNotification *)note;
+{
+	if ([[note object] boolValue])
+	{
+		rotationButton.selected = YES;
+	}
+	else
+	{
+		rotationButton.selected = NO;
+	}
 }
 
 #pragma mark -

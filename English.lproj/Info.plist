@@ -10,6 +10,11 @@
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
 	<string>MoleculesIcon.png</string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>MoleculesIcon.png</string>
+		<string>MoleculesIcon72.png</string>
+	</array>
 	<key>CFBundleIdentifier</key>
 	<string>com.sunsetlakesoftware.Molecules</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -37,5 +42,13 @@
 	<false/>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleBlackOpaque</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+          <string>UIInterfaceOrientationPortrait</string>
+          <string>UIInterfaceOrientationPortraitUpsideDown</string>
+          <string>UIInterfaceOrientationLandscapeLeft</string>
+          <string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+
 </dict>
 </plist>

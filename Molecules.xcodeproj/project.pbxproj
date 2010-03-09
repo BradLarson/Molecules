@@ -10,7 +10,7 @@
 		1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
-		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
 		28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
 		BC146A9B0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC146A9A0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m */; };
@@ -22,6 +22,7 @@
 		BC4FB6670E4E875900B316CD /* VCTitleCase.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4FB6660E4E875900B316CD /* VCTitleCase.m */; };
 		BC4FB75D0E4F6BB000B316CD /* greenButton.png in Resources */ = {isa = PBXBuildFile; fileRef = BC4FB75C0E4F6BAF00B316CD /* greenButton.png */; };
 		BC4FB7BA0E4F80DB00B316CD /* redButton.png in Resources */ = {isa = PBXBuildFile; fileRef = BC4FB7B90E4F80DB00B316CD /* redButton.png */; };
+		BC540D101145E04600045DE1 /* MoleculesIcon72.png in Resources */ = {isa = PBXBuildFile; fileRef = BC540D0F1145E04500045DE1 /* MoleculesIcon72.png */; };
 		BC5BB79C0E200C3B0001DFD0 /* 1BNA.pdb.gz in Resources */ = {isa = PBXBuildFile; fileRef = BC5BB79B0E200C3B0001DFD0 /* 1BNA.pdb.gz */; };
 		BC5BB7DF0E2020B10001DFD0 /* 1EVE.pdb.gz in Resources */ = {isa = PBXBuildFile; fileRef = BC5BB7DD0E2020B10001DFD0 /* 1EVE.pdb.gz */; };
 		BC5BB8BD0E204DC20001DFD0 /* SLSMoleculeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC5BB8BC0E204DC20001DFD0 /* SLSMoleculeDetailViewController.m */; };
@@ -38,6 +39,7 @@
 		BCC286D20E1D905400978ECA /* SLSMoleculeDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286CD0E1D905400978ECA /* SLSMoleculeDownloadViewController.m */; };
 		BCC286D40E1D905400978ECA /* SLSMoleculeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */; };
 		BCC8FE800EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC8FE7F0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m */; };
+		BCD12CFA11308E1000737166 /* SLSMoleculeiPadRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */; };
 		BCDC9F840EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F830EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib */; };
 		BCDC9F9D0EB37B3400ADCFA5 /* Localized.strings in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F9C0EB37B3400ADCFA5 /* Localized.strings */; };
 		BCF495221040945400BE82D5 /* RotationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = BCF495211040945400BE82D5 /* RotationIcon.png */; };
@@ -68,6 +70,7 @@
 		BC4FB6660E4E875900B316CD /* VCTitleCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCTitleCase.m; sourceTree = "<group>"; };
 		BC4FB75C0E4F6BAF00B316CD /* greenButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = greenButton.png; sourceTree = "<group>"; };
 		BC4FB7B90E4F80DB00B316CD /* redButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redButton.png; sourceTree = "<group>"; };
+		BC540D0F1145E04500045DE1 /* MoleculesIcon72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MoleculesIcon72.png; sourceTree = "<group>"; };
 		BC5BB79B0E200C3B0001DFD0 /* 1BNA.pdb.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = 1BNA.pdb.gz; sourceTree = "<group>"; };
 		BC5BB7DD0E2020B10001DFD0 /* 1EVE.pdb.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = 1EVE.pdb.gz; sourceTree = "<group>"; };
 		BC5BB8BB0E204DC20001DFD0 /* SLSMoleculeDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeDetailViewController.h; sourceTree = "<group>"; };
@@ -79,6 +82,8 @@
 		BC61CC2E0E2463180074BE04 /* SLSCellTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSCellTextView.m; sourceTree = "<group>"; };
 		BC61CC2F0E2463180074BE04 /* SLSTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSTextViewController.h; sourceTree = "<group>"; };
 		BC61CC300E2463180074BE04 /* SLSTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSTextViewController.m; sourceTree = "<group>"; };
+		BCC246AD112E3DB700710932 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = "Resources-iPad/English.lproj/SLSMoleculeDownloadView.xib"; sourceTree = "<group>"; };
+		BCC246AE112E3DB700710932 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = "Resources-iPad/French.lproj/SLSMoleculeDownloadView.xib"; sourceTree = "<group>"; };
 		BCC281280E1B1FCD00978ECA /* NSData+Gzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Gzip.h"; sourceTree = "<group>"; };
 		BCC281290E1B1FCD00978ECA /* NSData+Gzip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Gzip.m"; sourceTree = "<group>"; };
 		BCC286BD0E1D8F9300978ECA /* SLSMoleculeAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeAppDelegate.h; sourceTree = SOURCE_ROOT; };
@@ -97,6 +102,8 @@
 		BCC286D50E1D909600978ECA /* Molecules_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Molecules_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		BCC8FE7E0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeDataSourceViewController.h; sourceTree = "<group>"; };
 		BCC8FE7F0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeDataSourceViewController.m; sourceTree = "<group>"; };
+		BCD12CF711308E1000737166 /* SLSMoleculeiPadRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeiPadRootViewController.h; sourceTree = "<group>"; };
+		BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeiPadRootViewController.m; sourceTree = "<group>"; };
 		BCDC9F850EB375D500ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = French.lproj/SLSMoleculeDownloadView.xib; sourceTree = "<group>"; };
 		BCDC9F870EB3760300ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = French; path = French.lproj/Info.plist; sourceTree = "<group>"; };
 		BCDC9F9A0EB37B1E00ADCFA5 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localized.strings; sourceTree = "<group>"; };
@@ -143,6 +150,7 @@
 				BC5BB99E0E207ED10001DFD0 /* Molecule Details View  */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
+				BCC246AB112E3DB500710932 /* Resources-iPad */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -169,6 +177,7 @@
 				BC4FB75C0E4F6BAF00B316CD /* greenButton.png */,
 				BC61CAFB0E2317EE0074BE04 /* 4TRA.pdb.gz */,
 				BC5BBCD30E219AB90001DFD0 /* MoleculesIcon.png */,
+				BC540D0F1145E04500045DE1 /* MoleculesIcon72.png */,
 				BC5BBBF90E216A170001DFD0 /* 1TRZ.pdb.gz */,
 				BC5BB7DD0E2020B10001DFD0 /* 1EVE.pdb.gz */,
 				BC5BB79B0E200C3B0001DFD0 /* 1BNA.pdb.gz */,
@@ -203,6 +212,14 @@
 			name = "Molecule Details View ";
 			sourceTree = "<group>";
 		};
+		BCC246AB112E3DB500710932 /* Resources-iPad */ = {
+			isa = PBXGroup;
+			children = (
+				BCC246AC112E3DB700710932 /* SLSMoleculeDownloadView.xib */,
+			);
+			name = "Resources-iPad";
+			sourceTree = "<group>";
+		};
 		BCC709540E19C6580054D0EB /* Downloaded Molecules Table */ = {
 			isa = PBXGroup;
 			children = (
@@ -232,6 +249,8 @@
 				BCC286BE0E1D8F9300978ECA /* SLSMoleculeAppDelegate.m */,
 				BCC286BF0E1D8F9300978ECA /* SLSMoleculeRootViewController.h */,
 				BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */,
+				BCD12CF711308E1000737166 /* SLSMoleculeiPadRootViewController.h */,
+				BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */,
 			);
 			name = "Application Control";
 			sourceTree = "<group>";
@@ -324,6 +343,7 @@
 				BCDC9F9D0EB37B3400ADCFA5 /* Localized.strings in Resources */,
 				BCF495221040945400BE82D5 /* RotationIcon.png in Resources */,
 				BCF496CC1040FB9D00BE82D5 /* RotationIconSelected.png in Resources */,
+				BC540D101145E04600045DE1 /* MoleculesIcon72.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,12 +372,22 @@
 				BCC8FE800EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m in Sources */,
 				BC146A9B0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m in Sources */,
 				BCF496551040F23300BE82D5 /* SLSMoleculeAutorotationOperation.m in Sources */,
+				BCD12CFA11308E1000737166 /* SLSMoleculeiPadRootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		BCC246AC112E3DB700710932 /* SLSMoleculeDownloadView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BCC246AD112E3DB700710932 /* English */,
+				BCC246AE112E3DB700710932 /* French */,
+			);
+			name = SLSMoleculeDownloadView.xib;
+			sourceTree = "<group>";
+		};
 		BCDC9F830EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -399,7 +429,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
 				INFOPLIST_FILE = English.lproj/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = Molecules;
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -415,11 +448,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
 				INFOPLIST_FILE = English.lproj/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = Molecules;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos2.0]" = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos3.0]" = "";
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -440,7 +476,7 @@
 				PROVISIONING_PROFILE = "08655F68-DDB9-4791-ACDD-F2F8D167B8A0";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "08655F68-DDB9-4791-ACDD-F2F8D167B8A0";
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SDKROOT = iphoneos3.0;
+				SDKROOT = iphoneos3.2;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Distribution;
@@ -456,10 +492,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
 				INFOPLIST_FILE = English.lproj/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = Molecules;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos3.0]" = "";
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
 		};
@@ -477,7 +516,7 @@
 				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SDKROOT = iphonesimulator3.0;
+				SDKROOT = iphoneos3.2;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Debug;
@@ -499,7 +538,7 @@
 				PROVISIONING_PROFILE = "500DAB97-6B23-43B6-9993-DF558595C088";
 				"PROVISIONING_PROFILE[sdk=iphoneos2.0]" = "500DAB97-6B23-43B6-9993-DF558595C088";
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SDKROOT = iphoneos3.0;
+				SDKROOT = iphoneos3.2;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Release;

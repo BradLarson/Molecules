@@ -35,6 +35,9 @@
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) SLSMoleculeRootViewController *rootViewController;
 
+// Device-specific interface control
++ (BOOL)isRunningOniPad;
+
 // Database access
 - (BOOL)createEditableCopyOfDatabaseIfNeeded; 
 - (void)connectToDatabase;

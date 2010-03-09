@@ -19,8 +19,10 @@
 @interface SLSMoleculeRootViewController : UIViewController <MoleculeCustomDownloadDelegate>
 {
 	SLSMoleculeGLViewController *glViewController;
+	UIButton *rotationButton;
 	UINavigationController *tableNavigationController;
 	SLSMoleculeTableViewController *tableViewController;
+
 	SLSMolecule *bufferedMolecule, *previousMolecule;
 	NSMutableArray *molecules;
 	
@@ -34,6 +36,7 @@
 @property (nonatomic, retain) NSMutableArray *molecules;
 
 // Manage the switching of views
+- (void)loadTableViewController;
 - (void)toggleView:(NSNotification *)note;
 
 // Passthroughs for managing molecules
@@ -41,6 +44,10 @@
 - (void)selectedMoleculeDidChange:(NSInteger)newMoleculeIndex;
 - (void)cancelMoleculeLoading;
 - (void)updateTableListOfMolecules;
+
+// Manage the switching of rotation state
+- (void)toggleRotationButton:(NSNotification *)note;
+
 
 @end
 

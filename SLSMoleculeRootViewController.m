@@ -8,6 +8,7 @@
 //
 //  This controller manages a root view into which the 3D view and the molecule table selection views and animated for the neat flipping effect
 
+#import "SLSMoleculeAppDelegate.h"
 #import "SLSMoleculeRootViewController.h"
 #import "SLSMoleculeTableViewController.h"
 #import "SLSMoleculeGLViewController.h"
@@ -80,38 +81,12 @@
 	[glViewController.view addSubview:rotationButton];
 }
 
-- (void)loadTableViewController 
-{	
-	bufferedMolecule = nil;
-    tableNavigationController = [[UINavigationController alloc] init];
-	NSInteger indexOfInitialMolecule = [[NSUserDefaults standardUserDefaults] integerForKey:@"indexOfLastSelectedMolecule"];
-	if (indexOfInitialMolecule >= [molecules count])
-		indexOfInitialMolecule = 0;
-    tableViewController = [[SLSMoleculeTableViewController alloc] initWithStyle:UITableViewStylePlain initialSelectedMoleculeIndex:indexOfInitialMolecule];
-	tableViewController.database = database;
-	tableViewController.molecules = molecules;
-    [tableNavigationController pushViewController:tableViewController animated:NO];
-	tableViewController.delegate = self;
-
-	// Need to correct the view rectangle of the navigation view to correct for the status bar gap
-	UIView *tableView = tableNavigationController.view;
-	CGRect tableFrame = tableView.frame;
-	tableFrame.origin.y -= 20;
-	tableView.frame = tableFrame;
-	toggleViewDisabled = NO;
-}
-
 - (void)toggleView:(NSNotification *)note;
 {	
 	if (molecules == nil)
 		return;
 	
-	if (tableNavigationController == nil) 
-	{
-		[self loadTableViewController];
-	}
-	
-	UIView *tableView = tableNavigationController.view;
+	UIView *tableView = self.tableNavigationController.view;
 	SLSMoleculeGLView *glView = (SLSMoleculeGLView *)glViewController.view;
 	
 	[UIView beginAnimations:nil context:NULL];
@@ -184,8 +159,15 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
-	// Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	// Only allow free autorotation on the iPad
+	if ([SLSMoleculeAppDelegate isRunningOniPad])
+	{
+		return YES;
+	}
+	else
+	{
+		return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	}
 }
 
 - (void)didReceiveMemoryWarning 
@@ -242,9 +224,53 @@
 #pragma mark -
 #pragma mark Accessors
 
+@synthesize tableNavigationController;
+@synthesize tableViewController;
 @synthesize glViewController;
 @synthesize database;
 @synthesize molecules;
+
+- (void)setMolecules:(NSMutableArray *)newValue;
+{
+	if (molecules == newValue)
+		return;
+	
+	[molecules release];
+	molecules = [newValue retain];
+	tableViewController.molecules = molecules;
+}
+
+- (UINavigationController *)tableNavigationController;
+{
+	if (tableNavigationController == nil)
+	{
+		bufferedMolecule = nil;
+		tableNavigationController = [[UINavigationController alloc] init];
+		if ([SLSMoleculeAppDelegate isRunningOniPad])
+		{
+			tableNavigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+		}
+
+		NSInteger indexOfInitialMolecule = [[NSUserDefaults standardUserDefaults] integerForKey:@"indexOfLastSelectedMolecule"];
+		if (indexOfInitialMolecule >= [molecules count])
+			indexOfInitialMolecule = 0;
+		tableViewController = [[SLSMoleculeTableViewController alloc] initWithStyle:UITableViewStylePlain initialSelectedMoleculeIndex:indexOfInitialMolecule];
+		tableViewController.database = database;
+		tableViewController.molecules = molecules;
+		[tableNavigationController pushViewController:tableViewController animated:NO];
+		tableViewController.delegate = self;
+		
+		// Need to correct the view rectangle of the navigation view to correct for the status bar gap
+		UIView *tableView = tableNavigationController.view;
+		CGRect tableFrame = tableView.frame;
+		tableFrame.origin.y -= 20;
+		tableView.frame = tableFrame;
+		toggleViewDisabled = NO;		
+	}
+	
+	return tableNavigationController;
+}
+
 
 
 @end

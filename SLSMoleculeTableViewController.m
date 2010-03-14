@@ -12,6 +12,7 @@
 #import "SLSMoleculeRootViewController.h"
 #import "SLSMoleculeDataSourceViewController.h"
 #import "SLSMolecule.h"
+#import "SLSMoleculeAppDelegate.h"
 
 @implementation SLSMoleculeTableViewController
 
@@ -27,12 +28,16 @@
         
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
 		
-        UIBarButtonItem *modelButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"3D Model", @"Localized", nil) style:UIBarButtonItemStylePlain target:self action:@selector(switchBackToGLView)];
-        self.navigationItem.leftBarButtonItem = modelButtonItem;
-        [modelButtonItem release];
-
-//        self.tableView.rowHeight = 43.0;
-		
+		if ([SLSMoleculeAppDelegate isRunningOniPad])
+		{
+			self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
+		}
+		else
+		{
+			UIBarButtonItem *modelButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"3D Model", @"Localized", nil) style:UIBarButtonItemStylePlain target:self action:@selector(switchBackToGLView)];
+			self.navigationItem.leftBarButtonItem = modelButtonItem;
+			[modelButtonItem release];
+		}
 	}
 	return self;
 }
@@ -66,6 +71,11 @@
 
 - (void)didReceiveMemoryWarning
 {
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    // Overriden to allow any orientation.
+    return YES;
 }
 
 #pragma mark -

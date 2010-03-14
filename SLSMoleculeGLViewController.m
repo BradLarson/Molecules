@@ -71,7 +71,7 @@
 - (void)loadView 
 {
 	SLSMoleculeGLView *glView = [[SLSMoleculeGLView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	
+
 	self.view = glView;
 	
 	[glView release];
@@ -651,7 +651,8 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
 	// Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+//	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return YES;
 }
 
 - (void)didReceiveMemoryWarning 

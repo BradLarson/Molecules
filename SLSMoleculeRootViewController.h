@@ -32,11 +32,12 @@
 }
 
 @property (nonatomic, retain) SLSMoleculeGLViewController *glViewController;
+@property (nonatomic, readonly) UINavigationController *tableNavigationController;
+@property (nonatomic, readonly) SLSMoleculeTableViewController *tableViewController;
 @property (nonatomic, assign) sqlite3 *database;
 @property (nonatomic, retain) NSMutableArray *molecules;
 
 // Manage the switching of views
-- (void)loadTableViewController;
 - (void)toggleView:(NSNotification *)note;
 
 // Passthroughs for managing molecules

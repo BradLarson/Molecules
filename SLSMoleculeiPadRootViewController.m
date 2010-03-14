@@ -27,7 +27,9 @@
 	CGRect mainScreenFrame = [[UIScreen mainScreen] applicationFrame];
 
 	UIView *backgroundView = [[UIView alloc] initWithFrame:mainScreenFrame];
-	backgroundView.backgroundColor = [UIColor whiteColor];
+	backgroundView.opaque = YES;
+	backgroundView.backgroundColor = [UIColor blackColor];
+	backgroundView.autoresizesSubviews = YES;
 	self.view = backgroundView;
 	[backgroundView release];
 	
@@ -36,26 +38,20 @@
 	[viewController release];
 	
 	[self.view addSubview:glViewController.view];
+	glViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-	UIToolbar *mainToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, mainScreenFrame.size.width, 44.0f)];
+	mainToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, mainScreenFrame.size.width, 44.0f)];
+	mainToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	mainToolbar.tintColor = [UIColor blackColor];
 	[backgroundView addSubview:mainToolbar];
 	
-	UIBarButtonItem *libraryBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Molecules" style:UIBarButtonItemStyleBordered target:self action:@selector(showMolecules:)];
-	UIBarButtonItem *visualizationBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Visualization Modes" style:UIBarButtonItemStyleBordered target:self action:@selector(showVisualizationModes:)];
-	UIBarButtonItem *spacerItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+	visualizationBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Visualization Modes" style:UIBarButtonItemStyleBordered target:self action:@selector(showVisualizationModes:)];
+	spacerItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 
 	unselectedRotationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIcon" ofType:@"png"]];	
 	rotationBarButton = [[UIBarButtonItem alloc] initWithImage:unselectedRotationImage style:UIBarButtonItemStyleBordered target:glViewController action:@selector(startOrStopAutorotation:)];
 	
-	[mainToolbar setItems:[NSArray arrayWithObjects:libraryBarButton, spacerItem, visualizationBarButton, rotationBarButton, nil] animated:NO];
-
-	[visualizationBarButton release];
-	[spacerItem release];
-	[libraryBarButton release];
-	
-	
-	[mainToolbar release];
+	[mainToolbar setItems:[NSArray arrayWithObjects:spacerItem, visualizationBarButton, rotationBarButton, nil] animated:NO];
 
 	glViewController.view.frame = CGRectMake(mainScreenFrame.origin.x, mainToolbar.bounds.size.height, mainScreenFrame.size.width, mainScreenFrame.size.height -  mainToolbar.bounds.size.height);
 }
@@ -83,6 +79,9 @@
 
 - (void)dealloc 
 {
+	[visualizationBarButton release];
+	[spacerItem release];
+	[mainToolbar release];
 	[selectedRotationImage release];
 	[unselectedRotationImage release];
 	[rotationBarButton release];
@@ -92,18 +91,13 @@
 #pragma mark -
 #pragma mark Bar response methods
 
-- (void)showMolecules:(id)sender;
+/*- (void)showMolecules:(id)sender;
 {
-	if (tableNavigationController == nil) 
-	{
-		[self loadTableViewController];
-	}
-	
-	moleculeListPopover = [[UIPopoverController alloc] initWithContentViewController:tableNavigationController];
-	[tableNavigationController setContentSizeForViewInPopover:CGSizeMake(320.0f, round(0.5f * self.view.bounds.size.height))];
+	moleculeListPopover = [[UIPopoverController alloc] initWithContentViewController:self.tableNavigationController];
+	[self.tableNavigationController setContentSizeForViewInPopover:CGSizeMake(320.0f, round(0.5f * self.view.bounds.size.height))];
 	[moleculeListPopover setDelegate:self];
 	[moleculeListPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-}
+}*/
 
 - (void)showVisualizationModes:(id)sender;
 {
@@ -129,17 +123,31 @@
 }
 
 #pragma mark -
-#pragma mark UIPopoverControllerDelegate methods
+#pragma mark UISplitViewControllerDelegate methods
 
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
+- (void)splitViewController:(UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController:(UIPopoverController*)pc
+{		
+	[(UINavigationController *)aViewController navigationBar].barStyle = UIBarStyleBlackOpaque;
+    barButtonItem.title = @"Molecules";
+    NSMutableArray *items = [[mainToolbar items] mutableCopy];
+    [items insertObject:barButtonItem atIndex:0];
+    [mainToolbar setItems:items animated:YES];
+    [items release];
+	
 	
 }
 
-- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
-
+- (void)splitViewController:(UISplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)button
 {
-	return YES;
-}
+	[(UINavigationController *)aViewController navigationBar].barStyle = UIBarStyleBlackOpaque;
+
+    NSMutableArray *items = [[mainToolbar items] mutableCopy];
+    [items removeObjectAtIndex:0];
+    [mainToolbar setItems:items animated:YES];
+    [items release];
+}	
+
+#pragma mark -
+#pragma mark Accessors
 
 @end

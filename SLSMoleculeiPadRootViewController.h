@@ -10,15 +10,15 @@
 
 @class UIPopoverController;
 
-@interface SLSMoleculeiPadRootViewController : SLSMoleculeRootViewController <UIPopoverControllerDelegate>
+@interface SLSMoleculeiPadRootViewController : SLSMoleculeRootViewController <UISplitViewControllerDelegate>
 {
 	UIImage *unselectedRotationImage, *selectedRotationImage;
-	UIBarButtonItem *rotationBarButton;
-	UIPopoverController *moleculeListPopover;
+	UIBarButtonItem *rotationBarButton, *spacerItem, *visualizationBarButton;
+	UIToolbar *mainToolbar;
 }
 
 // Bar response methods
-- (void)showMolecules:(id)sender;
+//- (void)showMolecules:(id)sender;
 - (void)showVisualizationModes:(id)sender;
 
 @end

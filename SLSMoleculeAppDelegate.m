@@ -39,15 +39,21 @@
 
 	if ([SLSMoleculeAppDelegate isRunningOniPad])
 	{
+		UISplitViewController *newSplitViewController = [[UISplitViewController alloc] init];
 		rootViewController = [[SLSMoleculeiPadRootViewController alloc] init];
+		[rootViewController loadView];
+		newSplitViewController.viewControllers = [NSArray arrayWithObjects:rootViewController.tableNavigationController, rootViewController, nil];
+		newSplitViewController.delegate = (SLSMoleculeiPadRootViewController *)rootViewController;
+		splitViewController = newSplitViewController;
+		[window addSubview:splitViewController.view];
 	}
 	else
 	{
 		rootViewController = [[SLSMoleculeRootViewController alloc] init];
+		[window addSubview:rootViewController.view];
 	}
 	
 	
-	[window addSubview:rootViewController.view];
     [window makeKeyAndVisible];
 	[window layoutSubviews];	
 	
@@ -71,6 +77,7 @@
 
 - (void)dealloc 
 {
+	[splitViewController release];
 	[initialDatabaseLoadLock release];
 	[molecules release];
 	[rootViewController release];
@@ -215,6 +222,11 @@
 	rootViewController.molecules = molecules;
 	[initialDatabaseLoadLock unlock];
 
+	if ([SLSMoleculeAppDelegate isRunningOniPad])
+	{
+		[[rootViewController.tableViewController tableView] performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+	}
+	
 	if (!isHandlingCustomURLMoleculeDownload)
 		[rootViewController loadInitialMolecule];
 	[pool release];

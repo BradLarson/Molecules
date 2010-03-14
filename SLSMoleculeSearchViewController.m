@@ -336,6 +336,11 @@
 	[super viewWillDisappear:animated];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    // Overriden to allow any orientation.
+    return YES;
+}
+
 #pragma mark -
 #pragma mark UISearchBarDelegate methods
 

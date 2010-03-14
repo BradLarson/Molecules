@@ -19,7 +19,8 @@
 {
 	UIWindow *window;
 	SLSMoleculeRootViewController *rootViewController;
-
+	UIViewController *splitViewController;
+	
 	NSURLConnection *downloadConnection;
 	NSMutableData *downloadedFileContents;
 	NSString *nameOfDownloadedMolecule;

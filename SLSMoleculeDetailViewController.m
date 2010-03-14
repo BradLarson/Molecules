@@ -11,6 +11,7 @@
 #import "SLSMoleculeDetailViewController.h"
 #import "SLSMolecule.h"
 #import "SLSTextViewController.h"
+#import "SLSMoleculeAppDelegate.h"
 
 #define DESCRIPTION_SECTION 0
 #define AUTHOR_SECTION 1
@@ -44,6 +45,11 @@
 		
 		self.tableView.tableHeaderView = label;
 		[label release];
+		
+		if ([SLSMoleculeAppDelegate isRunningOniPad])
+		{
+			self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
+		}		
 	}
 	return self;
 }

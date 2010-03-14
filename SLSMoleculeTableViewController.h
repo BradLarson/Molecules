@@ -24,6 +24,7 @@
 	NSMutableArray *molecules;
 	SLSMoleculeRootViewController *delegate;
 	NSInteger selectedIndex;
+	UIColor *tableTextColor;
 	
 	sqlite3 *database;
 }

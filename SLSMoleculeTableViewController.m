@@ -30,10 +30,13 @@
 		
 		if ([SLSMoleculeAppDelegate isRunningOniPad])
 		{
+//			self.tableView.backgroundColor = [UIColor blackColor];
+//			tableTextColor = [[UIColor whiteColor] retain];
 			self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
 		}
 		else
 		{
+//			tableTextColor = [[UIColor blackColor] retain];
 			UIBarButtonItem *modelButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"3D Model", @"Localized", nil) style:UIBarButtonItemStylePlain target:self action:@selector(switchBackToGLView)];
 			self.navigationItem.leftBarButtonItem = modelButtonItem;
 			[modelButtonItem release];
@@ -48,6 +51,7 @@
 
 - (void)dealloc 
 {
+	[tableTextColor release];
 	[molecules release];
 	[super dealloc];
 }

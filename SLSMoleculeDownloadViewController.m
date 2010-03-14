@@ -9,7 +9,7 @@
 //  This controller manages the pop-up modal view for downloading new molecules from the Protein Data Bank
 
 #import "SLSMoleculeDownloadViewController.h"
-
+#import "SLSMoleculeAppDelegate.h"
 
 @implementation SLSMoleculeDownloadViewController
 
@@ -24,6 +24,12 @@
 		codeForCurrentlyDownloadingProtein = [pdbCode copy];
 		titleForCurrentlyDownloadingProtein = [title copy];
 		self.title = codeForCurrentlyDownloadingProtein;
+		
+		if ([SLSMoleculeAppDelegate isRunningOniPad])
+		{
+			self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
+		}
+		
 				
 	}
 	return self;

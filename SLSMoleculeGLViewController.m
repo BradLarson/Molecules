@@ -12,6 +12,7 @@
 #import "SLSMoleculeGLView.h"
 #import "SLSMolecule.h"
 #import "SLSMoleculeAutorotationOperation.h"
+#import "SLSMoleculeAppDelegate.h"
 
 @implementation SLSMoleculeGLViewController
 
@@ -83,11 +84,11 @@
 - (void)showScanningIndicator:(NSNotification *)note;
 {
 	scanningActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-	scanningActivityIndicator.frame = CGRectMake(142.0f, 212.0f, 37.0f, 37.0f);
+	scanningActivityIndicator.frame = CGRectMake(round(self.view.frame.size.width / 2.0f - 37.0f / 2.0f), round(self.view.frame.size.height / 2.0f + 15.0f), 37.0f, 37.0f);
 	scanningActivityIndicator.hidesWhenStopped = YES;
 	[scanningActivityIndicator startAnimating];
 	
-	renderingActivityLabel = [[UILabel alloc] initWithFrame:CGRectMake(51.0f, 176.0f, 219.0f, 21.0f)];
+	renderingActivityLabel = [[UILabel alloc] initWithFrame:CGRectMake(round(self.view.frame.size.width / 2.0f - 219.0f / 2.0f), round(self.view.frame.size.height / 2.0f - 15.0f - 21.0f), 219.0f, 21.0f)];
 	renderingActivityLabel.font = [UIFont systemFontOfSize:17.0f];
 	renderingActivityLabel.text = [note object];
 	renderingActivityLabel.textAlignment = UITextAlignmentCenter;
@@ -116,10 +117,11 @@
 
 - (void)showRenderingIndicator:(NSNotification *)note;
 {
-	renderingProgressIndicator = [[UIProgressView alloc] initWithFrame:CGRectMake(85.0f, 226.0f, 150.0f, 9.0f)];
+	float renderingIndicatorWidth = round(self.view.frame.size.width * 0.6);
+	renderingProgressIndicator = [[UIProgressView alloc] initWithFrame:CGRectMake(round(self.view.frame.size.width / 2.0f - renderingIndicatorWidth / 2.0f), round(self.view.frame.size.height / 2.0f + 15.0f), renderingIndicatorWidth, 9.0f)];
 	[renderingProgressIndicator setProgress:0.0f];
 	
-	renderingActivityLabel = [[UILabel alloc] initWithFrame:CGRectMake(51.0f, 176.0f, 219.0f, 21.0f)];
+	renderingActivityLabel = [[UILabel alloc] initWithFrame:CGRectMake(round(self.view.frame.size.width / 2.0f - 219.0f / 2.0f), round(self.view.frame.size.height / 2.0f - 15.0f - 21.0f), 219.0f, 21.0f)];
 	renderingActivityLabel.font = [UIFont systemFontOfSize:17.0f];
 	renderingActivityLabel.text = NSLocalizedStringFromTable(@"Rendering...", @"Localized", nil);
 	renderingActivityLabel.textAlignment = UITextAlignmentCenter;
@@ -365,6 +367,53 @@
 #endif	
 }
 
+- (UIActionSheet *)actionSheetForVisualizationState;
+{
+	NSString *buttonTitle1;
+	NSString *buttonTitle2;
+	NSString *cancelButtonTitle;
+	switch (moleculeToDisplay.currentVisualizationType)
+	{
+		case BALLANDSTICK:
+		{
+			buttonTitle1 = NSLocalizedStringFromTable(@"Spacefilling", @"Localized", nil);
+			buttonTitle2 = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
+			cancelButtonTitle = NSLocalizedStringFromTable(@"Ball-and-stick", @"Localized", nil);
+		}; break;
+		case SPACEFILLING:
+		{
+			buttonTitle1 = NSLocalizedStringFromTable(@"Ball-and-stick", @"Localized", nil);
+			buttonTitle2 = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
+			cancelButtonTitle = NSLocalizedStringFromTable(@"Spacefilling", @"Localized", nil);
+		}; break;
+		case CYLINDRICAL:
+		{
+			buttonTitle1 = NSLocalizedStringFromTable(@"Ball-and-stick", @"Localized", nil);
+			buttonTitle2 = NSLocalizedStringFromTable(@"Spacefilling", @"Localized", nil);
+			cancelButtonTitle = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
+		}; break;
+		default:
+		{
+			buttonTitle1 = NSLocalizedStringFromTable(@"Spacefilling", @"Localized", nil);
+			buttonTitle2 = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
+			cancelButtonTitle = NSLocalizedStringFromTable(@"Ball-and-stick", @"Localized", nil);
+		};
+	}
+	
+	NSString *titleForActionSheet = NSLocalizedStringFromTable(@"Visualization mode", @"Localized", nil);
+	if ([SLSMoleculeAppDelegate isRunningOniPad])
+	{
+		titleForActionSheet = nil;
+		cancelButtonTitle = nil;
+	}
+	
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:titleForActionSheet
+																 delegate:self cancelButtonTitle:cancelButtonTitle destructiveButtonTitle:nil
+														otherButtonTitles:buttonTitle1, buttonTitle2, nil];
+	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+	return [actionSheet autorelease];
+}
+
 #pragma mark -
 #pragma mark Touch handling
 
@@ -532,48 +581,12 @@
 	if (isAutorotating)
 		[self startOrStopAutorotation:nil];
 
-	if ([[touches anyObject] tapCount] >= 2)
+	if (([[touches anyObject] tapCount] >= 2) && (![SLSMoleculeAppDelegate isRunningOniPad]))
 	{
-		NSString *buttonTitle1;
-		NSString *buttonTitle2;
-		NSString *cancelButtonTitle;
-		switch (moleculeToDisplay.currentVisualizationType)
-		{
-			case BALLANDSTICK:
-			{
-				buttonTitle1 = NSLocalizedStringFromTable(@"Spacefilling", @"Localized", nil);
-				buttonTitle2 = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
-				cancelButtonTitle = NSLocalizedStringFromTable(@"Ball-and-stick", @"Localized", nil);
-			}; break;
-			case SPACEFILLING:
-			{
-				buttonTitle1 = NSLocalizedStringFromTable(@"Ball-and-stick", @"Localized", nil);
-				buttonTitle2 = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
-				cancelButtonTitle = NSLocalizedStringFromTable(@"Spacefilling", @"Localized", nil);
-			}; break;
-			case CYLINDRICAL:
-			{
-				buttonTitle1 = NSLocalizedStringFromTable(@"Ball-and-stick", @"Localized", nil);
-				buttonTitle2 = NSLocalizedStringFromTable(@"Spacefilling", @"Localized", nil);
-				cancelButtonTitle = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
-			}; break;
-			default:
-			{
-				buttonTitle1 = NSLocalizedStringFromTable(@"Spacefilling", @"Localized", nil);
-				buttonTitle2 = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
-				cancelButtonTitle = NSLocalizedStringFromTable(@"Ball-and-stick", @"Localized", nil);
-			};
-		}
-		
-		// If the rendering process has not finished, prevent you from changing the visualization mode
 		if (moleculeToDisplay.isDoneRendering == YES)
 		{
-			UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedStringFromTable(@"Visualization mode", @"Localized", nil)
-																	 delegate:self cancelButtonTitle:cancelButtonTitle destructiveButtonTitle:nil
-															otherButtonTitles:buttonTitle1, buttonTitle2, nil];
-			actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+			UIActionSheet *actionSheet = [self actionSheetForVisualizationState];
 			[actionSheet showInView:self.view];
-			[actionSheet release];
 		}		
 	}
 	
@@ -643,6 +656,7 @@
 	}
 	
 	moleculeToDisplay.currentVisualizationType = newVisualizationType;
+	visualizationActionSheet = nil;
 }
 
 #pragma mark -
@@ -662,6 +676,7 @@
 #pragma mark -
 #pragma mark Accessors
 
+@synthesize visualizationActionSheet;
 @synthesize moleculeToDisplay;
 @synthesize isFrameRenderingFinished;
 

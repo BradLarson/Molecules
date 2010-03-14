@@ -101,7 +101,12 @@
 
 - (void)showVisualizationModes:(id)sender;
 {
+	if (glViewController.visualizationActionSheet != nil)
+		return;
 	
+	UIActionSheet *actionSheet = [glViewController actionSheetForVisualizationState];
+	[actionSheet showFromBarButtonItem:visualizationBarButton animated:YES];
+	glViewController.visualizationActionSheet = actionSheet;
 }
 
 #pragma mark -
@@ -125,16 +130,20 @@
 #pragma mark -
 #pragma mark UISplitViewControllerDelegate methods
 
+- (void)splitViewController:(UISplitViewController*)svc popoverController:(UIPopoverController*)pc willPresentViewController:(UIViewController *)aViewController
+{
+	[glViewController.visualizationActionSheet dismissWithClickedButtonIndex:2 animated:YES];
+	glViewController.visualizationActionSheet = nil;
+}
+
 - (void)splitViewController:(UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController:(UIPopoverController*)pc
 {		
 	[(UINavigationController *)aViewController navigationBar].barStyle = UIBarStyleBlackOpaque;
-    barButtonItem.title = @"Molecules";
+//    barButtonItem.title = @"Molecules";
     NSMutableArray *items = [[mainToolbar items] mutableCopy];
     [items insertObject:barButtonItem atIndex:0];
     [mainToolbar setItems:items animated:YES];
     [items release];
-	
-	
 }
 
 - (void)splitViewController:(UISplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)button

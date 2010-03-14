@@ -10,6 +10,7 @@
 
 #import "SLSMoleculeDataSourceViewController.h"
 #import "SLSMoleculeSearchViewController.h"
+#import "SLSMoleculeAppDelegate.h"
 
 @implementation SLSMoleculeDataSourceViewController
 
@@ -17,6 +18,10 @@
 {
 	if (self = [super initWithStyle:style]) 
 	{
+		if ([SLSMoleculeAppDelegate isRunningOniPad])
+		{
+			self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
+		}
 		
 		self.navigationItem.title = NSLocalizedStringFromTable(@"Online Data Source", @"Localized", nil);
 		self.navigationItem.rightBarButtonItem = nil;

@@ -228,6 +228,7 @@
 	[EAGLContext setCurrentContext:context];
 	[self destroyFramebuffer];
 	[self createFramebuffer];
+	[self configureProjection];
 //	[self drawView];
 }
 

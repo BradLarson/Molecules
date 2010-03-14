@@ -20,6 +20,7 @@
 	UIActivityIndicatorView *scanningActivityIndicator;
 	UIProgressView *renderingProgressIndicator;
 	UILabel *renderingActivityLabel;
+	UIActionSheet *visualizationActionSheet;
 
 	SLSMolecule *moleculeToDisplay;
 	CATransform3D currentCalculatedMatrix;
@@ -34,6 +35,7 @@
 	BOOL twoFingersAreMoving, pinchGestureUnderway;
 }
 
+@property (readwrite, retain) UIActionSheet *visualizationActionSheet;
 @property (readwrite, retain) SLSMolecule *moleculeToDisplay;
 @property (readonly) BOOL isFrameRenderingFinished;
 
@@ -62,7 +64,7 @@
 
 // Manage molecule rendering state
 - (void)handleFinishOfMoleculeRendering:(NSNotification *)note;
-
+- (UIActionSheet *)actionSheetForVisualizationState;
 
 // Touch handling
 - (float)distanceBetweenTouches:(NSSet *)touches;

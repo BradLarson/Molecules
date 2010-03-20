@@ -60,7 +60,7 @@
 	
 	UIButton *infoButton = [[UIButton buttonWithType:UIButtonTypeInfoLight] retain];
 	infoButton.frame = CGRectMake(320.0f - 70.0f, 460.0f - 70.0f, 70.0f, 70.0f);
-	[infoButton addTarget:self action:@selector(switchToTableView) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+	[infoButton addTarget:glViewController action:@selector(switchToTableView) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
 	[glViewController.view addSubview:infoButton];
 	[infoButton release];
 	
@@ -75,7 +75,7 @@
 	[selectedRotationImage release];
 	
 	rotationButton.showsTouchWhenHighlighted = YES;
-	[rotationButton addTarget:glViewController.view action:@selector(startOrStopAutorotation:) forControlEvents:UIControlEventTouchUpInside];
+	[rotationButton addTarget:glViewController action:@selector(startOrStopAutorotation:) forControlEvents:UIControlEventTouchUpInside];
 	rotationButton.frame = CGRectMake(0.0f, 460.0f - 70.0f, 70.0f, 70.0f);
 	rotationButton.clipsToBounds = NO;
 	[glViewController.view addSubview:rotationButton];

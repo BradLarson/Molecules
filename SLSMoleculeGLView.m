@@ -19,20 +19,7 @@
 #define USE_DEPTH_BUFFER 1
 //#define RUN_OPENGL_BENCHMARKS
 
-// A class extension to declare private methods
-@interface SLSMoleculeGLView ()
-
-@property (nonatomic, retain) EAGLContext *context;
-
-- (BOOL) createFramebuffer;
-- (void) destroyFramebuffer;
-
-@end
-
-
 @implementation SLSMoleculeGLView
-
-@synthesize context;
 
 // Override the class method to return the OpenGL layer, as opposed to the normal CALayer
 + (Class) layerClass 
@@ -225,11 +212,14 @@
 
 - (void)layoutSubviews 
 {
-	[EAGLContext setCurrentContext:context];
-	[self destroyFramebuffer];
-	[self createFramebuffer];
-	[self configureProjection];
-//	[self drawView];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"GLViewSizeDidChange" object:nil];
+	
 }
+
+#pragma mark -
+#pragma mark Accessors
+
+@synthesize context;
+
 
 @end

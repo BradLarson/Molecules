@@ -8,6 +8,7 @@
 
 #import "SLSMoleculeiPadRootViewController.h"
 #import "SLSMoleculeGLViewController.h"
+#import "SLSMoleculeDataSourceViewController.h"
 
 @implementation SLSMoleculeiPadRootViewController
 
@@ -40,18 +41,29 @@
 	[self.view addSubview:glViewController.view];
 	glViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-	mainToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, mainScreenFrame.size.width, 44.0f)];
+	mainToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, glViewController.view.frame.size.width, 44.0f)];
 	mainToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	mainToolbar.tintColor = [UIColor blackColor];
 	[backgroundView addSubview:mainToolbar];
+
+	UIImage *downloadImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"57-download" ofType:@"png"]];	
+	UIBarButtonItem *downloadBarButton = [[UIBarButtonItem alloc] initWithImage:downloadImage style:UIBarButtonItemStylePlain target:self action:@selector(showDownloadOptions:)];
+	downloadBarButton.width = 44.0f;
+	[downloadImage release];
 	
-	visualizationBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Visualization Modes" style:UIBarButtonItemStyleBordered target:self action:@selector(showVisualizationModes:)];
+	UIImage *visualizationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"VisualizationIcon" ofType:@"png"]];	
+	visualizationBarButton = [[UIBarButtonItem alloc] initWithImage:visualizationImage style:UIBarButtonItemStylePlain target:self action:@selector(showVisualizationModes:)];
+	visualizationBarButton.width = 44.0f;
+	[visualizationImage release];
+	
 	spacerItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 
-	unselectedRotationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIcon" ofType:@"png"]];	
-	rotationBarButton = [[UIBarButtonItem alloc] initWithImage:unselectedRotationImage style:UIBarButtonItemStyleBordered target:glViewController action:@selector(startOrStopAutorotation:)];
+	unselectedRotationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIconiPad" ofType:@"png"]];	
+	rotationBarButton = [[UIBarButtonItem alloc] initWithImage:unselectedRotationImage style:UIBarButtonItemStylePlain target:glViewController action:@selector(startOrStopAutorotation:)];
+	rotationBarButton.width = 44.0f;
 	
-	[mainToolbar setItems:[NSArray arrayWithObjects:spacerItem, visualizationBarButton, rotationBarButton, nil] animated:NO];
+	[mainToolbar setItems:[NSArray arrayWithObjects:spacerItem, downloadBarButton, visualizationBarButton, rotationBarButton, nil] animated:NO];
+	[downloadBarButton release];
 
 	glViewController.view.frame = CGRectMake(mainScreenFrame.origin.x, mainToolbar.bounds.size.height, mainScreenFrame.size.width, mainScreenFrame.size.height -  mainToolbar.bounds.size.height);
 }
@@ -109,6 +121,26 @@
 	glViewController.visualizationActionSheet = actionSheet;
 }
 
+- (void)showDownloadOptions:(id)sender;
+{
+	if (downloadOptionsPopover != nil)
+		return;
+	
+	UINavigationController *downloadNavigationController = [[UINavigationController alloc] init];
+	downloadNavigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+	
+	SLSMoleculeDataSourceViewController *dataSourceViewController = [[SLSMoleculeDataSourceViewController alloc] initWithStyle:UITableViewStylePlain];
+//	dataSourceViewController.delegate = self;
+	[downloadNavigationController pushViewController:dataSourceViewController animated:NO];
+	[dataSourceViewController release];
+	
+	downloadOptionsPopover = [[UIPopoverController alloc] initWithContentViewController:downloadNavigationController];
+	[downloadNavigationController release];
+	[downloadOptionsPopover setDelegate:self];
+	[downloadOptionsPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+//	[downloadOptionsPopover release];
+}
+
 #pragma mark -
 #pragma mark Manage the switching of rotation state
 
@@ -117,7 +149,7 @@
 	if ([[note object] boolValue])
 	{
 		if (selectedRotationImage == nil)
-			selectedRotationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIconSelected" ofType:@"png"]];
+			selectedRotationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIconiPadCancel" ofType:@"png"]];
 		
 		rotationBarButton.image = selectedRotationImage;
 	}
@@ -155,6 +187,19 @@
     [mainToolbar setItems:items animated:YES];
     [items release];
 }	
+
+#pragma mark -
+#pragma mark UIPopoverControllerDelegate methods
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController;
+{
+	if (popoverController == downloadOptionsPopover)
+	{
+		[downloadOptionsPopover release];
+		downloadOptionsPopover = nil;
+	}
+}
+
 
 #pragma mark -
 #pragma mark Accessors

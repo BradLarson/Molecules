@@ -11,7 +11,7 @@
 #import "SLSMoleculeGLViewController.h"
 #import "SLSMoleculeGLView.h"
 #import "SLSMolecule.h"
-#import "SLSMoleculeAutorotationOperation.h"
+#import "SLSMoleculeRenderingOperation.h"
 #import "SLSMoleculeAppDelegate.h"
 
 @implementation SLSMoleculeGLViewController
@@ -32,7 +32,9 @@
 		[nc addObserver:self selector:@selector(showScanningIndicator:) name:@"FileLoadingStarted" object:nil];
 		[nc addObserver:self selector:@selector(updateScanningIndicator:) name:@"FileLoadingUpdate" object:nil];
 		[nc addObserver:self selector:@selector(hideScanningIndicator:) name:@"FileLoadingEnded" object:nil];
-		
+
+		[nc addObserver:self selector:@selector(updateSizeOfGLView:) name:@"GLViewSizeDidChange" object:nil];
+
 		isAutorotating = NO;
 		
 		// Initialize values for the touch interaction
@@ -45,6 +47,7 @@
 		instantZTranslation = 0.0f;
 		twoFingersAreMoving = NO;
 		pinchGestureUnderway = NO;
+		stepsSinceLastRotation = 0;
 
 		// Set up the initial model view matrix for the rendering
 		isFirstDrawingOfMolecule = YES;
@@ -58,14 +61,16 @@
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleFinishOfMoleculeRendering:) name:@"MoleculeRenderingEnded" object:nil];
 		
-		autorotationQueue = [[NSOperationQueue alloc] init];
+		renderingQueue = [[NSOperationQueue alloc] init];
+		[renderingQueue setMaxConcurrentOperationCount:1];
 	}
 	return self;
 }
 
 - (void)dealloc 
 {
-	[autorotationQueue release];
+//	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[renderingQueue release];
 	[super dealloc];
 }
 
@@ -163,18 +168,31 @@
 {
 	if (isAutorotating)
 	{
-		[autorotationQueue cancelAllOperations];
-		[autorotationQueue waitUntilAllOperationsAreFinished];
+		[autorotationTimer invalidate];
+		
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleRotationSelected" object:[NSNumber numberWithBool:NO]];
 	}
 	else
 	{
+		autorotationTimer = [NSTimer scheduledTimerWithTimeInterval: (1 / 60.0f ) target: self selector: @selector(handleAutorotationTimer) userInfo: nil repeats: YES];
+		
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleRotationSelected" object:[NSNumber numberWithBool:YES]];
-		SLSMoleculeAutorotationOperation *autorotationOperation = [[SLSMoleculeAutorotationOperation alloc] initWithViewController:self];
-		[autorotationQueue addOperation:autorotationOperation];
-		[autorotationOperation release];
 	}
 	isAutorotating = !isAutorotating;
+}
+
+- (void)handleAutorotationTimer;
+{
+	if ([[renderingQueue operations] count] > 0)
+	{
+		stepsSinceLastRotation++;
+	}
+	else
+	{
+		[self drawViewByRotatingAroundX:(1.0 + (float)stepsSinceLastRotation * 1.0) rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
+
+		stepsSinceLastRotation = 0;
+	}
 }
 
 #pragma mark -
@@ -262,7 +280,7 @@
 	[self drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
 }
 
-- (void)drawViewByRotatingAroundX:(float)xRotation rotatingAroundY:(float)yRotation scaling:(float)scaleFactor translationInX:(float)xTranslation translationInY:(float)yTranslation;
+- (void)_drawViewByRotatingAroundX:(float)xRotation rotatingAroundY:(float)yRotation scaling:(float)scaleFactor translationInX:(float)xTranslation translationInY:(float)yTranslation;
 {
 	isFrameRenderingFinished = NO;
 	
@@ -331,6 +349,40 @@
 	isFrameRenderingFinished = YES;
 }
 
+- (void)resizeView;
+{
+	SLSMoleculeGLView *glView = (SLSMoleculeGLView *)self.view;
+	[EAGLContext setCurrentContext:glView.context];
+	[glView destroyFramebuffer];
+	[glView createFramebuffer];
+	[glView configureProjection];
+	[self _drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];	
+}
+
+- (void)drawViewByRotatingAroundX:(float)xRotation rotatingAroundY:(float)yRotation scaling:(float)scaleFactor translationInX:(float)xTranslation translationInY:(float)yTranslation;
+{
+	NSMethodSignature * sig = nil;
+	sig = [self methodSignatureForSelector:@selector(_drawViewByRotatingAroundX:rotatingAroundY:scaling:translationInX:translationInY:)];
+	NSInvocation *theInvocation = [NSInvocation invocationWithMethodSignature:sig];
+	[theInvocation setTarget:self];
+	[theInvocation setSelector:@selector(_drawViewByRotatingAroundX:rotatingAroundY:scaling:translationInX:translationInY:)];
+	
+	[theInvocation setArgument:&xRotation atIndex:2];
+	[theInvocation setArgument:&yRotation atIndex:3];
+	[theInvocation setArgument:&scaleFactor atIndex:4];
+	[theInvocation setArgument:&xTranslation atIndex:5];
+	[theInvocation setArgument:&yTranslation atIndex:6];
+	
+	NSInvocationOperation *invocationOperation = [[NSInvocationOperation alloc] initWithInvocation:theInvocation];
+	[renderingQueue addOperation:invocationOperation];
+	[invocationOperation release];
+	
+	
+//	SLSMoleculeRenderingOperation *autorotationOperation = [[SLSMoleculeRenderingOperation alloc] initWithViewController:self stepsSinceLastRotation:stepsSinceLastRotation];
+//	[renderingQueue addOperation:autorotationOperation];
+//	[autorotationOperation release];	
+}
+
 - (void)runOpenGLBenchmarks;
 {
 	NSLog(NSLocalizedStringFromTable(@"Triangles: %d", @"Localized", nil), moleculeToDisplay.totalNumberOfTriangles);
@@ -341,12 +393,25 @@
 	for (unsigned int testCounter = 0; testCounter < NUMBER_OF_FRAMES_FOR_TESTING; testCounter++)
 	{
 		// Do something		
-		[self drawViewByRotatingAroundX:1.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
+		[self _drawViewByRotatingAroundX:1.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
 	}
 	elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
 	// ElapsedTime contains seconds (or fractions thereof as decimals)
 	NSLog(NSLocalizedStringFromTable(@"Elapsed time: %f", @"Localized", nil), elapsedTime);
 	NSLog(@"Triangles per second: %f", (CGFloat)moleculeToDisplay.totalNumberOfTriangles * (CGFloat)NUMBER_OF_FRAMES_FOR_TESTING / elapsedTime);
+}
+
+- (void)updateSizeOfGLView:(NSNotification *)note;
+{
+	NSMethodSignature * sig = nil;
+	sig = [self methodSignatureForSelector:@selector(resizeView)];
+	NSInvocation *theInvocation = [NSInvocation invocationWithMethodSignature:sig];
+	[theInvocation setTarget:self];
+	[theInvocation setSelector:@selector(resizeView)];
+	
+	NSInvocationOperation *invocationOperation = [[NSInvocationOperation alloc] initWithInvocation:theInvocation];
+	[renderingQueue addOperation:invocationOperation];
+	[invocationOperation release];	
 }
 
 #pragma mark -

@@ -132,8 +132,126 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 290303521;
-			PBXWorkspaceStateSaveDate = 290303521;
+			PBXPerProjectTemplateStateSaveDate = 290742235;
+			PBXWorkspaceStateSaveDate = 290742235;
+		};
+		perUserProjectItems = {
+			BCDFF56C115469EE005C984C /* PBXBookmark */ = BCDFF56C115469EE005C984C /* PBXBookmark */;
+			BCDFF57811546FBC005C984C /* PBXTextBookmark */ = BCDFF57811546FBC005C984C /* PBXTextBookmark */;
+			BCDFF57B11546FD8005C984C /* PBXTextBookmark */ = BCDFF57B11546FD8005C984C /* PBXTextBookmark */;
+			BCDFF57E11547022005C984C /* PBXTextBookmark */ = BCDFF57E11547022005C984C /* PBXTextBookmark */;
+			BCDFF583115473F7005C984C /* PBXTextBookmark */ = BCDFF583115473F7005C984C /* PBXTextBookmark */;
+			BCDFF58E11547CFA005C984C /* PBXTextBookmark */ = BCDFF58E11547CFA005C984C /* PBXTextBookmark */;
+			BCDFF59111547D50005C984C /* PBXTextBookmark */ = BCDFF59111547D50005C984C /* PBXTextBookmark */;
+			BCDFF59411547D84005C984C /* PBXTextBookmark */ = BCDFF59411547D84005C984C /* PBXTextBookmark */;
+			BCDFF59711547D98005C984C /* PBXTextBookmark */ = BCDFF59711547D98005C984C /* PBXTextBookmark */;
+			BCDFF59A11547DA6005C984C /* PBXTextBookmark */ = BCDFF59A11547DA6005C984C /* PBXTextBookmark */;
+			BCDFF5A31154811B005C984C /* XCBuildMessageTextBookmark */ = BCDFF5A31154811B005C984C /* XCBuildMessageTextBookmark */;
+			BCDFF5A611548128005C984C /* PBXTextBookmark */ = BCDFF5A611548128005C984C /* PBXTextBookmark */;
+			BCDFF5A711548128005C984C /* PBXTextBookmark */ = BCDFF5A711548128005C984C /* PBXTextBookmark */;
+			BCDFF5AA11548128005C984C /* PBXTextBookmark */ = BCDFF5AA11548128005C984C /* PBXTextBookmark */;
+			BCDFF5AB11548128005C984C /* PBXTextBookmark */ = BCDFF5AB11548128005C984C /* PBXTextBookmark */;
+			BCDFF5AC11548128005C984C /* PBXTextBookmark */ = BCDFF5AC11548128005C984C /* PBXTextBookmark */;
+			BCDFF5B111548201005C984C /* PBXTextBookmark */ = BCDFF5B111548201005C984C /* PBXTextBookmark */;
+			BCDFF5B211548201005C984C /* PBXTextBookmark */ = BCDFF5B211548201005C984C /* PBXTextBookmark */;
+			BCDFF5B711548227005C984C /* PBXTextBookmark */ = BCDFF5B711548227005C984C /* PBXTextBookmark */;
+			BCDFF5B811548227005C984C /* PBXTextBookmark */ = BCDFF5B811548227005C984C /* PBXTextBookmark */;
+			BCDFF5BB11548265005C984C /* PBXTextBookmark */ = BCDFF5BB11548265005C984C /* PBXTextBookmark */;
+			BCDFF5BE115482B1005C984C /* PBXTextBookmark */ = BCDFF5BE115482B1005C984C /* PBXTextBookmark */;
+			BCDFF5BF115482B1005C984C /* PBXTextBookmark */ = BCDFF5BF115482B1005C984C /* PBXTextBookmark */;
+			BCDFF5C711552E0D005C984C /* PBXTextBookmark */ = BCDFF5C711552E0D005C984C /* PBXTextBookmark */;
+			BCDFF5C811552E0F005C984C /* PBXTextBookmark */ = BCDFF5C811552E0F005C984C /* PBXTextBookmark */;
+			BCDFF5C911552E0F005C984C /* PBXTextBookmark */ = BCDFF5C911552E0F005C984C /* PBXTextBookmark */;
+			BCDFF5CA11552E0F005C984C /* PBXTextBookmark */ = BCDFF5CA11552E0F005C984C /* PBXTextBookmark */;
+			BCDFF5CD11552E0F005C984C /* PBXTextBookmark */ = BCDFF5CD11552E0F005C984C /* PBXTextBookmark */;
+			BCDFF5CF11552E0F005C984C /* PBXTextBookmark */ = BCDFF5CF11552E0F005C984C /* PBXTextBookmark */;
+			BCDFF5D111552E0F005C984C /* PBXTextBookmark */ = BCDFF5D111552E0F005C984C /* PBXTextBookmark */;
+			BCDFF5D2115539E3005C984C /* PBXTextBookmark */ = BCDFF5D2115539E3005C984C /* PBXTextBookmark */;
+			BCDFF5D3115539E5005C984C /* PBXTextBookmark */ = BCDFF5D3115539E5005C984C /* PBXTextBookmark */;
+			BCDFF5D71155405A005C984C /* PBXTextBookmark */ = BCDFF5D71155405A005C984C /* PBXTextBookmark */;
+			BCDFF5F9115554B9005C984C /* PBXBookmark */ = BCDFF5F9115554B9005C984C /* PBXBookmark */;
+			BCDFF606115558F9005C984C /* XCBuildMessageTextBookmark */ = BCDFF606115558F9005C984C /* XCBuildMessageTextBookmark */;
+			BCDFF60911555900005C984C /* XCBuildMessageTextBookmark */ = BCDFF60911555900005C984C /* XCBuildMessageTextBookmark */;
+			BCDFF60A11555900005C984C /* PBXTextBookmark */ = BCDFF60A11555900005C984C /* PBXTextBookmark */;
+			BCDFF60B11555900005C984C /* PBXTextBookmark */ = BCDFF60B11555900005C984C /* PBXTextBookmark */;
+			BCDFF60E11555907005C984C /* PBXTextBookmark */ = BCDFF60E11555907005C984C /* PBXTextBookmark */;
+			BCDFF60F11555907005C984C /* PBXTextBookmark */ = BCDFF60F11555907005C984C /* PBXTextBookmark */;
+			BCDFF61211555907005C984C /* PBXTextBookmark */ = BCDFF61211555907005C984C /* PBXTextBookmark */;
+			BCDFF61311555907005C984C /* PBXTextBookmark */ = BCDFF61311555907005C984C /* PBXTextBookmark */;
+			BCDFF61611555907005C984C /* PBXTextBookmark */ = BCDFF61611555907005C984C /* PBXTextBookmark */;
+			BCDFF61711555907005C984C /* PBXTextBookmark */ = BCDFF61711555907005C984C /* PBXTextBookmark */;
+			BCDFF61811555907005C984C /* PBXTextBookmark */ = BCDFF61811555907005C984C /* PBXTextBookmark */;
+			BCDFF61B11555907005C984C /* PBXTextBookmark */ = BCDFF61B11555907005C984C /* PBXTextBookmark */;
+			BCDFF62011555930005C984C /* PBXTextBookmark */ = BCDFF62011555930005C984C /* PBXTextBookmark */;
+			BCDFF62111555930005C984C /* PBXTextBookmark */ = BCDFF62111555930005C984C /* PBXTextBookmark */;
+			BCDFF6241155593B005C984C /* PBXTextBookmark */ = BCDFF6241155593B005C984C /* PBXTextBookmark */;
+			BCDFF6251155593B005C984C /* PBXTextBookmark */ = BCDFF6251155593B005C984C /* PBXTextBookmark */;
+			BCDFF6261155593B005C984C /* PBXTextBookmark */ = BCDFF6261155593B005C984C /* PBXTextBookmark */;
+			BCDFF62C1155596F005C984C /* PBXTextBookmark */ = BCDFF62C1155596F005C984C /* PBXTextBookmark */;
+			BCDFF62D1155596F005C984C /* PBXTextBookmark */ = BCDFF62D1155596F005C984C /* PBXTextBookmark */;
+			BCDFF630115559B9005C984C /* PBXTextBookmark */ = BCDFF630115559B9005C984C /* PBXTextBookmark */;
+			BCDFF631115559B9005C984C /* PBXTextBookmark */ = BCDFF631115559B9005C984C /* PBXTextBookmark */;
+			BCDFF634115559CF005C984C /* PBXTextBookmark */ = BCDFF634115559CF005C984C /* PBXTextBookmark */;
+			BCDFF635115559CF005C984C /* PBXTextBookmark */ = BCDFF635115559CF005C984C /* PBXTextBookmark */;
+			BCDFF636115559CF005C984C /* PBXTextBookmark */ = BCDFF636115559CF005C984C /* PBXTextBookmark */;
+			BCDFF637115559CF005C984C /* PBXTextBookmark */ = BCDFF637115559CF005C984C /* PBXTextBookmark */;
+			BCDFF638115559CF005C984C /* PBXTextBookmark */ = BCDFF638115559CF005C984C /* PBXTextBookmark */;
+			BCDFF63E11555C0F005C984C /* PBXTextBookmark */ = BCDFF63E11555C0F005C984C /* PBXTextBookmark */;
+			BCDFF64111555C60005C984C /* PBXTextBookmark */ = BCDFF64111555C60005C984C /* PBXTextBookmark */;
+			BCDFF64211555C60005C984C /* PBXTextBookmark */ = BCDFF64211555C60005C984C /* PBXTextBookmark */;
+			BCDFF64311555C60005C984C /* PBXTextBookmark */ = BCDFF64311555C60005C984C /* PBXTextBookmark */;
+			BCDFF64411555C60005C984C /* PBXTextBookmark */ = BCDFF64411555C60005C984C /* PBXTextBookmark */;
+			BCDFF6601155629A005C984C /* PBXTextBookmark */ = BCDFF6601155629A005C984C /* PBXTextBookmark */;
+			BCDFF6611155629A005C984C /* PBXTextBookmark */ = BCDFF6611155629A005C984C /* PBXTextBookmark */;
+			BCDFF6621155629A005C984C /* XCBuildMessageTextBookmark */ = BCDFF6621155629A005C984C /* XCBuildMessageTextBookmark */;
+			BCDFF6631155629A005C984C /* PBXTextBookmark */ = BCDFF6631155629A005C984C /* PBXTextBookmark */;
+			BCDFF6641155629A005C984C /* PBXTextBookmark */ = BCDFF6641155629A005C984C /* PBXTextBookmark */;
+			BCDFF66A115562D3005C984C /* PBXTextBookmark */ = BCDFF66A115562D3005C984C /* PBXTextBookmark */;
+			BCDFF66B115562D3005C984C /* XCBuildMessageTextBookmark */ = BCDFF66B115562D3005C984C /* XCBuildMessageTextBookmark */;
+			BCDFF66C115562D3005C984C /* PBXTextBookmark */ = BCDFF66C115562D3005C984C /* PBXTextBookmark */;
+			BCDFF66D115562D3005C984C /* PBXTextBookmark */ = BCDFF66D115562D3005C984C /* PBXTextBookmark */;
+			BCDFF6701155632A005C984C /* XCBuildMessageTextBookmark */ = BCDFF6701155632A005C984C /* XCBuildMessageTextBookmark */;
+			BCDFF67311556337005C984C /* PBXTextBookmark */ = BCDFF67311556337005C984C /* PBXTextBookmark */;
+			BCDFF67411556337005C984C /* XCBuildMessageTextBookmark */ = BCDFF67411556337005C984C /* XCBuildMessageTextBookmark */;
+			BCDFF67511556337005C984C /* PBXTextBookmark */ = BCDFF67511556337005C984C /* PBXTextBookmark */;
+			BCDFF67611556337005C984C /* PBXTextBookmark */ = BCDFF67611556337005C984C /* PBXTextBookmark */;
+			BCDFF67911556338005C984C /* PBXTextBookmark */ = BCDFF67911556338005C984C /* PBXTextBookmark */;
+			BCDFF67A11556338005C984C /* PBXTextBookmark */ = BCDFF67A11556338005C984C /* PBXTextBookmark */;
+			BCDFF67B115569EE005C984C /* PBXBookmark */ = BCDFF67B115569EE005C984C /* PBXBookmark */;
+			BCDFF67E11556A0B005C984C /* PBXTextBookmark */ = BCDFF67E11556A0B005C984C /* PBXTextBookmark */;
+			BCDFF67F11556A0B005C984C /* PBXTextBookmark */ = BCDFF67F11556A0B005C984C /* PBXTextBookmark */;
+			BCDFF68311556A0C005C984C /* PBXTextBookmark */ = BCDFF68311556A0C005C984C /* PBXTextBookmark */;
+			BCDFF68411556A0C005C984C /* PBXTextBookmark */ = BCDFF68411556A0C005C984C /* PBXTextBookmark */;
+			BCDFF68711556A0E005C984C /* PBXTextBookmark */ = BCDFF68711556A0E005C984C /* PBXTextBookmark */;
+			BCDFF68811556A0E005C984C /* PBXTextBookmark */ = BCDFF68811556A0E005C984C /* PBXTextBookmark */;
+			BCDFF68B11556AAB005C984C /* PBXTextBookmark */ = BCDFF68B11556AAB005C984C /* PBXTextBookmark */;
+			BCDFF68C11556AAB005C984C /* PBXTextBookmark */ = BCDFF68C11556AAB005C984C /* PBXTextBookmark */;
+			BCDFF74111557C5A005C984C /* PBXTextBookmark */ = BCDFF74111557C5A005C984C /* PBXTextBookmark */;
+			BCDFF74211557C5A005C984C /* XCBuildMessageTextBookmark */ = BCDFF74211557C5A005C984C /* XCBuildMessageTextBookmark */;
+			BCDFF74311557C5A005C984C /* PBXTextBookmark */ = BCDFF74311557C5A005C984C /* PBXTextBookmark */;
+			BCDFF74411557C5A005C984C /* PBXTextBookmark */ = BCDFF74411557C5A005C984C /* PBXTextBookmark */;
+			BCDFF74811557C69005C984C /* PBXTextBookmark */ = BCDFF74811557C69005C984C /* PBXTextBookmark */;
+			BCDFF74911557C69005C984C /* PBXTextBookmark */ = BCDFF74911557C69005C984C /* PBXTextBookmark */;
+			BCDFF74A11557C69005C984C /* PBXTextBookmark */ = BCDFF74A11557C69005C984C /* PBXTextBookmark */;
+			BCDFF74D11557C6C005C984C /* PBXTextBookmark */ = BCDFF74D11557C6C005C984C /* PBXTextBookmark */;
+			BCDFF74E11557C6C005C984C /* PBXTextBookmark */ = BCDFF74E11557C6C005C984C /* PBXTextBookmark */;
+			BCDFF74F11557C6D005C984C /* PBXTextBookmark */ = BCDFF74F11557C6D005C984C /* PBXTextBookmark */;
+			BCDFF75011557C6D005C984C /* PBXTextBookmark */ = BCDFF75011557C6D005C984C /* PBXTextBookmark */;
+			BCDFF75111557C6D005C984C /* PBXTextBookmark */ = BCDFF75111557C6D005C984C /* PBXTextBookmark */;
+			BCDFF75511557CC9005C984C /* PBXTextBookmark */ = BCDFF75511557CC9005C984C /* PBXTextBookmark */;
+			BCDFF75611557CC9005C984C /* PBXTextBookmark */ = BCDFF75611557CC9005C984C /* PBXTextBookmark */;
+			BCDFF75711557CC9005C984C /* PBXTextBookmark */ = BCDFF75711557CC9005C984C /* PBXTextBookmark */;
+			BCDFF75A11557D5E005C984C /* PBXTextBookmark */ = BCDFF75A11557D5E005C984C /* PBXTextBookmark */;
+			BCDFF75B11557D5E005C984C /* PBXTextBookmark */ = BCDFF75B11557D5E005C984C /* PBXTextBookmark */;
+			BCDFF75C11557D5F005C984C /* PBXTextBookmark */ = BCDFF75C11557D5F005C984C /* PBXTextBookmark */;
+			BCDFF76011557F5D005C984C /* XCBuildMessageTextBookmark */ = BCDFF76011557F5D005C984C /* XCBuildMessageTextBookmark */;
+			BCDFF76311557F63005C984C /* XCBuildMessageTextBookmark */ = BCDFF76311557F63005C984C /* XCBuildMessageTextBookmark */;
+			BCDFF76411557F63005C984C /* PBXTextBookmark */ = BCDFF76411557F63005C984C /* PBXTextBookmark */;
+			BCDFF76511557F63005C984C /* PBXTextBookmark */ = BCDFF76511557F63005C984C /* PBXTextBookmark */;
+			BCDFF76611557F64005C984C /* PBXTextBookmark */ = BCDFF76611557F64005C984C /* PBXTextBookmark */;
+			BCDFF76711557F64005C984C /* PBXTextBookmark */ = BCDFF76711557F64005C984C /* PBXTextBookmark */;
+			BCDFF76A115580EA005C984C /* PBXTextBookmark */ = BCDFF76A115580EA005C984C /* PBXTextBookmark */;
+			BCDFF76B115580EA005C984C /* PBXTextBookmark */ = BCDFF76B115580EA005C984C /* PBXTextBookmark */;
 		};
 		sourceControlManager = BC896C1F0DE11BFE00B184F0 /* Source Control */;
 		userBookmarkGroup = BCB290D0103CE78B00F0EA2A /* PBXBookmarkGroup */;
@@ -151,8 +269,8 @@
 	8D1107310486CEB800E47090 /* English */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {953, 810}}";
-			sepNavSelRange = "{225, 0}";
-			sepNavVisRect = "{{0, 0}, {953, 705}}";
+			sepNavSelRange = "{872, 254}";
+			sepNavVisRect = "{{0, 21}, {953, 705}}";
 			sepNavWindowFrame = "{{31, 1}, {998, 777}}";
 		};
 	};
@@ -166,10 +284,10 @@
 	};
 	BC146A9A0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{509, 1679}\";\n            s = 0;\n        },\n                {\n            r = \"{2209, 43}\";\n            s = 0;\n        },\n                {\n            r = \"{2742, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{2852, 78}\";\n            s = 0;\n        },\n                {\n            r = \"{2987, 77}\";\n            s = 0;\n        },\n                {\n            r = \"{3143, 467}\";\n            s = 0;\n        },\n                {\n            r = \"{3757, 180}\";\n            s = 0;\n        },\n                {\n            r = \"{4045, 961}\";\n            s = 0;\n        },\n                {\n            r = \"{5105, 65}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 5241}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1006, 1376}}";
-			sepNavSelRange = "{768, 38}";
-			sepNavVisRange = "{868, 831}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{509, 1679}\";\n            s = 0;\n        },\n                {\n            r = \"{2209, 43}\";\n            s = 0;\n        },\n                {\n            r = \"{2742, 1}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 5241}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1902, 2128}}";
+			sepNavSelRange = "{1131, 0}";
+			sepNavVisRange = "{2220, 1295}";
 			sepNavWindowFrame = "{{115, 0}, {881, 778}}";
 		};
 	};
@@ -184,7 +302,7 @@
 	BC1EF3820E36BD6100B09043 /* SLSMoleculeSearchViewController.m */ = {
 		uiCtxt = {
 			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{1756, 191}\";\n            s = 0;\n        },\n                {\n            r = \"{3174, 1846}\";\n            s = 0;\n        },\n                {\n            r = \"{5060, 771}\";\n            s = 0;\n        },\n                {\n            r = \"{5961, 12}\";\n            s = 0;\n        },\n                {\n            r = \"{6067, 333}\";\n            s = 0;\n        },\n                {\n            r = \"{6499, 15}\";\n            s = 0;\n        },\n                {\n            r = \"{6622, 3500}\";\n            s = 0;\n        },\n                {\n            r = \"{10219, 892}\";\n            s = 0;\n        },\n                {\n            r = \"{11148, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{11248, 75}\";\n            s = 0;\n        },\n                {\n            r = \"{11603, 138}\";\n            s = 0;\n        },\n                {\n            r = \"{11891, 732}\";\n            s = 0;\n        },\n                {\n            r = \"{12707, 384}\";\n            s = 0;\n        },\n                {\n            r = \"{13190, 61}\";\n            s = 0;\n        },\n                {\n            r = \"{13321, 237}\";\n            s = 0;\n        },\n                {\n            r = \"{13808, 127}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 14006}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {2182, 2592}}";
+			sepNavIntBoundsRect = "{{0, 0}, {2182, 2576}}";
 			sepNavSelRange = "{2305, 0}";
 			sepNavVisRange = "{1401, 1442}";
 			sepNavWindowFrame = "{{7, 0}, {987, 778}}";
@@ -217,9 +335,9 @@
 	BC37E7C90E14779E00E11F4F /* SLSMolecule.m */ = {
 		uiCtxt = {
 			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{2181, 105}\";\n            s = 0;\n        },\n                {\n            r = \"{2363, 852}\";\n            s = 0;\n        },\n                {\n            r = \"{3299, 1631}\";\n            s = 0;\n        },\n                {\n            r = \"{5037, 2986}\";\n            s = 0;\n        },\n                {\n            r = \"{8051, 733}\";\n            s = 0;\n        },\n                {\n            r = \"{8805, 763}\";\n            s = 0;\n        },\n                {\n            r = \"{9629, 302}\";\n            s = 0;\n        },\n                {\n            r = \"{10082, 2740}\";\n            s = 0;\n        },\n                {\n            r = \"{14013, 80}\";\n            s = 0;\n        },\n                {\n            r = \"{14135, 69}\";\n            s = 0;\n        },\n                {\n            r = \"{14291, 2921}\";\n            s = 0;\n        },\n                {\n            r = \"{20313, 305}\";\n            s = 0;\n        },\n                {\n            r = \"{20678, 300}\";\n            s = 0;\n        },\n                {\n            r = \"{21010, 996}\";\n            s = 0;\n        },\n                {\n            r = \"{22091, 2289}\";\n            s = 0;\n        },\n                {\n            r = \"{24471, 1094}\";\n            s = 0;\n        },\n                {\n            r = \"{25733, 1559}\";\n            s = 0;\n        },\n                {\n            r = \"{27561, 1791}\";\n            s = 0;\n        },\n                {\n            r = \"{29401, 2171}\";\n            s = 0;\n        },\n                {\n            r = \"{31604, 1990}\";\n            s = 0;\n        },\n                {\n            r = \"{33626, 2746}\";\n            s = 0;\n        },\n                {\n            r = \"{36416, 2958}\";\n            s = 0;\n        },\n                {\n            r = \"{39464, 103}\";\n            s = 0;\n        },\n                {\n            r = \"{39602, 200}\";\n            s = 0;\n        },\n                {\n            r = \"{39835, 101}\";\n            s = 0;\n        },\n                {\n            r = \"{40018, 331}\";\n            s = 0;\n        },\n                {\n            r = \"{40377, 1453}\";\n            s = 0;\n        },\n                {\n            r = \"{41872, 1698}\";\n            s = 0;\n        },\n                {\n            r = \"{44316, 635}\";\n            s = 0;\n        },\n                {\n            r = \"{45548, 247}\";\n            s = 0;\n        },\n                {\n            r = \"{45879, 267}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 46154}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1398, 5792}}";
-			sepNavSelRange = "{2764, 7}";
-			sepNavVisRange = "{8108, 1012}";
+			sepNavIntBoundsRect = "{{0, 0}, {1398, 5920}}";
+			sepNavSelRange = "{8837, 0}";
+			sepNavVisRange = "{8108, 968}";
 			sepNavWindowFrame = "{{13, 0}, {1155, 778}}";
 		};
 	};
@@ -233,9 +351,9 @@
 	};
 	BC4FB6660E4E875900B316CD /* VCTitleCase.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {950, 3040}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 222}";
+			sepNavIntBoundsRect = "{{0, 0}, {950, 3008}}";
+			sepNavSelRange = "{6836, 0}";
+			sepNavVisRange = "{6594, 361}";
 			sepNavWindowFrame = "{{312, 3}, {881, 775}}";
 		};
 	};
@@ -320,8 +438,8 @@
 		hitCount = 0;
 		ignoreCount = 0;
 		lineNumber = 219;
-		location = "Molecules-iPad";
-		modificationTime = 288243465.828051;
+		location = Molecules;
+		modificationTime = 290806076.272548;
 		originalNumberOfMultipleMatches = 1;
 		state = 1;
 	};
@@ -412,10 +530,10 @@
 	};
 	BCC286BE0E1D8F9300978ECA /* SLSMoleculeAppDelegate.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{810, 1354}\";\n            s = 0;\n        },\n                {\n            r = \"{2231, 78}\";\n            s = 0;\n        },\n                {\n            r = \"{2330, 159}\";\n            s = 0;\n        },\n                {\n            r = \"{2581, 206}\";\n            s = 0;\n        },\n                {\n            r = \"{2883, 1001}\";\n            s = 0;\n        },\n                {\n            r = \"{3915, 833}\";\n            s = 0;\n        },\n                {\n            r = \"{4784, 379}\";\n            s = 0;\n        },\n                {\n            r = \"{5205, 2798}\";\n            s = 0;\n        },\n                {\n            r = \"{8045, 603}\";\n            s = 0;\n        },\n                {\n            r = \"{8694, 1628}\";\n            s = 0;\n        },\n                {\n            r = \"{11051, 57}\";\n            s = 0;\n        },\n                {\n            r = \"{11177, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{11307, 2142}\";\n            s = 0;\n        },\n                {\n            r = \"{13542, 303}\";\n            s = 0;\n        },\n                {\n            r = \"{13934, 2560}\";\n            s = 0;\n        },\n                {\n            r = \"{16643, 414}\";\n            s = 0;\n        },\n                {\n            r = \"{17141, 285}\";\n            s = 0;\n        },\n                {\n            r = \"{17525, 1142}\";\n            s = 0;\n        },\n                {\n            r = \"{18737, 444}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 19189}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1188, 2048}}";
-			sepNavSelRange = "{1289, 0}";
-			sepNavVisRange = "{1094, 997}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{2231, 78}\";\n            s = 0;\n        },\n                {\n            r = \"{2330, 159}\";\n            s = 0;\n        },\n                {\n            r = \"{2581, 206}\";\n            s = 0;\n        },\n                {\n            r = \"{2883, 1001}\";\n            s = 0;\n        },\n                {\n            r = \"{3915, 833}\";\n            s = 0;\n        },\n                {\n            r = \"{4784, 379}\";\n            s = 0;\n        },\n                {\n            r = \"{5205, 2798}\";\n            s = 0;\n        },\n                {\n            r = \"{8045, 603}\";\n            s = 0;\n        },\n                {\n            r = \"{8694, 1628}\";\n            s = 0;\n        },\n                {\n            r = \"{11051, 57}\";\n            s = 0;\n        },\n                {\n            r = \"{11177, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{13542, 303}\";\n            s = 0;\n        },\n                {\n            r = \"{13934, 2560}\";\n            s = 0;\n        },\n                {\n            r = \"{16643, 414}\";\n            s = 0;\n        },\n                {\n            r = \"{17141, 285}\";\n            s = 0;\n        },\n                {\n            r = \"{17525, 1142}\";\n            s = 0;\n        },\n                {\n            r = \"{18737, 444}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 19189}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1188, 3456}}";
+			sepNavSelRange = "{746, 29}";
+			sepNavVisRange = "{3265, 1626}";
 			sepNavWindowFrame = "{{230, 0}, {983, 778}}";
 		};
 	};
@@ -429,43 +547,44 @@
 	};
 	BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{4564, 322}\";\n            s = 0;\n        },\n                {\n            r = \"{5886, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{5922, 169}\";\n            s = 0;\n        },\n                {\n            r = \"{6624, 608}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 8843}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1174, 4048}}";
-			sepNavSelRange = "{6764, 77}";
-			sepNavVisRange = "{0, 1171}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{4571, 322}\";\n            s = 0;\n        },\n                {\n            r = \"{5893, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{5929, 169}\";\n            s = 0;\n        },\n                {\n            r = \"{6631, 608}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 8850}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1174, 3920}}";
+			sepNavSelRange = "{6682, 15}";
+			sepNavVisRange = "{6446, 402}";
 			sepNavWindowFrame = "{{57, 0}, {1155, 778}}";
 		};
 	};
 	BCC286C30E1D8FB100978ECA /* SLSMoleculeGLView.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1071, 736}}";
-			sepNavSelRange = "{188, 0}";
-			sepNavVisRange = "{0, 1357}";
+			sepNavIntBoundsRect = "{{0, 0}, {1071, 800}}";
+			sepNavSelRange = "{1306, 0}";
+			sepNavVisRange = "{41, 1420}";
 			sepNavWindowFrame = "{{97, 0}, {1130, 778}}";
 		};
 	};
 	BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{1795, 649}\";\n            s = 0;\n        },\n                {\n            r = \"{4683, 116}\";\n            s = 0;\n        },\n                {\n            r = \"{6099, 250}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 6576}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1307, 3280}}";
-			sepNavSelRange = "{5538, 0}";
-			sepNavVisRange = "{1066, 1384}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{1574, 649}\";\n            s = 0;\n        },\n                {\n            r = \"{4462, 116}\";\n            s = 0;\n        },\n                {\n            r = \"{5878, 250}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 6369}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1223, 3168}}";
+			sepNavSelRange = "{454, 0}";
+			sepNavVisRange = "{384, 1155}";
 			sepNavWindowFrame = "{{97, 0}, {1130, 778}}";
 		};
 	};
 	BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1279, 1248}}";
-			sepNavSelRange = "{1239, 71}";
-			sepNavVisRange = "{539, 1855}";
+			sepNavIntBoundsRect = "{{0, 0}, {1096, 1472}}";
+			sepNavSelRange = "{1117, 0}";
+			sepNavVisRange = "{373, 1668}";
 			sepNavWindowFrame = "{{67, 0}, {1155, 778}}";
 		};
 	};
 	BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1048, 11344}}";
-			sepNavSelRange = "{1384, 18}";
-			sepNavVisRange = "{1083, 730}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{706, 2185}\";\n            s = 0;\n        },\n                {\n            r = \"{2912, 109}\";\n            s = 0;\n        },\n                {\n            r = \"{3043, 147}\";\n            s = 0;\n        },\n                {\n            r = \"{3303, 1000}\";\n            s = 0;\n        },\n                {\n            r = \"{4363, 3}\";\n            s = 0;\n        },\n                {\n            r = \"{4424, 238}\";\n            s = 0;\n        },\n                {\n            r = \"{4721, 1104}\";\n            s = 0;\n        },\n                {\n            r = \"{5886, 201}\";\n            s = 0;\n        },\n                {\n            r = \"{6146, 242}\";\n            s = 0;\n        },\n                {\n            r = \"{6490, 529}\";\n            s = 0;\n        },\n                {\n            r = \"{7480, 647}\";\n            s = 0;\n        },\n                {\n            r = \"{8215, 819}\";\n            s = 0;\n        },\n                {\n            r = \"{9093, 476}\";\n            s = 0;\n        },\n                {\n            r = \"{9612, 370}\";\n            s = 0;\n        },\n                {\n            r = \"{10059, 452}\";\n            s = 0;\n        },\n                {\n            r = \"{17120, 534}\";\n            s = 0;\n        },\n                {\n            r = \"{17711, 1836}\";\n            s = 0;\n        },\n                {\n            r = \"{19645, 441}\";\n            s = 0;\n        },\n                {\n            r = \"{20144, 1840}\";\n            s = 0;\n        },\n                {\n            r = \"{22053, 682}\";\n            s = 0;\n        },\n                {\n            r = \"{25113, 697}\";\n            s = 0;\n        },\n                {\n            r = \"{25884, 115}\";\n            s = 0;\n        },\n                {\n            r = \"{26081, 212}\";\n            s = 0;\n        },\n                {\n            r = \"{26449, 771}\";\n            s = 0;\n        },\n                {\n            r = \"{27371, 124}\";\n            s = 0;\n        },\n                {\n            r = \"{27532, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{27741, 476}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 28225}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1524, 5568}}";
+			sepNavSelRange = "{485, 0}";
+			sepNavVisRange = "{9695, 1587}";
 			sepNavWindowFrame = "{{67, 0}, {1155, 778}}";
 		};
 	};
@@ -480,7 +599,7 @@
 	BCC286CD0E1D905400978ECA /* SLSMoleculeDownloadViewController.m */ = {
 		uiCtxt = {
 			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{1686, 1470}\";\n            s = 0;\n        },\n                {\n            r = \"{3415, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{3506, 1130}\";\n            s = 0;\n        },\n                {\n            r = \"{5091, 665}\";\n            s = 0;\n        },\n                {\n            r = \"{5841, 1373}\";\n            s = 0;\n        },\n                {\n            r = \"{9191, 112}\";\n            s = 0;\n        },\n                {\n            r = \"{9831, 414}\";\n            s = 0;\n        },\n                {\n            r = \"{10329, 471}\";\n            s = 0;\n        },\n                {\n            r = \"{10899, 1037}\";\n            s = 0;\n        },\n                {\n            r = \"{12006, 345}\";\n            s = 0;\n        },\n                {\n            r = \"{12458, 173}\";\n            s = 0;\n        },\n                {\n            r = \"{12685, 146}\";\n            s = 0;\n        },\n                {\n            r = \"{12910, 182}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 13678}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1114, 3472}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1114, 3328}}";
 			sepNavSelRange = "{4561, 376}";
 			sepNavVisRange = "{0, 1188}";
 			sepNavWindowFrame = "{{23, 0}, {1173, 777}}";
@@ -496,10 +615,10 @@
 	};
 	BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{1621, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{1791, 88}\";\n            s = 0;\n        },\n                {\n            r = \"{1924, 318}\";\n            s = 0;\n        },\n                {\n            r = \"{2278, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{2375, 60}\";\n            s = 0;\n        },\n                {\n            r = \"{4812, 222}\";\n            s = 0;\n        },\n                {\n            r = \"{6647, 34}\";\n            s = 0;\n        },\n                {\n            r = \"{6778, 282}\";\n            s = 0;\n        },\n                {\n            r = \"{7173, 459}\";\n            s = 0;\n        },\n                {\n            r = \"{7827, 120}\";\n            s = 0;\n        },\n                {\n            r = \"{8141, 765}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 9080}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1881, 3360}}";
-			sepNavSelRange = "{2444, 5}";
-			sepNavVisRange = "{2246, 586}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{703, 893}\";\n            s = 0;\n        },\n                {\n            r = \"{1621, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{1643, 68}\";\n            s = 0;\n        },\n                {\n            r = \"{1791, 88}\";\n            s = 0;\n        },\n                {\n            r = \"{2278, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{2375, 60}\";\n            s = 0;\n        },\n                {\n            r = \"{2679, 1975}\";\n            s = 0;\n        },\n                {\n            r = \"{4812, 222}\";\n            s = 0;\n        },\n                {\n            r = \"{5211, 1342}\";\n            s = 0;\n        },\n                {\n            r = \"{6647, 34}\";\n            s = 0;\n        },\n                {\n            r = \"{7173, 459}\";\n            s = 0;\n        },\n                {\n            r = \"{7827, 120}\";\n            s = 0;\n        },\n                {\n            r = \"{8141, 765}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 9080}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1237, 1728}}";
+			sepNavSelRange = "{879, 191}";
+			sepNavVisRange = "{587, 1219}";
 			sepNavWindowFrame = "{{18, 0}, {1155, 778}}";
 		};
 	};
@@ -522,17 +641,17 @@
 	};
 	BCD12CF711308E1000737166 /* SLSMoleculeiPadRootViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1001, 706}}";
-			sepNavSelRange = "{513, 0}";
-			sepNavVisRange = "{0, 625}";
-			sepNavWindowFrame = "{{15, 0}, {1060, 778}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1001, 681}}";
+			sepNavSelRange = "{379, 0}";
+			sepNavVisRange = "{0, 740}";
+			sepNavWindowFrame = "{{-4, 0}, {1060, 778}}";
 		};
 	};
 	BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1482, 2608}}";
-			sepNavSelRange = "{4799, 0}";
-			sepNavVisRange = "{105, 1951}";
+			sepNavIntBoundsRect = "{{0, 0}, {1370, 3312}}";
+			sepNavSelRange = "{5089, 0}";
+			sepNavVisRange = "{4713, 1707}";
 			sepNavWindowFrame = "{{167, 0}, {1060, 778}}";
 		};
 	};
@@ -559,19 +678,1174 @@
 			sepNavWindowFrame = "{{61, 353}, {881, 778}}";
 		};
 	};
-	BCF496531040F23300BE82D5 /* SLSMoleculeAutorotationOperation.h */ = {
+	BCDFF56C115469EE005C984C /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
+	};
+	BCDFF57811546FBC005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
+		name = "SLSMoleculeiPadRootViewController.m: 120";
+		rLen = 0;
+		rLoc = 6282;
+		rType = 0;
+		vrLen = 1604;
+		vrLoc = 3456;
+	};
+	BCDFF57B11546FD8005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
+		name = "SLSMoleculeiPadRootViewController.m: 51";
+		rLen = 0;
+		rLoc = 2829;
+		rType = 0;
+		vrLen = 1817;
+		vrLoc = 1594;
+	};
+	BCDFF57E11547022005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
+		name = "SLSMoleculeiPadRootViewController.m: 14";
+		rLen = 0;
+		rLoc = 363;
+		rType = 0;
+		vrLen = 2181;
+		vrLoc = 879;
+	};
+	BCDFF583115473F7005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
+		name = "SLSMoleculeiPadRootViewController.m: 54";
+		rLen = 0;
+		rLoc = 2706;
+		rType = 0;
+		vrLen = 2197;
+		vrLoc = 1040;
+	};
+	BCDFF58E11547CFA005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
+		name = "SLSMoleculeiPadRootViewController.m: 43";
+		rLen = 0;
+		rLoc = 1534;
+		rType = 0;
+		vrLen = 2255;
+		vrLoc = 954;
+	};
+	BCDFF59111547D50005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
+		name = "SLSMoleculeiPadRootViewController.m: 44";
+		rLen = 0;
+		rLoc = 1654;
+		rType = 0;
+		vrLen = 2345;
+		vrLoc = 703;
+	};
+	BCDFF59411547D84005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
+		name = "SLSMoleculeiPadRootViewController.m: 50";
+		rLen = 0;
+		rLoc = 2544;
+		rType = 0;
+		vrLen = 2297;
+		vrLoc = 791;
+	};
+	BCDFF59711547D98005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
+		name = "SLSMoleculeiPadRootViewController.m: 58";
+		rLen = 0;
+		rLoc = 3069;
+		rType = 0;
+		vrLen = 2314;
+		vrLoc = 809;
+	};
+	BCDFF59A11547DA6005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
+		name = "SLSMoleculeiPadRootViewController.m: 50";
+		rLen = 0;
+		rLoc = 2540;
+		rType = 0;
+		vrLen = 2244;
+		vrLoc = 879;
+	};
+	BCDFF5A31154811B005C984C /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Class 'SLSMoleculeiPadRootViewController' does not implement the 'UIPopoverControllerDelegate' protocol";
+		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 138;
+		rType = 1;
+	};
+	BCDFF5A611548128005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF711308E1000737166 /* SLSMoleculeiPadRootViewController.h */;
+		name = "SLSMoleculeiPadRootViewController.h: 17";
+		rLen = 0;
+		rLoc = 588;
+		rType = 0;
+		vrLen = 665;
+		vrLoc = 0;
+	};
+	BCDFF5A711548128005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
+		name = "SLSMoleculeiPadRootViewController.m: 126";
+		rLen = 0;
+		rLoc = 5743;
+		rType = 0;
+		vrLen = 1554;
+		vrLoc = 4241;
+	};
+	BCDFF5AA11548128005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286CF0E1D905400978ECA /* SLSMoleculeTableViewController.h */;
+		name = "SLSMoleculeTableViewController.h: 27";
+		rLen = 0;
+		rLoc = 887;
+		rType = 0;
+		vrLen = 1415;
+		vrLoc = 0;
+	};
+	BCDFF5AB11548128005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */;
+		name = "SLSMoleculeTableViewController.m: 94";
+		rLen = 5;
+		rLoc = 2907;
+		rType = 0;
+		vrLen = 1454;
+		vrLoc = 4416;
+	};
+	BCDFF5AC11548128005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */;
+		name = "SLSMoleculeTableViewController.m: 69";
+		rLen = 191;
+		rLoc = 1925;
+		rType = 0;
+		vrLen = 4465;
+		vrLoc = 587;
+	};
+	BCDFF5B111548201005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
+		name = "SLSMoleculeiPadRootViewController.m: 66";
+		rLen = 0;
+		rLoc = 3241;
+		rType = 0;
+		vrLen = 2372;
+		vrLoc = 1423;
+	};
+	BCDFF5B211548201005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */;
+		name = "SLSMoleculeTableViewController.m: 69";
+		rLen = 191;
+		rLoc = 1925;
+		rType = 0;
+		vrLen = 4465;
+		vrLoc = 587;
+	};
+	BCDFF5B711548227005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
+		name = "SLSMoleculeiPadRootViewController.m: 134";
+		rLen = 0;
+		rLoc = 5920;
+		rType = 0;
+		vrLen = 1680;
+		vrLoc = 4770;
+	};
+	BCDFF5B811548227005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */;
+		name = "SLSMoleculeTableViewController.m: 69";
+		rLen = 191;
+		rLoc = 1925;
+		rType = 0;
+		vrLen = 4465;
+		vrLoc = 587;
+	};
+	BCDFF5BB11548265005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */;
+		rLen = 15;
+		rLoc = 7778;
+		rType = 0;
+	};
+	BCDFF5BE115482B1005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
+		name = "SLSMoleculeiPadRootViewController.m: 134";
+		rLen = 0;
+		rLoc = 5699;
+		rType = 0;
+		vrLen = 1813;
+		vrLoc = 4713;
+	};
+	BCDFF5BF115482B1005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */;
+		name = "SLSMoleculeTableViewController.m: 69";
+		rLen = 191;
+		rLoc = 1925;
+		rType = 0;
+		vrLen = 4465;
+		vrLoc = 587;
+	};
+	BCDFF5C711552E0D005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */;
+		name = "SLSMoleculeRootViewController.m: 248";
+		rLen = 15;
+		rLoc = 7778;
+		rType = 0;
+		vrLen = 402;
+		vrLoc = 7542;
+	};
+	BCDFF5C811552E0F005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
+		name = "SLSMoleculeiPadRootViewController.m: 128";
+		rLen = 0;
+		rLoc = 5089;
+		rType = 0;
+		vrLen = 1707;
+		vrLoc = 4713;
+	};
+	BCDFF5C911552E0F005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF711308E1000737166 /* SLSMoleculeiPadRootViewController.h */;
+		name = "SLSMoleculeiPadRootViewController.h: 19";
+		rLen = 0;
+		rLoc = 588;
+		rType = 0;
+		vrLen = 711;
+		vrLoc = 0;
+	};
+	BCDFF5CA11552E0F005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCD12CF711308E1000737166 /* SLSMoleculeiPadRootViewController.h */;
+		name = "SLSMoleculeiPadRootViewController.h: 13";
+		rLen = 0;
+		rLoc = 379;
+		rType = 0;
+		vrLen = 740;
+		vrLoc = 0;
+	};
+	BCDFF5CD11552E0F005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDFF5CE11552E0F005C984C /* UIPopoverController.h */;
+		rLen = 1;
+		rLoc = 29;
+		rType = 1;
+	};
+	BCDFF5CE11552E0F005C984C /* UIPopoverController.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = UIPopoverController.h;
+		path = /Beta/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIPopoverController.h;
+		sourceTree = "<absolute>";
+	};
+	BCDFF5CF11552E0F005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDFF5D011552E0F005C984C /* UIPopoverController.h */;
+		name = "UIPopoverController.h: 106";
+		rLen = 85;
+		rLoc = 4906;
+		rType = 0;
+		vrLen = 2550;
+		vrLoc = 3160;
+	};
+	BCDFF5D011552E0F005C984C /* UIPopoverController.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = UIPopoverController.h;
+		path = /Beta/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIPopoverController.h;
+		sourceTree = "<absolute>";
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1000, 706}}";
-			sepNavSelRange = "{554, 0}";
-			sepNavVisRange = "{0, 576}";
+			sepNavIntBoundsRect = "{{0, 0}, {2140, 1968}}";
+			sepNavSelRange = "{4906, 85}";
+			sepNavVisRange = "{3160, 2555}";
+			sepNavWindowFrame = "{{15, 27}, {769, 746}}";
 		};
 	};
-	BCF496541040F23300BE82D5 /* SLSMoleculeAutorotationOperation.m */ = {
+	BCDFF5D111552E0F005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */;
+		name = "SLSMoleculeTableViewController.m: 69";
+		rLen = 191;
+		rLoc = 1925;
+		rType = 0;
+		vrLen = 4465;
+		vrLoc = 587;
+	};
+	BCDFF5D2115539E3005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */;
+		name = "SLSMoleculeRootViewController.m: 248";
+		rLen = 15;
+		rLoc = 7778;
+		rType = 0;
+		vrLen = 402;
+		vrLoc = 7542;
+	};
+	BCDFF5D3115539E5005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */;
+		name = "SLSMoleculeTableViewController.m: 69";
+		rLen = 191;
+		rLoc = 1925;
+		rType = 0;
+		vrLen = 4519;
+		vrLoc = 587;
+	};
+	BCDFF5D71155405A005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+	};
+	BCDFF5F9115554B9005C984C /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */;
+	};
+	BCDFF606115558F9005C984C /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "No '-initWithViewController:' method found";
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 0;
+		rLoc = 192;
+		rType = 1;
+	};
+	BCDFF60911555900005C984C /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'autorotationQueue' undeclared (first use in this function)";
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 64;
+		rType = 1;
+	};
+	BCDFF60A11555900005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 62";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 338;
+		vrLoc = 2420;
+	};
+	BCDFF60B11555900005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 176";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 505;
+		vrLoc = 6336;
+	};
+	BCDFF60E11555907005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 62";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 338;
+		vrLoc = 2420;
+	};
+	BCDFF60F11555907005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 176";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 505;
+		vrLoc = 6336;
+	};
+	BCDFF61211555907005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		name = "SLSMoleculeGLViewController.h: 29";
+		rLen = 14;
+		rLoc = 917;
+		rType = 0;
+		vrLen = 1606;
+		vrLoc = 349;
+	};
+	BCDFF61311555907005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 188";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 1624;
+		vrLoc = 5611;
+	};
+	BCDFF61611555907005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCF496531040F23300BE82D5 /* SLSMoleculeRenderingOperation.h */;
+		name = "SLSMoleculeAutorotationOperation.h: 22";
+		rLen = 0;
+		rLoc = 594;
+		rType = 0;
+		vrLen = 602;
+		vrLoc = 0;
+	};
+	BCDFF61711555907005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCF496541040F23300BE82D5 /* SLSMoleculeRenderingOperation.m */;
+		name = "SLSMoleculeAutorotationOperation.m: 17";
+		rLen = 81;
+		rLoc = 639;
+		rType = 0;
+		vrLen = 920;
+		vrLoc = 0;
+	};
+	BCDFF61811555907005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCF496541040F23300BE82D5 /* SLSMoleculeRenderingOperation.m */;
+		name = "SLSMoleculeAutorotationOperation.m: 34";
+		rLen = 0;
+		rLoc = 1134;
+		rType = 0;
+		vrLen = 926;
+		vrLoc = 0;
+	};
+	BCDFF61B11555907005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */;
+		name = "SLSMoleculeGLView.m: 232";
+		rLen = 0;
+		rLoc = 6299;
+		rType = 0;
+		vrLen = 1663;
+		vrLoc = 4801;
+	};
+	BCDFF62011555930005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 62";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 338;
+		vrLoc = 2420;
+	};
+	BCDFF62111555930005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 176";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 505;
+		vrLoc = 6336;
+	};
+	BCDFF6241155593B005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 188";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 1624;
+		vrLoc = 5611;
+	};
+	BCDFF6251155593B005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCF496541040F23300BE82D5 /* SLSMoleculeRenderingOperation.m */;
+		name = "SLSMoleculeAutorotationOperation.m: 34";
+		rLen = 0;
+		rLoc = 1134;
+		rType = 0;
+		vrLen = 926;
+		vrLoc = 0;
+	};
+	BCDFF6261155593B005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */;
+		name = "SLSMoleculeGLView.m: 232";
+		rLen = 0;
+		rLoc = 6299;
+		rType = 0;
+		vrLen = 1663;
+		vrLoc = 4801;
+	};
+	BCDFF62C1155596F005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 62";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 321;
+		vrLoc = 2420;
+	};
+	BCDFF62D1155596F005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 176";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 503;
+		vrLoc = 6336;
+	};
+	BCDFF630115559B9005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 62";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 321;
+		vrLoc = 2420;
+	};
+	BCDFF631115559B9005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 176";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 503;
+		vrLoc = 6336;
+	};
+	BCDFF634115559CF005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 62";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 396;
+		vrLoc = 2520;
+	};
+	BCDFF635115559CF005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 177";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 468;
+		vrLoc = 6948;
+	};
+	BCDFF636115559CF005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 63";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 3704;
+		vrLoc = 1960;
+	};
+	BCDFF637115559CF005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCF496541040F23300BE82D5 /* SLSMoleculeRenderingOperation.m */;
+		name = "SLSMoleculeAutorotationOperation.m: 34";
+		rLen = 0;
+		rLoc = 1134;
+		rType = 0;
+		vrLen = 926;
+		vrLoc = 0;
+	};
+	BCDFF638115559CF005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */;
+		name = "SLSMoleculeGLView.m: 232";
+		rLen = 0;
+		rLoc = 6299;
+		rType = 0;
+		vrLen = 1663;
+		vrLoc = 4801;
+	};
+	BCDFF63E11555C0F005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		rLen = 25;
+		rLoc = 23733;
+		rType = 0;
+	};
+	BCDFF64111555C60005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 62";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 192;
+		vrLoc = 2666;
+	};
+	BCDFF64211555C60005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 563";
+		rLen = 25;
+		rLoc = 23733;
+		rType = 0;
+		vrLen = 435;
+		vrLoc = 21259;
+	};
+	BCDFF64311555C60005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCF496541040F23300BE82D5 /* SLSMoleculeRenderingOperation.m */;
+		name = "SLSMoleculeAutorotationOperation.m: 38";
+		rLen = 0;
+		rLoc = 1134;
+		rType = 0;
+		vrLen = 957;
+		vrLoc = 0;
+	};
+	BCDFF64411555C60005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */;
+		name = "SLSMoleculeGLView.m: 232";
+		rLen = 0;
+		rLoc = 6299;
+		rType = 0;
+		vrLen = 1663;
+		vrLoc = 4801;
+	};
+	BCDFF64E11555F90005C984C /* SLSMoleculeViewResizeOperation.m */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.objc;
+		name = SLSMoleculeViewResizeOperation.m;
+		path = /Users/larson/Development/Molecules/SLSMoleculeViewResizeOperation.m;
+		sourceTree = "<absolute>";
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1034, 784}}";
-			sepNavSelRange = "{1035, 0}";
-			sepNavVisRange = "{59, 982}";
-			sepNavWindowFrame = "{{615, 400}, {1059, 778}}";
+			sepNavIntBoundsRect = "{{0, 0}, {710, 768}}";
+			sepNavSelRange = "{713, 248}";
+			sepNavVisRange = "{100, 893}";
+			sepNavWindowFrame = "{{353, 32}, {769, 746}}";
+		};
+	};
+	BCDFF6601155629A005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 62";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 192;
+		vrLoc = 2666;
+	};
+	BCDFF6611155629A005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */;
+		name = "SLSMoleculeGLView.m: 226";
+		rLen = 0;
+		rLoc = 6299;
+		rType = 0;
+		vrLen = 210;
+		vrLoc = 6276;
+	};
+	BCDFF6621155629A005C984C /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'SLSMoleculeGLView' may not respond to '-destroyFramebuffer'";
+		fRef = BCF496541040F23300BE82D5 /* SLSMoleculeRenderingOperation.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 0;
+		rLoc = 35;
+		rType = 1;
+	};
+	BCDFF6631155629A005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCF496541040F23300BE82D5 /* SLSMoleculeRenderingOperation.m */;
+		name = "SLSMoleculeAutorotationOperation.m: 39";
+		rLen = 0;
+		rLoc = 934;
+		rType = 0;
+		vrLen = 252;
+		vrLoc = 705;
+	};
+	BCDFF6641155629A005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 571";
+		rLen = 25;
+		rLoc = 23733;
+		rType = 0;
+		vrLen = 472;
+		vrLoc = 21176;
+	};
+	BCDFF66A115562D3005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCF496541040F23300BE82D5 /* SLSMoleculeRenderingOperation.m */;
+		name = "SLSMoleculeAutorotationOperation.m: 39";
+		rLen = 0;
+		rLoc = 934;
+		rType = 0;
+		vrLen = 252;
+		vrLoc = 705;
+	};
+	BCDFF66B115562D3005C984C /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'stepsSinceLastRotation' undeclared (first use in this function)";
+		fRef = BCDFF64E11555F90005C984C /* SLSMoleculeViewResizeOperation.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 0;
+		rLoc = 43;
+		rType = 1;
+	};
+	BCDFF66C115562D3005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDFF64E11555F90005C984C /* SLSMoleculeViewResizeOperation.m */;
+		name = "SLSMoleculeViewResizeOperation.m: 44";
+		rLen = 0;
+		rLoc = 966;
+		rType = 0;
+		vrLen = 280;
+		vrLoc = 557;
+	};
+	BCDFF66D115562D3005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 571";
+		rLen = 25;
+		rLoc = 23733;
+		rType = 0;
+		vrLen = 472;
+		vrLoc = 21176;
+	};
+	BCDFF6701155632A005C984C /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'SLSMoleculeViewResizeOperation' undeclared (first use in this function)";
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 414;
+		rType = 1;
+	};
+	BCDFF67311556337005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDFF64E11555F90005C984C /* SLSMoleculeViewResizeOperation.m */;
+		name = "SLSMoleculeViewResizeOperation.m: 44";
+		rLen = 0;
+		rLoc = 966;
+		rType = 0;
+		vrLen = 280;
+		vrLoc = 557;
+	};
+	BCDFF67411556337005C984C /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "'SLSMoleculeViewResizeOperation' undeclared (first use in this function)";
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 414;
+		rType = 1;
+	};
+	BCDFF67511556337005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 375";
+		rLen = 0;
+		rLoc = 16991;
+		rType = 0;
+		vrLen = 425;
+		vrLoc = 14825;
+	};
+	BCDFF67611556337005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 574";
+		rLen = 25;
+		rLoc = 23733;
+		rType = 0;
+		vrLen = 516;
+		vrLoc = 21255;
+	};
+	BCDFF67911556338005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		name = "SLSMoleculeGLViewController.h: 67";
+		rLen = 51;
+		rLoc = 2841;
+		rType = 0;
+		vrLen = 1606;
+		vrLoc = 1300;
+	};
+	BCDFF67A11556338005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 15";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 1902;
+		vrLoc = 3;
+	};
+	BCDFF67B115569EE005C984C /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = BCF496531040F23300BE82D5 /* SLSMoleculeRenderingOperation.h */;
+	};
+	BCDFF67E11556A0B005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 736";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 396;
+		vrLoc = 14616;
+	};
+	BCDFF67F11556A0B005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 736";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 500;
+		vrLoc = 21424;
+	};
+	BCDFF68311556A0C005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 736";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 396;
+		vrLoc = 14616;
+	};
+	BCDFF68411556A0C005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 736";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 500;
+		vrLoc = 21424;
+	};
+	BCDFF68711556A0E005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCF496531040F23300BE82D5 /* SLSMoleculeRenderingOperation.h */;
+		name = "SLSMoleculeRenderingOperation.h: 25";
+		rLen = 0;
+		rLoc = 602;
+		rType = 0;
+		vrLen = 602;
+		vrLoc = 0;
+	};
+	BCDFF68811556A0E005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 736";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 1741;
+		vrLoc = 4187;
+	};
+	BCDFF68B11556AAB005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 736";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 425;
+		vrLoc = 14816;
+	};
+	BCDFF68C11556AAB005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 736";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 500;
+		vrLoc = 21424;
+	};
+	BCDFF74111557C5A005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 757";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 698;
+		vrLoc = 14106;
+	};
+	BCDFF74211557C5A005C984C /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Method definition for '-initWithViewController:' not found";
+		fRef = BCF496541040F23300BE82D5 /* SLSMoleculeRenderingOperation.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 42;
+		rType = 1;
+	};
+	BCDFF74311557C5A005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCF496541040F23300BE82D5 /* SLSMoleculeRenderingOperation.m */;
+		name = "SLSMoleculeRenderingOperation.m: 43";
+		rLen = 0;
+		rLoc = 1154;
+		rType = 0;
+		vrLen = 290;
+		vrLoc = 912;
+	};
+	BCDFF74411557C5A005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 757";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 468;
+		vrLoc = 22140;
+	};
+	BCDFF74811557C69005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 757";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 698;
+		vrLoc = 14106;
+	};
+	BCDFF74911557C69005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 757";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 698;
+		vrLoc = 14106;
+	};
+	BCDFF74A11557C69005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 757";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 468;
+		vrLoc = 22140;
+	};
+	BCDFF74D11557C6C005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 757";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 698;
+		vrLoc = 14106;
+	};
+	BCDFF74E11557C6C005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 757";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 468;
+		vrLoc = 22140;
+	};
+	BCDFF74F11557C6D005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		name = "SLSMoleculeGLViewController.h: 66";
+		rLen = 202;
+		rLoc = 2610;
+		rType = 0;
+		vrLen = 1784;
+		vrLoc = 1300;
+	};
+	BCDFF75011557C6D005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 355";
+		rLen = 182;
+		rLoc = 5063;
+		rType = 0;
+		vrLen = 843;
+		vrLoc = 907;
+	};
+	BCDFF75111557C6D005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 373";
+		rLen = 0;
+		rLoc = 15507;
+		rType = 0;
+		vrLen = 2618;
+		vrLoc = 13560;
+	};
+	BCDFF75511557CC9005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 759";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 396;
+		vrLoc = 14184;
+	};
+	BCDFF75611557CC9005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 759";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 468;
+		vrLoc = 22176;
+	};
+	BCDFF75711557CC9005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 286";
+		rLen = 0;
+		rLoc = 10699;
+		rType = 0;
+		vrLen = 3828;
+		vrLoc = 7437;
+	};
+	BCDFF75A11557D5E005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 760";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 396;
+		vrLoc = 14220;
+	};
+	BCDFF75B11557D5E005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 760";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 468;
+		vrLoc = 22248;
+	};
+	BCDFF75C11557D5F005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 367";
+		rLen = 0;
+		rLoc = 15038;
+		rType = 0;
+		vrLen = 2158;
+		vrLoc = 14091;
+	};
+	BCDFF76011557F5D005C984C /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "SLSMoleculeViewResizeOperation.h: No such file or directory";
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 14;
+		rType = 1;
+	};
+	BCDFF76311557F63005C984C /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "SLSMoleculeViewResizeOperation.h: No such file or directory";
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 14;
+		rType = 1;
+	};
+	BCDFF76411557F63005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 15";
+		rLen = 0;
+		rLoc = 485;
+		rType = 0;
+		vrLen = 382;
+		vrLoc = 199;
+	};
+	BCDFF76511557F63005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 773";
+		rLen = 0;
+		rLoc = 28225;
+		rType = 0;
+		vrLen = 468;
+		vrLoc = 22752;
+	};
+	BCDFF76611557F64005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		name = "SLSMoleculeGLViewController.h: 67";
+		rLen = 20;
+		rLoc = 2792;
+		rType = 0;
+		vrLen = 1851;
+		vrLoc = 1251;
+	};
+	BCDFF76711557F64005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 15";
+		rLen = 0;
+		rLoc = 485;
+		rType = 0;
+		vrLen = 4717;
+		vrLoc = 3;
+	};
+	BCDFF76A115580EA005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */;
+		name = "SLSMoleculeGLViewController.m: 15";
+		rLen = 0;
+		rLoc = 485;
+		rType = 0;
+		vrLen = 2283;
+		vrLoc = 23530;
+	};
+	BCDFF76B115580EA005C984C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */;
+		name = "SLSMoleculeGLViewController.h: 33";
+		rLen = 0;
+		rLoc = 1117;
+		rType = 0;
+		vrLen = 1668;
+		vrLoc = 373;
+	};
+	BCF496531040F23300BE82D5 /* SLSMoleculeRenderingOperation.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {710, 674}}";
+			sepNavSelRange = "{27, 0}";
+			sepNavVisRange = "{0, 602}";
+			sepNavWindowFrame = "{{38, 6}, {769, 746}}";
+		};
+	};
+	BCF496541040F23300BE82D5 /* SLSMoleculeRenderingOperation.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1293, 704}}";
+			sepNavSelRange = "{639, 0}";
+			sepNavVisRange = "{3, 1156}";
+			sepNavWindowFrame = "{{38, 6}, {769, 746}}";
 		};
 	};
 }

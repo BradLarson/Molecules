@@ -26,8 +26,12 @@
 	CATransform3D currentCalculatedMatrix;
 	BOOL isAutorotating;
 	BOOL isFirstDrawingOfMolecule, isFrameRenderingFinished;
-	NSOperationQueue *autorotationQueue;
+	NSOperationQueue *renderingQueue;
 
+	NSTimer *autorotationTimer;
+	NSUInteger stepsSinceLastRotation;
+	float accumulatedXRotation, accumulatedYRotation, accumulatedScale, accumulatedXTranslation, accumulatedYTranslation;
+	
 	// Touch-handling 
 	float startingTouchDistance, previousScale;
 	float instantObjectScale, instantXRotation, instantYRotation, instantXTranslation, instantYTranslation, instantZTranslation;
@@ -49,6 +53,7 @@
 
 // Autorotation of molecule
 - (void)startOrStopAutorotation:(id)sender;
+- (void)handleAutorotationTimer;
 
 // OpenGL matrix helper methods
 - (void)convertMatrix:(GLfloat *)matrix to3DTransform:(CATransform3D *)transform3D;
@@ -56,11 +61,13 @@
 - (void)print3DTransform:(CATransform3D *)transform3D;
 - (void)printMatrix:(GLfloat *)fixedPointMatrix;
 
-
 // OpenGL molecule rendering
 - (void)drawView;
+- (void)_drawViewByRotatingAroundX:(float)xRotation rotatingAroundY:(float)yRotation scaling:(float)scaleFactor translationInX:(float)xTranslation translationInY:(float)yTranslation;
 - (void)drawViewByRotatingAroundX:(float)xRotation rotatingAroundY:(float)yRotation scaling:(float)scaleFactor translationInX:(float)xTranslation translationInY:(float)yTranslation;
+- (void)resizeView;
 - (void)runOpenGLBenchmarks;
+- (void)updateSizeOfGLView:(NSNotification *)note;
 
 // Manage molecule rendering state
 - (void)handleFinishOfMoleculeRendering:(NSNotification *)note;

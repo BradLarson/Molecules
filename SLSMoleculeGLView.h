@@ -34,7 +34,11 @@ Note that setting the view non-opaque will only work if the EAGL surface has an 
 	GLuint depthRenderbuffer;	
 }
 
+@property(readonly, nonatomic) EAGLContext *context;
+
 // OpenGL drawing
+- (BOOL)createFramebuffer;
+- (void)destroyFramebuffer;
 - (void)configureLighting;
 - (void)clearScreen;
 - (void)startDrawingFrame;

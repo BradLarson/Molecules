@@ -227,24 +227,65 @@
 			<key>Content</key>
 			<dict>
 				<key>PBXProjectModuleGUID</key>
-				<string>BC64926F1155C26F00A66254</string>
+				<string>BC64936E1155D24C00A66254</string>
 				<key>PBXProjectModuleLabel</key>
-				<string>SLSMoleculeRootViewController.m</string>
+				<string>SLSMoleculeAppDelegate.m</string>
 				<key>PBXSplitModuleInNavigatorKey</key>
 				<dict>
 					<key>Split0</key>
 					<dict>
 						<key>PBXProjectModuleGUID</key>
-						<string>BC6492701155C26F00A66254</string>
+						<string>BC64936F1155D24C00A66254</string>
 						<key>PBXProjectModuleLabel</key>
-						<string>SLSMoleculeRootViewController.m</string>
+						<string>SLSMoleculeAppDelegate.m</string>
 						<key>_historyCapacity</key>
 						<integer>10</integer>
 						<key>bookmark</key>
-						<string>BC6492711155C26F00A66254</string>
+						<string>BC64937C1155D33800A66254</string>
 						<key>history</key>
 						<array>
-							<string>BC6492691155C24A00A66254</string>
+							<string>BC6493631155D23500A66254</string>
+						</array>
+					</dict>
+					<key>SplitCount</key>
+					<string>1</string>
+				</dict>
+				<key>StatusBarVisibility</key>
+				<true/>
+			</dict>
+			<key>Geometry</key>
+			<dict>
+				<key>Frame</key>
+				<string>{{0, 20}, {983, 737}}</string>
+				<key>PBXModuleWindowStatusBarHidden2</key>
+				<false/>
+				<key>RubberWindowFrame</key>
+				<string>230 0 983 778 0 0 1280 778 </string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Content</key>
+			<dict>
+				<key>PBXProjectModuleGUID</key>
+				<string>BC6492831155C32F00A66254</string>
+				<key>PBXProjectModuleLabel</key>
+				<string>SLSMoleculeGLViewController.m</string>
+				<key>PBXSplitModuleInNavigatorKey</key>
+				<dict>
+					<key>Split0</key>
+					<dict>
+						<key>PBXProjectModuleGUID</key>
+						<string>BC6492841155C32F00A66254</string>
+						<key>PBXProjectModuleLabel</key>
+						<string>SLSMoleculeGLViewController.m</string>
+						<key>_historyCapacity</key>
+						<integer>10</integer>
+						<key>bookmark</key>
+						<string>BC64937D1155D33800A66254</string>
+						<key>history</key>
+						<array>
+							<string>BC6493581155CE9400A66254</string>
+							<string>BC6493591155CE9400A66254</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -260,48 +301,7 @@
 				<key>PBXModuleWindowStatusBarHidden2</key>
 				<false/>
 				<key>RubberWindowFrame</key>
-				<string>57 0 1155 778 0 0 1280 778 </string>
-			</dict>
-		</dict>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
-				<string>BC6492721155C26F00A66254</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>SLSMoleculeTableViewController.m</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>BC6492731155C26F00A66254</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>SLSMoleculeTableViewController.m</string>
-						<key>_historyCapacity</key>
-						<integer>10</integer>
-						<key>bookmark</key>
-						<string>BC6492761155C26F00A66254</string>
-						<key>history</key>
-						<array>
-							<string>BC6492741155C26F00A66254</string>
-							<string>BC6492751155C26F00A66254</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {727, 737}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>372 0 727 778 0 0 1280 778 </string>
+				<string>72 0 1155 778 0 0 1280 778 </string>
 			</dict>
 		</dict>
 	</array>
@@ -391,13 +391,13 @@
 									<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 									<array>
 										<array>
-											<integer>36</integer>
-											<integer>34</integer>
+											<integer>3</integer>
+											<integer>1</integer>
 											<integer>0</integer>
 										</array>
 									</array>
 									<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-									<string>{{0, 469}, {371, 453}}</string>
+									<string>{{0, 0}, {371, 453}}</string>
 								</dict>
 								<key>PBXTopSmartGroupGIDs</key>
 								<array/>
@@ -591,7 +591,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>290833007.07095402</real>
+	<real>290837304.84911901</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>
@@ -606,15 +606,15 @@
 	<integer>0</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>BC6491D11155ACFA00A66254</string>
 		<string>BC6491D21155ACFA00A66254</string>
-		<string>1C530D54069F1CE1000CFCEE</string>
 		<string>1C530D52069F1CE1000CFCEE</string>
-		<string>1C530D5B069F1CE1000CFCEE</string>
+		<string>1C530D54069F1CE1000CFCEE</string>
+		<string>BC6492831155C32F00A66254</string>
 		<string>/Users/larson/Development/Molecules/Molecules.xcodeproj</string>
-		<string>BC6492721155C26F00A66254</string>
-		<string>1C530D57069F1CE1000CFCEE</string>
-		<string>BC64926F1155C26F00A66254</string>
+		<string>1C530D5B069F1CE1000CFCEE</string>
+		<string>BC64936E1155D24C00A66254</string>
 	</array>
 	<key>WindowString</key>
 	<string>34 239 388 539 0 0 1280 778 </string>
@@ -777,7 +777,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>SLSMoleculeRootViewController.h</string>
+								<string>SLSMoleculeAppDelegate.m</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -970,7 +970,7 @@
 			<key>WindowToolGUID</key>
 			<string>1C530D54069F1CE1000CFCEE</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>
@@ -993,7 +993,7 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CDD528C0622207200134675</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>SLSMoleculeRootViewController.m</string>
+										<string>SLSMoleculeGLViewController.m</string>
 										<key>StatusBarVisibility</key>
 										<true/>
 									</dict>
@@ -1061,7 +1061,7 @@
 			<key>WindowToolGUID</key>
 			<string>1C530D57069F1CE1000CFCEE</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>Identifier</key>

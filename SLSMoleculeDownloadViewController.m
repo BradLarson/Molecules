@@ -331,6 +331,11 @@
 	// Notify about the addition of the new molecule
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"MoleculeDidFinishDownloading" object:filename];
 	
+	if ([SLSMoleculeAppDelegate isRunningOniPad])
+	{
+		[self.navigationController popViewControllerAnimated:YES];
+	}
+	
 	[self downloadCompleted];	
 }
 

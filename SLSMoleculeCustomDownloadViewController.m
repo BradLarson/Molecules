@@ -145,6 +145,11 @@
 	{
 		[urlInput resignFirstResponder];
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"CustomURLForMoleculeSelected" object:[NSURL URLWithString:urlString]];
+		
+		if ([SLSMoleculeAppDelegate isRunningOniPad])
+		{
+			[self.navigationController popViewControllerAnimated:YES];
+		}		
 	}
 	else
 	{

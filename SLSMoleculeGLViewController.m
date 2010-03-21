@@ -47,6 +47,12 @@
 		twoFingersAreMoving = NO;
 		pinchGestureUnderway = NO;
 		stepsSinceLastRotation = 0;
+		
+		accumulatedXRotation = 0.0f;
+		accumulatedYRotation = 0.0f;
+		accumulatedScale = 1.0f;
+		accumulatedXTranslation = 0.0f;
+		accumulatedYTranslation = 0.0f;
 
 		// Set up the initial model view matrix for the rendering
 		isFirstDrawingOfMolecule = YES;
@@ -173,7 +179,7 @@
 	}
 	else
 	{
-		autorotationTimer = [NSTimer scheduledTimerWithTimeInterval: (1 / 60.0f ) target: self selector: @selector(handleAutorotationTimer) userInfo: nil repeats: YES];
+		autorotationTimer = [NSTimer scheduledTimerWithTimeInterval: (1 / 30.0f ) target: self selector: @selector(handleAutorotationTimer) userInfo: nil repeats: YES];
 		
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleRotationSelected" object:[NSNumber numberWithBool:YES]];
 	}
@@ -182,16 +188,17 @@
 
 - (void)handleAutorotationTimer;
 {
-	if ([[renderingQueue operations] count] > 0)
-	{
-		stepsSinceLastRotation++;
-	}
-	else
-	{
-		[self drawViewByRotatingAroundX:(1.0 + (float)stepsSinceLastRotation * 1.0) rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
+//	if ([[renderingQueue operations] count] > 0)
+//	{
+//		stepsSinceLastRotation++;
+//	}
+//	else
+//	{
+//		[self drawViewByRotatingAroundX:(1.0 + (float)stepsSinceLastRotation * 1.0) rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
+	[self drawViewByRotatingAroundX:1.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
 
-		stepsSinceLastRotation = 0;
-	}
+//		stepsSinceLastRotation = 0;
+//	}
 }
 
 #pragma mark -
@@ -360,22 +367,36 @@
 
 - (void)drawViewByRotatingAroundX:(float)xRotation rotatingAroundY:(float)yRotation scaling:(float)scaleFactor translationInX:(float)xTranslation translationInY:(float)yTranslation;
 {
-	NSMethodSignature * sig = nil;
-	sig = [self methodSignatureForSelector:@selector(_drawViewByRotatingAroundX:rotatingAroundY:scaling:translationInX:translationInY:)];
-	NSInvocation *theInvocation = [NSInvocation invocationWithMethodSignature:sig];
-	[theInvocation setTarget:self];
-	[theInvocation setSelector:@selector(_drawViewByRotatingAroundX:rotatingAroundY:scaling:translationInX:translationInY:)];
+	accumulatedXRotation += xRotation;
+	accumulatedYRotation += yRotation;
+	accumulatedScale *= scaleFactor;
+	accumulatedXTranslation += xTranslation;
+	accumulatedYTranslation += yTranslation;		
 	
-	[theInvocation setArgument:&xRotation atIndex:2];
-	[theInvocation setArgument:&yRotation atIndex:3];
-	[theInvocation setArgument:&scaleFactor atIndex:4];
-	[theInvocation setArgument:&xTranslation atIndex:5];
-	[theInvocation setArgument:&yTranslation atIndex:6];
-	
-	NSInvocationOperation *invocationOperation = [[NSInvocationOperation alloc] initWithInvocation:theInvocation];
-	[renderingQueue addOperation:invocationOperation];
-	[invocationOperation release];
-	
+	if ([[renderingQueue operations] count] < 2)
+	{
+		NSMethodSignature * sig = nil;
+		sig = [self methodSignatureForSelector:@selector(_drawViewByRotatingAroundX:rotatingAroundY:scaling:translationInX:translationInY:)];
+		NSInvocation *theInvocation = [NSInvocation invocationWithMethodSignature:sig];
+		[theInvocation setTarget:self];
+		[theInvocation setSelector:@selector(_drawViewByRotatingAroundX:rotatingAroundY:scaling:translationInX:translationInY:)];
+		
+		[theInvocation setArgument:&accumulatedXRotation atIndex:2];
+		[theInvocation setArgument:&accumulatedYRotation atIndex:3];
+		[theInvocation setArgument:&accumulatedScale atIndex:4];
+		[theInvocation setArgument:&accumulatedXTranslation atIndex:5];
+		[theInvocation setArgument:&accumulatedYTranslation atIndex:6];
+		
+		NSInvocationOperation *invocationOperation = [[NSInvocationOperation alloc] initWithInvocation:theInvocation];
+		[renderingQueue addOperation:invocationOperation];
+		[invocationOperation release];
+		
+		accumulatedXRotation = 0.0f;
+		accumulatedYRotation = 0.0f;
+		accumulatedScale = 1.0f;
+		accumulatedXTranslation = 0.0f;
+		accumulatedYTranslation = 0.0f;		
+	}
 	
 //	SLSMoleculeRenderingOperation *autorotationOperation = [[SLSMoleculeRenderingOperation alloc] initWithViewController:self stepsSinceLastRotation:stepsSinceLastRotation];
 //	[renderingQueue addOperation:autorotationOperation];
@@ -762,6 +783,8 @@
 	{
 		[self startOrStopAutorotation:self];
 	}
+	
+	[NSThread sleepForTimeInterval:0.2];
 	
 	[renderingQueue waitUntilAllOperationsAreFinished];
 	

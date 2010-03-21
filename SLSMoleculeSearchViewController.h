@@ -12,9 +12,8 @@
 #import "SLSMoleculeTableViewController.h"
 #import "SLSMoleculeDownloadViewController.h"
 
-@interface SLSMoleculeSearchViewController : UITableViewController <MoleculeDownloadDelegate, UISearchBarDelegate>
+@interface SLSMoleculeSearchViewController : UITableViewController <UISearchBarDelegate>
 {
-	id<MoleculeDownloadDelegate> delegate;
 	UISearchBar *keywordSearchBar;
 	NSMutableArray *searchResultTitles, *searchResultPDBCodes;
 	NSMutableData *downloadedFileContents;
@@ -22,8 +21,6 @@
 	NSUInteger currentPageOfResults;
 	BOOL searchCancelled;
 }
-
-@property (readwrite, assign) id<MoleculeDownloadDelegate> delegate;
 
 // Performing search
 - (BOOL)performSearchWithKeyword:(NSString *)keyword;

@@ -28,6 +28,8 @@
         
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
 		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moleculeDidFinishDownloading:) name:@"MoleculeDidFinishDownloading" object:nil];
+
 		if ([SLSMoleculeAppDelegate isRunningOniPad])
 		{
 //			self.tableView.backgroundColor = [UIColor blackColor];
@@ -67,82 +69,47 @@
 - (IBAction)displayMoleculeDownloadView;
 {
 	SLSMoleculeDataSourceViewController *dataSourceViewController = [[SLSMoleculeDataSourceViewController alloc] initWithStyle:UITableViewStylePlain];
-	dataSourceViewController.delegate = self;
 	
 	[self.navigationController pushViewController:dataSourceViewController animated:YES];
 	[dataSourceViewController release];
 }
 
-- (void)didReceiveMemoryWarning
+- (void)moleculeDidFinishDownloading:(NSNotification *)note;
 {
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Overriden to allow any orientation.
-    return YES;
-}
-
-#pragma mark -
-#pragma mark Molecule download delegate methods
-
-- (void)moleculeDownloadController:(SLSMoleculeDownloadViewController *)moleculeDownloadViewController didAddMolecule:(NSData *)moleculeData withFilename:(NSString *)filename;
-{
-	if (moleculeData != nil)
+	NSString *filename = [note object];
+	
+	// Add the new protein to the list by gunzipping the data and pulling out the title
+	SLSMolecule *newMolecule = [[SLSMolecule alloc] initWithFilename:filename database:database];
+	if (newMolecule == nil)
 	{
-		// Add the new protein to the list by gunzipping the data and pulling out the title
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error in downloaded file", @"Localized", nil) message:NSLocalizedStringFromTable(@"The molecule file is either corrupted or not of a supported format", @"Localized", nil)
+													   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil];
+		[alert show];
+		[alert release];
+		
+		// Delete the corrupted or sunsupported file
 		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 		NSString *documentsDirectory = [paths objectAtIndex:0];
 		
 		NSError *error = nil;
-		if (![moleculeData writeToFile:[documentsDirectory stringByAppendingPathComponent:filename] options:NSAtomicWrite error:&error])
+		if (![[NSFileManager defaultManager] removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:&error])
 		{
-			// TODO: Do some error handling here
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Could not delete file", @"Localized", nil) message:[error localizedDescription]
+														   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil];
+			[alert show];
+			[alert release];					
 			return;
 		}
 		
-		SLSMolecule *newMolecule = [[SLSMolecule alloc] initWithFilename:filename database:database];
-		if (newMolecule == nil)
-		{
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error in downloaded file", @"Localized", nil) message:NSLocalizedStringFromTable(@"The molecule file is either corrupted or not of a supported format", @"Localized", nil)
-														   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil];
-			[alert show];
-			[alert release];
-			
-			// Delete the corrupted or sunsupported file
-			NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-			NSString *documentsDirectory = [paths objectAtIndex:0];
-			
-			NSError *error = nil;
-			if (![[NSFileManager defaultManager] removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:&error])
-			{
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Could not delete file", @"Localized", nil) message:[error localizedDescription]
-															   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil];
-				[alert show];
-				[alert release];					
-				return;
-			}
-			
-		}
-		else
-		{
-			[molecules addObject:newMolecule];
-			[newMolecule release];
-			[self.tableView reloadData];
-		}			
 	}
-	[self.navigationController popToViewController:self animated:YES];
-	
-}
+	else
+	{
+		[molecules addObject:newMolecule];
+		[newMolecule release];
+		[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:([molecules count] - 1) inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];		
+	}			
 
-#pragma mark -
-#pragma mark MoleculeDownloadDelegate protocol method
-
-- (void)customURLSelectedForMoleculeDownload:(NSURL *)customURLForMoleculeDownload;
-{
-	NSURL *holderForURL = [customURLForMoleculeDownload copy];
 	[self.navigationController popToViewController:self animated:YES];
-	[self.delegate customURLSelectedForMoleculeDownload:holderForURL];
-	[holderForURL release];
 }
 
 #pragma mark -
@@ -152,6 +119,10 @@
 {
 	UITableViewCell *cell;
 	NSInteger index = [indexPath row];
+	
+	if ([SLSMoleculeAppDelegate isRunningOniPad])
+		index++;
+	
 	if (index == 0)
 	{
 		cell = [tableView dequeueReusableCellWithIdentifier:@"Download"];
@@ -193,12 +164,22 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-	return ([molecules count] + 1);
+	if ([SLSMoleculeAppDelegate isRunningOniPad])
+	{
+		return [molecules count];
+	}
+	else
+	{		
+		return ([molecules count] + 1);
+	}
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	NSInteger index = [indexPath row];
+	if ([SLSMoleculeAppDelegate isRunningOniPad])
+		index++;
+	
 	if (index == 0)
 		[self displayMoleculeDownloadView];
 	else
@@ -214,6 +195,9 @@
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
 	NSInteger index = [indexPath row];
+	if ([SLSMoleculeAppDelegate isRunningOniPad])
+		index++;
+	
 	if (index == 0)
 		[self displayMoleculeDownloadView];
 	else
@@ -230,16 +214,26 @@
 // Make sure that the "Download new molecules" item is not deletable
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-	if ([indexPath row] == 0)
-		return UITableViewCellEditingStyleNone;
-	else
+	if ([SLSMoleculeAppDelegate isRunningOniPad])
+	{
 		return UITableViewCellEditingStyleDelete;
+	}
+	else
+	{
+		if ([indexPath row] == 0)
+			return UITableViewCellEditingStyleNone;
+		else
+			return UITableViewCellEditingStyleDelete;
+	}	
 }
 
 // Manage deletion of a protein from disk
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	NSInteger index = [indexPath row];
+	if ([SLSMoleculeAppDelegate isRunningOniPad])
+		index++;
+	
 	if (index == 0) // Can't delete the Download new molecules item
 		return;
     // If row is deleted, remove it from the list.
@@ -263,6 +257,17 @@
 		[tableView reloadData];
     }
 }
+
+- (void)didReceiveMemoryWarning
+{
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    // Overriden to allow any orientation.
+    return YES;
+}
+
+
 
 #pragma mark -
 #pragma mark Accessors

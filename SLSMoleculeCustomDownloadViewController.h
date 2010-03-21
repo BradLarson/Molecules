@@ -12,16 +12,8 @@
 
 @interface SLSMoleculeCustomDownloadViewController : UIViewController <UITextFieldDelegate>
 {
-	id <MoleculeCustomDownloadDelegate> delegate;
 	UITextField *urlInput;
 //	UIActivityIndicatorView *downloadActivityIndicator;
 }
 
-@property(readwrite, assign) id <MoleculeCustomDownloadDelegate> delegate;
-
-@end
-
-
-@protocol MoleculeCustomDownloadDelegate <NSObject>
-- (void)customURLSelectedForMoleculeDownload:(NSURL *)customURLForMoleculeDownload;
 @end

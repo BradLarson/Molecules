@@ -322,7 +322,6 @@
 		NSString *selectedPDBCode = [searchResultPDBCodes objectAtIndex:[indexPath row]];
 		
 		SLSMoleculeDownloadViewController *downloadViewController = [[SLSMoleculeDownloadViewController alloc] initWithPDBCode:selectedPDBCode andTitle:selectedTitle];
-		downloadViewController.delegate = self;
 		
 		[self.navigationController pushViewController:downloadViewController animated:YES];
 		[downloadViewController release];	
@@ -419,17 +418,8 @@
 }
 
 #pragma mark -
-#pragma mark MoleculeDownloadDelegate protocol method
-
-- (void)moleculeDownloadController:(SLSMoleculeDownloadViewController *)moleculeDownloadViewController didAddMolecule:(NSData *)moleculeData withFilename:(NSString *)filename;
-{
-	[self.delegate moleculeDownloadController:moleculeDownloadViewController didAddMolecule:moleculeData withFilename:filename];
-}
-
-#pragma mark -
 #pragma mark Accessors
 
-@synthesize delegate;
 
 @end
 

@@ -27,6 +27,7 @@
 	{
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toggleView:) name:@"ToggleView" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toggleRotationButton:) name:@"ToggleRotationSelected" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(customURLSelectedForMoleculeDownload:) name:@"CustomURLForMoleculeSelected" object:nil];
     }
     return self;
 }
@@ -152,6 +153,11 @@
 		bufferedMolecule = nil;
 	else
 		bufferedMolecule = [molecules objectAtIndex:newMoleculeIndex];
+	
+	if ([SLSMoleculeAppDelegate isRunningOniPad])
+	{
+		glViewController.moleculeToDisplay = bufferedMolecule;
+	}
 }
 
 #pragma mark -
@@ -205,11 +211,10 @@
 	}
 }
 
-#pragma mark -
-#pragma mark MoleculeDownloadDelegate protocol method
-
-- (void)customURLSelectedForMoleculeDownload:(NSURL *)customURLForMoleculeDownload;
+- (void)customURLSelectedForMoleculeDownload:(NSNotification *)note;
 {
+	NSURL *customURLForMoleculeDownload = [note object];
+	
 	bufferedMolecule = nil;
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleView" object:nil];
 	//molecules://www.sunsetlakesoftware.com/sites/default/files/xenonPump.pdb
@@ -230,6 +235,12 @@
 @synthesize database;
 @synthesize molecules;
 
+- (void)setDatabase:(sqlite3 *)newValue
+{
+	database = newValue;
+	tableViewController.database = database;
+}
+
 - (void)setMolecules:(NSMutableArray *)newValue;
 {
 	if (molecules == newValue)
@@ -238,6 +249,12 @@
 	[molecules release];
 	molecules = [newValue retain];
 	tableViewController.molecules = molecules;
+	
+	NSInteger indexOfInitialMolecule = [[NSUserDefaults standardUserDefaults] integerForKey:@"indexOfLastSelectedMolecule"];
+	if (indexOfInitialMolecule >= [molecules count])
+		indexOfInitialMolecule = 0;
+	
+	tableViewController.selectedIndex = indexOfInitialMolecule;
 }
 
 - (UINavigationController *)tableNavigationController;

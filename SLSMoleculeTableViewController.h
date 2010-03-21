@@ -17,7 +17,7 @@
 #import "SLSMoleculeCustomDownloadViewController.h"
 
 
-@interface SLSMoleculeTableViewController : UITableViewController <MoleculeDownloadDelegate, UITableViewDataSource, UITableViewDelegate, MoleculeCustomDownloadDelegate>
+@interface SLSMoleculeTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
 {
 	SLSMoleculeDownloadViewController *downloadController;
 
@@ -40,5 +40,7 @@
 
 - (IBAction)displayMoleculeDownloadView;
 - (IBAction)switchBackToGLView;
+
+- (void)moleculeDidFinishDownloading:(NSNotification *)note;
 
 @end

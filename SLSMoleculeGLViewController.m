@@ -11,7 +11,6 @@
 #import "SLSMoleculeGLViewController.h"
 #import "SLSMoleculeGLView.h"
 #import "SLSMolecule.h"
-#import "SLSMoleculeRenderingOperation.h"
 #import "SLSMoleculeAppDelegate.h"
 
 @implementation SLSMoleculeGLViewController
@@ -720,6 +719,13 @@
 		}; break;
 	}
 	
+	if (isAutorotating)
+	{
+		[self startOrStopAutorotation:self];
+	}
+	
+	[renderingQueue waitUntilAllOperationsAreFinished];
+	
 	moleculeToDisplay.currentVisualizationType = newVisualizationType;
 	visualizationActionSheet = nil;
 }
@@ -751,6 +757,14 @@
 	{
 		return;
 	}
+	
+	if (isAutorotating)
+	{
+		[self startOrStopAutorotation:self];
+	}
+	
+	[renderingQueue waitUntilAllOperationsAreFinished];
+	
 	
 	moleculeToDisplay.isBeingDisplayed = NO;
 	[moleculeToDisplay release];

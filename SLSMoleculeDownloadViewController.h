@@ -45,8 +45,7 @@
 @property(nonatomic, retain) IBOutlet UILabel *webLoadingLabel;
 @property(nonatomic, retain) IBOutlet UIActivityIndicatorView *webLoadingIndicator;
 
-
-
+// Initialization and teardown
 - (id)initWithPDBCode:(NSString *)pdbCode andTitle:(NSString *)title;
 
 - (IBAction)showWebPageForMolecule;
@@ -58,8 +57,4 @@
 - (void)enableControls:(BOOL)controlsAreEnabled;
 - (void)downloadCompleted;
 
-@end
-
-@protocol MoleculeDownloadDelegate <NSObject>
-- (void)moleculeDownloadController:(SLSMoleculeDownloadViewController *)moleculeDownloadViewController didAddMolecule:(NSData *)moleculeData withFilename:(NSString *)filename;
 @end

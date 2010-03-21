@@ -47,7 +47,6 @@
 		BCDFF580115473AD005C984C /* VisualizationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = BCDFF57F115473AD005C984C /* VisualizationIcon.png */; };
 		BCDFF5AE1154819A005C984C /* 57-download.png in Resources */ = {isa = PBXBuildFile; fileRef = BCDFF5AD1154819A005C984C /* 57-download.png */; };
 		BCF495221040945400BE82D5 /* RotationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = BCF495211040945400BE82D5 /* RotationIcon.png */; };
-		BCF496551040F23300BE82D5 /* SLSMoleculeRenderingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BCF496541040F23300BE82D5 /* SLSMoleculeRenderingOperation.m */; };
 		BCF496CC1040FB9D00BE82D5 /* RotationIconSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = BCF496CB1040FB9D00BE82D5 /* RotationIconSelected.png */; };
 /* End PBXBuildFile section */
 
@@ -117,8 +116,6 @@
 		BCDFF57F115473AD005C984C /* VisualizationIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = VisualizationIcon.png; sourceTree = "<group>"; };
 		BCDFF5AD1154819A005C984C /* 57-download.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "57-download.png"; sourceTree = "<group>"; };
 		BCF495211040945400BE82D5 /* RotationIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RotationIcon.png; sourceTree = "<group>"; };
-		BCF496531040F23300BE82D5 /* SLSMoleculeRenderingOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeRenderingOperation.h; sourceTree = "<group>"; };
-		BCF496541040F23300BE82D5 /* SLSMoleculeRenderingOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeRenderingOperation.m; sourceTree = "<group>"; };
 		BCF496CB1040FB9D00BE82D5 /* RotationIconSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RotationIconSelected.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -248,8 +245,6 @@
 				BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */,
 				BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */,
 				BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */,
-				BCF496531040F23300BE82D5 /* SLSMoleculeRenderingOperation.h */,
-				BCF496541040F23300BE82D5 /* SLSMoleculeRenderingOperation.m */,
 			);
 			name = "3D Molecule Display";
 			sourceTree = "<group>";
@@ -387,7 +382,6 @@
 				BC2CF8650E5784ED00653418 /* SLSMolecule+PDB.m in Sources */,
 				BCC8FE800EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m in Sources */,
 				BC146A9B0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m in Sources */,
-				BCF496551040F23300BE82D5 /* SLSMoleculeRenderingOperation.m in Sources */,
 				BCD12CFA11308E1000737166 /* SLSMoleculeiPadRootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

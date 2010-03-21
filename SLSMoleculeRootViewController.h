@@ -16,7 +16,7 @@
 @class SLSMolecule;
 @class SLSMoleculeTableViewController;
 
-@interface SLSMoleculeRootViewController : UIViewController <MoleculeCustomDownloadDelegate>
+@interface SLSMoleculeRootViewController : UIViewController
 {
 	SLSMoleculeGLViewController *glViewController;
 	UIButton *rotationButton;
@@ -45,6 +45,8 @@
 - (void)selectedMoleculeDidChange:(NSInteger)newMoleculeIndex;
 - (void)cancelMoleculeLoading;
 - (void)updateTableListOfMolecules;
+
+- (void)customURLSelectedForMoleculeDownload:(NSNotification *)note;
 
 // Manage the switching of rotation state
 - (void)toggleRotationButton:(NSNotification *)note;

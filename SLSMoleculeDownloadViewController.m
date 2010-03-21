@@ -29,8 +29,6 @@
 		{
 			self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
 		}
-		
-				
 	}
 	return self;
 }
@@ -318,9 +316,21 @@
 {
 	downloadStatusText.text = NSLocalizedStringFromTable(@"Processing...", @"Localized", nil);
 
-	// Close off the file and write it to disk
-	[self.delegate moleculeDownloadController:self didAddMolecule:downloadedFileContents withFilename:[NSString stringWithFormat:@"%@.pdb.gz", codeForCurrentlyDownloadingProtein]];
-
+	// Close off the file and write it to disk	
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+	NSString *filename = [NSString stringWithFormat:@"%@.pdb.gz", codeForCurrentlyDownloadingProtein];
+	
+	NSError *error = nil;
+	if (![downloadedFileContents writeToFile:[documentsDirectory stringByAppendingPathComponent:filename] options:NSAtomicWrite error:&error])
+	{
+		// TODO: Do some error handling here
+		return;
+	}
+	
+	// Notify about the addition of the new molecule
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"MoleculeDidFinishDownloading" object:filename];
+	
 	[self downloadCompleted];	
 }
 

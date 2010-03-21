@@ -90,15 +90,25 @@
 
 + (BOOL)isRunningOniPad;
 {
-	if ([[UIDevice currentDevice] respondsToSelector:@selector(userInterfaceIdiom)])
+	static BOOL hasCheckediPadStatus = NO;
+	static BOOL isRunningOniPad = NO;
+	
+	if (!hasCheckediPadStatus)
 	{
-		if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+		if ([[UIDevice currentDevice] respondsToSelector:@selector(userInterfaceIdiom)])
 		{
-			return YES;
+			if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+			{
+				isRunningOniPad = YES;
+				hasCheckediPadStatus = YES;
+				return isRunningOniPad;
+			}
 		}
+
+		hasCheckediPadStatus = YES;
 	}
 	
-	return NO;
+	return isRunningOniPad;
 }
 
 #pragma mark -

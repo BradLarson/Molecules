@@ -14,6 +14,9 @@
 
 @implementation SLSMoleculeDataSourceViewController
 
+#pragma mark -
+#pragma mark Initialization and teardown
+
 - (id)initWithStyle:(UITableViewStyle)style 
 {
 	if (self = [super initWithStyle:style]) 
@@ -34,19 +37,13 @@
     [super dealloc];
 }
 
-
-/*
-// Implement viewDidLoad to do additional setup after loading the view.
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-*/
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
     return YES;
 }
 
+#pragma mark -
+#pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
@@ -92,7 +89,6 @@
 		{			
 			// Go to the PDB search view
 			SLSMoleculeSearchViewController *searchViewController = [[SLSMoleculeSearchViewController alloc] initWithStyle:UITableViewStylePlain];
-			searchViewController.delegate = self;
 			
 			[self.navigationController pushViewController:searchViewController animated:YES];
 			[searchViewController release];
@@ -101,7 +97,6 @@
 		{
 			// Go to the custom URL download view
 			SLSMoleculeCustomDownloadViewController *customURLViewController = [[SLSMoleculeCustomDownloadViewController alloc] initWithNibName:nil bundle:nil];
-			customURLViewController.delegate = self;
 			
 			[self.navigationController pushViewController:customURLViewController animated:YES];
 			[customURLViewController release];
@@ -110,65 +105,9 @@
 	
 }
 
-
 #pragma mark -
 #pragma mark MoleculeDownloadDelegate protocol method
 
-- (void)moleculeDownloadController:(SLSMoleculeDownloadViewController *)moleculeDownloadViewController didAddMolecule:(NSData *)moleculeData withFilename:(NSString *)filename;
-{
-	[self.delegate moleculeDownloadController:moleculeDownloadViewController didAddMolecule:moleculeData withFilename:filename];
-}
-
-#pragma mark -
-#pragma mark MoleculeDownloadDelegate protocol method
-
-- (void)customURLSelectedForMoleculeDownload:(NSURL *)customURLForMoleculeDownload;
-{
-	[self.delegate customURLSelectedForMoleculeDownload:customURLForMoleculeDownload];
-}
-
-
-/*- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-    }
-    if (editingStyle == UITableViewCellEditingStyleInsert) {
-    }
-}
-*/
-
-/*
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-*/
-
-/*
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-*/
-
-
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-}
-*/
 /*
 - (void)viewDidDisappear:(BOOL)animated {
 }
@@ -180,9 +119,6 @@
 
 #pragma mark -
 #pragma mark Accessors
-
-@synthesize delegate;
-
 
 @end
 

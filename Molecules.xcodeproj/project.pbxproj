@@ -473,8 +473,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Brad Larson";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Brad Larson";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -483,8 +483,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "08655F68-DDB9-4791-ACDD-F2F8D167B8A0";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "08655F68-DDB9-4791-ACDD-F2F8D167B8A0";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos3.2;
 				WARNING_CFLAGS = "-Wundeclared-selector";
@@ -535,8 +535,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Brad Larson";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos2.0]" = "iPhone Developer: Brad Larson";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos2.0]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -545,8 +545,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "500DAB97-6B23-43B6-9993-DF558595C088";
-				"PROVISIONING_PROFILE[sdk=iphoneos2.0]" = "500DAB97-6B23-43B6-9993-DF558595C088";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos2.0]" = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos3.2;
 				WARNING_CFLAGS = "-Wundeclared-selector";

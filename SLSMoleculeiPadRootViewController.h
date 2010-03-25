@@ -2,8 +2,9 @@
 //  SLSMoleculeiPadRootViewController.h
 //  Molecules
 //
+//  The source code for Molecules is available under a BSD license.  See License.txt for details.
+//
 //  Created by Brad Larson on 2/20/2010.
-//  Copyright 2010 Sunset Lake Software LLC. All rights reserved.
 //
 
 #import "SLSMoleculeRootViewController.h"

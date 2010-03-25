@@ -216,14 +216,19 @@
 	NSURL *customURLForMoleculeDownload = [note object];
 	
 	bufferedMolecule = nil;
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleView" object:nil];
+	
+	if (![SLSMoleculeAppDelegate isRunningOniPad])
+	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleView" object:nil];
+	}
 	//molecules://www.sunsetlakesoftware.com/sites/default/files/xenonPump.pdb
 	//html://www.sunsetlakesoftware.com/sites/default/files/xenonPump.pdb
 	
 	NSString *pathComponentForCustomURL = [[customURLForMoleculeDownload host] stringByAppendingString:[customURLForMoleculeDownload path]];
 	NSString *customMoleculeHandlingURL = [NSString stringWithFormat:@"molecules://%@", pathComponentForCustomURL];
 
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:customMoleculeHandlingURL]];
+//	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:customMoleculeHandlingURL]];
+	[(SLSMoleculeAppDelegate *)[[UIApplication sharedApplication] delegate] handleCustomURLScheme:[NSURL URLWithString:customMoleculeHandlingURL]];
 }
 
 #pragma mark -

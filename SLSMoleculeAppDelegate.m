@@ -64,74 +64,15 @@
 
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
+	NSURL *url = (NSURL *)[launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
+	
+	if (url != nil)
+		isHandlingCustomURLMoleculeDownload = YES;
 	[self performSelectorInBackground:@selector(loadInitialMoleculesFromDisk) withObject:nil];	
 	
 	
 	// Handle the Molecules custom URL scheme
-	NSURL *url = (NSURL *)[launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
-	if (url != nil)
-	{
-		isHandlingCustomURLMoleculeDownload = YES;
-		[NSThread sleepForTimeInterval:0.5]; // Wait for database to load
-		
-		NSString *pathComponentForCustomURL = [[url host] stringByAppendingString:[url path]];
-		NSString *locationOfRemotePDBFile = [NSString stringWithFormat:@"http://%@", pathComponentForCustomURL];
-		nameOfDownloadedMolecule = [[pathComponentForCustomURL lastPathComponent] retain];
-		
-		// Check to make sure that the file has not already been downloaded, if so, just switch to it
-		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-		NSString *documentsDirectory = [paths objectAtIndex:0];	
-		
-		if ([[NSFileManager defaultManager] fileExistsAtPath:[documentsDirectory stringByAppendingPathComponent:nameOfDownloadedMolecule]])
-		{
-			
-			NSInteger indexForMoleculeMatchingThisName = 0, currentIndex = 0;
-			for (SLSMolecule *currentMolecule in molecules)
-			{
-				if ([[currentMolecule filename] isEqualToString:nameOfDownloadedMolecule])
-				{
-					indexForMoleculeMatchingThisName = currentIndex;
-					break;
-				}
-				currentIndex++;
-			}
-			[initialDatabaseLoadLock lock];
-			[rootViewController selectedMoleculeDidChange:indexForMoleculeMatchingThisName];
-			[rootViewController loadInitialMolecule];
-			[initialDatabaseLoadLock unlock];
-			
-			[nameOfDownloadedMolecule release];
-			nameOfDownloadedMolecule = nil;
-			return YES;
-		}
-		
-		
-		[rootViewController cancelMoleculeLoading];
-		
-		[NSThread sleepForTimeInterval:0.1]; // Wait for cancel action to take place
-		
-		downloadCancelled = NO;
-		
-		// Start download of new molecule
-		[self showDownloadIndicator];
-		
-		
-		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-		NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:locationOfRemotePDBFile]
-												  cachePolicy:NSURLRequestUseProtocolCachePolicy
-											  timeoutInterval:60.0f];
-		downloadConnection = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
-		if (downloadConnection) 
-		{
-			downloadedFileContents = [[NSMutableData data] retain];
-		} 
-		else 
-		{
-			// inform the user that the download could not be made
-			return NO;
-		}
-		return YES;
-	}
+	[self handleCustomURLScheme:url];
 	
 	return YES;
 }
@@ -284,7 +225,7 @@
 		[self loadMissingMoleculesIntoDatabase];
 		
 		[[NSUserDefaults standardUserDefaults] synchronize];		
-		[self performSelectorOnMainThread:@selector(hideStatusIndicator) withObject:nil waitUntilDone:NO];
+		[self performSelectorOnMainThread:@selector(hideStatusIndicator) withObject:nil waitUntilDone:YES];
 	}
 	else
 	{
@@ -408,6 +349,73 @@
 
 #pragma mark -
 #pragma mark Custom molecule download methods
+
+- (BOOL)handleCustomURLScheme:(NSURL *)url;
+{
+	if (url != nil)
+	{
+		isHandlingCustomURLMoleculeDownload = YES;
+		[NSThread sleepForTimeInterval:0.5]; // Wait for database to load
+		
+		NSString *pathComponentForCustomURL = [[url host] stringByAppendingString:[url path]];
+		NSString *locationOfRemotePDBFile = [NSString stringWithFormat:@"http://%@", pathComponentForCustomURL];
+		nameOfDownloadedMolecule = [[pathComponentForCustomURL lastPathComponent] retain];
+		
+		// Check to make sure that the file has not already been downloaded, if so, just switch to it
+		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+		NSString *documentsDirectory = [paths objectAtIndex:0];	
+		
+		if ([[NSFileManager defaultManager] fileExistsAtPath:[documentsDirectory stringByAppendingPathComponent:nameOfDownloadedMolecule]])
+		{
+			
+			NSInteger indexForMoleculeMatchingThisName = 0, currentIndex = 0;
+			for (SLSMolecule *currentMolecule in molecules)
+			{
+				if ([[currentMolecule filename] isEqualToString:nameOfDownloadedMolecule])
+				{
+					indexForMoleculeMatchingThisName = currentIndex;
+					break;
+				}
+				currentIndex++;
+			}
+			[initialDatabaseLoadLock lock];
+			[rootViewController selectedMoleculeDidChange:indexForMoleculeMatchingThisName];
+			[rootViewController loadInitialMolecule];
+			[initialDatabaseLoadLock unlock];
+			
+			[nameOfDownloadedMolecule release];
+			nameOfDownloadedMolecule = nil;
+			return YES;
+		}
+		
+		
+		[rootViewController cancelMoleculeLoading];
+		
+		[NSThread sleepForTimeInterval:0.1]; // Wait for cancel action to take place
+		
+		downloadCancelled = NO;
+		
+		// Start download of new molecule
+		[self showDownloadIndicator];
+		
+		
+		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+		NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:locationOfRemotePDBFile]
+												  cachePolicy:NSURLRequestUseProtocolCachePolicy
+											  timeoutInterval:60.0f];
+		downloadConnection = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
+		if (downloadConnection) 
+		{
+			downloadedFileContents = [[NSMutableData data] retain];
+		} 
+		else 
+		{
+			// inform the user that the download could not be made
+			return NO;
+		}
+	}	
+	return YES;
+}
 
 - (void)downloadCompleted;
 {

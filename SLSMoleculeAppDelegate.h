@@ -54,6 +54,7 @@
 - (void)hideStatusIndicator;
 
 // Custom molecule download methods
+- (BOOL)handleCustomURLScheme:(NSURL *)url;
 - (void)downloadCompleted;
 - (void)saveMoleculeWithData:(NSData *)moleculeData toFilename:(NSString *)filename;
 

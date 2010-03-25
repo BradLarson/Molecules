@@ -786,12 +786,10 @@
 	
 	[NSThread sleepForTimeInterval:0.2];
 	
-	[renderingQueue waitUntilAllOperationsAreFinished];
-	
-	
 	moleculeToDisplay.isBeingDisplayed = NO;
 	[moleculeToDisplay release];
 	moleculeToDisplay = [newMolecule retain];
+	moleculeToDisplay.renderingQueue = renderingQueue;
 	moleculeToDisplay.isBeingDisplayed = YES;
 	
 	isFirstDrawingOfMolecule = YES;

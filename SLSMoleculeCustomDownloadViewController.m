@@ -37,8 +37,20 @@
 // Implement loadView to create a view hierarchy programmatically.
 - (void)loadView 
 {
-	UIView *mainView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	mainView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+//	UIView *mainView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	UIView *mainView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 240.0f)];
+	mainView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	
+	if ([SLSMoleculeAppDelegate isRunningOniPad])
+	{
+		mainView.backgroundColor = [UIColor whiteColor];
+		self.contentSizeForViewInPopover = CGSizeMake(320.0f, 100.0f);
+	}
+	else
+	{
+		mainView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+
+	}
 	mainView.autoresizesSubviews = YES;
 	self.view = mainView;
 	

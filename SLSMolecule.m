@@ -303,7 +303,8 @@ void normalize(GLfloat *v)
 	[source release];
 	[author release];
 	[previousTerminalAtomValue release];
-
+	[renderingQueue release];
+	
 	[super dealloc];
 }
 
@@ -491,6 +492,7 @@ void normalize(GLfloat *v)
 	GLshort shortNormals[4];
 	shortNormals[0] = (GLshort)round(newNormal[0] * 32767.0f);
 	
+	
 	shortNormals[1] = (GLshort)round(newNormal[1] * 32767.0f);
 	shortNormals[2] = (GLshort)round(newNormal[2] * 32767.0f);
 	shortNormals[3] = 0;
@@ -502,9 +504,9 @@ void normalize(GLfloat *v)
 - (void)addVertex:(GLfloat *)newVertex;
 {
 	GLshort shortVertex[4];
-	shortVertex[0] = (GLshort)round(newVertex[0] * 32767.0f);
-	shortVertex[1] = (GLshort)round(newVertex[1] * 32767.0f);
-	shortVertex[2] = (GLshort)round(newVertex[2] * 32767.0f);
+	shortVertex[0] = (GLshort)MAX(MIN(round(newVertex[0] * 32767.0f), 32767), -32767);
+	shortVertex[1] = (GLshort)MAX(MIN(round(newVertex[1] * 32767.0f), 32767), -32767);
+	shortVertex[2] = (GLshort)MAX(MIN(round(newVertex[2] * 32767.0f), 32767), -32767);
 	shortVertex[3] = 0;
 	
 //	if ( ((newVertex[0] < -1.0f) || (newVertex[0] > 1.0f)) || ((newVertex[1] < -1.0f) || (newVertex[1] > 1.0f)) || ((newVertex[2] < -1.0f) || (newVertex[2] > 1.0f)) )
@@ -1256,7 +1258,7 @@ void normalize(GLfloat *v)
 	
 
 	isDoneRendering = YES;
-	[self performSelectorOnMainThread:@selector(hideStatusIndicator) withObject:nil waitUntilDone:NO];
+	[self performSelectorOnMainThread:@selector(hideStatusIndicator) withObject:nil waitUntilDone:YES];
 
 	[pool release];
 	return YES;
@@ -1371,6 +1373,7 @@ void normalize(GLfloat *v)
 @synthesize currentVisualizationType;
 @synthesize totalNumberOfVertices, totalNumberOfTriangles;
 @synthesize numberOfStructureBeingDisplayed;
+@synthesize renderingQueue;
 
 
 - (void)setIsBeingDisplayed:(BOOL)newValue;
@@ -1381,10 +1384,21 @@ void normalize(GLfloat *v)
 	if (isBeingDisplayed)
 	{
 		isRenderingCancelled = NO;
-		[self performSelectorInBackground:@selector(renderMolecule) withObject:nil];
+		
+		[renderingQueue cancelAllOperations];
+
+		NSInvocationOperation *invocationOperation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(renderMolecule) object:nil];
+		[renderingQueue addOperation:invocationOperation];
+		[invocationOperation release];	
 	}
 	else
-		[self freeVertexBuffers];
+	{
+		[renderingQueue cancelAllOperations];
+		
+		NSInvocationOperation *invocationOperation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(freeVertexBuffers) object:nil];
+		[renderingQueue addOperation:invocationOperation];
+		[invocationOperation release];		
+	}
 }
 
 - (void)setCurrentVisualizationType:(SLSVisualizationType)newVisualizationType;

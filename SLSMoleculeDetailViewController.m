@@ -33,12 +33,13 @@
 		[newMolecule readMetadataFromDatabaseIfNecessary];
 		self.title = molecule.compound;
 
-		UILabel *label= [[UILabel alloc] initWithFrame:CGRectMake(25.0f, 60.0f, 320.0f, 66.0f)];
+//		UILabel *label= [[UILabel alloc] initWithFrame:CGRectMake(25.0f, 60.0f, 320.0f, 66.0f)];
+		UILabel *label= [[UILabel alloc] initWithFrame:CGRectMake(45.0f, 60.0f, 320.0f, 66.0f)];
 		label.textColor = [UIColor blackColor];
 		label.font = [UIFont fontWithName:@"Helvetica" size:18.0];
 		label.backgroundColor = [UIColor groupTableViewBackgroundColor];	
 		label.text = molecule.compound;
-//		label.numberOfLines = 3;
+		label.numberOfLines = 3;
 		label.lineBreakMode = UILineBreakModeWordWrap;
 		label.textAlignment = UITextAlignmentCenter;
 		//	label.text = @"Text";

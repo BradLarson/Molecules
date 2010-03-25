@@ -16,7 +16,7 @@
 	UIImage *unselectedRotationImage, *selectedRotationImage;
 	UIBarButtonItem *rotationBarButton, *spacerItem, *visualizationBarButton;
 	UIToolbar *mainToolbar;
-	UIPopoverController *downloadOptionsPopover;
+	UIPopoverController *downloadOptionsPopover, *moleculeTablePopover;
 }
 
 // Bar response methods

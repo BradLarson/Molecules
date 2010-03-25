@@ -106,7 +106,9 @@
 	{
 		[molecules addObject:newMolecule];
 		[newMolecule release];
-		[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:([molecules count] - 1) inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];		
+		[self.tableView reloadData];
+		
+//		[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:([molecules count] - 1) inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];		
 	}			
 
 	[self.navigationController popToViewController:self animated:YES];

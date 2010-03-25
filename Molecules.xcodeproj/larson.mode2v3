@@ -227,24 +227,25 @@
 			<key>Content</key>
 			<dict>
 				<key>PBXProjectModuleGUID</key>
-				<string>BC7C1ADA115BBFEC00E47E52</string>
+				<string>BC7C1B32115BD49B00E47E52</string>
 				<key>PBXProjectModuleLabel</key>
-				<string>SLSMolecule.m</string>
+				<string>SLSMoleculeiPadRootViewController.m</string>
 				<key>PBXSplitModuleInNavigatorKey</key>
 				<dict>
 					<key>Split0</key>
 					<dict>
 						<key>PBXProjectModuleGUID</key>
-						<string>BC7C1ADB115BBFEC00E47E52</string>
+						<string>BC7C1B33115BD49B00E47E52</string>
 						<key>PBXProjectModuleLabel</key>
-						<string>SLSMolecule.m</string>
+						<string>SLSMoleculeiPadRootViewController.m</string>
 						<key>_historyCapacity</key>
 						<integer>10</integer>
 						<key>bookmark</key>
-						<string>BC7C1AEC115BC30D00E47E52</string>
+						<string>BC7C1B57115BDA2B00E47E52</string>
 						<key>history</key>
 						<array>
-							<string>BC7C1AD9115BBFEA00E47E52</string>
+							<string>BC7C1B3E115BD69600E47E52</string>
+							<string>BC7C1B3F115BD69600E47E52</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -256,11 +257,11 @@
 			<key>Geometry</key>
 			<dict>
 				<key>Frame</key>
-				<string>{{0, 20}, {1155, 737}}</string>
+				<string>{{0, 20}, {1001, 981}}</string>
 				<key>PBXModuleWindowStatusBarHidden2</key>
 				<false/>
 				<key>RubberWindowFrame</key>
-				<string>288 52 1155 778 0 0 1920 1178 </string>
+				<string>758 94 1001 1022 0 0 1920 1178 </string>
 			</dict>
 		</dict>
 	</array>
@@ -350,13 +351,13 @@
 									<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 									<array>
 										<array>
-											<integer>14</integer>
-											<integer>8</integer>
+											<integer>7</integer>
+											<integer>1</integer>
 											<integer>0</integer>
 										</array>
 									</array>
 									<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-									<string>{{0, 30}, {371, 453}}</string>
+									<string>{{0, 0}, {371, 453}}</string>
 								</dict>
 								<key>PBXTopSmartGroupGIDs</key>
 								<array/>
@@ -381,7 +382,7 @@
 									<real>43</real>
 								</array>
 								<key>RubberWindowFrame</key>
-								<string>97 598 388 539 0 0 1920 1178 </string>
+								<string>127 602 388 539 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXSmartGroupTreeModule</string>
@@ -550,7 +551,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>291226381.48809099</real>
+	<real>291232299.012523</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>
@@ -565,17 +566,17 @@
 	<integer>0</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>BC7C1B32115BD49B00E47E52</string>
 		<string>BC7C1A3A115BB4D500E47E52</string>
 		<string>BC7C1A3B115BB4D500E47E52</string>
-		<string>1C530D54069F1CE1000CFCEE</string>
-		<string>1C530D52069F1CE1000CFCEE</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>1C530D5B069F1CE1000CFCEE</string>
+		<string>1C530D54069F1CE1000CFCEE</string>
+		<string>1C530D52069F1CE1000CFCEE</string>
 		<string>/Users/larson/Development/Molecules/Molecules.xcodeproj</string>
-		<string>BC7C1ADA115BBFEC00E47E52</string>
 	</array>
 	<key>WindowString</key>
-	<string>97 598 388 539 0 0 1920 1178 </string>
+	<string>127 602 388 539 0 0 1920 1178 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -735,7 +736,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string></string>
+								<string>&lt;No Editor&gt;</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -744,7 +745,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {1011, 0}}</string>
 								<key>RubberWindowFrame</key>
-								<string>64 456 1011 722 0 0 1920 1178 </string>
+								<string>65 456 1011 722 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -770,7 +771,7 @@
 								<key>Frame</key>
 								<string>{{0, 5}, {1011, 676}}</string>
 								<key>RubberWindowFrame</key>
-								<string>64 456 1011 722 0 0 1920 1178 </string>
+								<string>65 456 1011 722 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXBuildResultsModule</string>
@@ -800,7 +801,7 @@
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.buildV3</string>
 			<key>WindowString</key>
-			<string>64 456 1011 722 0 0 1920 1178 </string>
+			<string>65 456 1011 722 0 0 1920 1178 </string>
 			<key>WindowToolGUID</key>
 			<string>1C530D52069F1CE1000CFCEE</string>
 			<key>WindowToolIsVisible</key>
@@ -951,7 +952,7 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CDD528C0622207200134675</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>SLSMoleculeRootViewController.m</string>
+										<string>SLSMoleculeTableViewController.m</string>
 										<key>StatusBarVisibility</key>
 										<true/>
 									</dict>
@@ -1019,7 +1020,7 @@
 			<key>WindowToolGUID</key>
 			<string>1C530D57069F1CE1000CFCEE</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>Identifier</key>

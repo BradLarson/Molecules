@@ -123,6 +123,13 @@
 	UIActionSheet *actionSheet = [glViewController actionSheetForVisualizationState];
 	[actionSheet showFromBarButtonItem:visualizationBarButton animated:YES];
 	glViewController.visualizationActionSheet = actionSheet;
+	
+	[moleculeTablePopover dismissPopoverAnimated:YES];
+	moleculeTablePopover = nil;
+	
+	[downloadOptionsPopover dismissPopoverAnimated:YES];
+	[downloadOptionsPopover release];
+	downloadOptionsPopover = nil;
 }
 
 - (void)showDownloadOptions:(id)sender;
@@ -143,6 +150,13 @@
 	[downloadOptionsPopover setDelegate:self];
 	[downloadOptionsPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 //	[downloadOptionsPopover release];
+	
+	[glViewController.visualizationActionSheet dismissWithClickedButtonIndex:2 animated:YES];
+	glViewController.visualizationActionSheet = nil;
+
+	[moleculeTablePopover dismissPopoverAnimated:YES];
+	moleculeTablePopover = nil;
+	
 }
 
 #pragma mark -
@@ -168,8 +182,15 @@
 
 - (void)splitViewController:(UISplitViewController*)svc popoverController:(UIPopoverController*)pc willPresentViewController:(UIViewController *)aViewController
 {
+	[downloadOptionsPopover dismissPopoverAnimated:YES];
+	[downloadOptionsPopover release];
+	downloadOptionsPopover = nil;
+//	[downloadOptionsPopover release];
+	
 	[glViewController.visualizationActionSheet dismissWithClickedButtonIndex:2 animated:YES];
 	glViewController.visualizationActionSheet = nil;
+	
+	moleculeTablePopover = pc;
 }
 
 - (void)splitViewController:(UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController:(UIPopoverController*)pc
@@ -199,8 +220,13 @@
 {
 	if (popoverController == downloadOptionsPopover)
 	{
+		NSLog(@"Dismiss");
 		[downloadOptionsPopover release];
 		downloadOptionsPopover = nil;
+	}
+	else if (popoverController == moleculeTablePopover)
+	{
+		moleculeTablePopover = nil;
 	}
 }
 

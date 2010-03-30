@@ -153,15 +153,10 @@
 		bufferedMolecule = nil;
 	else
 		bufferedMolecule = [molecules objectAtIndex:newMoleculeIndex];
-	
-	if ([SLSMoleculeAppDelegate isRunningOniPad])
-	{
-		glViewController.moleculeToDisplay = bufferedMolecule;
-	}
 }
 
 #pragma mark -
-#pragma mark Passthroughs for managing molecules
+#pragma mark UIViewController methods
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {

@@ -160,6 +160,19 @@
 }
 
 #pragma mark -
+#pragma mark Passthroughs for managing molecules
+
+- (void)selectedMoleculeDidChange:(NSInteger)newMoleculeIndex;
+{
+	[super selectedMoleculeDidChange:newMoleculeIndex];
+	
+	glViewController.moleculeToDisplay = bufferedMolecule;
+	
+	[moleculeTablePopover dismissPopoverAnimated:YES];
+	moleculeTablePopover = nil;
+}
+
+#pragma mark -
 #pragma mark Manage the switching of rotation state
 
 - (void)toggleRotationButton:(NSNotification *)note;
@@ -220,7 +233,6 @@
 {
 	if (popoverController == downloadOptionsPopover)
 	{
-		NSLog(@"Dismiss");
 		[downloadOptionsPopover release];
 		downloadOptionsPopover = nil;
 	}

@@ -13,6 +13,8 @@
 #import "SLSMolecule.h"
 #import "SLSMoleculeAppDelegate.h"
 
+//#define RUN_OPENGL_BENCHMARKS
+
 @implementation SLSMoleculeGLViewController
 
 #pragma mark -
@@ -446,7 +448,9 @@
 	[self convertMatrix:currentModelViewMatrix to3DTransform:&currentCalculatedMatrix];
 	
 #ifdef RUN_OPENGL_BENCHMARKS
-	[self performSelector:@selector(runOpenGLBenchmarks) withObject:nil afterDelay:0.5];
+	NSInvocationOperation *invocationOperation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(runOpenGLBenchmarks) object:nil];
+	[renderingQueue addOperation:invocationOperation];
+	[invocationOperation release];
 #else
 	[self startOrStopAutorotation:self];	
 #endif	

@@ -96,6 +96,11 @@
 #pragma mark -
 #pragma mark Device-specific interface control
 
+/*+ (BOOL)isRunningOniPad;
+{
+	return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+}*/
+
 + (BOOL)isRunningOniPad;
 {
 	static BOOL hasCheckediPadStatus = NO;
@@ -299,7 +304,7 @@
 	NSString *pname;
 	while (pname = [direnum nextObject])
 	{
-		if ( ([moleculeFilenameLookupTable valueForKey:pname] == nil) && ([[pname pathExtension] isEqualToString:@"gz"]) )
+		if ( ([moleculeFilenameLookupTable valueForKey:pname] == nil) && ([[pname pathExtension] isEqualToString:@"gz"] || [[pname pathExtension] isEqualToString:@"pdb"]) )
 		{
 			// Parse the PDB file into the database
 			SLSMolecule *newMolecule = [[SLSMolecule alloc] initWithFilename:pname database:database];

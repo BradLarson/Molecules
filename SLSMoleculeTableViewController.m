@@ -30,6 +30,12 @@
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moleculeDidFinishDownloading:) name:@"MoleculeDidFinishDownloading" object:nil];
 
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		{
+			self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
+		}
+		
 		if ([SLSMoleculeAppDelegate isRunningOniPad])
 		{
 //			self.tableView.backgroundColor = [UIColor blackColor];

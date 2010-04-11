@@ -18,6 +18,8 @@
 		BC2795BA1162500A006DE4C8 /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2795B81162500A006DE4C8 /* Default-Landscape.png */; };
 		BC2795BB1162500A006DE4C8 /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2795B91162500A006DE4C8 /* Default-Portrait.png */; };
 		BC2795BD11625065006DE4C8 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2795BC11625065006DE4C8 /* Default.png */; };
+		BC281A6B11727A89005B7946 /* Document-molecules-64.png in Resources */ = {isa = PBXBuildFile; fileRef = BC281A6911727A89005B7946 /* Document-molecules-64.png */; };
+		BC281A6C11727A89005B7946 /* Document-molecules-320.png in Resources */ = {isa = PBXBuildFile; fileRef = BC281A6A11727A89005B7946 /* Document-molecules-320.png */; };
 		BC2CF8650E5784ED00653418 /* SLSMolecule+PDB.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */; };
 		BC37E7CA0E14779E00E11F4F /* SLSMolecule.m in Sources */ = {isa = PBXBuildFile; fileRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */; };
 		BC4E97C20E69F736006CD291 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BC4E97C10E69F736006CD291 /* libsqlite3.dylib */; };
@@ -69,6 +71,8 @@
 		BC2795B81162500A006DE4C8 /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
 		BC2795B91162500A006DE4C8 /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
 		BC2795BC11625065006DE4C8 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		BC281A6911727A89005B7946 /* Document-molecules-64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Document-molecules-64.png"; sourceTree = "<group>"; };
+		BC281A6A11727A89005B7946 /* Document-molecules-320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Document-molecules-320.png"; sourceTree = "<group>"; };
 		BC2CF8630E5784EC00653418 /* SLSMolecule+PDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SLSMolecule+PDB.h"; sourceTree = "<group>"; };
 		BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SLSMolecule+PDB.m"; sourceTree = "<group>"; };
 		BC37E7C80E14779E00E11F4F /* SLSMolecule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMolecule.h; sourceTree = "<group>"; };
@@ -183,6 +187,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BC281A6911727A89005B7946 /* Document-molecules-64.png */,
+				BC281A6A11727A89005B7946 /* Document-molecules-320.png */,
 				BCDFF5AD1154819A005C984C /* 57-download.png */,
 				BCF496CB1040FB9D00BE82D5 /* RotationIconSelected.png */,
 				BCF495211040945400BE82D5 /* RotationIcon.png */,
@@ -367,6 +373,8 @@
 				BC2795BA1162500A006DE4C8 /* Default-Landscape.png in Resources */,
 				BC2795BB1162500A006DE4C8 /* Default-Portrait.png in Resources */,
 				BC2795BD11625065006DE4C8 /* Default.png in Resources */,
+				BC281A6B11727A89005B7946 /* Document-molecules-64.png in Resources */,
+				BC281A6C11727A89005B7946 /* Document-molecules-320.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

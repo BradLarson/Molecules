@@ -17,7 +17,6 @@
 #import "SLSMolecule.h"
 
 #define USE_DEPTH_BUFFER 1
-//#define RUN_OPENGL_BENCHMARKS
 
 @implementation SLSMoleculeGLView
 

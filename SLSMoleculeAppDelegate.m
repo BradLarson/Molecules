@@ -304,6 +304,16 @@
 	NSString *pname;
 	while (pname = [direnum nextObject])
 	{
+		NSString *lastPathComponent = [pname lastPathComponent];
+		if (![lastPathComponent isEqualToString:pname])
+		{
+			NSError *error = nil;
+			// The file has been passed in using a subdirectory, so move it into the flattened /Documents directory
+			[[NSFileManager defaultManager]	moveItemAtPath:[documentsDirectory stringByAppendingPathComponent:pname] toPath:[documentsDirectory stringByAppendingPathComponent:lastPathComponent] error:&error];
+			[[NSFileManager defaultManager] removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:[pname stringByDeletingLastPathComponent]] error:&error];
+			pname = lastPathComponent;
+		}
+		
 		if ( ([moleculeFilenameLookupTable valueForKey:pname] == nil) && ([[pname pathExtension] isEqualToString:@"gz"] || [[pname pathExtension] isEqualToString:@"pdb"]) )
 		{
 			// Parse the PDB file into the database
@@ -370,6 +380,8 @@
 		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 		NSString *documentsDirectory = [paths objectAtIndex:0];	
 		
+		[initialDatabaseLoadLock lock];
+
 		if ([[NSFileManager defaultManager] fileExistsAtPath:[documentsDirectory stringByAppendingPathComponent:nameOfDownloadedMolecule]])
 		{
 			
@@ -383,40 +395,49 @@
 				}
 				currentIndex++;
 			}
-			[initialDatabaseLoadLock lock];
 			[rootViewController selectedMoleculeDidChange:indexForMoleculeMatchingThisName];
 			[rootViewController loadInitialMolecule];
-			[initialDatabaseLoadLock unlock];
 			
 			[nameOfDownloadedMolecule release];
 			nameOfDownloadedMolecule = nil;
 			return YES;
 		}
-		
+		[initialDatabaseLoadLock unlock];
+
 		
 		[rootViewController cancelMoleculeLoading];
 		
 		[NSThread sleepForTimeInterval:0.1]; // Wait for cancel action to take place
 		
-		downloadCancelled = NO;
-		
-		// Start download of new molecule
-		[self showDownloadIndicator];
-		
-		
-		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-		NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:locationOfRemotePDBFile]
-												  cachePolicy:NSURLRequestUseProtocolCachePolicy
-											  timeoutInterval:60.0f];
-		downloadConnection = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
-		if (downloadConnection) 
+		// Determine if this is a file being passed in, or something to download
+		if ([url isFileURL])
 		{
-			downloadedFileContents = [[NSMutableData data] retain];
-		} 
-		else 
+
+			[nameOfDownloadedMolecule release];
+			nameOfDownloadedMolecule = nil;
+		}
+		else
 		{
-			// inform the user that the download could not be made
-			return NO;
+			downloadCancelled = NO;
+			
+			// Start download of new molecule
+			[self showDownloadIndicator];
+			
+			
+			[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+			NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:locationOfRemotePDBFile]
+													  cachePolicy:NSURLRequestUseProtocolCachePolicy
+												  timeoutInterval:60.0f];
+			downloadConnection = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
+			if (downloadConnection) 
+			{
+				downloadedFileContents = [[NSMutableData data] retain];
+			} 
+			else 
+			{
+				// inform the user that the download could not be made
+				return NO;
+			}
 		}
 	}	
 	return YES;

@@ -75,9 +75,18 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDisconnectionOfMonitor:) name:UIScreenDidDisconnectNotification object:nil];
 
 	if ([[UIScreen screens] count] > 1)
+	{
+		for (UIScreen *currentScreen in [UIScreen screens])
+		{
+			if (currentScreen != [UIScreen mainScreen])
+				externalScreen = currentScreen;
+		}
 		[mainToolbar setItems:[NSArray arrayWithObjects:spacerItem, screenBarButton, downloadBarButton, visualizationBarButton, rotationBarButton, nil] animated:NO];
+	}
 	else
+	{
 		[mainToolbar setItems:[NSArray arrayWithObjects:spacerItem, downloadBarButton, visualizationBarButton, rotationBarButton, nil] animated:NO];
+	}
 		
 	[downloadBarButton release];
 
@@ -221,6 +230,8 @@
     [mainToolbar setItems:items animated:YES];
     [items release];	
 	
+	[externalWindow release];
+	externalWindow = nil;
 	externalScreen = nil;
 }
 
@@ -237,16 +248,25 @@
 	else
 	{
 		// Being displayed locally, move to external window
-//		UIScreen *externalScreen = [[UIScreen screens] objectAtIndex:1];
-		externalWindow = [[UIWindow alloc] initWithFrame:[externalScreen bounds]];
+		CGRect externalBounds = [externalScreen bounds];
+		externalWindow = [[UIWindow alloc] initWithFrame:externalBounds];
 		externalWindow.backgroundColor = [UIColor whiteColor];
 		
-		UILabel *helloWorld = [[UILabel alloc] initWithFrame:CGRectMake(100.0f, 100.0f, 200.0f, 60.0f)];
+		UIView *backgroundView = [[UIView alloc]  initWithFrame:externalBounds];
+		backgroundView.backgroundColor = [UIColor whiteColor];
+		
+		[externalWindow addSubview:backgroundView];
+		
+		
+		UILabel *helloWorld = [[UILabel alloc] initWithFrame:CGRectMake(200.0f, 400.0f, 400.0f, 60.0f)];
 		helloWorld.text = @"This page intentionally left blank.";
-		[externalWindow addSubview:helloWorld];
+		[backgroundView addSubview:helloWorld];
 		[helloWorld release];
-
+		[backgroundView release];
+		
 		externalWindow.screen = externalScreen;
+		[externalWindow makeKeyAndVisible];
+		
 	}
 }
 

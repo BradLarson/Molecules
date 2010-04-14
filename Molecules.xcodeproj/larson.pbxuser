@@ -131,34 +131,8 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 292898009;
-			PBXWorkspaceStateSaveDate = 292898009;
-		};
-		perUserProjectItems = {
-			BC8351811175452A00B478D5 /* PBXBookmark */ = BC8351811175452A00B478D5 /* PBXBookmark */;
-			BC83518A11754BA700B478D5 /* PBXTextBookmark */ = BC83518A11754BA700B478D5 /* PBXTextBookmark */;
-			BC83519411754BAA00B478D5 /* PBXTextBookmark */ = BC83519411754BAA00B478D5 /* PBXTextBookmark */;
-			BC8351A211754D2800B478D5 /* PBXTextBookmark */ = BC8351A211754D2800B478D5 /* PBXTextBookmark */;
-			BC8351A311754D2800B478D5 /* PBXTextBookmark */ = BC8351A311754D2800B478D5 /* PBXTextBookmark */;
-			BC8351A411754D2800B478D5 /* PBXTextBookmark */ = BC8351A411754D2800B478D5 /* PBXTextBookmark */;
-			BC8351A711754D2800B478D5 /* PBXTextBookmark */ = BC8351A711754D2800B478D5 /* PBXTextBookmark */;
-			BC8351B811755AD100B478D5 /* PBXTextBookmark */ = BC8351B811755AD100B478D5 /* PBXTextBookmark */;
-			BC8351B911755AD500B478D5 /* PBXTextBookmark */ = BC8351B911755AD500B478D5 /* PBXTextBookmark */;
-			BC8351C611755B6500B478D5 /* PBXTextBookmark */ = BC8351C611755B6500B478D5 /* PBXTextBookmark */;
-			BC8351C711755B6500B478D5 /* PBXTextBookmark */ = BC8351C711755B6500B478D5 /* PBXTextBookmark */;
-			BC8351C811755B6500B478D5 /* PBXTextBookmark */ = BC8351C811755B6500B478D5 /* PBXTextBookmark */;
-			BC8351C911755B6500B478D5 /* PBXTextBookmark */ = BC8351C911755B6500B478D5 /* PBXTextBookmark */;
-			BC8351CE11755BAA00B478D5 /* PBXTextBookmark */ = BC8351CE11755BAA00B478D5 /* PBXTextBookmark */;
-			BC8351CF11755BAA00B478D5 /* PBXTextBookmark */ = BC8351CF11755BAA00B478D5 /* PBXTextBookmark */;
-			BC8351D011755BAA00B478D5 /* PBXTextBookmark */ = BC8351D011755BAA00B478D5 /* PBXTextBookmark */;
-			BC8351D111755BAA00B478D5 /* PBXTextBookmark */ = BC8351D111755BAA00B478D5 /* PBXTextBookmark */;
-			BC8351D211755BAE00B478D5 /* XCBuildMessageTextBookmark */ = BC8351D211755BAE00B478D5 /* XCBuildMessageTextBookmark */;
-			BC8351D311755BAE00B478D5 /* PBXTextBookmark */ = BC8351D311755BAE00B478D5 /* PBXTextBookmark */;
-			BC8351D611755BAF00B478D5 /* PBXTextBookmark */ = BC8351D611755BAF00B478D5 /* PBXTextBookmark */;
-			BC8351D911755CDB00B478D5 /* PBXTextBookmark */ = BC8351D911755CDB00B478D5 /* PBXTextBookmark */;
-			BC8351DC11755CE800B478D5 /* PBXTextBookmark */ = BC8351DC11755CE800B478D5 /* PBXTextBookmark */;
-			BC8351DF11755CEF00B478D5 /* PBXTextBookmark */ = BC8351DF11755CEF00B478D5 /* PBXTextBookmark */;
-			BC8351E411755DB600B478D5 /* PBXTextBookmark */ = BC8351E411755DB600B478D5 /* PBXTextBookmark */;
+			PBXPerProjectTemplateStateSaveDate = 292959432;
+			PBXWorkspaceStateSaveDate = 292959432;
 		};
 		sourceControlManager = BC896C1F0DE11BFE00B184F0 /* Source Control */;
 		userBookmarkGroup = BCB290D0103CE78B00F0EA2A /* PBXBookmarkGroup */;
@@ -167,9 +141,9 @@
 	};
 	29B97316FDCFA39411CA2CEA /* main.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {822, 706}}";
-			sepNavSelRange = "{298, 77}";
-			sepNavVisRange = "{0, 410}";
+			sepNavIntBoundsRect = "{{0, 0}, {950, 288}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 234}";
 			sepNavWindowFrame = "{{15, 0}, {881, 778}}";
 		};
 	};
@@ -332,233 +306,6 @@
 			sepNavWindowFrame = "{{15, 0}, {998, 777}}";
 		};
 	};
-	BC8351811175452A00B478D5 /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = BCD12CF711308E1000737166 /* SLSMoleculeiPadRootViewController.h */;
-	};
-	BC83518A11754BA700B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */;
-		rLen = 5;
-		rLoc = 1009;
-		rType = 0;
-	};
-	BC83519411754BAA00B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */;
-		name = "SLSMoleculeTableViewController.m: 31";
-		rLen = 5;
-		rLoc = 1009;
-		rType = 0;
-		vrLen = 606;
-		vrLoc = 588;
-	};
-	BC8351A211754D2800B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF711308E1000737166 /* SLSMoleculeiPadRootViewController.h */;
-		name = "SLSMoleculeiPadRootViewController.h: 17";
-		rLen = 0;
-		rLoc = 514;
-		rType = 0;
-		vrLen = 1008;
-		vrLoc = 0;
-	};
-	BC8351A311754D2800B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
-		name = "SLSMoleculeiPadRootViewController.m: 208";
-		rLen = 0;
-		rLoc = 8388;
-		rType = 0;
-		vrLen = 3352;
-		vrLoc = 5789;
-	};
-	BC8351A411754D2800B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
-		name = "SLSMoleculeiPadRootViewController.m: 219";
-		rLen = 0;
-		rLoc = 8778;
-		rType = 0;
-		vrLen = 3183;
-		vrLoc = 5789;
-	};
-	BC8351A711754D2800B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF711308E1000737166 /* SLSMoleculeiPadRootViewController.h */;
-		name = "SLSMoleculeiPadRootViewController.h: 28";
-		rLen = 25;
-		rLoc = 905;
-		rType = 0;
-		vrLen = 1008;
-		vrLoc = 0;
-	};
-	BC8351B811755AD100B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BC146A9A0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m */;
-		rLen = 7;
-		rLoc = 1527;
-		rType = 0;
-	};
-	BC8351B911755AD500B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BC146A9A0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m */;
-		name = "SLSMoleculeCustomDownloadViewController.m: 57";
-		rLen = 7;
-		rLoc = 1527;
-		rType = 0;
-		vrLen = 639;
-		vrLoc = 1390;
-	};
-	BC8351C611755B6500B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF711308E1000737166 /* SLSMoleculeiPadRootViewController.h */;
-		name = "SLSMoleculeiPadRootViewController.h: 21";
-		rLen = 0;
-		rLoc = 721;
-		rType = 0;
-		vrLen = 1044;
-		vrLoc = 0;
-	};
-	BC8351C711755B6500B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
-		name = "SLSMoleculeiPadRootViewController.m: 226";
-		rLen = 0;
-		rLoc = 9678;
-		rType = 0;
-		vrLen = 2705;
-		vrLoc = 6292;
-	};
-	BC8351C811755B6500B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
-		name = "SLSMoleculeiPadRootViewController.m: 246";
-		rLen = 0;
-		rLoc = 9675;
-		rType = 0;
-		vrLen = 1340;
-		vrLoc = 8272;
-	};
-	BC8351C911755B6500B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF711308E1000737166 /* SLSMoleculeiPadRootViewController.h */;
-		name = "SLSMoleculeiPadRootViewController.h: 30";
-		rLen = 25;
-		rLoc = 905;
-		rType = 0;
-		vrLen = 1044;
-		vrLoc = 0;
-	};
-	BC8351CE11755BAA00B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF711308E1000737166 /* SLSMoleculeiPadRootViewController.h */;
-		name = "SLSMoleculeiPadRootViewController.h: 32";
-		rLen = 30;
-		rLoc = 1024;
-		rType = 0;
-		vrLen = 1044;
-		vrLoc = 0;
-	};
-	BC8351CF11755BAA00B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
-		name = "SLSMoleculeiPadRootViewController.m: 59";
-		rLen = 0;
-		rLoc = 2512;
-		rType = 0;
-		vrLen = 3087;
-		vrLoc = 1628;
-	};
-	BC8351D011755BAA00B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
-		name = "SLSMoleculeiPadRootViewController.m: 59";
-		rLen = 0;
-		rLoc = 2694;
-		rType = 0;
-		vrLen = 3108;
-		vrLoc = 1581;
-	};
-	BC8351D111755BAA00B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF711308E1000737166 /* SLSMoleculeiPadRootViewController.h */;
-		name = "SLSMoleculeiPadRootViewController.h: 30";
-		rLen = 25;
-		rLoc = 905;
-		rType = 0;
-		vrLen = 1044;
-		vrLoc = 0;
-	};
-	BC8351D211755BAE00B478D5 /* XCBuildMessageTextBookmark */ = {
-		isa = PBXTextBookmark;
-		comments = "Undeclared selector 'displayOnExternalScreen:'";
-		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
-		fallbackIsa = XCBuildMessageTextBookmark;
-		rLen = 1;
-		rLoc = 58;
-		rType = 1;
-	};
-	BC8351D311755BAE00B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
-		name = "SLSMoleculeiPadRootViewController.m: 59";
-		rLen = 0;
-		rLoc = 2512;
-		rType = 0;
-		vrLen = 933;
-		vrLoc = 2149;
-	};
-	BC8351D611755BAF00B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
-		name = "SLSMoleculeiPadRootViewController.m: 59";
-		rLen = 0;
-		rLoc = 2512;
-		rType = 0;
-		vrLen = 933;
-		vrLoc = 2149;
-	};
-	BC8351D911755CDB00B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
-		name = "SLSMoleculeiPadRootViewController.m: 59";
-		rLen = 0;
-		rLoc = 2512;
-		rType = 0;
-		vrLen = 407;
-		vrLoc = 2035;
-	};
-	BC8351DC11755CE800B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
-		name = "SLSMoleculeiPadRootViewController.m: 59";
-		rLen = 0;
-		rLoc = 2512;
-		rType = 0;
-		vrLen = 407;
-		vrLoc = 2035;
-	};
-	BC8351DF11755CEF00B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
-		name = "SLSMoleculeiPadRootViewController.m: 59";
-		rLen = 0;
-		rLoc = 2512;
-		rType = 0;
-		vrLen = 774;
-		vrLoc = 2347;
-	};
-	BC8351E411755DB600B478D5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */;
-		name = "SLSMoleculeiPadRootViewController.m: 59";
-		rLen = 0;
-		rLoc = 2512;
-		rType = 0;
-		vrLen = 407;
-		vrLoc = 2035;
-	};
 	BC896C170DE11BD500B184F0 /* Molecules */ = {
 		isa = PBXExecutable;
 		activeArgIndices = (
@@ -647,10 +394,10 @@
 	BCC286BE0E1D8F9300978ECA /* SLSMoleculeAppDelegate.m */ = {
 		uiCtxt = {
 			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{2462, 78}\";\n            s = 0;\n        },\n                {\n            r = \"{2561, 159}\";\n            s = 0;\n        },\n                {\n            r = \"{2910, 439}\";\n            s = 0;\n        },\n                {\n            r = \"{3445, 1001}\";\n            s = 0;\n        },\n                {\n            r = \"{4477, 833}\";\n            s = 0;\n        },\n                {\n            r = \"{5346, 379}\";\n            s = 0;\n        },\n                {\n            r = \"{5767, 2799}\";\n            s = 0;\n        },\n                {\n            r = \"{8608, 603}\";\n            s = 0;\n        },\n                {\n            r = \"{9257, 2321}\";\n            s = 0;\n        },\n                {\n            r = \"{11662, 167}\";\n            s = 0;\n        },\n                {\n            r = \"{11864, 166}\";\n            s = 0;\n        },\n                {\n            r = \"{12065, 3}\";\n            s = 0;\n        },\n                {\n            r = \"{12101, 94}\";\n            s = 0;\n        },\n                {\n            r = \"{12307, 57}\";\n            s = 0;\n        },\n                {\n            r = \"{12433, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{12544, 2448}\";\n            s = 0;\n        },\n                {\n            r = \"{15023, 303}\";\n            s = 0;\n        },\n                {\n            r = \"{15415, 2560}\";\n            s = 0;\n        },\n                {\n            r = \"{18124, 414}\";\n            s = 0;\n        },\n                {\n            r = \"{18622, 285}\";\n            s = 0;\n        },\n                {\n            r = \"{19006, 1142}\";\n            s = 0;\n        },\n                {\n            r = \"{20218, 444}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 20670}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1034, 2112}}";
-			sepNavSelRange = "{849, 75}";
+			sepNavIntBoundsRect = "{{0, 0}, {1034, 2048}}";
+			sepNavSelRange = "{959, 0}";
 			sepNavVisRange = "{485, 1369}";
-			sepNavWindowFrame = "{{244, 0}, {983, 778}}";
+			sepNavWindowFrame = "{{90, 114}, {983, 778}}";
 		};
 	};
 	BCC286BF0E1D8F9300978ECA /* SLSMoleculeRootViewController.h */ = {
@@ -756,19 +503,19 @@
 	};
 	BCD12CF711308E1000737166 /* SLSMoleculeiPadRootViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {971, 706}}";
-			sepNavSelRange = "{692, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {1001, 706}}";
+			sepNavSelRange = "{905, 25}";
 			sepNavVisRange = "{0, 1073}";
-			sepNavWindowFrame = "{{-4, 0}, {1060, 778}}";
+			sepNavWindowFrame = "{{0, 400}, {1060, 778}}";
 		};
 	};
 	BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{4626, 60}\";\n            s = 0;\n        },\n                {\n            r = \"{4723, 164}\";\n            s = 0;\n        },\n                {\n            r = \"{4914, 116}\";\n            s = 0;\n        },\n                {\n            r = \"{5051, 204}\";\n            s = 0;\n        },\n                {\n            r = \"{5808, 488}\";\n            s = 0;\n        },\n                {\n            r = \"{6340, 1141}\";\n            s = 0;\n        },\n                {\n            r = \"{7613, 195}\";\n            s = 0;\n        },\n                {\n            r = \"{7933, 343}\";\n            s = 0;\n        },\n                {\n            r = \"{9911, 331}\";\n            s = 0;\n        },\n                {\n            r = \"{11363, 214}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 11625}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1370, 3344}}";
-			sepNavSelRange = "{2512, 0}";
-			sepNavVisRange = "{2035, 407}";
-			sepNavWindowFrame = "{{226, 0}, {1001, 778}}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{4783, 60}\";\n            s = 0;\n        },\n                {\n            r = \"{4880, 164}\";\n            s = 0;\n        },\n                {\n            r = \"{5071, 116}\";\n            s = 0;\n        },\n                {\n            r = \"{5208, 204}\";\n            s = 0;\n        },\n                {\n            r = \"{5965, 488}\";\n            s = 0;\n        },\n                {\n            r = \"{6497, 1141}\";\n            s = 0;\n        },\n                {\n            r = \"{7770, 195}\";\n            s = 0;\n        },\n                {\n            r = \"{8090, 343}\";\n            s = 0;\n        },\n                {\n            r = \"{10349, 331}\";\n            s = 0;\n        },\n                {\n            r = \"{11801, 214}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 12063}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1482, 4080}}";
+			sepNavSelRange = "{7071, 0}";
+			sepNavVisRange = "{6409, 1549}";
+			sepNavWindowFrame = "{{701, 400}, {1001, 778}}";
 		};
 	};
 	BCDC9F870EB3760300ADCFA5 /* French */ = {

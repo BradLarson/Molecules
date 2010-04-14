@@ -31,12 +31,13 @@
 	NSTimer *autorotationTimer;
 	NSUInteger stepsSinceLastRotation;
 	float accumulatedXRotation, accumulatedYRotation, accumulatedScale, accumulatedXTranslation, accumulatedYTranslation;
-	
+
 	// Touch-handling 
 	float startingTouchDistance, previousScale;
 	float instantObjectScale, instantXRotation, instantYRotation, instantXTranslation, instantYTranslation, instantZTranslation;
 	CGPoint lastMovementPosition, previousDirectionOfPanning;
 	BOOL twoFingersAreMoving, pinchGestureUnderway;
+	float scalingForMovement;
 }
 
 @property (readwrite, retain) UIActionSheet *visualizationActionSheet;

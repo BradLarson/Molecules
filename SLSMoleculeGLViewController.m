@@ -55,6 +55,16 @@
 		accumulatedScale = 1.0f;
 		accumulatedXTranslation = 0.0f;
 		accumulatedYTranslation = 0.0f;
+		
+		
+		if ([SLSMoleculeAppDelegate isRunningOniPad])
+		{
+			scalingForMovement = 85.0f;
+		}
+		else
+		{
+			scalingForMovement = 200.0f;
+		}
 
 		// Set up the initial model view matrix for the rendering
 		isFirstDrawingOfMolecule = YES;
@@ -572,8 +582,8 @@
 		return CGPointZero;
 	
 	// The movement ranges are averaged out 
-	commonDirection.x = ((directionOfTouch1.x + directionOfTouch1.x) / 2.0f) * 200.0f;
-	commonDirection.y = ((directionOfTouch1.y + directionOfTouch1.y) / 2.0f) * 200.0f;
+	commonDirection.x = ((directionOfTouch1.x + directionOfTouch1.x) / 2.0f) * scalingForMovement;
+	commonDirection.y = ((directionOfTouch1.y + directionOfTouch1.y) / 2.0f) * scalingForMovement;
 	
 
 	return commonDirection;
@@ -622,6 +632,8 @@
 		{
 			if (pinchGestureUnderway)
 			{
+				
+				
 				if (sqrt(previousDirectionOfPanning.x * previousDirectionOfPanning.x + previousDirectionOfPanning.y * previousDirectionOfPanning.y) > 0.1 )
 				{
 					pinchGestureUnderway = NO;

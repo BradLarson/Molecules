@@ -127,21 +127,41 @@
 #pragma mark -
 #pragma mark Database access
 
+- (NSString *)applicationSupportDirectory;
+{	
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+	
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	if ([fileManager fileExistsAtPath:basePath] == NO)
+	{
+		[fileManager createDirectoryAtPath:basePath attributes: nil];
+	}
+	
+    return basePath;
+}
+
 - (BOOL)createEditableCopyOfDatabaseIfNeeded; 
 {
-    // See if the database already exists
-    BOOL success;
+    // First, see if the database exists in the /Documents directory.  If so, move it to Application Support.
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *writableDBPath = [documentsDirectory stringByAppendingPathComponent:@"molecules.sql"];
-    success = [fileManager fileExistsAtPath:writableDBPath];
-    if (success) return NO;
+    if ([fileManager fileExistsAtPath:writableDBPath])
+	{
+		[fileManager moveItemAtPath:writableDBPath toPath:[[self applicationSupportDirectory] stringByAppendingPathComponent:@"molecules.sql"] error:&error];
+	}
+	
+	writableDBPath = [[self applicationSupportDirectory] stringByAppendingPathComponent:@"molecules.sql"];
+	
+    if ([fileManager fileExistsAtPath:writableDBPath])
+		return NO;
 	
     // The database does not exist, so copy a blank starter database to the Documents directory
     NSString *defaultDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"molecules.sql"];
-    success = [fileManager copyItemAtPath:defaultDBPath toPath:writableDBPath error:&error];
+    BOOL success = [fileManager copyItemAtPath:defaultDBPath toPath:writableDBPath error:&error];
     if (!success) {
 		NSAssert1(0,NSLocalizedStringFromTable(@"Failed to create writable database file with message '%@'.", @"Localized", nil), [error localizedDescription]);
     }
@@ -153,9 +173,7 @@
 	molecules = [[NSMutableArray alloc] init];
 	
 	// The database is stored in the application bundle. 
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"molecules.sql"];
+    NSString *path = [[self applicationSupportDirectory] stringByAppendingPathComponent:@"molecules.sql"];
     // Open the database. The database was prepared outside the application.
     if (sqlite3_open([path UTF8String], &database) == SQLITE_OK) 
 	{

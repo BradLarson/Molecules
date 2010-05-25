@@ -93,7 +93,9 @@
 
 - (void)loadView 
 {
-	SLSMoleculeGLView *glView = [[SLSMoleculeGLView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	CGRect applicationFrame = [[UIScreen mainScreen] applicationFrame];
+	
+	SLSMoleculeGLView *glView = [[SLSMoleculeGLView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, applicationFrame.size.width, applicationFrame.size.height)];
 
 	self.view = glView;
 	
@@ -679,9 +681,9 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event 
 {
-	if (isAutorotating)
-		[self startOrStopAutorotation:nil];
+	[self handleTouchesEnding:touches withEvent:event];
 
+	// This is placed here to avoid an infinite spawning of alerts under iPhone OS 4.0
 	if (([[touches anyObject] tapCount] >= 2) && (![SLSMoleculeAppDelegate isRunningOniPad]))
 	{
 		if (moleculeToDisplay.isDoneRendering == YES)
@@ -690,6 +692,17 @@
 			[actionSheet showInView:self.view];
 		}		
 	}
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event 
+{
+	[self handleTouchesEnding:touches withEvent:event];
+}
+
+- (void)handleTouchesEnding:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	if (isAutorotating)
+		[self startOrStopAutorotation:nil];
 	
     NSMutableSet *remainingTouches = [[[event touchesForView:self.view] mutableCopy] autorelease];
     [remainingTouches minusSet:touches];
@@ -700,13 +713,7 @@
 		previousDirectionOfPanning = CGPointZero;
 		
 		lastMovementPosition = [[remainingTouches anyObject] locationInView:self.view];
-	}
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event 
-{
-	// Handle touches canceled the same as as a touches ended event
-    [self touchesEnded:touches withEvent:event];
+	}	
 }
 
 #pragma mark -

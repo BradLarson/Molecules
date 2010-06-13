@@ -6,6 +6,27 @@
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
 	<string>${PRODUCT_NAME}</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array>
+				<string>Document-molecules-320.png</string>
+				<string>Document-molecules-64.png</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>Molecules Structure File</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.sunsetlakesoftware.molecules.pdb</string>
+				<string>org.gnu.gnu-zip-archive</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
@@ -37,9 +58,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.4.1</string>
+	<string>1.4.2</string>
 	<key>LSRequiresIPhoneOS</key>
 	<false/>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleBlackOpaque</string>
 	<key>UISupportedInterfaceOrientations</key>
@@ -48,29 +71,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIFileSharingEnabled</key>
-	<true/>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeIconFiles</key>
-			<array>
-				<string>Document-molecules-320.png</string>
-				<string>Document-molecules-64.png</string>
-			</array>
-			<key>CFBundleTypeName</key>
-			<string>Molecules Structure File</string>
-			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>com.sunsetlakesoftware.molecules.pdb</string>
-				<string>org.gnu.gnu-zip-archive</string>
-			</array>
-		</dict>
 	</array>
 	<key>UTExportedTypeDeclarations</key>
 	<array>

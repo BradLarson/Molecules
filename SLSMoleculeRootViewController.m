@@ -67,13 +67,19 @@
 	
 	rotationButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	
-	UIImage *rotationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIcon" ofType:@"png"]];
+	UIImage *rotationImage = [UIImage imageNamed:@"RotationIcon"];
+	if (rotationImage == nil)
+	{
+		rotationImage = [[[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIcon" ofType:@"png"]] autorelease];
+	}
 	[rotationButton setImage:rotationImage forState:UIControlStateNormal];
-	[rotationImage release];
 	
-	UIImage *selectedRotationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIconSelected" ofType:@"png"]];
+	UIImage *selectedRotationImage = [UIImage imageNamed:@"RotationIconSelected"];
+	if (selectedRotationImage == nil)
+	{
+		selectedRotationImage = [[[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIconSelected" ofType:@"png"]] autorelease];
+	}
 	[rotationButton setImage:selectedRotationImage forState:UIControlStateSelected];
-	[selectedRotationImage release];
 	
 	rotationButton.showsTouchWhenHighlighted = YES;
 	[rotationButton addTarget:glViewController action:@selector(startOrStopAutorotation:) forControlEvents:UIControlEventTouchUpInside];

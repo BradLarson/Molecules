@@ -135,7 +135,8 @@
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	if ([fileManager fileExistsAtPath:basePath] == NO)
 	{
-		[fileManager createDirectoryAtPath:basePath attributes: nil];
+		NSError *error = nil;
+		[fileManager createDirectoryAtPath:basePath withIntermediateDirectories:NO attributes:nil error:&error];
 	}
 	
     return basePath;

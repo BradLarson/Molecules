@@ -20,6 +20,8 @@
 		BC2795BD11625065006DE4C8 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2795BC11625065006DE4C8 /* Default.png */; };
 		BC281A6B11727A89005B7946 /* Document-molecules-64.png in Resources */ = {isa = PBXBuildFile; fileRef = BC281A6911727A89005B7946 /* Document-molecules-64.png */; };
 		BC281A6C11727A89005B7946 /* Document-molecules-320.png in Resources */ = {isa = PBXBuildFile; fileRef = BC281A6A11727A89005B7946 /* Document-molecules-320.png */; };
+		BC286E1011C4751E005D720C /* RotationIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC286E0F11C4751E005D720C /* RotationIcon@2x.png */; };
+		BC286E2611C47956005D720C /* RotationIconSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC286E2511C47956005D720C /* RotationIconSelected@2x.png */; };
 		BC2CF8650E5784ED00653418 /* SLSMolecule+PDB.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */; };
 		BC37E7CA0E14779E00E11F4F /* SLSMolecule.m in Sources */ = {isa = PBXBuildFile; fileRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */; };
 		BC4E97C20E69F736006CD291 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BC4E97C10E69F736006CD291 /* libsqlite3.dylib */; };
@@ -74,6 +76,8 @@
 		BC2795BC11625065006DE4C8 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		BC281A6911727A89005B7946 /* Document-molecules-64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Document-molecules-64.png"; sourceTree = "<group>"; };
 		BC281A6A11727A89005B7946 /* Document-molecules-320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Document-molecules-320.png"; sourceTree = "<group>"; };
+		BC286E0F11C4751E005D720C /* RotationIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RotationIcon@2x.png"; sourceTree = "<group>"; };
+		BC286E2511C47956005D720C /* RotationIconSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RotationIconSelected@2x.png"; sourceTree = "<group>"; };
 		BC2CF8630E5784EC00653418 /* SLSMolecule+PDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SLSMolecule+PDB.h"; sourceTree = "<group>"; };
 		BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SLSMolecule+PDB.m"; sourceTree = "<group>"; };
 		BC37E7C80E14779E00E11F4F /* SLSMolecule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMolecule.h; sourceTree = "<group>"; };
@@ -189,6 +193,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BC286E2511C47956005D720C /* RotationIconSelected@2x.png */,
+				BC286E0F11C4751E005D720C /* RotationIcon@2x.png */,
 				BC835183117545C600B478D5 /* 69-display.png */,
 				BC281A6911727A89005B7946 /* Document-molecules-64.png */,
 				BC281A6A11727A89005B7946 /* Document-molecules-320.png */,
@@ -379,6 +385,8 @@
 				BC281A6B11727A89005B7946 /* Document-molecules-64.png in Resources */,
 				BC281A6C11727A89005B7946 /* Document-molecules-320.png in Resources */,
 				BC835184117545C600B478D5 /* 69-display.png in Resources */,
+				BC286E1011C4751E005D720C /* RotationIcon@2x.png in Resources */,
+				BC286E2611C47956005D720C /* RotationIconSelected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -456,6 +464,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "Don't Code Sign";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos3.0]" = "Don't Code Sign";
@@ -465,7 +474,6 @@
 				INFOPLIST_FILE = English.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = Molecules;
-				SDKROOT = iphoneos3.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -474,6 +482,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos2.0]" = "iPhone Developer";
@@ -491,7 +500,6 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos2.0]" = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos3.0]" = "";
-				SDKROOT = iphoneos3.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -513,7 +521,7 @@
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos4.0;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Distribution;
@@ -522,6 +530,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos3.0]" = "iPhone Distribution";
@@ -536,7 +545,6 @@
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos3.0]" = "";
-				SDKROOT = iphoneos3.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -555,7 +563,7 @@
 				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos4.0;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Debug;
@@ -577,7 +585,7 @@
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos2.0]" = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos4.0;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Release;

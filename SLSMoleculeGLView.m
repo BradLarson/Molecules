@@ -36,6 +36,12 @@
 		self.multipleTouchEnabled = YES;
 		self.opaque = YES;
 		
+		// Set scaling to account for Retina display	
+		if ([self respondsToSelector:@selector(setContentScaleFactor:)])
+		{
+			self.contentScaleFactor = [[UIScreen mainScreen] scale];
+		}
+		
 		// Do OpenGL Core Animation layer setup
 		CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
 		

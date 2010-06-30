@@ -521,7 +521,8 @@
 - (float)distanceBetweenTouches:(NSSet *)touches;
 {
 	int currentStage = 0;
-	CGPoint point1, point2;
+	CGPoint point1 = CGPointZero;
+	CGPoint point2 = CGPointZero;
 	
 	
 	for (UITouch *currentTouch in touches)
@@ -548,7 +549,7 @@
 	// Check to make sure that both fingers are moving in the same direction
 	
 	int currentStage = 0;
-	CGPoint currentLocationOfTouch1, currentLocationOfTouch2, previousLocationOfTouch1, previousLocationOfTouch2;
+	CGPoint currentLocationOfTouch1 = CGPointZero, currentLocationOfTouch2 = CGPointZero, previousLocationOfTouch1 = CGPointZero, previousLocationOfTouch2 = CGPointZero;
 	
 	
 	for (UITouch *currentTouch in touches)

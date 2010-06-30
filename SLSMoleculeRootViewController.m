@@ -67,14 +67,14 @@
 	
 	rotationButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	
-	UIImage *rotationImage = [UIImage imageNamed:@"RotationIcon"];
+	UIImage *rotationImage = [UIImage imageNamed:@"RotationIcon.png"];
 	if (rotationImage == nil)
 	{
 		rotationImage = [[[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIcon" ofType:@"png"]] autorelease];
 	}
 	[rotationButton setImage:rotationImage forState:UIControlStateNormal];
 	
-	UIImage *selectedRotationImage = [UIImage imageNamed:@"RotationIconSelected"];
+	UIImage *selectedRotationImage = [UIImage imageNamed:@"RotationIconSelected.png"];
 	if (selectedRotationImage == nil)
 	{
 		selectedRotationImage = [[[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIconSelected" ofType:@"png"]] autorelease];

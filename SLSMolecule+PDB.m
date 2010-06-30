@@ -130,6 +130,11 @@ static NSDictionary *pdbResidueLookupTable;
 			self.previousTerminalAtomValue = [atomDictionary objectForKey:@"C"];
 			
 		}; break;
+		case WATER:
+		case UNKNOWNRESIDUE:
+		{
+			
+		}; break;
 	}
 
 	// Now do the residue-specific atoms
@@ -346,6 +351,18 @@ static NSDictionary *pdbResidueLookupTable;
 			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"CG"] endPoint:[atomDictionary objectForKey:@"CD"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
 			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"CD"] endPoint:[atomDictionary objectForKey:@"OE1"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
 			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"CD"] endPoint:[atomDictionary objectForKey:@"NE2"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
+		}; break;
+		case GLYCINE:
+		{
+			
+		}; break;
+		case WATER:
+		{
+			
+		}; break;
+		case UNKNOWNRESIDUE:
+		{
+			
 		}; break;			
 	}
 }

@@ -266,7 +266,7 @@ void normalize(GLfloat *v)
 	if (![[NSFileManager defaultManager] removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:&error])
 	{
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Could not delete file", @"Localized", nil) message:[error localizedDescription]
-													   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil];
+													   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles:nil, nil];
 		[alert show];
 		[alert release];					
 		return;
@@ -483,6 +483,18 @@ void normalize(GLfloat *v)
 			bondColor[0] = 0;
 			bondColor[1] = 220;
 			bondColor[2] = 220;
+		}; break;
+		case WATER:
+		{
+			bondColor[0] = 0;
+			bondColor[1] = 0;
+			bondColor[2] = 255;
+		}; break;
+		case UNKNOWNRESIDUE:
+		{
+			bondColor[0] = 255;
+			bondColor[1] = 255;
+			bondColor[2] = 255;
 		}; break;
 	}
 }

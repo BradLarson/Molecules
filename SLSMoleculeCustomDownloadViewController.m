@@ -124,7 +124,7 @@
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error in loading custom location", @"Localized", nil) message:NSLocalizedStringFromTable(@"The address could not be reached", @"Localized", nil)
-												   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil];
+												   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil, nil];
 	[alert show];
 	[alert release];
 }
@@ -166,7 +166,7 @@
 	else
 	{
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error in loading custom location", @"Localized", nil) message:NSLocalizedStringFromTable(@"The address does not contain a file of a supported molecule type.", @"Localized", nil)
-													   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil];
+													   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil, nil];
 		[alert show];
 		[alert release];
 	}

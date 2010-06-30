@@ -23,7 +23,7 @@
 
 - (NSString *)titlecaseString
 {
-    static NSArray *shortWords, *shortAcronyms;
+    static NSArray *shortWords = nil, *shortAcronyms;
     static NSMutableCharacterSet *wordStartCharacterSet;
     static NSMutableCharacterSet *wordMiddleCharacterSet;
     static NSMutableCharacterSet *wordEndCharacterSet;
@@ -77,8 +77,8 @@
 
     // Begin scanning for words.
     NSRange currentRange;        // Range of word located by scanner
-    NSString *word;              // Extracted word
-    NSString *lowercaseWord;     // Lowercase version of extracted word
+    NSString *word = nil;              // Extracted word
+    NSString *lowercaseWord = nil;     // Lowercase version of extracted word
     NSRange ignoreTriggerRange;  // Range of character causing word to be ignored
     BOOL isFirstWord = YES;      // To determine whether to capitalize small word
     while (![scanner isAtEnd]) {

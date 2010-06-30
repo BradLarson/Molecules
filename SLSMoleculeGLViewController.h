@@ -40,8 +40,8 @@
 	float scalingForMovement;
 }
 
-@property (readwrite, retain) UIActionSheet *visualizationActionSheet;
-@property (readwrite, retain) SLSMolecule *moleculeToDisplay;
+@property (readwrite, retain, nonatomic) UIActionSheet *visualizationActionSheet;
+@property (readwrite, retain, nonatomic) SLSMolecule *moleculeToDisplay;
 @property (readonly) BOOL isFrameRenderingFinished;
 
 // Display indicator control

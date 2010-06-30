@@ -33,6 +33,7 @@
 	<string>MoleculesIcon.png</string>
 	<key>CFBundleIconFiles</key>
 	<array>
+		<string>MoleculesIcon@2x.png</string>
 		<string>MoleculesIcon.png</string>
 		<string>MoleculesIcon72.png</string>
 	</array>

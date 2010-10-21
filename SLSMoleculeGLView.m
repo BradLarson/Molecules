@@ -221,13 +221,11 @@
 - (void)layoutSubviews 
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"GLViewSizeDidChange" object:nil];
-	
 }
 
 #pragma mark -
 #pragma mark Accessors
 
 @synthesize context;
-
 
 @end

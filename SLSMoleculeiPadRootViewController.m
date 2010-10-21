@@ -72,8 +72,8 @@
 	rotationBarButton = [[UIBarButtonItem alloc] initWithImage:unselectedRotationImage style:UIBarButtonItemStylePlain target:glViewController action:@selector(startOrStopAutorotation:)];
 	rotationBarButton.width = 44.0f;
 	
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleConnectionOfMonitor:) name:UIScreenDidConnectNotification object:nil];
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDisconnectionOfMonitor:) name:UIScreenDidDisconnectNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleConnectionOfMonitor:) name:UIScreenDidConnectNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDisconnectionOfMonitor:) name:UIScreenDidDisconnectNotification object:nil];
 
 	if ([[UIScreen screens] count] > 1)
 	{
@@ -259,6 +259,8 @@
 		// Being displayed locally, move to external window
 		CGRect externalBounds = [externalScreen bounds];
 		externalWindow = [[UIWindow alloc] initWithFrame:externalBounds];
+		externalWindow.backgroundColor = [UIColor whiteColor];
+		externalWindow.screen = externalScreen;
 		
 		
 //		if (glViewController.is
@@ -269,25 +271,24 @@
 //		glViewController.view = [[SLSMoleculeGLView alloc] initWithFrame:externalBounds];
 
 		
-//		SLSMoleculeGLView *glView = (SLSMoleculeGLView *)glViewController.view;
-//		[EAGLContext setCurrentContext:glView.context];
-//		[glView destroyFramebuffer];
-//		
-//		
-////		glView.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
+		SLSMoleculeGLView *glView = (SLSMoleculeGLView *)glViewController.view;
+		[EAGLContext setCurrentContext:glView.context];
+		[glView destroyFramebuffer];
+		
+		
+//		glView.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
 		[externalWindow addSubview:glViewController.view];
-//
-//		[EAGLContext setCurrentContext:glView.context];		
-//		[glView createFramebuffer];
-//		[glView configureProjection];
-//		[glViewController _drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];	
+
+		[EAGLContext setCurrentContext:glView.context];		
+		[glView createFramebuffer];
+		[glView configureProjection];
+		[glViewController _drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];	
 		
-		UILabel *helloWorld = [[UILabel alloc] initWithFrame:CGRectMake(200.0f, 400.0f, 400.0f, 60.0f)];
-		helloWorld.text = @"This page intentionally left blank.";
-		[externalWindow addSubview:helloWorld];
-		[helloWorld release];
+//		UILabel *helloWorld = [[UILabel alloc] initWithFrame:CGRectMake(200.0f, 400.0f, 400.0f, 60.0f)];
+//		helloWorld.text = @"This page intentionally left blank.";
+//		[externalWindow addSubview:helloWorld];
+//		[helloWorld release];
 		
-		externalWindow.screen = externalScreen;
 		glViewController.view.frame = externalBounds;		
 		[externalWindow makeKeyAndVisible];
 	}

@@ -377,7 +377,6 @@
 #pragma mark -
 #pragma mark Accessors
 
-@synthesize delegate;
 @synthesize pdbDownloadDisplayView, pdbInformationWebView;
 @synthesize moleculeTitleText, downloadStatusText;
 @synthesize pdbInformationDisplayButton, pdbDownloadButton;

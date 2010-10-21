@@ -350,7 +350,14 @@
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Molecules" */;
 			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -517,12 +524,13 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_CFLAGS = "-D__IPHONE_OS_VERSION_MIN_REQUIRED=030000";
 				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos4.1;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Distribution;
@@ -561,10 +569,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D__IPHONE_OS_VERSION_MIN_REQUIRED=030000";
 				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos4.1;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Debug;
@@ -582,12 +591,13 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_CFLAGS = "-D__IPHONE_OS_VERSION_MIN_REQUIRED=030000";
 				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos2.0]" = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos4.1;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Release;

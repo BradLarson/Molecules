@@ -10,8 +10,6 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol MoleculeDownloadDelegate;
-
 @interface SLSMoleculeDownloadViewController : UIViewController <UIWebViewDelegate>
 {
 	NSString *codeForCurrentlyDownloadingProtein, *titleForCurrentlyDownloadingProtein;
@@ -29,13 +27,9 @@
 	IBOutlet UIActivityIndicatorView *webLoadingIndicator;
 	long long downloadFileSize;
 	BOOL downloadCancelled;
-	NSURLConnection *downloadConnection;
-	
-	id<MoleculeDownloadDelegate> delegate;
-
+	NSURLConnection *downloadConnection;	
 }
 
-@property(nonatomic, assign) id<MoleculeDownloadDelegate> delegate;
 @property(nonatomic, retain) IBOutlet UIView *pdbDownloadDisplayView, *pdbInformationWebView;
 @property(nonatomic, retain) IBOutlet UILabel *moleculeTitleText, *downloadStatusText;
 @property(nonatomic, retain) IBOutlet UIButton *pdbInformationDisplayButton, *pdbDownloadButton;

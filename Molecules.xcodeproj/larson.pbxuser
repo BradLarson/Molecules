@@ -9,7 +9,7 @@
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeBuildConfigurationName = Release;
 		activeExecutable = BC896C170DE11BD500B184F0 /* Molecules */;
-		activeSDKPreference = iphoneos4.0;
+		activeSDKPreference = iphonesimulator4.1;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* Molecules */;
 		addToTargets = (
 			1D6058900D05DD3D006BFB54 /* Molecules */,
@@ -131,8 +131,8 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 299564510;
-			PBXWorkspaceStateSaveDate = 299564510;
+			PBXPerProjectTemplateStateSaveDate = 309382582;
+			PBXWorkspaceStateSaveDate = 309382582;
 		};
 		sourceControlManager = BC896C1F0DE11BFE00B184F0 /* Source Control */;
 		userBookmarkGroup = BCB290D0103CE78B00F0EA2A /* PBXBookmarkGroup */;
@@ -152,14 +152,14 @@
 			sepNavIntBoundsRect = "{{0, 0}, {734, 1485}}";
 			sepNavSelRange = "{1046, 40}";
 			sepNavVisRect = "{{0, 238}, {700, 706}}";
-			sepNavWindowFrame = "{{932, 271}, {745, 778}}";
+			sepNavWindowFrame = "{{770, 135}, {745, 778}}";
 		};
 	};
 	BC146A990EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {822, 706}}";
-			sepNavSelRange = "{454, 0}";
-			sepNavVisRange = "{0, 458}";
+			sepNavIntBoundsRect = "{{0, 0}, {898, 272}}";
+			sepNavSelRange = "{235, 0}";
+			sepNavVisRange = "{66, 349}";
 			sepNavWindowFrame = "{{115, 0}, {881, 778}}";
 		};
 	};
@@ -262,9 +262,9 @@
 	};
 	BC5BB8BC0E204DC20001DFD0 /* SLSMoleculeDetailViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {939, 5952}}";
-			sepNavSelRange = "{1367, 1}";
-			sepNavVisRange = "{793, 1197}";
+			sepNavIntBoundsRect = "{{0, 0}, {999, 5872}}";
+			sepNavSelRange = "{3857, 6}";
+			sepNavVisRange = "{3595, 687}";
 			sepNavWindowFrame = "{{229, 1}, {998, 777}}";
 		};
 	};
@@ -392,9 +392,9 @@
 	};
 	BCC286BE0E1D8F9300978ECA /* SLSMoleculeAppDelegate.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1111, 9920}}";
-			sepNavSelRange = "{3791, 9}";
-			sepNavVisRange = "{3555, 406}";
+			sepNavIntBoundsRect = "{{0, 0}, {1034, 10208}}";
+			sepNavSelRange = "{2162, 35}";
+			sepNavVisRange = "{1072, 1471}";
 			sepNavWindowFrame = "{{404, 78}, {983, 778}}";
 		};
 	};
@@ -409,27 +409,27 @@
 	BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */ = {
 		uiCtxt = {
 			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{680, 486}\";\n            s = 0;\n        },\n                {\n            r = \"{1187, 146}\";\n            s = 0;\n        },\n                {\n            r = \"{4914, 322}\";\n            s = 0;\n        },\n                {\n            r = \"{5303, 542}\";\n            s = 0;\n        },\n                {\n            r = \"{5996, 192}\";\n            s = 0;\n        },\n                {\n            r = \"{6225, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{6470, 93}\";\n            s = 0;\n        },\n                {\n            r = \"{6689, 116}\";\n            s = 0;\n        },\n                {\n            r = \"{6878, 868}\";\n            s = 0;\n        },\n                {\n            r = \"{7977, 65}\";\n            s = 0;\n        },\n                {\n            r = \"{8095, 406}\";\n            s = 0;\n        },\n                {\n            r = \"{8560, 1163}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 9733}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1118, 2672}}";
-			sepNavSelRange = "{1738, 10}";
-			sepNavVisRange = "{1408, 698}";
+			sepNavIntBoundsRect = "{{0, 0}, {1174, 2880}}";
+			sepNavSelRange = "{1703, 68}";
+			sepNavVisRange = "{4287, 932}";
 			sepNavWindowFrame = "{{9, 0}, {1155, 778}}";
 		};
 	};
 	BCC286C30E1D8FB100978ECA /* SLSMoleculeGLView.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1071, 800}}";
-			sepNavSelRange = "{1009, 6}";
+			sepNavSelRange = "{1271, 55}";
 			sepNavVisRange = "{44, 1422}";
 			sepNavWindowFrame = "{{314, 250}, {1130, 778}}";
 		};
 	};
 	BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{686, 30}\";\n            s = 0;\n        },\n                {\n            r = \"{1900, 649}\";\n            s = 0;\n        },\n                {\n            r = \"{2624, 1187}\";\n            s = 0;\n        },\n                {\n            r = \"{3836, 314}\";\n            s = 0;\n        },\n                {\n            r = \"{4181, 203}\";\n            s = 0;\n        },\n                {\n            r = \"{4417, 340}\";\n            s = 0;\n        },\n                {\n            r = \"{4790, 116}\";\n            s = 0;\n        },\n                {\n            r = \"{6528, 99}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 6697}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1209, 2208}}";
-			sepNavSelRange = "{1073, 0}";
-			sepNavVisRange = "{685, 1189}";
-			sepNavWindowFrame = "{{0, 184}, {972, 746}}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{686, 30}\";\n            s = 0;\n        },\n                {\n            r = \"{812, 1067}\";\n            s = 0;\n        },\n                {\n            r = \"{1900, 649}\";\n            s = 0;\n        },\n                {\n            r = \"{2624, 1187}\";\n            s = 0;\n        },\n                {\n            r = \"{3836, 314}\";\n            s = 0;\n        },\n                {\n            r = \"{4181, 203}\";\n            s = 0;\n        },\n                {\n            r = \"{4417, 340}\";\n            s = 0;\n        },\n                {\n            r = \"{4790, 116}\";\n            s = 0;\n        },\n                {\n            r = \"{6528, 97}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 6694}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1071, 1776}}";
+			sepNavSelRange = "{1074, 1486}";
+			sepNavVisRange = "{782, 1302}";
+			sepNavWindowFrame = "{{314, 250}, {1130, 778}}";
 		};
 	};
 	BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */ = {
@@ -442,27 +442,26 @@
 	};
 	BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{3203, 109}\";\n            s = 0;\n        },\n                {\n            r = \"{3716, 1000}\";\n            s = 0;\n        },\n                {\n            r = \"{4776, 3}\";\n            s = 0;\n        },\n                {\n            r = \"{4837, 238}\";\n            s = 0;\n        },\n                {\n            r = \"{5134, 1104}\";\n            s = 0;\n        },\n                {\n            r = \"{6559, 242}\";\n            s = 0;\n        },\n                {\n            r = \"{6903, 529}\";\n            s = 0;\n        },\n                {\n            r = \"{7469, 410}\";\n            s = 0;\n        },\n                {\n            r = \"{8025, 647}\";\n            s = 0;\n        },\n                {\n            r = \"{8760, 819}\";\n            s = 0;\n        },\n                {\n            r = \"{9638, 476}\";\n            s = 0;\n        },\n                {\n            r = \"{10157, 370}\";\n            s = 0;\n        },\n                {\n            r = \"{10604, 452}\";\n            s = 0;\n        },\n                {\n            r = \"{11243, 3146}\";\n            s = 0;\n        },\n                {\n            r = \"{14916, 1608}\";\n            s = 0;\n        },\n                {\n            r = \"{16557, 932}\";\n            s = 0;\n        },\n                {\n            r = \"{18135, 682}\";\n            s = 0;\n        },\n                {\n            r = \"{18874, 1836}\";\n            s = 0;\n        },\n                {\n            r = \"{23333, 682}\";\n            s = 0;\n        },\n                {\n            r = \"{24085, 2248}\";\n            s = 0;\n        },\n                {\n            r = \"{26403, 406}\";\n            s = 0;\n        },\n                {\n            r = \"{26883, 54}\";\n            s = 0;\n        },\n                {\n            r = \"{27013, 430}\";\n            s = 0;\n        },\n                {\n            r = \"{27525, 212}\";\n            s = 0;\n        },\n                {\n            r = \"{27893, 894}\";\n            s = 0;\n        },\n                {\n            r = \"{28938, 124}\";\n            s = 0;\n        },\n                {\n            r = \"{29099, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{29308, 636}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 29952}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1195, 4336}}";
-			sepNavSelRange = "{7024, 0}";
-			sepNavVisRange = "{6590, 1965}";
-			sepNavWindowFrame = "{{487, 91}, {1155, 778}}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{697, 2485}\";\n            s = 0;\n        },\n                {\n            r = \"{3203, 109}\";\n            s = 0;\n        },\n                {\n            r = \"{3716, 1000}\";\n            s = 0;\n        },\n                {\n            r = \"{4776, 3}\";\n            s = 0;\n        },\n                {\n            r = \"{4837, 238}\";\n            s = 0;\n        },\n                {\n            r = \"{5134, 1104}\";\n            s = 0;\n        },\n                {\n            r = \"{6299, 201}\";\n            s = 0;\n        },\n                {\n            r = \"{6559, 242}\";\n            s = 0;\n        },\n                {\n            r = \"{6903, 529}\";\n            s = 0;\n        },\n                {\n            r = \"{7469, 410}\";\n            s = 0;\n        },\n                {\n            r = \"{8025, 647}\";\n            s = 0;\n        },\n                {\n            r = \"{8760, 819}\";\n            s = 0;\n        },\n                {\n            r = \"{9638, 476}\";\n            s = 0;\n        },\n                {\n            r = \"{10157, 370}\";\n            s = 0;\n        },\n                {\n            r = \"{10604, 452}\";\n            s = 0;\n        },\n                {\n            r = \"{11243, 3146}\";\n            s = 0;\n        },\n                {\n            r = \"{14413, 317}\";\n            s = 0;\n        },\n                {\n            r = \"{14916, 1608}\";\n            s = 0;\n        },\n                {\n            r = \"{16557, 932}\";\n            s = 0;\n        },\n                {\n            r = \"{17544, 462}\";\n            s = 0;\n        },\n                {\n            r = \"{18135, 682}\";\n            s = 0;\n        },\n                {\n            r = \"{18874, 1991}\";\n            s = 0;\n        },\n                {\n            r = \"{20963, 478}\";\n            s = 0;\n        },\n                {\n            r = \"{21499, 1920}\";\n            s = 0;\n        },\n                {\n            r = \"{27680, 212}\";\n            s = 0;\n        },\n                {\n            r = \"{28048, 894}\";\n            s = 0;\n        },\n                {\n            r = \"{29093, 124}\";\n            s = 0;\n        },\n                {\n            r = \"{29254, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{29463, 636}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 30107}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1524, 4416}}";
+			sepNavSelRange = "{2825, 4178}";
+			sepNavVisRange = "{196, 1107}";
+			sepNavWindowFrame = "{{472, 146}, {1155, 778}}";
 		};
 	};
 	BCC286CC0E1D905400978ECA /* SLSMoleculeDownloadViewController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1114, 960}}";
-			sepNavSelRange = "{1997, 0}";
-			sepNavVisRange = "{374, 1855}";
+			sepNavIntBoundsRect = "{{0, 0}, {1114, 864}}";
+			sepNavSelRange = "{1086, 0}";
+			sepNavVisRange = "{60, 1920}";
 			sepNavWindowFrame = "{{3, 0}, {1173, 777}}";
 		};
 	};
 	BCC286CD0E1D905400978ECA /* SLSMoleculeDownloadViewController.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{1678, 1470}\";\n            s = 0;\n        },\n                {\n            r = \"{3407, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{5083, 665}\";\n            s = 0;\n        },\n                {\n            r = \"{5833, 1373}\";\n            s = 0;\n        },\n                {\n            r = \"{9183, 112}\";\n            s = 0;\n        },\n                {\n            r = \"{9823, 414}\";\n            s = 0;\n        },\n                {\n            r = \"{10321, 471}\";\n            s = 0;\n        },\n                {\n            r = \"{10891, 1037}\";\n            s = 0;\n        },\n                {\n            r = \"{13028, 173}\";\n            s = 0;\n        },\n                {\n            r = \"{13255, 146}\";\n            s = 0;\n        },\n                {\n            r = \"{13480, 182}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 14248}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1524, 3696}}";
-			sepNavSelRange = "{6075, 0}";
-			sepNavVisRange = "{5677, 1388}";
+			sepNavIntBoundsRect = "{{0, 0}, {2161, 6528}}";
+			sepNavSelRange = "{13901, 0}";
+			sepNavVisRange = "{13049, 1197}";
 			sepNavWindowFrame = "{{54, 1}, {1173, 777}}";
 		};
 	};
@@ -509,11 +508,11 @@
 	};
 	BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{1093, 3616}\";\n            s = 0;\n        },\n                {\n            r = \"{4806, 60}\";\n            s = 0;\n        },\n                {\n            r = \"{4903, 164}\";\n            s = 0;\n        },\n                {\n            r = \"{5094, 116}\";\n            s = 0;\n        },\n                {\n            r = \"{5231, 204}\";\n            s = 0;\n        },\n                {\n            r = \"{5988, 488}\";\n            s = 0;\n        },\n                {\n            r = \"{6520, 1141}\";\n            s = 0;\n        },\n                {\n            r = \"{7793, 195}\";\n            s = 0;\n        },\n                {\n            r = \"{8113, 343}\";\n            s = 0;\n        },\n                {\n            r = \"{8572, 249}\";\n            s = 0;\n        },\n                {\n            r = \"{8886, 378}\";\n            s = 0;\n        },\n                {\n            r = \"{11363, 331}\";\n            s = 0;\n        },\n                {\n            r = \"{11909, 319}\";\n            s = 0;\n        },\n                {\n            r = \"{12399, 261}\";\n            s = 0;\n        },\n                {\n            r = \"{12815, 214}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 13077}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1398, 2544}}";
-			sepNavSelRange = "{1093, 0}";
-			sepNavVisRange = "{2838, 1419}";
-			sepNavWindowFrame = "{{400, 147}, {1227, 760}}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{4802, 60}\";\n            s = 0;\n        },\n                {\n            r = \"{4899, 164}\";\n            s = 0;\n        },\n                {\n            r = \"{5090, 116}\";\n            s = 0;\n        },\n                {\n            r = \"{5227, 204}\";\n            s = 0;\n        },\n                {\n            r = \"{5984, 488}\";\n            s = 0;\n        },\n                {\n            r = \"{6516, 1141}\";\n            s = 0;\n        },\n                {\n            r = \"{7789, 195}\";\n            s = 0;\n        },\n                {\n            r = \"{8109, 343}\";\n            s = 0;\n        },\n                {\n            r = \"{8568, 249}\";\n            s = 0;\n        },\n                {\n            r = \"{8882, 378}\";\n            s = 0;\n        },\n                {\n            r = \"{11402, 331}\";\n            s = 0;\n        },\n                {\n            r = \"{12854, 214}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 13116}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1398, 4176}}";
+			sepNavSelRange = "{6539, 51}";
+			sepNavVisRange = "{6074, 1677}";
+			sepNavWindowFrame = "{{360, 198}, {1227, 760}}";
 		};
 	};
 	BCDC9F870EB3760300ADCFA5 /* French */ = {

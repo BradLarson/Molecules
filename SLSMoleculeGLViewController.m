@@ -511,7 +511,14 @@
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:titleForActionSheet
 																 delegate:self cancelButtonTitle:cancelButtonTitle destructiveButtonTitle:nil
 														otherButtonTitles:buttonTitle1, buttonTitle2, nil];
-	actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+	if ([SLSMoleculeAppDelegate isRunningOniPad])
+    {
+        actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
+    }
+    else
+    {
+        actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+    }
 	return [actionSheet autorelease];
 }
 

@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol MoleculeCustomDownloadDelegate;
-
 @interface SLSMoleculeCustomDownloadViewController : UIViewController <UITextFieldDelegate>
 {
 	UITextField *urlInput;

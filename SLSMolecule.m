@@ -303,7 +303,6 @@ void normalize(GLfloat *v)
 	[source release];
 	[author release];
 	[previousTerminalAtomValue release];
-	[renderingQueue release];
 	
 	[super dealloc];
 }
@@ -1385,7 +1384,6 @@ void normalize(GLfloat *v)
 @synthesize currentVisualizationType;
 @synthesize totalNumberOfVertices, totalNumberOfTriangles;
 @synthesize numberOfStructureBeingDisplayed;
-@synthesize renderingQueue;
 
 
 - (void)setIsBeingDisplayed:(BOOL)newValue;
@@ -1396,20 +1394,12 @@ void normalize(GLfloat *v)
 	if (isBeingDisplayed)
 	{
 		isRenderingCancelled = NO;
-		
-		[renderingQueue cancelAllOperations];
 
-		NSInvocationOperation *invocationOperation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(renderMolecule) object:nil];
-		[renderingQueue addOperation:invocationOperation];
-		[invocationOperation release];	
+		[self renderMolecule];
 	}
 	else
 	{
-		[renderingQueue cancelAllOperations];
-		
-		NSInvocationOperation *invocationOperation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(freeVertexBuffers) object:nil];
-		[renderingQueue addOperation:invocationOperation];
-		[invocationOperation release];		
+		[self freeVertexBuffers];
 	}
 }
 

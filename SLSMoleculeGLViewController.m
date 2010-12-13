@@ -50,13 +50,6 @@
 		pinchGestureUnderway = NO;
 		stepsSinceLastRotation = 0;
 		
-		accumulatedXRotation = 0.0f;
-		accumulatedYRotation = 0.0f;
-		accumulatedScale = 1.0f;
-		accumulatedXTranslation = 0.0f;
-		accumulatedYTranslation = 0.0f;
-		
-		
 		if ([SLSMoleculeAppDelegate isRunningOniPad])
 		{
 			scalingForMovement = 85.0f;
@@ -76,10 +69,7 @@
 		
 		[self convertMatrix:currentModelViewMatrix to3DTransform:&currentCalculatedMatrix];
 		
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleFinishOfMoleculeRendering:) name:@"MoleculeRenderingEnded" object:nil];
-		
-		renderingQueue = [[NSOperationQueue alloc] init];
-		[renderingQueue setMaxConcurrentOperationCount:1];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleFinishOfMoleculeRendering:) name:@"MoleculeRenderingEnded" object:nil];		
 	}
 	return self;
 }
@@ -87,7 +77,9 @@
 - (void)dealloc 
 {
 //	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[renderingQueue release];
+	[self.displayLink invalidate];
+	self.displayLink = nil;
+	
 	[super dealloc];
 }
 
@@ -187,13 +179,18 @@
 {
 	if (isAutorotating)
 	{
-		[autorotationTimer invalidate];
+        [self.displayLink invalidate];
+        self.displayLink = nil;
 		
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleRotationSelected" object:[NSNumber numberWithBool:NO]];
 	}
 	else
 	{
-		autorotationTimer = [NSTimer scheduledTimerWithTimeInterval: (1 / 30.0f ) target: self selector: @selector(handleAutorotationTimer) userInfo: nil repeats: YES];
+		previousTimestamp = 0;
+		CADisplayLink *aDisplayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(handleAutorotationTimer)];
+		[aDisplayLink setFrameInterval:2];
+		[aDisplayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+		self.displayLink = aDisplayLink;
 		
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleRotationSelected" object:[NSNumber numberWithBool:YES]];
 	}
@@ -202,17 +199,21 @@
 
 - (void)handleAutorotationTimer;
 {
-//	if ([[renderingQueue operations] count] > 0)
-//	{
-//		stepsSinceLastRotation++;
-//	}
-//	else
-//	{
-//		[self drawViewByRotatingAroundX:(1.0 + (float)stepsSinceLastRotation * 1.0) rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
-	[self drawViewByRotatingAroundX:1.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
-
-//		stepsSinceLastRotation = 0;
-//	}
+	if (shouldResizeDisplay)
+	{
+		[self resizeView];
+		shouldResizeDisplay = NO;
+	}
+	if (previousTimestamp == 0)
+	{
+		[self _drawViewByRotatingAroundX:1.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];	
+	}
+	else
+	{
+		[self _drawViewByRotatingAroundX:(30.0f * (displayLink.timestamp - previousTimestamp)) rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
+	}
+	
+	previousTimestamp = displayLink.timestamp;
 }
 
 #pragma mark -
@@ -297,7 +298,7 @@
 	GLfloat currentModelViewMatrix[16]  = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
 	[self convertMatrix:currentModelViewMatrix to3DTransform:&currentCalculatedMatrix];
 	
-	[self drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
+//	[self drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
 }
 
 - (void)_drawViewByRotatingAroundX:(float)xRotation rotatingAroundY:(float)yRotation scaling:(float)scaleFactor translationInX:(float)xTranslation translationInY:(float)yTranslation;
@@ -376,45 +377,10 @@
 	[glView destroyFramebuffer];
 	[glView createFramebuffer];
 	[glView configureProjection];
-	[self _drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];	
-}
-
-- (void)drawViewByRotatingAroundX:(float)xRotation rotatingAroundY:(float)yRotation scaling:(float)scaleFactor translationInX:(float)xTranslation translationInY:(float)yTranslation;
-{
-	accumulatedXRotation += xRotation;
-	accumulatedYRotation += yRotation;
-	accumulatedScale *= scaleFactor;
-	accumulatedXTranslation += xTranslation;
-	accumulatedYTranslation += yTranslation;		
-	
-	if ([[renderingQueue operations] count] < 2)
+	if (displayLink == nil)
 	{
-		NSMethodSignature * sig = nil;
-		sig = [self methodSignatureForSelector:@selector(_drawViewByRotatingAroundX:rotatingAroundY:scaling:translationInX:translationInY:)];
-		NSInvocation *theInvocation = [NSInvocation invocationWithMethodSignature:sig];
-		[theInvocation setTarget:self];
-		[theInvocation setSelector:@selector(_drawViewByRotatingAroundX:rotatingAroundY:scaling:translationInX:translationInY:)];
-		
-		[theInvocation setArgument:&accumulatedXRotation atIndex:2];
-		[theInvocation setArgument:&accumulatedYRotation atIndex:3];
-		[theInvocation setArgument:&accumulatedScale atIndex:4];
-		[theInvocation setArgument:&accumulatedXTranslation atIndex:5];
-		[theInvocation setArgument:&accumulatedYTranslation atIndex:6];
-		
-		NSInvocationOperation *invocationOperation = [[NSInvocationOperation alloc] initWithInvocation:theInvocation];
-		[renderingQueue addOperation:invocationOperation];
-		[invocationOperation release];
-		
-		accumulatedXRotation = 0.0f;
-		accumulatedYRotation = 0.0f;
-		accumulatedScale = 1.0f;
-		accumulatedXTranslation = 0.0f;
-		accumulatedYTranslation = 0.0f;		
+		[self _drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];	
 	}
-	
-//	SLSMoleculeRenderingOperation *autorotationOperation = [[SLSMoleculeRenderingOperation alloc] initWithViewController:self stepsSinceLastRotation:stepsSinceLastRotation];
-//	[renderingQueue addOperation:autorotationOperation];
-//	[autorotationOperation release];	
 }
 
 - (void)runOpenGLBenchmarks;
@@ -437,15 +403,14 @@
 
 - (void)updateSizeOfGLView:(NSNotification *)note;
 {
-	NSMethodSignature * sig = nil;
-	sig = [self methodSignatureForSelector:@selector(resizeView)];
-	NSInvocation *theInvocation = [NSInvocation invocationWithMethodSignature:sig];
-	[theInvocation setTarget:self];
-	[theInvocation setSelector:@selector(resizeView)];
-	
-	NSInvocationOperation *invocationOperation = [[NSInvocationOperation alloc] initWithInvocation:theInvocation];
-	[renderingQueue addOperation:invocationOperation];
-	[invocationOperation release];	
+	if (displayLink == nil)
+	{
+		[self resizeView];
+	}
+	else
+	{
+		shouldResizeDisplay = YES;
+	}
 }
 
 #pragma mark -
@@ -626,7 +591,9 @@
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 {
 	if (isAutorotating)
+	{
 		[self startOrStopAutorotation:nil];
+	}
 
 	if ([[event touchesForView:self.view] count] > 1) // Pinch gesture, possibly two-finger movement
 	{
@@ -654,7 +621,7 @@
 			if (!pinchGestureUnderway)
 			{
 				twoFingersAreMoving = YES;
-				[self drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:directionOfPanning.x translationInY:directionOfPanning.y];
+				[self _drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:directionOfPanning.x translationInY:directionOfPanning.y];
 				previousDirectionOfPanning = CGPointZero;
 			}
 		}
@@ -672,7 +639,7 @@
 			if (!twoFingersAreMoving)
 			{
 				// Scale using pinch gesture
-				[self drawViewByRotatingAroundX:0.0 rotatingAroundY:0.0 scaling:(newTouchDistance / startingTouchDistance) / previousScale translationInX:directionOfPanning.x translationInY:directionOfPanning.y];
+				[self _drawViewByRotatingAroundX:0.0 rotatingAroundY:0.0 scaling:(newTouchDistance / startingTouchDistance) / previousScale translationInX:directionOfPanning.x translationInY:directionOfPanning.y];
 				previousScale = (newTouchDistance / startingTouchDistance);
 				pinchGestureUnderway = YES;
 			}
@@ -681,7 +648,7 @@
 	else // Single-touch rotation of object
 	{
 		CGPoint currentMovementPosition = [[touches anyObject] locationInView:self.view];
-		[self drawViewByRotatingAroundX:(currentMovementPosition.x - lastMovementPosition.x) rotatingAroundY:(currentMovementPosition.y - lastMovementPosition.y) scaling:1.0f translationInX:0.0f translationInY:0.0f];
+		[self _drawViewByRotatingAroundX:(currentMovementPosition.x - lastMovementPosition.x) rotatingAroundY:(currentMovementPosition.y - lastMovementPosition.y) scaling:1.0f translationInX:0.0f translationInY:0.0f];
 		lastMovementPosition = currentMovementPosition;
 	}
 	
@@ -776,8 +743,6 @@
 		[self startOrStopAutorotation:self];
 	}
 	
-	[renderingQueue waitUntilAllOperationsAreFinished];
-	
 	moleculeToDisplay.currentVisualizationType = newVisualizationType;
 	visualizationActionSheet = nil;
 }
@@ -802,6 +767,7 @@
 @synthesize visualizationActionSheet;
 @synthesize moleculeToDisplay;
 @synthesize isFrameRenderingFinished;
+@synthesize displayLink;
 
 - (void)setMoleculeToDisplay:(SLSMolecule *)newMolecule;
 {
@@ -820,7 +786,6 @@
 	moleculeToDisplay.isBeingDisplayed = NO;
 	[moleculeToDisplay release];
 	moleculeToDisplay = [newMolecule retain];
-	moleculeToDisplay.renderingQueue = renderingQueue;
 	moleculeToDisplay.isBeingDisplayed = YES;
 	
 	isFirstDrawingOfMolecule = YES;

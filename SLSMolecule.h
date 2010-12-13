@@ -70,10 +70,7 @@ void normalize(GLfloat *v);
 	// Database values
 	sqlite3 *database;
 	BOOL isPopulatedFromDatabase;
-	NSInteger databaseKey;
-	
-	// Processing queue
-	NSOperationQueue *renderingQueue;
+	NSInteger databaseKey;	
 }
 
 @property (readonly) float centerOfMassInX, centerOfMassInY, centerOfMassInZ;
@@ -85,7 +82,6 @@ void normalize(GLfloat *v);
 @property (readwrite, nonatomic) SLSVisualizationType currentVisualizationType;
 @property (readonly) NSInteger totalNumberOfVertices, totalNumberOfTriangles;
 @property (readwrite) unsigned int numberOfStructureBeingDisplayed;
-@property (readwrite, retain, nonatomic) NSOperationQueue *renderingQueue;
 
 - (id)initWithFilename:(NSString *)newFilename database:(sqlite3 *)newDatabase;
 - (id)initWithSQLStatement:(sqlite3_stmt *)moleculeRetrievalStatement database:(sqlite3 *)newDatabase;

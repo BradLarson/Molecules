@@ -178,6 +178,14 @@
 	glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
 	glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
 
+	// Need this to make the layer dimensions an even multiple of 32 for performance reasons
+	// Also, the 4.2 Simulator will not display the 
+	CGRect layerBounds = self.layer.bounds;
+	CGFloat newWidth = (CGFloat)((int)layerBounds.size.width / 32) * 32.0f;
+	CGFloat newHeight = (CGFloat)((int)layerBounds.size.height / 32) * 32.0f;
+	self.layer.bounds = CGRectMake(layerBounds.origin.x, layerBounds.origin.y, newWidth, newHeight);
+	
+	
 	[context renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:(CAEAGLLayer*)self.layer];
 	glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, viewRenderbuffer);
 	
@@ -227,5 +235,15 @@
 #pragma mark Accessors
 
 @synthesize context;
+
+- (void)setBounds:(CGRect)newValue;
+{
+	CGFloat newWidth = (CGFloat)((int)newValue.size.width / 32) * 32.0f;
+	CGFloat newHeight = (CGFloat)((int)newValue.size.height / 32) * 32.0f;
+	
+	NSLog(@"New width 2: %f, height 2: %f", newWidth, newHeight); 
+	
+	[super setBounds:CGRectMake(newValue.origin.x, newValue.origin.y, newWidth, newHeight)];
+}
 
 @end

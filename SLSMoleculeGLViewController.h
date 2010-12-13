@@ -26,11 +26,11 @@
 	CATransform3D currentCalculatedMatrix;
 	BOOL isAutorotating;
 	BOOL isFirstDrawingOfMolecule, isFrameRenderingFinished;
-	NSOperationQueue *renderingQueue;
+	CADisplayLink *displayLink;
+	CFTimeInterval previousTimestamp;
+	BOOL shouldResizeDisplay;
 
-	NSTimer *autorotationTimer;
 	NSUInteger stepsSinceLastRotation;
-	float accumulatedXRotation, accumulatedYRotation, accumulatedScale, accumulatedXTranslation, accumulatedYTranslation;
 
 	// Touch-handling 
 	float startingTouchDistance, previousScale;
@@ -43,6 +43,7 @@
 @property (readwrite, retain, nonatomic) UIActionSheet *visualizationActionSheet;
 @property (readwrite, retain, nonatomic) SLSMolecule *moleculeToDisplay;
 @property (readonly) BOOL isFrameRenderingFinished;
+@property (readwrite, retain, nonatomic) CADisplayLink *displayLink;
 
 // Display indicator control
 - (void)showScanningIndicator:(NSNotification *)note;
@@ -65,7 +66,6 @@
 // OpenGL molecule rendering
 - (void)drawView;
 - (void)_drawViewByRotatingAroundX:(float)xRotation rotatingAroundY:(float)yRotation scaling:(float)scaleFactor translationInX:(float)xTranslation translationInY:(float)yTranslation;
-- (void)drawViewByRotatingAroundX:(float)xRotation rotatingAroundY:(float)yRotation scaling:(float)scaleFactor translationInX:(float)xTranslation translationInY:(float)yTranslation;
 - (void)resizeView;
 - (void)runOpenGLBenchmarks;
 - (void)updateSizeOfGLView:(NSNotification *)note;

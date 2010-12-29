@@ -47,7 +47,7 @@
 	CGRect mainScreenFrame = [[UIScreen mainScreen] applicationFrame];
 	
 	UIView *backgroundView = [[UIView alloc] initWithFrame:mainScreenFrame];
-	backgroundView.backgroundColor = [UIColor whiteColor];
+	backgroundView.backgroundColor = [UIColor blackColor];
 		
 	self.view = backgroundView;
 	[backgroundView release];
@@ -139,16 +139,23 @@
 {
 	NSInteger indexOfInitialMolecule = [[NSUserDefaults standardUserDefaults] integerForKey:@"indexOfLastSelectedMolecule"];
 	if (indexOfInitialMolecule >= [molecules count])
+	{
 		indexOfInitialMolecule = 0;
+	}
 	
 	if ([molecules count] > 0)
+	{
 		glViewController.moleculeToDisplay = [molecules objectAtIndex:indexOfInitialMolecule];
+	}
 }
 
 - (void)selectedMoleculeDidChange:(NSInteger)newMoleculeIndex;
 {
 	if (newMoleculeIndex >= [molecules count])
-		newMoleculeIndex = 0;
+	{
+		newMoleculeIndex = 0;		
+	}
+	
 	[[NSUserDefaults standardUserDefaults] setInteger:newMoleculeIndex forKey:@"indexOfLastSelectedMolecule"];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	
@@ -156,9 +163,13 @@
 
 	// Defer sending the change message to the OpenGL view until the view is loaded, to make sure that rendering occurs only then
 	if ([molecules count] == 0)
+	{
 		bufferedMolecule = nil;
+	}
 	else
+	{
 		bufferedMolecule = [molecules objectAtIndex:newMoleculeIndex];
+	}
 }
 
 #pragma mark -
@@ -229,6 +240,7 @@
 	NSString *customMoleculeHandlingURL = [NSString stringWithFormat:@"molecules://%@", pathComponentForCustomURL];
 
 //	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:customMoleculeHandlingURL]];
+	NSLog(@"Custom URL selected");
 	[(SLSMoleculeAppDelegate *)[[UIApplication sharedApplication] delegate] handleCustomURLScheme:[NSURL URLWithString:customMoleculeHandlingURL]];
 }
 

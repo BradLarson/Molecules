@@ -702,7 +702,9 @@
 	}
 	
 	if (isAutorotating)
+	{
 		[self startOrStopAutorotation:nil];
+	}
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleView" object:nil];
 }

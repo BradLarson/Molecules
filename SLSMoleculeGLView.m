@@ -236,14 +236,4 @@
 
 @synthesize context;
 
-- (void)setBounds:(CGRect)newValue;
-{
-	CGFloat newWidth = (CGFloat)((int)newValue.size.width / 32) * 32.0f;
-	CGFloat newHeight = (CGFloat)((int)newValue.size.height / 32) * 32.0f;
-	
-	NSLog(@"New width 2: %f, height 2: %f", newWidth, newHeight); 
-	
-	[super setBounds:CGRectMake(newValue.origin.x, newValue.origin.y, newWidth, newHeight)];
-}
-
 @end

@@ -11,6 +11,7 @@
 #import "SLSMoleculeAppDelegate.h"
 #import "SLSMoleculeRootViewController.h"
 #import "SLSMoleculeiPadRootViewController.h"
+#import "SLSMoleculeGLViewController.h"
 #import "SLSMolecule.h"
 #import "NSData+Gzip.h"
 
@@ -67,9 +68,31 @@
 	NSURL *url = (NSURL *)[launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
 	
 	if (url != nil)
-		isHandlingCustomURLMoleculeDownload = YES;
+	{
+		isHandlingCustomURLMoleculeDownload = YES;		
+	}
+	
 	[self performSelectorInBackground:@selector(loadInitialMoleculesFromDisk) withObject:nil];	
 	
+	return YES;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+	
+	if (url != nil)
+	{
+		isHandlingCustomURLMoleculeDownload = YES;		
+	}
+	
+	// Deal with case where you are in the table view
+	if (![SLSMoleculeAppDelegate isRunningOniPad])
+	{
+		if ([rootViewController.glViewController.view superview] == nil)
+		{
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleView" object:nil];
+		}
+	}
 	
 	// Handle the Molecules custom URL scheme
 	[self handleCustomURLScheme:url];
@@ -419,6 +442,7 @@
 			
 			[nameOfDownloadedMolecule release];
 			nameOfDownloadedMolecule = nil;
+			[initialDatabaseLoadLock unlock];
 			return YES;
 		}
 		[initialDatabaseLoadLock unlock];

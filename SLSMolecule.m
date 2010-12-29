@@ -1394,11 +1394,18 @@ void normalize(GLfloat *v)
 	if (isBeingDisplayed)
 	{
 		isRenderingCancelled = NO;
+		[self performSelectorInBackground:@selector(renderMolecule) withObject:nil];
 
-		[self renderMolecule];
+//		[self renderMolecule];
 	}
 	else
 	{
+		if (!isDoneRendering)
+		{
+			self.isRenderingCancelled = YES;
+			[NSThread sleepForTimeInterval:0.1];
+		}
+		
 		[self freeVertexBuffers];
 	}
 }

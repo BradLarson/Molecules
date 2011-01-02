@@ -262,7 +262,9 @@
 - (void)setMolecules:(NSMutableArray *)newValue;
 {
 	if (molecules == newValue)
+	{
 		return;
+	}
 	
 	[molecules release];
 	molecules = [newValue retain];
@@ -270,7 +272,9 @@
 	
 	NSInteger indexOfInitialMolecule = [[NSUserDefaults standardUserDefaults] integerForKey:@"indexOfLastSelectedMolecule"];
 	if (indexOfInitialMolecule >= [molecules count])
+	{
 		indexOfInitialMolecule = 0;
+	}
 	
 	tableViewController.selectedIndex = indexOfInitialMolecule;
 }

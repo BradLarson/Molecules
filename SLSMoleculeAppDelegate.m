@@ -12,6 +12,7 @@
 #import "SLSMoleculeRootViewController.h"
 #import "SLSMoleculeiPadRootViewController.h"
 #import "SLSMoleculeGLViewController.h"
+#import "SLSMoleculeTableViewController.h"
 #import "SLSMolecule.h"
 #import "NSData+Gzip.h"
 
@@ -437,7 +438,15 @@
 				}
 				currentIndex++;
 			}
-			[rootViewController selectedMoleculeDidChange:indexForMoleculeMatchingThisName];
+			
+			if (rootViewController.tableViewController == nil)
+			{
+				[rootViewController selectedMoleculeDidChange:indexForMoleculeMatchingThisName];
+			}
+			else
+			{
+				[rootViewController.tableViewController tableView:rootViewController.tableViewController.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:(indexForMoleculeMatchingThisName + 1) inSection:0]];
+			}
 			[rootViewController loadInitialMolecule];
 			
 			[nameOfDownloadedMolecule release];

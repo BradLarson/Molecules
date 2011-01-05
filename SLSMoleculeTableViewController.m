@@ -186,10 +186,14 @@
 {
 	NSInteger index = [indexPath row];
 	if ([SLSMoleculeAppDelegate isRunningOniPad])
+	{
 		index++;
+	}
 	
 	if (index == 0)
+	{
 		[self displayMoleculeDownloadView];
+	}
 	else
 	{
 		selectedIndex = (index - 1);
@@ -229,9 +233,13 @@
 	else
 	{
 		if ([indexPath row] == 0)
+		{
 			return UITableViewCellEditingStyleNone;
+		}
 		else
+		{
 			return UITableViewCellEditingStyleDelete;
+		}
 	}	
 }
 
@@ -240,10 +248,14 @@
 {
 	NSInteger index = [indexPath row];
 	if ([SLSMoleculeAppDelegate isRunningOniPad])
+	{
 		index++;
+	}
 	
 	if (index == 0) // Can't delete the Download new molecules item
+	{
 		return;
+	}
     // If row is deleted, remove it from the list.
     if (editingStyle == UITableViewCellEditingStyleDelete) 
 	{
@@ -252,7 +264,9 @@
 		if ( (index - 1) == selectedIndex )
 		{
 			if ([molecules count] < 1)
+			{
 				[self.delegate selectedMoleculeDidChange:0];
+			}
 			else
 			{
 				selectedIndex = 0;
@@ -260,7 +274,9 @@
 			}
 		}
 		else if ( (index - 1) < selectedIndex )
+		{
 			selectedIndex--;
+		}
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		[tableView reloadData];
     }

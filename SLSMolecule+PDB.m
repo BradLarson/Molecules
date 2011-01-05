@@ -126,7 +126,9 @@ static NSDictionary *pdbResidueLookupTable;
 
 			// Peptide bond
 			if (self.previousTerminalAtomValue != nil)
+			{
 				[self addBondToDatabaseWithStartPoint:self.previousTerminalAtomValue endPoint:[atomDictionary objectForKey:@"N"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
+			}
 			self.previousTerminalAtomValue = [atomDictionary objectForKey:@"C"];
 			
 		}; break;
@@ -286,9 +288,9 @@ static NSDictionary *pdbResidueLookupTable;
 			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"CG"] endPoint:[atomDictionary objectForKey:@"CD1"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
 			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"CG"] endPoint:[atomDictionary objectForKey:@"CD2"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
 			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"CD1"] endPoint:[atomDictionary objectForKey:@"NE1"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
+			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"CD2"] endPoint:[atomDictionary objectForKey:@"CE2"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
 			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"NE1"] endPoint:[atomDictionary objectForKey:@"CE2"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
-			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"CD2"] endPoint:[atomDictionary objectForKey:@"NE1"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
-			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"NE1"] endPoint:[atomDictionary objectForKey:@"CZ2"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
+			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"CE2"] endPoint:[atomDictionary objectForKey:@"CZ2"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
 			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"CZ2"] endPoint:[atomDictionary objectForKey:@"CH2"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
 			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"CH2"] endPoint:[atomDictionary objectForKey:@"CZ3"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
 			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"CZ3"] endPoint:[atomDictionary objectForKey:@"CE3"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
@@ -475,21 +477,33 @@ static NSDictionary *pdbResidueLookupTable;
 				{
 					tallyForCenterOfMassInX += atomCoordinate.x;
 					if (minimumXPosition > atomCoordinate.x)
+					{
 						minimumXPosition = atomCoordinate.x;
+					}
 					if (maximumXPosition < atomCoordinate.x)
+					{
 						maximumXPosition = atomCoordinate.x;
+					}
 					
 					tallyForCenterOfMassInY += atomCoordinate.y;
 					if (minimumYPosition > atomCoordinate.y)
+					{
 						minimumYPosition = atomCoordinate.y;
+					}
 					if (maximumYPosition < atomCoordinate.y)
+					{
 						maximumYPosition = atomCoordinate.y;
+					}
 					
 					tallyForCenterOfMassInZ += atomCoordinate.z;
 					if (minimumZPosition > atomCoordinate.z)
+					{
 						minimumZPosition = atomCoordinate.z;
+					}
 					if (maximumZPosition < atomCoordinate.z)
+					{
 						maximumZPosition = atomCoordinate.z;
+					}
 				}
 				
 				unsigned int atomSerialNumber = [[currentLine substringWithRange:NSMakeRange(6, 5)] intValue];
@@ -511,34 +525,58 @@ static NSDictionary *pdbResidueLookupTable;
 				}
 				SLSAtomType processedAtomType;
 				if ([atomElement isEqualToString:@" C"])
+				{
 					processedAtomType = CARBON;
+				}
 				else if ([atomElement isEqualToString:@" H"])
+				{
 					processedAtomType = HYDROGEN;
+				}
 				else if ([atomElement isEqualToString:@" O"])
+				{
 					processedAtomType = OXYGEN;
+				}
 				else if ([atomElement isEqualToString:@" N"])
+				{
 					processedAtomType = NITROGEN;
+				}
 				else if ([atomElement isEqualToString:@" S"])
+				{
 					processedAtomType = SULFUR;
+				}
 				else if ([atomElement isEqualToString:@" P"])
+				{
 					processedAtomType = PHOSPHOROUS;
+				}
 				else if ([atomElement isEqualToString:@"FE"])
+				{
 					processedAtomType = IRON;
+				}
 				else if ([atomElement isEqualToString:@"SI"])
+				{
 					processedAtomType = SILICON;
+				}
 				else 
+				{
 					processedAtomType = UNKNOWN;
+				}
 				
 				if ([lineIdentifier isEqualToString:@"HETATM"])
 				{
 					NSString *atomResidueIdentifier = [[currentLine substringWithRange:NSMakeRange(16, 4)] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 					if ([atomResidueIdentifier isEqualToString:@"HOH"])
+					{
 						[self addAtomToDatabase:processedAtomType atPoint:atomCoordinate structureNumber:currentStructureNumber residueKey:WATER];
+					}
 					else
+					{
 						[self addAtomToDatabase:processedAtomType atPoint:atomCoordinate structureNumber:currentStructureNumber residueKey:UNKNOWNRESIDUE];
+					}
 				}
 				else
+				{
 					[self addAtomToDatabase:processedAtomType atPoint:atomCoordinate structureNumber:currentStructureNumber residueKey:SERINE];
+				}
 			}
 			else if ([lineIdentifier isEqualToString:@"TER"])
 			{
@@ -559,7 +597,9 @@ static NSDictionary *pdbResidueLookupTable;
 				NSValue *startValue = nil;
 				int indexForFirstAtom = [[currentLine substringWithRange:NSMakeRange(6, 5)] intValue];
 				if ( (indexForFirstAtom <= [atomCoordinates count]) && (indexForFirstAtom > 0) )
+				{
 					startValue = [atomCoordinates objectForKey:[NSNumber numberWithInt:indexForFirstAtom]];
+				}
 				if (indexForFirstAtom > 0)
 				{
 					int indexForNextAtom;
@@ -589,13 +629,24 @@ static NSDictionary *pdbResidueLookupTable;
 							[self addBondToDatabaseWithStartPoint:startValue endPoint:[atomCoordinates objectForKey:[NSNumber numberWithInt:indexForNextAtom]] bondType:SINGLEBOND structureNumber:currentStructureNumber residueKey:UNKNOWNRESIDUE];
 						}
 					}
+
+					if ([currentLine length] > 30)
+					{
+						indexForNextAtom = [[currentLine substringWithRange:NSMakeRange(26, 5)] intValue];
+						if ( (indexForNextAtom > 0) && (indexForNextAtom <= [atomCoordinates count]) )
+						{
+							[self addBondToDatabaseWithStartPoint:startValue endPoint:[atomCoordinates objectForKey:[NSNumber numberWithInt:indexForNextAtom]] bondType:SINGLEBOND structureNumber:currentStructureNumber residueKey:UNKNOWNRESIDUE];
+						}
+					}
 				}
 			}
 			else if ([lineIdentifier isEqualToString:@"MODEL"])
 			{
 				currentStructureNumber = [[currentLine substringWithRange:NSMakeRange(12, 4)] intValue];
 				if (currentStructureNumber > numberOfStructures)
+				{
 					numberOfStructures = currentStructureNumber;
+				}
 			}
 			else if ([lineIdentifier isEqualToString:@"ENDMDL"])
 			{
@@ -604,9 +655,13 @@ static NSDictionary *pdbResidueLookupTable;
 			else if ([lineIdentifier isEqualToString:@"TITLE"])
 			{
 				if (title == nil)
+				{
 					title = [[[currentLine substringFromIndex:10] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] retain];
+				}
 				else
+				{
 					title = [[[title autorelease] stringByAppendingFormat:@" %@", [[currentLine substringFromIndex:10] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]] retain];
+				}
 			}
 			else if ([lineIdentifier isEqualToString:@"COMPND"])
 			{
@@ -614,22 +669,32 @@ static NSDictionary *pdbResidueLookupTable;
 				if ([compoundIdentifier isEqualToString:@"MOLECULE:"])
 				{
 					if (compound == nil)
+					{
 						compound = [[[currentLine substringFromIndex:20] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] retain];
+					}
 				}
 			}
 			else if ([lineIdentifier isEqualToString:@"SOURCE"])
 			{
 				if (source == nil)
+				{
 					source = [[[currentLine substringFromIndex:10] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] retain];
+				}
 				else
+				{
 					source = [[[source autorelease] stringByAppendingFormat:@" %@", [[currentLine substringFromIndex:10] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]] retain];
+				}
 			}
 			else if ([lineIdentifier isEqualToString:@"AUTHOR"])
 			{
 				if (author == nil)
+				{
 					author = [[[currentLine substringFromIndex:10] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] retain];
+				}
 				else
+				{
 					author = [[[author autorelease] stringByAppendingFormat:@" %@", [[currentLine substringFromIndex:10] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]] retain];
+				}
 			}
 			else if ([lineIdentifier isEqualToString:@"JRNL"])
 			{
@@ -637,31 +702,47 @@ static NSDictionary *pdbResidueLookupTable;
 				if ([journalIdentifier isEqualToString:@"AUTH"])
 				{
 					if (journalAuthor == nil)
+					{
 						journalAuthor = [[[currentLine substringFromIndex:18] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] retain];
+					}
 					else
+					{
 						journalAuthor = [[[journalAuthor autorelease] stringByAppendingFormat:@" %@", [[currentLine substringFromIndex:18] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]] retain];
+					}
 				}
 				else if ([journalIdentifier isEqualToString:@"TITL"])
 				{
 					if (journalTitle == nil)
+					{
 						journalTitle = [[[currentLine substringFromIndex:18] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] retain];
+					}
 					else
+					{
 						journalTitle = [[[journalTitle autorelease] stringByAppendingFormat:@" %@", [[currentLine substringFromIndex:18] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]] retain];
+					}
 				}
 				else if ( ([journalIdentifier isEqualToString:@"REF"]) || ([journalIdentifier isEqualToString:@"REFN"]) )
 				{
 					if (journalReference == nil)
+					{
 						journalReference = [[[currentLine substringFromIndex:18] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] retain];
+					}
 					else
+					{
 						journalReference = [[[journalReference autorelease] stringByAppendingFormat:@" %@", [[currentLine substringFromIndex:18] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]] retain];
+					}
 				}
 			}		
 			else if ([lineIdentifier isEqualToString:@"SEQRES"])
 			{
 				if (sequence == nil)
+				{
 					sequence = [[[currentLine substringFromIndex:14] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] retain];
+				}
 				else
+				{
 					sequence = [[[sequence autorelease] stringByAppendingFormat:@"\n%@", [[currentLine substringFromIndex:14] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]] retain];
+				}
 			}
 			
 			// 	NSString *pdbCode, *title, *keywords, *journalReference, *sequence, *compound;			
@@ -669,6 +750,13 @@ static NSDictionary *pdbResidueLookupTable;
 		
 		[pool release];
 	}
+	
+	// Create bonds for the very last residue in the list
+	if (residueAtoms != nil)
+	{
+		[self createBondsForPDBResidue:currentResidueType withAtomDictionary:residueAtoms structureNumber:currentStructureNumber];
+	}
+	
 	[residueAtoms release];
 	residueAtoms = nil;
 	[currentResidueType release];
@@ -684,9 +772,13 @@ static NSDictionary *pdbResidueLookupTable;
 		scaleAdjustmentForY = 1.5 / (maximumYPosition - minimumYPosition);
 		scaleAdjustmentForZ = (1.5 * 1.25) / (maximumZPosition - minimumZPosition);
 		if (scaleAdjustmentForY < scaleAdjustmentForX)
+		{
 			scaleAdjustmentForX = scaleAdjustmentForY;
+		}
 		if (scaleAdjustmentForZ < scaleAdjustmentForX)
+		{
 			scaleAdjustmentForX = scaleAdjustmentForZ;
+		}
 	}
 	
 	// Convert the strings to title case and strip off the ;s at the end of lines
@@ -761,7 +853,9 @@ static NSDictionary *pdbResidueLookupTable;
 	}
 
 	if (sequence != nil)
+	{
 		[self addMetadataToDatabase:sequence type:MOLECULESEQUENCE];
+	}
 			
 	[atomCoordinates release];
 	

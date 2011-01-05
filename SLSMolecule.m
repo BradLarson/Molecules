@@ -12,6 +12,8 @@
 // Filetypes
 #import "SLSMolecule+PDB.h"
 
+#define BOND_LENGTH_LIMIT 3.0f
+
 static sqlite3_stmt *insertMoleculeSQLStatement = nil;
 static sqlite3_stmt *insertMetadataSQLStatement = nil;
 static sqlite3_stmt *insertAtomSQLStatement = nil;
@@ -911,6 +913,13 @@ void normalize(GLfloat *v)
 	[startValue getValue:&startPoint];
 	[endValue getValue:&endPoint];
 
+	float bondLength = sqrt((startPoint.x - endPoint.x) * (startPoint.x - endPoint.x) + (startPoint.y - endPoint.y) * (startPoint.y - endPoint.y) + (startPoint.z - endPoint.z) * (startPoint.z - endPoint.z));
+	if (bondLength > BOND_LENGTH_LIMIT)
+	{
+		// Don't allow weird, wrong bonds to be displayed
+		return;
+	}
+	
 	if (insertBondSQLStatement == nil) 
 	{
         static char *sql = "INSERT INTO bonds (molecule,residue,structure,bond_type,start_x,start_y,start_z,end_x,end_y,end_z) VALUES(?,?,?,?,?,?,?,?,?,?)";

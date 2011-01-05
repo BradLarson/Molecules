@@ -131,8 +131,8 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 315610363;
-			PBXWorkspaceStateSaveDate = 315610363;
+			PBXPerProjectTemplateStateSaveDate = 315887992;
+			PBXWorkspaceStateSaveDate = 315887992;
 		};
 		perUserProjectItems = {
 			BC4D6FFE12CAF5C7004BFC06 = BC4D6FFE12CAF5C7004BFC06 /* PBXTextBookmark */;
@@ -140,40 +140,46 @@
 			BC4D702812CAFB31004BFC06 = BC4D702812CAFB31004BFC06 /* PBXTextBookmark */;
 			BC4D703F12CBA519004BFC06 = BC4D703F12CBA519004BFC06 /* PBXTextBookmark */;
 			BC4D704012CBA519004BFC06 = BC4D704012CBA519004BFC06 /* PBXTextBookmark */;
-			BC58AE4C12D013ED0029C08E /* PBXBookmark */ = BC58AE4C12D013ED0029C08E /* PBXBookmark */;
-			BC58AE5712D017B90029C08E /* XCBuildMessageTextBookmark */ = BC58AE5712D017B90029C08E /* XCBuildMessageTextBookmark */;
-			BC58AE5A12D017C90029C08E /* XCBuildMessageTextBookmark */ = BC58AE5A12D017C90029C08E /* XCBuildMessageTextBookmark */;
-			BC58AE5B12D017C90029C08E /* PBXTextBookmark */ = BC58AE5B12D017C90029C08E /* PBXTextBookmark */;
-			BC58AE6312D017C90029C08E /* PBXTextBookmark */ = BC58AE6312D017C90029C08E /* PBXTextBookmark */;
-			BC58AE6412D017C90029C08E /* PBXTextBookmark */ = BC58AE6412D017C90029C08E /* PBXTextBookmark */;
-			BC58AE6512D017C90029C08E /* PBXTextBookmark */ = BC58AE6512D017C90029C08E /* PBXTextBookmark */;
-			BC58AE6612D017C90029C08E /* PBXTextBookmark */ = BC58AE6612D017C90029C08E /* PBXTextBookmark */;
-			BC58AE6C12D017C90029C08E /* PBXTextBookmark */ = BC58AE6C12D017C90029C08E /* PBXTextBookmark */;
-			BC58AE6F12D017C90029C08E /* PBXTextBookmark */ = BC58AE6F12D017C90029C08E /* PBXTextBookmark */;
-			BC58AE7212D017C90029C08E /* PBXTextBookmark */ = BC58AE7212D017C90029C08E /* PBXTextBookmark */;
-			BC58AE7312D017C90029C08E /* PBXTextBookmark */ = BC58AE7312D017C90029C08E /* PBXTextBookmark */;
-			BC58AE7412D017C90029C08E /* PBXTextBookmark */ = BC58AE7412D017C90029C08E /* PBXTextBookmark */;
-			BC58AE7712D017C90029C08E /* PBXTextBookmark */ = BC58AE7712D017C90029C08E /* PBXTextBookmark */;
-			BC58AE7812D017C90029C08E /* PBXTextBookmark */ = BC58AE7812D017C90029C08E /* PBXTextBookmark */;
-			BC58AE7912D017C90029C08E /* PBXTextBookmark */ = BC58AE7912D017C90029C08E /* PBXTextBookmark */;
-			BC58AE7A12D0182A0029C08E /* PBXTextBookmark */ = BC58AE7A12D0182A0029C08E /* PBXTextBookmark */;
-			BC58AE7B12D0182A0029C08E /* PBXTextBookmark */ = BC58AE7B12D0182A0029C08E /* PBXTextBookmark */;
-			BC58AE7C12D0182A0029C08E /* PBXTextBookmark */ = BC58AE7C12D0182A0029C08E /* PBXTextBookmark */;
-			BC58AE7D12D0182A0029C08E /* PBXTextBookmark */ = BC58AE7D12D0182A0029C08E /* PBXTextBookmark */;
-			BC58AE8012D018520029C08E /* PBXTextBookmark */ = BC58AE8012D018520029C08E /* PBXTextBookmark */;
-			BC58AE8112D018520029C08E /* PBXTextBookmark */ = BC58AE8112D018520029C08E /* PBXTextBookmark */;
-			BC58AE8212D018530029C08E /* PBXTextBookmark */ = BC58AE8212D018530029C08E /* PBXTextBookmark */;
-			BC58AE8312D018530029C08E /* PBXTextBookmark */ = BC58AE8312D018530029C08E /* PBXTextBookmark */;
-			BC58AE8412D018530029C08E /* PBXTextBookmark */ = BC58AE8412D018530029C08E /* PBXTextBookmark */;
-			BC58AE8512D018530029C08E /* PBXTextBookmark */ = BC58AE8512D018530029C08E /* PBXTextBookmark */;
-			BC58AE8812D018770029C08E /* PBXTextBookmark */ = BC58AE8812D018770029C08E /* PBXTextBookmark */;
-			BC58AE8912D018770029C08E /* PBXTextBookmark */ = BC58AE8912D018770029C08E /* PBXTextBookmark */;
-			BC58AE8A12D018780029C08E /* PBXTextBookmark */ = BC58AE8A12D018780029C08E /* PBXTextBookmark */;
-			BC58AE8B12D018780029C08E /* PBXTextBookmark */ = BC58AE8B12D018780029C08E /* PBXTextBookmark */;
-			BC58AE8C12D018780029C08E /* PBXTextBookmark */ = BC58AE8C12D018780029C08E /* PBXTextBookmark */;
-			BC58AE8D12D018780029C08E /* PBXTextBookmark */ = BC58AE8D12D018780029C08E /* PBXTextBookmark */;
-			BC58AE8E12D018EB0029C08E /* PBXTextBookmark */ = BC58AE8E12D018EB0029C08E /* PBXTextBookmark */;
-			BC58AE8F12D018EB0029C08E /* PBXTextBookmark */ = BC58AE8F12D018EB0029C08E /* PBXTextBookmark */;
+			BC58AE4C12D013ED0029C08E = BC58AE4C12D013ED0029C08E /* PBXBookmark */;
+			BC58AE5712D017B90029C08E = BC58AE5712D017B90029C08E /* PBXTextBookmark */;
+			BC58AE5A12D017C90029C08E = BC58AE5A12D017C90029C08E /* PBXTextBookmark */;
+			BC58AE5B12D017C90029C08E = BC58AE5B12D017C90029C08E /* PBXTextBookmark */;
+			BC58AE6312D017C90029C08E = BC58AE6312D017C90029C08E /* PBXTextBookmark */;
+			BC58AE6412D017C90029C08E = BC58AE6412D017C90029C08E /* PBXTextBookmark */;
+			BC58AE6512D017C90029C08E = BC58AE6512D017C90029C08E /* PBXTextBookmark */;
+			BC58AE6612D017C90029C08E = BC58AE6612D017C90029C08E /* PBXTextBookmark */;
+			BC58AE6C12D017C90029C08E = BC58AE6C12D017C90029C08E /* PBXTextBookmark */;
+			BC58AE6F12D017C90029C08E = BC58AE6F12D017C90029C08E /* PBXTextBookmark */;
+			BC58AE7212D017C90029C08E = BC58AE7212D017C90029C08E /* PBXTextBookmark */;
+			BC58AE7312D017C90029C08E = BC58AE7312D017C90029C08E /* PBXTextBookmark */;
+			BC58AE7412D017C90029C08E = BC58AE7412D017C90029C08E /* PBXTextBookmark */;
+			BC58AE7712D017C90029C08E = BC58AE7712D017C90029C08E /* PBXTextBookmark */;
+			BC58AE7812D017C90029C08E = BC58AE7812D017C90029C08E /* PBXTextBookmark */;
+			BC58AE7912D017C90029C08E = BC58AE7912D017C90029C08E /* PBXTextBookmark */;
+			BC58AE7A12D0182A0029C08E = BC58AE7A12D0182A0029C08E /* PBXTextBookmark */;
+			BC58AE7B12D0182A0029C08E = BC58AE7B12D0182A0029C08E /* PBXTextBookmark */;
+			BC58AE7C12D0182A0029C08E = BC58AE7C12D0182A0029C08E /* PBXTextBookmark */;
+			BC58AE7D12D0182A0029C08E = BC58AE7D12D0182A0029C08E /* PBXTextBookmark */;
+			BC58AE8012D018520029C08E = BC58AE8012D018520029C08E /* PBXTextBookmark */;
+			BC58AE8112D018520029C08E = BC58AE8112D018520029C08E /* PBXTextBookmark */;
+			BC58AE8212D018530029C08E = BC58AE8212D018530029C08E /* PBXTextBookmark */;
+			BC58AE8312D018530029C08E = BC58AE8312D018530029C08E /* PBXTextBookmark */;
+			BC58AE8412D018530029C08E = BC58AE8412D018530029C08E /* PBXTextBookmark */;
+			BC58AE8512D018530029C08E = BC58AE8512D018530029C08E /* PBXTextBookmark */;
+			BC58AE8812D018770029C08E = BC58AE8812D018770029C08E /* PBXTextBookmark */;
+			BC58AE8912D018770029C08E = BC58AE8912D018770029C08E /* PBXTextBookmark */;
+			BC58AE8A12D018780029C08E = BC58AE8A12D018780029C08E /* PBXTextBookmark */;
+			BC58AE8B12D018780029C08E = BC58AE8B12D018780029C08E /* PBXTextBookmark */;
+			BC58AE8C12D018780029C08E = BC58AE8C12D018780029C08E /* PBXTextBookmark */;
+			BC58AE8D12D018780029C08E = BC58AE8D12D018780029C08E /* PBXTextBookmark */;
+			BC58AE8E12D018EB0029C08E = BC58AE8E12D018EB0029C08E /* PBXTextBookmark */;
+			BC58AE8F12D018EB0029C08E = BC58AE8F12D018EB0029C08E /* PBXTextBookmark */;
+			BC7B174912D39AB100E1B56E = BC7B174912D39AB100E1B56E /* PBXTextBookmark */;
+			BC7B174A12D39AB100E1B56E = BC7B174A12D39AB100E1B56E /* PBXTextBookmark */;
+			BC7B174B12D39AB100E1B56E = BC7B174B12D39AB100E1B56E /* PBXTextBookmark */;
+			BC7B174E12D39AB100E1B56E = BC7B174E12D39AB100E1B56E /* PBXTextBookmark */;
+			BC7B175012D39AB100E1B56E = BC7B175012D39AB100E1B56E /* PBXTextBookmark */;
+			BC7B175312D39C4F00E1B56E = BC7B175312D39C4F00E1B56E /* PBXTextBookmark */;
 		};
 		sourceControlManager = BC896C1F0DE11BFE00B184F0 /* Source Control */;
 		userBookmarkGroup = BCB290D0103CE78B00F0EA2A /* PBXBookmarkGroup */;
@@ -345,20 +351,18 @@
 		isa = PBXBookmark;
 		fRef = BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */;
 	};
-	BC58AE5712D017B90029C08E /* XCBuildMessageTextBookmark */ = {
+	BC58AE5712D017B90029C08E /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		comments = "Compile /Users/larson/Development/Molecules/SLSMoleculeAppDelegate.m";
 		fRef = BCC286BE0E1D8F9300978ECA /* SLSMoleculeAppDelegate.m */;
-		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 0;
 		rLoc = 439;
 		rType = 1;
 	};
-	BC58AE5A12D017C90029C08E /* XCBuildMessageTextBookmark */ = {
+	BC58AE5A12D017C90029C08E /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		comments = "Property 'tableView' not found on object of type 'SLSMoleculeTableViewController *'";
 		fRef = BCC286BE0E1D8F9300978ECA /* SLSMoleculeAppDelegate.m */;
-		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
 		rLoc = 449;
 		rType = 1;
@@ -474,7 +478,7 @@
 		isa = PBXTextBookmark;
 		fRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */;
 		rLen = 0;
-		rLoc = 9223372036854775807;
+		rLoc = 9025;
 		rType = 0;
 	};
 	BC58AE7912D017C90029C08E /* PBXTextBookmark */ = {
@@ -720,6 +724,74 @@
 			sepNavWindowFrame = "{{15, 0}, {998, 777}}";
 		};
 	};
+	BC7B174912D39AB100E1B56E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286CF0E1D905400978ECA /* SLSMoleculeTableViewController.h */;
+		name = "SLSMoleculeTableViewController.h: 36";
+		rLen = 13;
+		rLoc = 1146;
+		rType = 0;
+		vrLen = 1414;
+		vrLoc = 0;
+	};
+	BC7B174A12D39AB100E1B56E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */;
+		rLen = 0;
+		rLoc = 9025;
+		rType = 0;
+	};
+	BC7B174B12D39AB100E1B56E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */;
+		name = "SLSMoleculeTableViewController.m: 197";
+		rLen = 8;
+		rLoc = 6431;
+		rType = 0;
+		vrLen = 2198;
+		vrLoc = 5821;
+	};
+	BC7B174E12D39AB100E1B56E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC7B174F12D39AB100E1B56E /* math.h */;
+		rLen = 1;
+		rLoc = 561;
+		rType = 1;
+	};
+	BC7B174F12D39AB100E1B56E /* math.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = math.h;
+		path = /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/architecture/i386/math.h;
+		sourceTree = "<absolute>";
+	};
+	BC7B175012D39AB100E1B56E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BC7B175112D39AB100E1B56E /* math.h */;
+		name = "math.h: 562";
+		rLen = 88;
+		rLoc = 22450;
+		rType = 0;
+		vrLen = 1816;
+		vrLoc = 21361;
+	};
+	BC7B175112D39AB100E1B56E /* math.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = math.h;
+		path = /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/architecture/i386/math.h;
+		sourceTree = "<absolute>";
+	};
+	BC7B175312D39C4F00E1B56E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */;
+		name = "SLSMoleculeTableViewController.m: 197";
+		rLen = 8;
+		rLoc = 6431;
+		rType = 0;
+		vrLen = 2198;
+		vrLoc = 5821;
+	};
 	BC896C170DE11BD500B184F0 /* Molecules */ = {
 		isa = PBXExecutable;
 		activeArgIndices = (
@@ -883,17 +955,16 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {803, 752}}";
 			sepNavSelRange = "{1146, 13}";
-			sepNavVisRange = "{3, 1411}";
+			sepNavVisRange = "{0, 1414}";
 			sepNavWindowFrame = "{{372, 0}, {727, 778}}";
 		};
 	};
 	BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{703, 1189}\";\n            s = 0;\n        },\n                {\n            r = \"{1917, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{1939, 68}\";\n            s = 0;\n        },\n                {\n            r = \"{2087, 88}\";\n            s = 0;\n        },\n                {\n            r = \"{2220, 275}\";\n            s = 0;\n        },\n                {\n            r = \"{2560, 1772}\";\n            s = 0;\n        },\n                {\n            r = \"{6007, 130}\";\n            s = 0;\n        },\n                {\n            r = \"{6689, 519}\";\n            s = 0;\n        },\n                {\n            r = \"{7403, 234}\";\n            s = 0;\n        },\n                {\n            r = \"{8692, 1}\";\n            s = 0;\n        },\n                {\n            r = \"{8789, 60}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 9025}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1041, 2592}}";
-			sepNavSelRange = "{2930, 25}";
-			sepNavVisRange = "{2434, 1413}";
-			sepNavWindowFrame = "{{372, 0}, {727, 778}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1853, 4544}}";
+			sepNavSelRange = "{6133, 0}";
+			sepNavVisRange = "{5821, 1026}";
+			sepNavWindowFrame = "{{242, 0}, {727, 778}}";
 		};
 	};
 	BCC8FE7E0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.h */ = {

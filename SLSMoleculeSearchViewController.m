@@ -121,43 +121,86 @@
 	NSString *titlesAndPDBCodeString = [[NSString alloc] initWithData:downloadedFileContents encoding:NSASCIIStringEncoding];
 	[downloadedFileContents release];
 	downloadedFileContents = nil;
-
-	if ([[[titlesAndPDBCodeString substringToIndex:5] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""])
-	{
-		// No results match this query
-		currentPageOfResults = 1;
-		[titlesAndPDBCodeString release];
-		[self.tableView reloadData];		
-		return;
-	}
-
-	NSUInteger length = [titlesAndPDBCodeString length];
-	NSUInteger lineStart = 0, lineEnd = 0, contentsEnd = 0;
-	NSRange currentRange;
 	
-	while (lineEnd < length) 
+	NSRange locationOfHTMLTag = [titlesAndPDBCodeString rangeOfString:@"<html"];
+	if (locationOfHTMLTag.location != NSNotFound)
 	{
-//		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
-		[titlesAndPDBCodeString getParagraphStart:&lineStart end:&lineEnd contentsEnd:&contentsEnd forRange:NSMakeRange(lineEnd, 0)];
-		currentRange = NSMakeRange(lineStart, contentsEnd - lineStart);
-		NSString *currentLine = [titlesAndPDBCodeString substringWithRange:currentRange];
-		
-		
-		NSArray *lineComponents = [currentLine componentsSeparatedByString:@"\t"];
-		if ([lineComponents count] > 1)
+		// Single result, so parse out title from the HTML returned and try to determine the four character code
+		NSRange locationOfPDBCode = [titlesAndPDBCodeString rangeOfString:@"structureId="];
+		if (locationOfPDBCode.location == NSNotFound)
 		{
-			NSString *pdbCode = [lineComponents objectAtIndex:0];
-			NSString *moleculeTitle = [lineComponents objectAtIndex:1];
-			if ((pdbCode != nil) && (moleculeTitle != nil))
-			{
-				[searchResultTitles addObject:moleculeTitle];
-				[searchResultPDBCodes addObject:pdbCode];
-			}
+			// No results match this query
+			currentPageOfResults = 1;
+			[titlesAndPDBCodeString release];
+			[self.tableView reloadData];		
+			return;
 		}
 		
-//		[pool release];
-	}		
+		NSString *pdbCode = [titlesAndPDBCodeString substringWithRange:NSMakeRange(locationOfPDBCode.location + locationOfPDBCode.length, 4)];
+
+		NSString *titleString = nil;
+		NSRange locationOfTitleStart = [titlesAndPDBCodeString rangeOfString:@"<title>"];
+		NSRange locationOfTitleEnd = [titlesAndPDBCodeString rangeOfString:@"</title>"];
+		if ( (locationOfTitleStart.location == NSNotFound) || (locationOfTitleEnd.location == NSNotFound) )
+		{
+			titleString = pdbCode;
+		}
+		else
+		{
+//			<title>RCSB Protein Data Bank - Structure Summary  for 1BNA - STRUCTURE OF A B-DNA DODECAMER. CONFORMATION AND DYNAMICS</title>
+
+			titleString = [titlesAndPDBCodeString substringWithRange:NSMakeRange(locationOfTitleStart.location + locationOfTitleStart.length, locationOfTitleEnd.location - (locationOfTitleStart.location + locationOfTitleStart.length))];
+			NSRange beginningOfActualTitle = [titleString rangeOfString:pdbCode];
+			if (beginningOfActualTitle.location != NSNotFound)
+			{
+				titleString = [titleString substringFromIndex:beginningOfActualTitle.location + 7];
+			}
+			
+		}
+	
+		[searchResultTitles addObject:titleString];
+		[searchResultPDBCodes addObject:pdbCode];
+	}
+	else
+	{
+		// Normal search result, so process as expected
+		if ([[[titlesAndPDBCodeString substringToIndex:5] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""])
+		{
+			// No results match this query
+			currentPageOfResults = 1;
+			[titlesAndPDBCodeString release];
+			[self.tableView reloadData];		
+			return;
+		}
+		
+		NSUInteger length = [titlesAndPDBCodeString length];
+		NSUInteger lineStart = 0, lineEnd = 0, contentsEnd = 0;
+		NSRange currentRange;
+		
+		while (lineEnd < length) 
+		{
+			//		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+			
+			[titlesAndPDBCodeString getParagraphStart:&lineStart end:&lineEnd contentsEnd:&contentsEnd forRange:NSMakeRange(lineEnd, 0)];
+			currentRange = NSMakeRange(lineStart, contentsEnd - lineStart);
+			NSString *currentLine = [titlesAndPDBCodeString substringWithRange:currentRange];
+			
+			
+			NSArray *lineComponents = [currentLine componentsSeparatedByString:@"\t"];
+			if ([lineComponents count] > 1)
+			{
+				NSString *pdbCode = [lineComponents objectAtIndex:0];
+				NSString *moleculeTitle = [lineComponents objectAtIndex:1];
+				if ((pdbCode != nil) && (moleculeTitle != nil))
+				{
+					[searchResultTitles addObject:moleculeTitle];
+					[searchResultPDBCodes addObject:pdbCode];
+				}
+			}
+			
+			//		[pool release];
+		}		
+	}	
 	
 	currentPageOfResults = 1;
 	[titlesAndPDBCodeString release];
@@ -412,9 +455,13 @@
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
 	if (connection == searchResultRetrievalConnection)
+	{
 		[self processSearchResultsAppendingNewData:NO];
+	}
 	else
+	{
 		[self processSearchResultsAppendingNewData:YES];
+	}
 }
 
 #pragma mark -

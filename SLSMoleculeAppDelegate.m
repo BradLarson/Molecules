@@ -445,7 +445,14 @@
 			}
 			else
 			{
-				[rootViewController.tableViewController tableView:rootViewController.tableViewController.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:(indexForMoleculeMatchingThisName + 1) inSection:0]];
+				if ([SLSMoleculeAppDelegate isRunningOniPad])
+				{
+					[rootViewController.tableViewController tableView:rootViewController.tableViewController.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:indexForMoleculeMatchingThisName inSection:0]];
+				}
+				else
+				{
+					[rootViewController.tableViewController tableView:rootViewController.tableViewController.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:(indexForMoleculeMatchingThisName + 1) inSection:0]];
+				}					
 			}
 			[rootViewController loadInitialMolecule];
 			

@@ -99,10 +99,24 @@
 
 - (void)showScanningIndicator:(NSNotification *)note;
 {
+	if (scanningActivityIndicator != nil)
+	{
+		[scanningActivityIndicator removeFromSuperview];
+		[scanningActivityIndicator release];
+		scanningActivityIndicator = nil;		
+	}
+	
 	scanningActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 	scanningActivityIndicator.frame = CGRectMake(round(self.view.frame.size.width / 2.0f - 37.0f / 2.0f), round(self.view.frame.size.height / 2.0f + 15.0f), 37.0f, 37.0f);
 	scanningActivityIndicator.hidesWhenStopped = YES;
 	[scanningActivityIndicator startAnimating];
+		
+	if (renderingActivityLabel != nil)
+	{
+		[renderingActivityLabel removeFromSuperview];
+		[renderingActivityLabel release];
+		renderingActivityLabel = nil;
+	}
 	
 	renderingActivityLabel = [[UILabel alloc] initWithFrame:CGRectMake(round(self.view.frame.size.width / 2.0f - 219.0f / 2.0f), round(self.view.frame.size.height / 2.0f - 15.0f - 21.0f), 219.0f, 21.0f)];
 	renderingActivityLabel.font = [UIFont systemFontOfSize:17.0f];
@@ -133,9 +147,23 @@
 
 - (void)showRenderingIndicator:(NSNotification *)note;
 {
+	if (renderingProgressIndicator != nil)
+	{
+		[renderingProgressIndicator removeFromSuperview];
+		[renderingProgressIndicator release];
+		renderingProgressIndicator = nil;
+	}
+	
 	float renderingIndicatorWidth = round(self.view.frame.size.width * 0.6);
 	renderingProgressIndicator = [[UIProgressView alloc] initWithFrame:CGRectMake(round(self.view.frame.size.width / 2.0f - renderingIndicatorWidth / 2.0f), round(self.view.frame.size.height / 2.0f + 15.0f), renderingIndicatorWidth, 9.0f)];
 	[renderingProgressIndicator setProgress:0.0f];
+	
+	if (renderingActivityLabel != nil)
+	{
+		[renderingActivityLabel removeFromSuperview];
+		[renderingActivityLabel release];
+		renderingActivityLabel = nil;
+	}
 	
 	renderingActivityLabel = [[UILabel alloc] initWithFrame:CGRectMake(round(self.view.frame.size.width / 2.0f - 219.0f / 2.0f), round(self.view.frame.size.height / 2.0f - 15.0f - 21.0f), 219.0f, 21.0f)];
 	renderingActivityLabel.font = [UIFont systemFontOfSize:17.0f];
@@ -714,29 +742,42 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	SLSVisualizationType newVisualizationType = moleculeToDisplay.currentVisualizationType;
-	switch (moleculeToDisplay.currentVisualizationType)
+	SLSVisualizationType newVisualizationType = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentVisualizationMode"];
+	
+	switch (newVisualizationType)
 	{
 		case BALLANDSTICK:
 		{
 			if (buttonIndex == 0)
+			{
 				newVisualizationType = SPACEFILLING;
+			}
 			else if (buttonIndex == 1)
+			{
 				newVisualizationType = CYLINDRICAL;
+			}
 		}; break;
 		case SPACEFILLING:
 		{
 			if (buttonIndex == 0)
+			{
 				newVisualizationType = BALLANDSTICK;
+			}
 			else if (buttonIndex == 1)
+			{
 				newVisualizationType = CYLINDRICAL;
+			}
 		}; break;
 		case CYLINDRICAL:
 		{
 			if (buttonIndex == 0)
+			{
 				newVisualizationType = BALLANDSTICK;
+			}
 			else if (buttonIndex == 1)
+			{
 				newVisualizationType = SPACEFILLING;
+			}
 		}; break;
 	}
 	
@@ -746,6 +787,9 @@
 	}
 	
 	moleculeToDisplay.currentVisualizationType = newVisualizationType;
+	[[NSUserDefaults standardUserDefaults] setInteger:newVisualizationType forKey:@"currentVisualizationMode"];
+	moleculeToDisplay.isBeingDisplayed = NO;
+	moleculeToDisplay.isBeingDisplayed = YES;
 	visualizationActionSheet = nil;
 }
 
@@ -788,6 +832,7 @@
 	moleculeToDisplay.isBeingDisplayed = NO;
 	[moleculeToDisplay release];
 	moleculeToDisplay = [newMolecule retain];
+	moleculeToDisplay.currentVisualizationType = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentVisualizationMode"];
 	moleculeToDisplay.isBeingDisplayed = YES;
 	
 	isFirstDrawingOfMolecule = YES;

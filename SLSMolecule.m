@@ -1438,7 +1438,7 @@ void normalize(GLfloat *v)
 	}
 }
 
-- (void)setCurrentVisualizationType:(SLSVisualizationType)newVisualizationType;
+/*- (void)setCurrentVisualizationType:(SLSVisualizationType)newVisualizationType;
 {
 	if (currentVisualizationType == newVisualizationType)
 		return;
@@ -1447,6 +1447,6 @@ void normalize(GLfloat *v)
 	self.isBeingDisplayed = NO;
 	// Start with a new render for the current visualization type
 	self.isBeingDisplayed = YES;
-}
+}*/
 
 @end

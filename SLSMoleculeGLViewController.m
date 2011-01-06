@@ -557,8 +557,8 @@
 		return CGPointZero;
 	
 	// The movement ranges are averaged out 
-	commonDirection.x = ((directionOfTouch1.x + directionOfTouch1.x) / 2.0f) * scalingForMovement;
-	commonDirection.y = ((directionOfTouch1.y + directionOfTouch1.y) / 2.0f) * scalingForMovement;
+	commonDirection.x = ((directionOfTouch1.x + directionOfTouch2.x) / 2.0f) * scalingForMovement;
+	commonDirection.y = ((directionOfTouch1.y + directionOfTouch2.y) / 2.0f) * scalingForMovement;
 	
 
 	return commonDirection;

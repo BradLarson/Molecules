@@ -396,7 +396,7 @@ static NSDictionary *pdbResidueLookupTable;
 	
 	NSData *pdbData;
 	
-	if ([[filename pathExtension] isEqualToString:@"pdb"]) // Uncompressed PDB file
+	if ([[[filename pathExtension] lowercaseString] isEqualToString:@"pdb"]) // Uncompressed PDB file
 	{
 		pdbData = [[NSData alloc] initWithContentsOfFile:[documentsDirectory stringByAppendingPathComponent:filename]];
 	}
@@ -665,14 +665,17 @@ static NSDictionary *pdbResidueLookupTable;
 			}
 			else if ([lineIdentifier isEqualToString:@"COMPND"])
 			{
-				NSString *compoundIdentifier = [[currentLine substringWithRange:NSMakeRange(10, 10)] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-				if ([compoundIdentifier isEqualToString:@"MOLECULE:"])
+				if ([currentLine length] > 20)
 				{
-					if (compound == nil)
+					NSString *compoundIdentifier = [[currentLine substringWithRange:NSMakeRange(10, 10)] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+					if ([compoundIdentifier isEqualToString:@"MOLECULE:"])
 					{
-						compound = [[[currentLine substringFromIndex:20] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] retain];
+						if (compound == nil)
+						{
+							compound = [[[currentLine substringFromIndex:20] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] retain];
+						}
 					}
-				}
+				}				
 			}
 			else if ([lineIdentifier isEqualToString:@"SOURCE"])
 			{

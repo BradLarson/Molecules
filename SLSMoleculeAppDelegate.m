@@ -101,12 +101,6 @@
 	return YES;
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application 
-{
-	[rootViewController cancelMoleculeLoading];
-	[self disconnectFromDatabase];
-}
-
 - (void)dealloc 
 {
 	[splitViewController release];
@@ -223,6 +217,8 @@
 	{
 		//NSAssert1(0,NSLocalizedStringFromTable(@"Error: failed to close database with message '%s'.", @"Localized", nil), sqlite3_errmsg(database));
     }
+	
+	database = nil;
 }
 
 - (void)loadInitialMoleculesFromDisk;
@@ -357,12 +353,18 @@
 			pname = lastPathComponent;
 		}
 		
-		if ( ([moleculeFilenameLookupTable valueForKey:pname] == nil) && ([[pname pathExtension] isEqualToString:@"gz"] || [[pname pathExtension] isEqualToString:@"pdb"]) )
+		if ( ([moleculeFilenameLookupTable valueForKey:pname] == nil) && ([[[pname pathExtension] lowercaseString] isEqualToString:@"gz"] || [[[pname pathExtension] lowercaseString] isEqualToString:@"pdb"]) )
 		{
 			// Parse the PDB file into the database
 			SLSMolecule *newMolecule = [[SLSMolecule alloc] initWithFilename:pname database:database];
 			if (newMolecule != nil)
+			{
 				[molecules addObject:newMolecule];
+				if (rootViewController.tableViewController != nil)
+				{
+					[rootViewController.tableViewController.tableView reloadData];				
+				}					
+			}
 			[newMolecule release];			
 		}
 	}
@@ -403,7 +405,36 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application 
 {
+	NSLog(@"Active");
 }
+
+- (void)applicationWillTerminate:(UIApplication *)application 
+{
+	if (database != nil)
+	{
+		[rootViewController cancelMoleculeLoading];
+		[self disconnectFromDatabase];
+	}
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+/*	if (database == nil)
+	{
+		[self connectToDatabase];
+	}*/
+	
+	NSLog(@"Foreground");
+	
+	[self loadMissingMoleculesIntoDatabase];
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+	[rootViewController cancelMoleculeLoading];
+//	[self disconnectFromDatabase];
+}
+
 
 #pragma mark -
 #pragma mark Custom molecule download methods

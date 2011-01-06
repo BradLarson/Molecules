@@ -312,12 +312,18 @@ void normalize(GLfloat *v)
 + (BOOL)isFiletypeSupportedForFile:(NSString *)filePath;
 {
 	// TODO: Make the categories perform a selector to determine whether this file is supported
-	if ([[filePath pathExtension] isEqualToString:@"pdb"]) // Uncompressed PDB file
+	if ([[[filePath pathExtension] lowercaseString] isEqualToString:@"pdb"]) // Uncompressed PDB file
+	{
 		return YES;
-	else if ([[filePath pathExtension] isEqualToString:@"gz"]) // Gzipped PDB file
+	}
+	else if ([[[filePath pathExtension] lowercaseString] isEqualToString:@"gz"]) // Gzipped PDB file
+	{
 		return YES;
+	}
 	else
+	{
 		return NO;
+	}
 }
 
 #pragma mark -
@@ -797,18 +803,31 @@ void normalize(GLfloat *v)
 + (void)finalizeStatements;
 {
 	if (insertMoleculeSQLStatement) sqlite3_finalize(insertMoleculeSQLStatement);
+	insertMoleculeSQLStatement = nil;
 	if (insertMetadataSQLStatement) sqlite3_finalize(insertMetadataSQLStatement);
+	insertMetadataSQLStatement = nil;
 	if (insertAtomSQLStatement) sqlite3_finalize(insertAtomSQLStatement);
+	insertAtomSQLStatement = nil;
 	if (insertBondSQLStatement) sqlite3_finalize(insertBondSQLStatement);
+	insertBondSQLStatement = nil;
 	if (updateMoleculeSQLStatement) sqlite3_finalize(updateMoleculeSQLStatement);
+	updateMoleculeSQLStatement = nil;
 	if (retrieveMoleculeSQLStatement) sqlite3_finalize(retrieveMoleculeSQLStatement);
+	retrieveMoleculeSQLStatement = nil;
 	if (retrieveMetadataSQLStatement) sqlite3_finalize(retrieveMetadataSQLStatement);
+	retrieveMetadataSQLStatement = nil;
 	if (retrieveAtomSQLStatement) sqlite3_finalize(retrieveAtomSQLStatement);
+	retrieveAtomSQLStatement = nil;
 	if (retrieveBondSQLStatement) sqlite3_finalize(retrieveBondSQLStatement);
+	retrieveBondSQLStatement = nil;
 	if (deleteMoleculeSQLStatement) sqlite3_finalize(deleteMoleculeSQLStatement);
+	deleteMoleculeSQLStatement = nil;
 	if (deleteMetadataSQLStatement) sqlite3_finalize(deleteMetadataSQLStatement);
+	deleteMetadataSQLStatement = nil;
 	if (deleteAtomSQLStatement) sqlite3_finalize(deleteAtomSQLStatement);
+	deleteAtomSQLStatement = nil;
 	if (deleteBondSQLStatement) sqlite3_finalize(deleteBondSQLStatement);
+	deleteBondSQLStatement = nil;
 }
 
 // Write this after all parsing is complete

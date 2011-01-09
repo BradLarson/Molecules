@@ -405,7 +405,6 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application 
 {
-	NSLog(@"Active");
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application 
@@ -423,8 +422,6 @@
 	{
 		[self connectToDatabase];
 	}*/
-	
-	NSLog(@"Foreground");
 	
 	[self loadMissingMoleculesIntoDatabase];
 }

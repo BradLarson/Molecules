@@ -240,7 +240,6 @@
 	NSString *customMoleculeHandlingURL = [NSString stringWithFormat:@"molecules://%@", pathComponentForCustomURL];
 
 //	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:customMoleculeHandlingURL]];
-	NSLog(@"Custom URL selected");
 	[(SLSMoleculeAppDelegate *)[[UIApplication sharedApplication] delegate] handleCustomURLScheme:[NSURL URLWithString:customMoleculeHandlingURL]];
 }
 

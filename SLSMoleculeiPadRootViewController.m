@@ -72,7 +72,7 @@
 	rotationBarButton = [[UIBarButtonItem alloc] initWithImage:unselectedRotationImage style:UIBarButtonItemStylePlain target:glViewController action:@selector(startOrStopAutorotation:)];
 	rotationBarButton.width = 44.0f;
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleConnectionOfMonitor:) name:UIScreenDidConnectNotification object:nil];
+/*	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleConnectionOfMonitor:) name:UIScreenDidConnectNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDisconnectionOfMonitor:) name:UIScreenDidDisconnectNotification object:nil];
 
 	if ([[UIScreen screens] count] > 1)
@@ -85,9 +85,9 @@
 		[mainToolbar setItems:[NSArray arrayWithObjects:spacerItem, screenBarButton, downloadBarButton, visualizationBarButton, rotationBarButton, nil] animated:NO];
 	}
 	else
-	{
+	{*/
 		[mainToolbar setItems:[NSArray arrayWithObjects:spacerItem, downloadBarButton, visualizationBarButton, rotationBarButton, nil] animated:NO];
-	}
+//	}
 		
 	[downloadBarButton release];
 

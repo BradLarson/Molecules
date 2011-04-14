@@ -11,6 +11,7 @@
 #import "SLSMolecule.h"
 // Filetypes
 #import "SLSMolecule+PDB.h"
+#import "SLSOpenGLESRenderer.h"
 
 #define BOND_LENGTH_LIMIT 3.0f
 
@@ -34,79 +35,6 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 
 @implementation SLSMolecule
 
-// TODO: do a define to switch normal, index type
-#pragma mark -
-#pragma mark Icosahedron tables
-
-// These are from the OpenGL documentation at www.opengl.org
-#define X .525731112119133606 
-#define Z .850650808352039932
-
-static GLfloat vdata[12][3] = 
-{    
-	{-X, 0.0f, Z}, 
-	{0.0f, Z, X}, 
-	{X, 0.0f, Z}, 
-	{-Z, X, 0.0f}, 	
-	{0.0f, Z, -X}, 
-	{Z, X, 0.0f}, 
-	{Z, -X, 0.0f}, 
-	{X, 0.0f, -Z},
-	{-X, 0.0f, -Z},
-	{0.0f, -Z, -X},
-    {0.0f, -Z, X},
-	{-Z, -X, 0.0f} 
-};
-
-static GLushort tindices[20][3] = 
-{ 
-	{0,1,2},
-	{0,3,1},
-	{3,4,1},
-	{1,4,5},
-	{1,5,2},    
-	{5,6,2},
-	{5,7,6},
-	{4,7,5},
-	{4,8,7},
-	{8,9,7},    
-	{9,6,7},
-	{9,10,6},
-	{9,11,10},
-	{11,0,10},
-	{0,2,10}, 
-	{10,2,6},
-	{3,0,11},
-	{3,11,8},
-	{3,8,4},
-	{9,8,11} 
-};
-
-#pragma mark -
-#pragma mark Bond edge tables
-
-static GLfloat bondEdges[4][3] = 
-{ 
-	{0,1,0}, {0,0,1}, {0,-1,0}, {0,0,-1} 
-};
-
-static GLushort bondIndices[8][3] = 
-{
-	{0,1,2}, {1,3,2}, {2,3,4}, {3,5,4}, {5,7,4}, {4,7,6}, {6,7,0}, {7,1,0}
-};
-
-
-#pragma mark -
-#pragma mark OpenGL helper functions
-
-void normalize(GLfloat *v) 
-{    
-	GLfloat d = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]); 
-	v[0] /= d; 
-	v[1] /= d; 
-	v[2] /= d; 
-}
-
 #pragma mark -
 #pragma mark Initialization and deallocation
 
@@ -115,13 +43,6 @@ void normalize(GLfloat *v)
 	if (![super init])
 		return nil;
 	
-	m_numVertices = 0;
-	m_numIndices = 0;
-	m_numberOfVertexBuffers = 0;
-	m_vertexArray = nil;
-	m_numberOfIndicesForBuffers = NULL;
-	totalNumberOfVertices = 0;
-	totalNumberOfTriangles = 0;
 	numberOfStructures = 1;
 	numberOfStructureBeingDisplayed = 1;
 	
@@ -137,8 +58,6 @@ void normalize(GLfloat *v)
 	journalReference = nil;
 	author = nil;
 	
-	m_vertexBufferHandle = NULL;
-	m_indexBufferHandle = NULL;
 	isBeingDisplayed = NO;
 	isRenderingCancelled = NO;
 	
@@ -277,22 +196,6 @@ void normalize(GLfloat *v)
 
 - (void)dealloc;
 {
-	// All buffers are deallocated after they are bound to their OpenGL counterparts,
-	// but we still need to delete the OpenGL buffers themselves when done
-	if (m_numberOfIndicesForBuffers != NULL)
-	{
-		free(m_numberOfIndicesForBuffers);
-//		m_numberOfVertexBuffers = NULL;
-	}
-
-	if (m_vertexBufferHandle != NULL)
-		[self freeVertexBuffers];
-	[m_vertexArrays release];
-	[m_indexArrays release];
-	[m_vertexArray release];
-	[m_indexArray release];
-	
-	
 	[title release];
 	[filename release];
 	[filenameWithoutExtension release];
@@ -498,271 +401,13 @@ void normalize(GLfloat *v)
 			bondColor[2] = 255;
 		}; break;
 		case UNKNOWNRESIDUE:
+        default:
 		{
 			bondColor[0] = 255;
 			bondColor[1] = 255;
 			bondColor[2] = 255;
 		}; break;
 	}
-}
-
-- (void)addNormal:(GLfloat *)newNormal;
-{
-	GLshort shortNormals[4];
-	shortNormals[0] = (GLshort)round(newNormal[0] * 32767.0f);
-	
-	
-	shortNormals[1] = (GLshort)round(newNormal[1] * 32767.0f);
-	shortNormals[2] = (GLshort)round(newNormal[2] * 32767.0f);
-	shortNormals[3] = 0;
-	
-	[m_vertexArray appendBytes:shortNormals length:(sizeof(GLshort) * 4)];	
-//	[m_vertexArray appendBytes:newNormal length:(sizeof(GLfloat) * 3)];	
-}
-
-- (void)addVertex:(GLfloat *)newVertex;
-{
-	GLshort shortVertex[4];
-	shortVertex[0] = (GLshort)MAX(MIN(round(newVertex[0] * 32767.0f), 32767), -32767);
-	shortVertex[1] = (GLshort)MAX(MIN(round(newVertex[1] * 32767.0f), 32767), -32767);
-	shortVertex[2] = (GLshort)MAX(MIN(round(newVertex[2] * 32767.0f), 32767), -32767);
-	shortVertex[3] = 0;
-	
-//	if ( ((newVertex[0] < -1.0f) || (newVertex[0] > 1.0f)) || ((newVertex[1] < -1.0f) || (newVertex[1] > 1.0f)) || ((newVertex[2] < -1.0f) || (newVertex[2] > 1.0f)) )
-//	{
-//		NSLog(@"Vertex outside range: %f, %f, %f", newVertex[0], newVertex[1], newVertex[2]);
-//	}
-	
-	[m_vertexArray appendBytes:shortVertex length:(sizeof(GLshort) * 4)];	
-
-//	[m_vertexArray appendBytes:newVertex length:(sizeof(GLfloat) * 3)];
-	m_numVertices++;
-	totalNumberOfVertices++;
-}
-
-- (void)addIndex:(GLushort *)newIndex;
-{
-	[m_indexArray appendBytes:newIndex length:sizeof(GLushort)];
-	m_numIndices++;
-}
-
-- (void)addColor:(GLubyte *)newColor;
-{
-	[m_vertexArray appendBytes:newColor length:(sizeof(GLubyte) * 4)];
-}
-
-- (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint;
-{
-	GLfloat newVertex[3];
-	GLubyte newColor[4];
-	GLfloat atomRadius = 0.4f;
-
-	// To avoid an overflow due to OpenGL ES's limit to unsigned short values in index buffers, we need to split vertices into multiple buffers
-	if (m_numVertices > 65000)
-	{
-		[self addVertexBuffer];
-	}
-	GLushort baseToAddToIndices = m_numVertices;
-		
-	switch (atomType)
-	{
-		case CARBON:
-		{
-			newColor[0] = 144;
-			newColor[1] = 144;
-			newColor[2] = 144;
-			newColor[3] = 255;
-			atomRadius = 1.70f; // van der Waals radius
-		}; break;
-		case HYDROGEN:
-		{
-			newColor[0] = 255;
-			newColor[1] = 255;
-			newColor[2] = 255;
-			newColor[3] = 255;
-			atomRadius = 1.09f;
-		}; break;
-		case OXYGEN:
-		{
-			newColor[0] = 240;
-			newColor[1] = 0;
-			newColor[2] = 0;
-			newColor[3] = 255;
-			atomRadius = 1.52f;
-		}; break;
-		case NITROGEN:
-		{
-			newColor[0] = 48;
-			newColor[1] = 80;
-			newColor[2] = 248;
-			newColor[3] = 255;
-			atomRadius = 1.55f;
-		}; break;
-		case SULFUR:
-		{
-			newColor[0] = 255;
-			newColor[1] = 255;
-			newColor[2] = 48;
-			newColor[3] = 255;
-			atomRadius = 1.80f;
-		}; break;
-		case PHOSPHOROUS:
-		{
-			newColor[0] = 255;
-			newColor[1] = 128;
-			newColor[2] = 0;
-			newColor[3] = 255;
-			atomRadius = 1.80f;
-		}; break;
-		case IRON:
-		{
-			newColor[0] = 224;
-			newColor[1] = 102;
-			newColor[2] = 51;
-			newColor[3] = 255;
-			atomRadius = 2.00f;
-		}; break;
-		case SILICON:
-		{
-			newColor[0] = 240;
-			newColor[1] = 200;
-			newColor[2] = 160;
-			newColor[3] = 255;
-			atomRadius = 1.09f;
-		}; break;
-		default:
-		{ // Use green to highlight missing elements in lookup table
-			newColor[0] = 0;
-			newColor[1] = 255;
-			newColor[2] = 0;
-			newColor[3] = 255;
-			atomRadius = 1.70f;
-		}; break;
-	}
-	
-	// Use a smaller radius for the models in the ball-and-stick visualization
-	if (currentVisualizationType == BALLANDSTICK)
-		atomRadius = 0.4f;
-	
-	atomRadius *= scaleAdjustmentForX;
-
-	for (int currentCounter = 0; currentCounter < 12; currentCounter++)
-	{
-		// Adjust radius and shift to match center
-		newVertex[0] = (vdata[currentCounter][0] * atomRadius) + newPoint.x;
-		newVertex[1] = (vdata[currentCounter][1] * atomRadius) + newPoint.y;
-		newVertex[2] = (vdata[currentCounter][2] * atomRadius) + newPoint.z;
-
-		// Add vertex from table
-		[self addVertex:newVertex];
-
-		// Just use original icosahedron for normals
-		newVertex[0] = vdata[currentCounter][0];
-		newVertex[1] = vdata[currentCounter][1];
-		newVertex[2] = vdata[currentCounter][2];
-		
-		// Add sphere normal
-		[self addNormal:newVertex];		
-		
-		// Add a color corresponding to this vertex
-		[self addColor:newColor];
-	}
-	
-	GLushort indexHolder;
-	for (int currentCounter = 0; currentCounter < 20; currentCounter++)
-	{
-		totalNumberOfTriangles++;
-		for (unsigned int internalCounter = 0; internalCounter < 3; internalCounter++)
-		{
-			indexHolder = baseToAddToIndices + tindices[currentCounter][internalCounter];
-			[self addIndex:&indexHolder];
-		}
-	}	
-}
-
-- (void)addBondToVertexBuffersWithStartPoint:(SLS3DPoint)startPoint endPoint:(SLS3DPoint)endPoint bondColor:(GLubyte *)bondColor bondType:(SLSBondType)bondType;
-{
-//	SLS3DPoint startPoint, endPoint;
-//	if ( (startValue == nil) || (endValue == nil) )
-//		return;
-//	[startValue getValue:&startPoint];
-//	[endValue getValue:&endPoint];
-
-	GLfloat bondRadius = 0.10;
-	bondRadius *= scaleAdjustmentForX;
-
-	GLfloat xDifference = endPoint.x - startPoint.x;
-	GLfloat yDifference = endPoint.y - startPoint.y;
-	GLfloat zDifference = endPoint.z - startPoint.z;
-	GLfloat xyHypotenuse = sqrt(xDifference * xDifference + yDifference * yDifference);
-	GLfloat xzHypotenuse = sqrt(xDifference * xDifference + zDifference * zDifference);
-
-	// To avoid an overflow due to OpenGL ES's limit to unsigned short values in index buffers, we need to split vertices into multiple buffers
-	if (m_numVertices > 65000)
-	{
-		[self addVertexBuffer];
-	}
-	GLushort baseToAddToIndices = m_numVertices;
-	
-	
-	// Do first edge vertices, colors, and normals
-	for (unsigned int edgeCounter = 0; edgeCounter < 4; edgeCounter++)
-	{
-		SLS3DPoint calculatedNormal;
-		GLfloat edgeNormal[3], edgeVertex[3];
-		
-		if (xyHypotenuse == 0)
-		{
-			calculatedNormal.x = bondEdges[edgeCounter][0];
-			calculatedNormal.y = bondEdges[edgeCounter][1];
-		}
-		else
-		{
-			calculatedNormal.x = bondEdges[edgeCounter][0] * xDifference / xyHypotenuse - bondEdges[edgeCounter][1] * yDifference / xyHypotenuse;
-			calculatedNormal.y = bondEdges[edgeCounter][0] * yDifference / xyHypotenuse + bondEdges[edgeCounter][1] * xDifference / xyHypotenuse;
-		}
-
-		if (xzHypotenuse == 0)
-		{
-			calculatedNormal.z = bondEdges[edgeCounter][2];
-		}
-		else
-		{
-			calculatedNormal.z = calculatedNormal.x * zDifference / xzHypotenuse + bondEdges[edgeCounter][2] * xDifference / xzHypotenuse;
-			calculatedNormal.x = calculatedNormal.x * xDifference / xzHypotenuse - bondEdges[edgeCounter][2] * zDifference / xzHypotenuse;
-		}
-		
-		edgeVertex[0] = (calculatedNormal.x * bondRadius) + startPoint.x;
-		edgeVertex[1] = (calculatedNormal.y * bondRadius) + startPoint.y;
-		edgeVertex[2] = (calculatedNormal.z * bondRadius) + startPoint.z;
-		[self addVertex:edgeVertex];
-
-		edgeNormal[0] = calculatedNormal.x;
-		edgeNormal[1] = calculatedNormal.y;
-		edgeNormal[2] = calculatedNormal.z;
-		
-		[self addNormal:edgeNormal];
-		[self addColor:bondColor];
-		
-		edgeVertex[0] = (calculatedNormal.x * bondRadius) + endPoint.x;
-		edgeVertex[1] = (calculatedNormal.y * bondRadius) + endPoint.y;
-		edgeVertex[2] = (calculatedNormal.z * bondRadius) + endPoint.z;
-		[self addVertex:edgeVertex];
-		[self addNormal:edgeNormal];
-		[self addColor:bondColor];
-	}
-
-	for (unsigned int currentCounter = 0; currentCounter < 8; currentCounter++)
-	{
-		totalNumberOfTriangles++;
-
-		for (unsigned int internalCounter = 0; internalCounter < 3; internalCounter++)
-		{
-			GLushort indexHolder = baseToAddToIndices + bondIndices[currentCounter][internalCounter];
-			[self addIndex:&indexHolder];
-		}
-	}
-	
 }
 
 #pragma mark -
@@ -1034,115 +679,6 @@ void normalize(GLfloat *v)
     isPopulatedFromDatabase = YES;
 }
 
-- (void)readAndRenderAtoms;
-{	
-	if (isRenderingCancelled)
-		return;
-
-	if (retrieveAtomSQLStatement == nil) 
-	{
-		const char *sql = "SELECT residue,structure,element,x,y,z FROM atoms WHERE molecule=? AND structure=?";
-//		const char *sql = "SELECT * FROM atoms WHERE molecule=?";
-		if (sqlite3_prepare_v2(database, sql, -1, &retrieveAtomSQLStatement, NULL) != SQLITE_OK) 
-		{
-            NSAssert1(0, NSLocalizedStringFromTable(@"Error: failed to prepare statement with message '%s'.", @"Localized", nil), sqlite3_errmsg(database));
-        }
-	}
-	
-	// Bind the query variables.
-	sqlite3_bind_int(retrieveAtomSQLStatement, 1, databaseKey);
-	sqlite3_bind_int(retrieveAtomSQLStatement, 2, numberOfStructureBeingDisplayed);
-	
-	while ((sqlite3_step(retrieveAtomSQLStatement) == SQLITE_ROW) && !isRenderingCancelled)
-	{
-		//(id,molecule,residue,structure,element,x,y,z);"
-		if ( (currentFeatureBeingRendered % 100) == 0)
-			[self performSelectorOnMainThread:@selector(updateStatusIndicator) withObject:nil waitUntilDone:NO];
-		currentFeatureBeingRendered++;		
-
-		SLSResidueType residueType = sqlite3_column_int(retrieveAtomSQLStatement, 0);
-		// TODO: Determine if rendering a particular structure, if not don't render atom 
-		SLSAtomType atomType = sqlite3_column_int(retrieveAtomSQLStatement, 2);
-		SLS3DPoint atomCoordinate;
-		atomCoordinate.x = sqlite3_column_double(retrieveAtomSQLStatement, 3);
-		atomCoordinate.x -= centerOfMassInX;
-		atomCoordinate.x *= scaleAdjustmentForX;
-		atomCoordinate.y = sqlite3_column_double(retrieveAtomSQLStatement, 4);
-		atomCoordinate.y -= centerOfMassInY;
-		atomCoordinate.y *= scaleAdjustmentForX;
-		atomCoordinate.z = sqlite3_column_double(retrieveAtomSQLStatement, 5);
-		atomCoordinate.z -= centerOfMassInZ;
-		atomCoordinate.z *= scaleAdjustmentForX;
-		
-		if (residueType != WATER)
-			[self addAtomToVertexBuffers:atomType atPoint:atomCoordinate];
-	}
-	
-	// Because we want to reuse the statement, we "reset" it instead of "finalizing" it.
-    sqlite3_reset(retrieveAtomSQLStatement);
-}
-
-- (void)readAndRenderBonds;
-{
-	if (isRenderingCancelled)
-		return;
-	
-	if (retrieveBondSQLStatement == nil) 
-	{
-		const char *sql = "SELECT * FROM bonds WHERE molecule=? AND structure=?";
-		if (sqlite3_prepare_v2(database, sql, -1, &retrieveBondSQLStatement, NULL) != SQLITE_OK) 
-		{
-            NSAssert1(0, NSLocalizedStringFromTable(@"Error: failed to prepare statement with message '%s'.", @"Localized", nil), sqlite3_errmsg(database));
-        }
-	}
-	
-	// Bind the query variables.
-	sqlite3_bind_int(retrieveBondSQLStatement, 1, databaseKey);
-	sqlite3_bind_int(retrieveBondSQLStatement, 2, numberOfStructureBeingDisplayed);
-
-	while ((sqlite3_step(retrieveBondSQLStatement) == SQLITE_ROW) && !isRenderingCancelled)
-	{
-		//(id ,molecule ,residue ,structure ,bond_type ,start_x ,start_y ,start_z ,end_x ,end_y ,end_z )
-		
-		// TODO: Determine if rendering a particular structure, if not don't render atom 
-		if ( (currentFeatureBeingRendered % 100) == 0)
-			[self performSelectorOnMainThread:@selector(updateStatusIndicator) withObject:nil waitUntilDone:NO];
-		currentFeatureBeingRendered++;		
-		
-		SLSBondType bondType = sqlite3_column_int(retrieveBondSQLStatement, 4);
-		SLS3DPoint startingCoordinate, endingCoordinate;
-		startingCoordinate.x = sqlite3_column_double(retrieveBondSQLStatement, 5);
-		startingCoordinate.x -= centerOfMassInX;
-		startingCoordinate.x *= scaleAdjustmentForX;
-		startingCoordinate.y = sqlite3_column_double(retrieveBondSQLStatement, 6);
-		startingCoordinate.y -= centerOfMassInY;
-		startingCoordinate.y *= scaleAdjustmentForX;
-		startingCoordinate.z = sqlite3_column_double(retrieveBondSQLStatement, 7);
-		startingCoordinate.z -= centerOfMassInZ;
-		startingCoordinate.z *= scaleAdjustmentForX;
-		endingCoordinate.x = sqlite3_column_double(retrieveBondSQLStatement, 8);
-		endingCoordinate.x -= centerOfMassInX;
-		endingCoordinate.x *= scaleAdjustmentForX;
-		endingCoordinate.y = sqlite3_column_double(retrieveBondSQLStatement, 9);
-		endingCoordinate.y -= centerOfMassInY;
-		endingCoordinate.y *= scaleAdjustmentForX;
-		endingCoordinate.z = sqlite3_column_double(retrieveBondSQLStatement, 10);
-		endingCoordinate.z -= centerOfMassInZ;
-		endingCoordinate.z *= scaleAdjustmentForX;
-		SLSResidueType residueType = sqlite3_column_int(retrieveBondSQLStatement, 2);		
-		GLubyte bondColor[4] = {200,200,200,255};  // Bonds are grey by default
-
-		if (currentVisualizationType == CYLINDRICAL)
-			[SLSMolecule setBondColor:bondColor forResidueType:residueType];
-
-		if (residueType != WATER)
-			[self addBondToVertexBuffersWithStartPoint:startingCoordinate endPoint:endingCoordinate bondColor:bondColor bondType:bondType];
-	}
-	
-	// Because we want to reuse the statement, we "reset" it instead of "finalizing" it.
-    sqlite3_reset(retrieveBondSQLStatement);
-}
-
 - (void)deleteMoleculeDataFromDatabase;
 {
 	// Delete the molecule from the SQLite database
@@ -1218,188 +754,189 @@ void normalize(GLfloat *v)
 }
 
 #pragma mark -
-#pragma mark OpenGL drawing routines
+#pragma mark Rendering
 
-- (void)addVertexBuffer;
-{
-	if (m_vertexArray != nil)
-	{
-		[m_vertexArray release];
-		[m_indexArray release];
-	}
-	m_vertexArray = [[NSMutableData alloc] init];
-	m_indexArray = [[NSMutableData alloc] init];
-	m_numberOfVertexBuffers++;
-	[m_vertexArrays addObject:m_vertexArray];
-	[m_indexArrays addObject:m_indexArray];
-	m_numVertices = 0;
-	m_numIndices = 0;
-}
-
-- (BOOL)renderMolecule;
+- (BOOL)renderMolecule:(SLSOpenGLESRenderer *)openGLESRenderer;
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
+    
 	isDoneRendering = NO;
 	[self performSelectorOnMainThread:@selector(showStatusIndicator) withObject:nil waitUntilDone:NO];
-
-	m_vertexArrays = [[NSMutableArray alloc] init];
-	m_indexArrays = [[NSMutableArray alloc] init];
-
-	m_numberOfVertexBuffers = 0;
-	[self addVertexBuffer];
-
+    
+    [openGLESRenderer initiateMoleculeRendering];
+    
 	currentFeatureBeingRendered = 0;
-
+    
 	switch(currentVisualizationType)
 	{
 		case BALLANDSTICK:
 		{
 			totalNumberOfFeaturesToRender = numberOfAtoms + numberOfBonds;
 			
-			[self readAndRenderAtoms];
-			[self readAndRenderBonds];
+			[self readAndRenderAtoms:openGLESRenderer];
+			[self readAndRenderBonds:openGLESRenderer];
 		}; break;
 		case SPACEFILLING:
 		{
 			totalNumberOfFeaturesToRender = numberOfAtoms;
-			[self readAndRenderAtoms];
+			[self readAndRenderAtoms:openGLESRenderer];
 		}; break;
 		case CYLINDRICAL:
 		{
 			totalNumberOfFeaturesToRender = numberOfBonds;
-			[self readAndRenderBonds];
+			[self readAndRenderBonds:openGLESRenderer];
 		}; break;
 	}
 	
 	if (!isRenderingCancelled)
 	{
-		[self performSelectorOnMainThread:@selector(bindVertexBuffersForMolecule) withObject:nil waitUntilDone:YES];
+		[openGLESRenderer performSelectorOnMainThread:@selector(bindVertexBuffersForMolecule) withObject:nil waitUntilDone:YES];
 		
 	}
 	else
 	{
-		m_numberOfVertexBuffers = 0;
-		
-		isBeingDisplayed = NO;
-		isRenderingCancelled = NO;
-		
-		// Release all the NSData arrays that were partially generated
-		[m_indexArray release];	
-		m_indexArray = nil;
-		[m_indexArrays release];
-		
-		[m_vertexArray release];
-		m_vertexArray = nil;
-		[m_vertexArrays release];	
-		
+        isBeingDisplayed = NO;
+        isRenderingCancelled = NO;
+        
+        [openGLESRenderer terminateMoleculeRendering];
 	}
 	
-
+    
 	isDoneRendering = YES;
 	[self performSelectorOnMainThread:@selector(hideStatusIndicator) withObject:nil waitUntilDone:YES];
-
+    
 	[pool release];
 	return YES;
 }
 
-- (void)bindVertexBuffersForMolecule;
-{
-	m_vertexBufferHandle = (GLuint *) malloc(sizeof(GLuint) * m_numberOfVertexBuffers);
-	m_indexBufferHandle = (GLuint *) malloc(sizeof(GLuint) * m_numberOfVertexBuffers);
-	if (m_numberOfIndicesForBuffers != NULL)
+- (void)readAndRenderAtoms:(SLSOpenGLESRenderer *)openGLESRenderer;
+{	
+	if (isRenderingCancelled)
+    {
+		return;
+    }
+    
+	if (retrieveAtomSQLStatement == nil) 
 	{
-		free(m_numberOfIndicesForBuffers);
-//		m_numberOfVertexBuffers = null;
+		const char *sql = "SELECT residue,structure,element,x,y,z FROM atoms WHERE molecule=? AND structure=?";
+        //		const char *sql = "SELECT * FROM atoms WHERE molecule=?";
+		if (sqlite3_prepare_v2(database, sql, -1, &retrieveAtomSQLStatement, NULL) != SQLITE_OK) 
+		{
+            NSAssert1(0, NSLocalizedStringFromTable(@"Error: failed to prepare statement with message '%s'.", @"Localized", nil), sqlite3_errmsg(database));
+        }
 	}
 	
-	m_numberOfIndicesForBuffers = (unsigned int *) malloc(sizeof(unsigned int) * m_numberOfVertexBuffers);
+	// Bind the query variables.
+	sqlite3_bind_int(retrieveAtomSQLStatement, 1, databaseKey);
+	sqlite3_bind_int(retrieveAtomSQLStatement, 2, numberOfStructureBeingDisplayed);
 	
-	for (unsigned int bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
+	while ((sqlite3_step(retrieveAtomSQLStatement) == SQLITE_ROW) && !isRenderingCancelled)
 	{
-		glGenBuffers(1, &m_indexBufferHandle[bufferIndex]); 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBufferHandle[bufferIndex]);   
+		//(id,molecule,residue,structure,element,x,y,z);"
+		if ( (currentFeatureBeingRendered % 100) == 0)
+			[self performSelectorOnMainThread:@selector(updateStatusIndicator) withObject:nil waitUntilDone:NO];
+		currentFeatureBeingRendered++;		
+        
+		SLSResidueType residueType = sqlite3_column_int(retrieveAtomSQLStatement, 0);
+		// TODO: Determine if rendering a particular structure, if not don't render atom 
+		SLSAtomType atomType = sqlite3_column_int(retrieveAtomSQLStatement, 2);
+		SLS3DPoint atomCoordinate;
+		atomCoordinate.x = sqlite3_column_double(retrieveAtomSQLStatement, 3);
+		atomCoordinate.x -= centerOfMassInX;
+		atomCoordinate.x *= scaleAdjustmentForX;
+		atomCoordinate.y = sqlite3_column_double(retrieveAtomSQLStatement, 4);
+		atomCoordinate.y -= centerOfMassInY;
+		atomCoordinate.y *= scaleAdjustmentForX;
+		atomCoordinate.z = sqlite3_column_double(retrieveAtomSQLStatement, 5);
+		atomCoordinate.z -= centerOfMassInZ;
+		atomCoordinate.z *= scaleAdjustmentForX;
+		
+		if (residueType != WATER)
+        {
+            float radiusScaleFactor = scaleAdjustmentForX;
+            
+            // Use a smaller radius for the models in the ball-and-stick visualization
+            if (currentVisualizationType == BALLANDSTICK)
+            {
+//                radiusScaleFactor *= 0.27;
+                radiusScaleFactor *= 0.4;
+            }            
 
-		NSData *currentIndexBuffer = [m_indexArrays objectAtIndex:bufferIndex];
-		GLushort *indexBuffer = (GLushort *)[currentIndexBuffer bytes];
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, [currentIndexBuffer length], indexBuffer, GL_STATIC_DRAW);     
-
-		m_numberOfIndicesForBuffers[bufferIndex] = ([currentIndexBuffer length] / sizeof(GLushort));		
-	}	
-	// Now that the data is in the OpenGL buffer, can release the NSData
-
-    [m_indexArray release];	
-	m_indexArray = nil;
-	[m_indexArrays release];
-	m_indexArrays = nil;
-	
-	for (unsigned int bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
-	{	
-		glGenBuffers(1, &m_vertexBufferHandle[bufferIndex]); 
-		glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferHandle[bufferIndex]); 
-
-		NSData *currentVertexBuffer = [m_vertexArrays objectAtIndex:bufferIndex];
-		glBufferData(GL_ARRAY_BUFFER, [currentVertexBuffer length], (void *)[currentVertexBuffer bytes], GL_STATIC_DRAW); 
-
-//		glBindBuffer(GL_ARRAY_BUFFER, 0); 
+			[openGLESRenderer addAtomToVertexBuffers:atomType atPoint:atomCoordinate radiusScaleFactor:radiusScaleFactor];
+        }
 	}
-	[m_vertexArray release];
-	m_vertexArray = nil;
-	[m_vertexArrays release];	
-	m_vertexArrays = nil;
+	
+	// Because we want to reuse the statement, we "reset" it instead of "finalizing" it.
+    sqlite3_reset(retrieveAtomSQLStatement);
 }
 
-- (void)drawMolecule;
-{
-	for (unsigned int bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
-	{
-		// Bind the buffers
-		glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferHandle[bufferIndex]); 
-		glVertexPointer(3, GL_SHORT, 20, (char *)NULL + 0); 		
-		glNormalPointer(GL_SHORT, 20, (char *)NULL + 8); 
-		glColorPointer(4, GL_UNSIGNED_BYTE, 20, (char *)NULL + 16);
-		
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBufferHandle[bufferIndex]);    
-
-		// Do the actual drawing to the screen
-		glDrawElements(GL_TRIANGLES,m_numberOfIndicesForBuffers[bufferIndex],GL_UNSIGNED_SHORT, NULL);
-		
-		// Unbind the buffers
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
-		glBindBuffer(GL_ARRAY_BUFFER, 0); 
-	}
-}
-
-- (void)freeVertexBuffers;
+- (void)readAndRenderBonds:(SLSOpenGLESRenderer *)openGLESRenderer;
 {
 	if (isRenderingCancelled)
+    {
 		return;
-	for (unsigned int bufferIndex = 0; bufferIndex < m_numberOfVertexBuffers; bufferIndex++)
-	{
-		glDeleteBuffers(1, &m_indexBufferHandle[bufferIndex]);
-		glDeleteBuffers(1, &m_vertexBufferHandle[bufferIndex]);
-	}
-
+    }
 	
-	if (m_vertexBufferHandle != NULL)
+	if (retrieveBondSQLStatement == nil) 
 	{
-		free(m_vertexBufferHandle);
-		m_vertexBufferHandle = NULL;
-	}
-	if (m_indexBufferHandle != NULL)
-	{
-		free(m_indexBufferHandle);
-		m_indexBufferHandle = NULL;
-	}
-	if (m_numberOfIndicesForBuffers != NULL)
-	{
-		free(m_numberOfIndicesForBuffers);
-		m_numberOfIndicesForBuffers = NULL;
+		const char *sql = "SELECT * FROM bonds WHERE molecule=? AND structure=?";
+		if (sqlite3_prepare_v2(database, sql, -1, &retrieveBondSQLStatement, NULL) != SQLITE_OK) 
+		{
+            NSAssert1(0, NSLocalizedStringFromTable(@"Error: failed to prepare statement with message '%s'.", @"Localized", nil), sqlite3_errmsg(database));
+        }
 	}
 	
-	totalNumberOfTriangles = 0;
-	totalNumberOfVertices = 0;
+	// Bind the query variables.
+	sqlite3_bind_int(retrieveBondSQLStatement, 1, databaseKey);
+	sqlite3_bind_int(retrieveBondSQLStatement, 2, numberOfStructureBeingDisplayed);
+    
+	while ((sqlite3_step(retrieveBondSQLStatement) == SQLITE_ROW) && !isRenderingCancelled)
+	{
+		//(id ,molecule ,residue ,structure ,bond_type ,start_x ,start_y ,start_z ,end_x ,end_y ,end_z )
+		
+		// TODO: Determine if rendering a particular structure, if not don't render atom 
+		if ( (currentFeatureBeingRendered % 100) == 0)
+			[self performSelectorOnMainThread:@selector(updateStatusIndicator) withObject:nil waitUntilDone:NO];
+		currentFeatureBeingRendered++;		
+		
+		SLSBondType bondType = sqlite3_column_int(retrieveBondSQLStatement, 4);
+		SLS3DPoint startingCoordinate, endingCoordinate;
+		startingCoordinate.x = sqlite3_column_double(retrieveBondSQLStatement, 5);
+		startingCoordinate.x -= centerOfMassInX;
+		startingCoordinate.x *= scaleAdjustmentForX;
+		startingCoordinate.y = sqlite3_column_double(retrieveBondSQLStatement, 6);
+		startingCoordinate.y -= centerOfMassInY;
+		startingCoordinate.y *= scaleAdjustmentForX;
+		startingCoordinate.z = sqlite3_column_double(retrieveBondSQLStatement, 7);
+		startingCoordinate.z -= centerOfMassInZ;
+		startingCoordinate.z *= scaleAdjustmentForX;
+		endingCoordinate.x = sqlite3_column_double(retrieveBondSQLStatement, 8);
+		endingCoordinate.x -= centerOfMassInX;
+		endingCoordinate.x *= scaleAdjustmentForX;
+		endingCoordinate.y = sqlite3_column_double(retrieveBondSQLStatement, 9);
+		endingCoordinate.y -= centerOfMassInY;
+		endingCoordinate.y *= scaleAdjustmentForX;
+		endingCoordinate.z = sqlite3_column_double(retrieveBondSQLStatement, 10);
+		endingCoordinate.z -= centerOfMassInZ;
+		endingCoordinate.z *= scaleAdjustmentForX;
+		SLSResidueType residueType = sqlite3_column_int(retrieveBondSQLStatement, 2);		
+		GLubyte bondColor[4] = {200,200,200,255};  // Bonds are grey by default
+        
+		if (currentVisualizationType == CYLINDRICAL)
+        {
+			[SLSMolecule setBondColor:bondColor forResidueType:residueType];
+        }
+        
+		if (residueType != WATER)
+        {
+			[openGLESRenderer addBondToVertexBuffersWithStartPoint:startingCoordinate endPoint:endingCoordinate bondColor:bondColor bondType:bondType radiusScaleFactor:scaleAdjustmentForX];
+        }
+	}
+	
+	// Because we want to reuse the statement, we "reset" it instead of "finalizing" it.
+    sqlite3_reset(retrieveBondSQLStatement);
 }
+
 
 #pragma mark -
 #pragma mark Accessors
@@ -1410,7 +947,6 @@ void normalize(GLfloat *v)
 @synthesize numberOfAtoms, numberOfStructures;
 @synthesize previousTerminalAtomValue;
 @synthesize currentVisualizationType;
-@synthesize totalNumberOfVertices, totalNumberOfTriangles;
 @synthesize numberOfStructureBeingDisplayed;
 
 
@@ -1422,9 +958,6 @@ void normalize(GLfloat *v)
 	if (isBeingDisplayed)
 	{
 		isRenderingCancelled = NO;
-		[self performSelectorInBackground:@selector(renderMolecule) withObject:nil];
-
-//		[self renderMolecule];
 	}
 	else
 	{
@@ -1433,20 +966,7 @@ void normalize(GLfloat *v)
 			self.isRenderingCancelled = YES;
 			[NSThread sleepForTimeInterval:0.1];
 		}
-		
-		[self freeVertexBuffers];
 	}
 }
-
-/*- (void)setCurrentVisualizationType:(SLSVisualizationType)newVisualizationType;
-{
-	if (currentVisualizationType == newVisualizationType)
-		return;
-	currentVisualizationType = newVisualizationType;
-	// Clear out the old render
-	self.isBeingDisplayed = NO;
-	// Start with a new render for the current visualization type
-	self.isBeingDisplayed = YES;
-}*/
 
 @end

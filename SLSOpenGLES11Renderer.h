@@ -8,10 +8,15 @@
 
 #import "SLSOpenGLESRenderer.h"
 
-
 @interface SLSOpenGLES11Renderer : SLSOpenGLESRenderer 
 {
-    
+    // OpenGL vertex buffer objects
+	unsigned int *m_numberOfIndicesForBuffers;
+	GLuint *m_vertexBufferHandle, *m_indexBufferHandle;
+	NSMutableArray *m_vertexArrays, *m_indexArrays;
+	unsigned int m_numberOfVertexBuffers;
+	NSMutableData *m_vertexArray, *m_indexArray;
+	unsigned int m_numVertices, m_numIndices;
 }
 
 @end

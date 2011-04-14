@@ -26,9 +26,7 @@
     SLSOpenGLESRenderer *openGLESRenderer;
     
 	SLSMolecule *moleculeToDisplay;
-	CATransform3D currentCalculatedMatrix;
 	BOOL isAutorotating;
-	BOOL isFirstDrawingOfMolecule, isFrameRenderingFinished;
 	CADisplayLink *displayLink;
 	CFTimeInterval previousTimestamp;
 	BOOL shouldResizeDisplay;
@@ -45,7 +43,6 @@
 
 @property (readwrite, retain, nonatomic) UIActionSheet *visualizationActionSheet;
 @property (readwrite, retain, nonatomic) SLSMolecule *moleculeToDisplay;
-@property (readonly) BOOL isFrameRenderingFinished;
 @property (readwrite, retain, nonatomic) CADisplayLink *displayLink;
 
 // Display indicator control
@@ -60,15 +57,7 @@
 - (void)startOrStopAutorotation:(id)sender;
 - (void)handleAutorotationTimer;
 
-// OpenGL matrix helper methods
-- (void)convertMatrix:(GLfloat *)matrix to3DTransform:(CATransform3D *)transform3D;
-- (void)convert3DTransform:(CATransform3D *)transform3D toMatrix:(GLfloat *)matrix;
-- (void)print3DTransform:(CATransform3D *)transform3D;
-- (void)printMatrix:(GLfloat *)fixedPointMatrix;
-
 // OpenGL molecule rendering
-- (void)drawView;
-- (void)_drawViewByRotatingAroundX:(float)xRotation rotatingAroundY:(float)yRotation scaling:(float)scaleFactor translationInX:(float)xTranslation translationInY:(float)yTranslation;
 - (void)resizeView;
 - (void)runOpenGLBenchmarks;
 - (void)updateSizeOfGLView:(NSNotification *)note;

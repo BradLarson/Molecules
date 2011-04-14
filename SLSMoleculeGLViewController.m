@@ -50,7 +50,8 @@
 		twoFingersAreMoving = NO;
 		pinchGestureUnderway = NO;
 		stepsSinceLastRotation = 0;
-		
+		previousTimestamp = 0;
+        
 		if ([SLSMoleculeAppDelegate isRunningOniPad])
 		{
 			scalingForMovement = 85.0f;
@@ -59,16 +60,6 @@
 		{
 			scalingForMovement = 200.0f;
 		}
-
-		// Set up the initial model view matrix for the rendering
-		isFirstDrawingOfMolecule = YES;
-		isFrameRenderingFinished = YES;
-		
-		GLfloat currentModelViewMatrix[16]  = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
-		
-		//		GLfloat currentModelViewMatrix[16]  = {1.0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 1.0};
-		
-		[self convertMatrix:currentModelViewMatrix to3DTransform:&currentCalculatedMatrix];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleFinishOfMoleculeRendering:) name:@"MoleculeRenderingEnded" object:nil];		
 	}
@@ -236,167 +227,20 @@
 	}
 	if (previousTimestamp == 0)
 	{
-		[self _drawViewByRotatingAroundX:1.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];	
+        [openGLESRenderer rotateModelFromScreenDisplacementInX:1.0f inY:0.0f];
+        [openGLESRenderer renderFrameForMolecule:moleculeToDisplay];
 	}
 	else
 	{
-		[self _drawViewByRotatingAroundX:(30.0f * (displayLink.timestamp - previousTimestamp)) rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
+        [openGLESRenderer rotateModelFromScreenDisplacementInX:(30.0f * (displayLink.timestamp - previousTimestamp)) inY:0.0f];
+        [openGLESRenderer renderFrameForMolecule:moleculeToDisplay];
 	}
 	
 	previousTimestamp = displayLink.timestamp;
 }
 
 #pragma mark -
-#pragma mark OpenGL matrix helper methods
-
-- (void)convertMatrix:(GLfloat *)matrix to3DTransform:(CATransform3D *)transform3D;
-{
-	transform3D->m11 = (CGFloat)matrix[0];
-	transform3D->m12 = (CGFloat)matrix[1];
-	transform3D->m13 = (CGFloat)matrix[2];
-	transform3D->m14 = (CGFloat)matrix[3];
-	transform3D->m21 = (CGFloat)matrix[4];
-	transform3D->m22 = (CGFloat)matrix[5];
-	transform3D->m23 = (CGFloat)matrix[6];
-	transform3D->m24 = (CGFloat)matrix[7];
-	transform3D->m31 = (CGFloat)matrix[8];
-	transform3D->m32 = (CGFloat)matrix[9];
-	transform3D->m33 = (CGFloat)matrix[10];
-	transform3D->m34 = (CGFloat)matrix[11];
-	transform3D->m41 = (CGFloat)matrix[12];
-	transform3D->m42 = (CGFloat)matrix[13];
-	transform3D->m43 = (CGFloat)matrix[14];
-	transform3D->m44 = (CGFloat)matrix[15];
-}
-
-- (void)convert3DTransform:(CATransform3D *)transform3D toMatrix:(GLfloat *)matrix;
-{
-	//	struct CATransform3D
-	//	{
-	//		CGFloat m11, m12, m13, m14;
-	//		CGFloat m21, m22, m23, m24;
-	//		CGFloat m31, m32, m33, m34;
-	//		CGFloat m41, m42, m43, m44;
-	//	};
-	
-	matrix[0] = (GLfloat)transform3D->m11;
-	matrix[1] = (GLfloat)transform3D->m12;
-	matrix[2] = (GLfloat)transform3D->m13;
-	matrix[3] = (GLfloat)transform3D->m14;
-	matrix[4] = (GLfloat)transform3D->m21;
-	matrix[5] = (GLfloat)transform3D->m22;
-	matrix[6] = (GLfloat)transform3D->m23;
-	matrix[7] = (GLfloat)transform3D->m24;
-	matrix[8] = (GLfloat)transform3D->m31;
-	matrix[9] = (GLfloat)transform3D->m32;
-	matrix[10] = (GLfloat)transform3D->m33;
-	matrix[11] = (GLfloat)transform3D->m34;
-	matrix[12] = (GLfloat)transform3D->m41;
-	matrix[13] = (GLfloat)transform3D->m42;
-	matrix[14] = (GLfloat)transform3D->m43;
-	matrix[15] = (GLfloat)transform3D->m44;
-}
-
-- (void)print3DTransform:(CATransform3D *)transform3D;
-{
-	NSLog(@"___________________________");
-	NSLog(@"|%f,%f,%f,%f|", transform3D->m11, transform3D->m12, transform3D->m13, transform3D->m14);
-	NSLog(@"|%f,%f,%f,%f|", transform3D->m21, transform3D->m22, transform3D->m23, transform3D->m24);
-	NSLog(@"|%f,%f,%f,%f|", transform3D->m31, transform3D->m32, transform3D->m33, transform3D->m34);
-	NSLog(@"|%f,%f,%f,%f|", transform3D->m41, transform3D->m42, transform3D->m43, transform3D->m44);
-	NSLog(@"___________________________");			
-}
-
-- (void)printMatrix:(GLfloat *)matrix;
-{
-	NSLog(@"___________________________");
-	NSLog(@"|%f,%f,%f,%f|", matrix[0], matrix[1], matrix[2], matrix[3]);
-	NSLog(@"|%f,%f,%f,%f|", matrix[4], matrix[5], matrix[6], matrix[7]);
-	NSLog(@"|%f,%f,%f,%f|", matrix[8], matrix[9], matrix[10], matrix[11]);
-	NSLog(@"|%f,%f,%f,%f|", matrix[12], matrix[13], matrix[14], matrix[15]);
-	NSLog(@"___________________________");			
-}
-
-#pragma mark -
 #pragma mark OpenGL molecule rendering
-
-- (void)drawView;
-{
-	if (moleculeToDisplay.isDoneRendering == NO)
-		return;
-	
-	GLfloat currentModelViewMatrix[16]  = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
-	[self convertMatrix:currentModelViewMatrix to3DTransform:&currentCalculatedMatrix];
-	
-//	[self drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
-}
-
-- (void)_drawViewByRotatingAroundX:(float)xRotation rotatingAroundY:(float)yRotation scaling:(float)scaleFactor translationInX:(float)xTranslation translationInY:(float)yTranslation;
-{
-	isFrameRenderingFinished = NO;
-	
-	[openGLESRenderer startDrawingFrame];
-	
-	if (isFirstDrawingOfMolecule)
-	{
-		[openGLESRenderer configureProjection];
-	}
-	
-	GLfloat currentModelViewMatrix[16]  = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
-	
-	glMatrixMode(GL_MODELVIEW);
-	
-	// Reset rotation system
-	if (isFirstDrawingOfMolecule)
-	{
-		glLoadIdentity();
-		glMultMatrixf(currentModelViewMatrix);
-		[openGLESRenderer configureLighting];
-		
-		isFirstDrawingOfMolecule = NO;
-	}
-	
-	// Scale the view to fit current multitouch scaling
-	currentCalculatedMatrix = CATransform3DScale(currentCalculatedMatrix, scaleFactor, scaleFactor, scaleFactor);
-	
-	// Perform incremental rotation based on current angles in X and Y	
-	GLfloat totalRotation = sqrt(xRotation*xRotation + yRotation*yRotation);
-	
-	CATransform3D temporaryMatrix = CATransform3DRotate(currentCalculatedMatrix, totalRotation * M_PI / 180.0, 
-														((xRotation/totalRotation) * currentCalculatedMatrix.m12 + (yRotation/totalRotation) * currentCalculatedMatrix.m11),
-														((xRotation/totalRotation) * currentCalculatedMatrix.m22 + (yRotation/totalRotation) * currentCalculatedMatrix.m21),
-														((xRotation/totalRotation) * currentCalculatedMatrix.m32 + (yRotation/totalRotation) * currentCalculatedMatrix.m31));
-	if ((temporaryMatrix.m11 >= -100.0) && (temporaryMatrix.m11 <= 100.0))
-		currentCalculatedMatrix = temporaryMatrix;
-	
-	// Translate the model by the accumulated amount
-	float currentScaleFactor = sqrt(pow(currentCalculatedMatrix.m11, 2.0f) + pow(currentCalculatedMatrix.m12, 2.0f) + pow(currentCalculatedMatrix.m13, 2.0f));	
-	
-	xTranslation = xTranslation / (currentScaleFactor * currentScaleFactor);
-	yTranslation = yTranslation / (currentScaleFactor * currentScaleFactor);
-	// Use the (0,4,8) components to figure the eye's X axis in the model coordinate system, translate along that
-	temporaryMatrix = CATransform3DTranslate(currentCalculatedMatrix, xTranslation * currentCalculatedMatrix.m11, xTranslation * currentCalculatedMatrix.m21, xTranslation * currentCalculatedMatrix.m31);
-	// Use the (1,5,9) components to figure the eye's Y axis in the model coordinate system, translate along that
-	temporaryMatrix = CATransform3DTranslate(temporaryMatrix, yTranslation * currentCalculatedMatrix.m12, yTranslation * currentCalculatedMatrix.m22, yTranslation * currentCalculatedMatrix.m32);	
-	
-	if ((temporaryMatrix.m11 >= -100.0) && (temporaryMatrix.m11 <= 100.0))
-		currentCalculatedMatrix = temporaryMatrix;
-	
-	// Finally, set the new matrix that has been calculated from the Core Animation transform
-	[self convert3DTransform:&currentCalculatedMatrix toMatrix:currentModelViewMatrix];
-	
-	glLoadMatrixf(currentModelViewMatrix);
-	
-	// Black background, with depth buffer enabled
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	if (moleculeToDisplay.isDoneRendering)
-		[moleculeToDisplay drawMolecule];
-	
-	[openGLESRenderer presentRenderBuffer];
-	isFrameRenderingFinished = YES;
-}
 
 - (void)resizeView;
 {
@@ -406,26 +250,27 @@
 	[openGLESRenderer configureProjection];
 	if (displayLink == nil)
 	{
-		[self _drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];	
+        [openGLESRenderer renderFrameForMolecule:moleculeToDisplay];
 	}
 }
 
 - (void)runOpenGLBenchmarks;
 {
-	NSLog(NSLocalizedStringFromTable(@"Triangles: %d", @"Localized", nil), moleculeToDisplay.totalNumberOfTriangles);
-	NSLog(NSLocalizedStringFromTable(@"Vertices: %d", @"Localized", nil), moleculeToDisplay.totalNumberOfVertices);
+	NSLog(NSLocalizedStringFromTable(@"Triangles: %d", @"Localized", nil), openGLESRenderer.totalNumberOfTriangles);
+	NSLog(NSLocalizedStringFromTable(@"Vertices: %d", @"Localized", nil), openGLESRenderer.totalNumberOfVertices);
 	CFAbsoluteTime elapsedTime, startTime = CFAbsoluteTimeGetCurrent();
 #define NUMBER_OF_FRAMES_FOR_TESTING 100
 	
 	for (unsigned int testCounter = 0; testCounter < NUMBER_OF_FRAMES_FOR_TESTING; testCounter++)
 	{
 		// Do something		
-		[self _drawViewByRotatingAroundX:1.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];
+        [openGLESRenderer rotateModelFromScreenDisplacementInX:1.0f inY:0.0];
+        [openGLESRenderer renderFrameForMolecule:moleculeToDisplay];
 	}
 	elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
 	// ElapsedTime contains seconds (or fractions thereof as decimals)
 	NSLog(NSLocalizedStringFromTable(@"Elapsed time: %f", @"Localized", nil), elapsedTime);
-	NSLog(@"Triangles per second: %f", (CGFloat)moleculeToDisplay.totalNumberOfTriangles * (CGFloat)NUMBER_OF_FRAMES_FOR_TESTING / elapsedTime);
+	NSLog(@"Triangles per second: %f", (CGFloat)openGLESRenderer.totalNumberOfTriangles * (CGFloat)NUMBER_OF_FRAMES_FOR_TESTING / elapsedTime);
 }
 
 - (void)updateSizeOfGLView:(NSNotification *)note;
@@ -448,8 +293,7 @@
 	[openGLESRenderer clearScreen];
 	[NSThread sleepForTimeInterval:0.1];
 
-	GLfloat currentModelViewMatrix[16]  = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
-	[self convertMatrix:currentModelViewMatrix to3DTransform:&currentCalculatedMatrix];
+    [openGLESRenderer resetModelViewMatrix];
 	
 #ifdef RUN_OPENGL_BENCHMARKS
     
@@ -654,7 +498,8 @@
 			if (!pinchGestureUnderway)
 			{
 				twoFingersAreMoving = YES;
-				[self _drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:directionOfPanning.x translationInY:directionOfPanning.y];
+                [openGLESRenderer translateModelByScreenDisplacementInX:directionOfPanning.x inY:directionOfPanning.y];
+                [openGLESRenderer renderFrameForMolecule:moleculeToDisplay];
 				previousDirectionOfPanning = CGPointZero;
 			}
 		}
@@ -672,7 +517,10 @@
 			if (!twoFingersAreMoving)
 			{
 				// Scale using pinch gesture
-				[self _drawViewByRotatingAroundX:0.0 rotatingAroundY:0.0 scaling:(newTouchDistance / startingTouchDistance) / previousScale translationInX:directionOfPanning.x translationInY:directionOfPanning.y];
+                [openGLESRenderer scaleModelByFactor:(newTouchDistance / startingTouchDistance) / previousScale];
+                [openGLESRenderer renderFrameForMolecule:moleculeToDisplay];
+
+//				[self _drawViewByRotatingAroundX:0.0 rotatingAroundY:0.0 scaling:(newTouchDistance / startingTouchDistance) / previousScale translationInX:directionOfPanning.x translationInY:directionOfPanning.y];
 				previousScale = (newTouchDistance / startingTouchDistance);
 				pinchGestureUnderway = YES;
 			}
@@ -681,7 +529,9 @@
 	else // Single-touch rotation of object
 	{
 		CGPoint currentMovementPosition = [[touches anyObject] locationInView:self.view];
-		[self _drawViewByRotatingAroundX:(currentMovementPosition.x - lastMovementPosition.x) rotatingAroundY:(currentMovementPosition.y - lastMovementPosition.y) scaling:1.0f translationInX:0.0f translationInY:0.0f];
+        [openGLESRenderer rotateModelFromScreenDisplacementInX:(currentMovementPosition.x - lastMovementPosition.x) inY:(currentMovementPosition.y - lastMovementPosition.y)];
+        [openGLESRenderer renderFrameForMolecule:moleculeToDisplay];
+        
 		lastMovementPosition = currentMovementPosition;
 	}
 	
@@ -793,8 +643,10 @@
 	
 	moleculeToDisplay.currentVisualizationType = newVisualizationType;
 	[[NSUserDefaults standardUserDefaults] setInteger:newVisualizationType forKey:@"currentVisualizationMode"];
-	moleculeToDisplay.isBeingDisplayed = NO;
-	moleculeToDisplay.isBeingDisplayed = YES;
+    
+    [openGLESRenderer freeVertexBuffers];
+    [moleculeToDisplay performSelectorInBackground:@selector(renderMolecule:) withObject:openGLESRenderer];
+    
 	visualizationActionSheet = nil;
 }
 
@@ -817,7 +669,6 @@
 
 @synthesize visualizationActionSheet;
 @synthesize moleculeToDisplay;
-@synthesize isFrameRenderingFinished;
 @synthesize displayLink;
 
 - (void)setMoleculeToDisplay:(SLSMolecule *)newMolecule;
@@ -835,13 +686,17 @@
 	[NSThread sleepForTimeInterval:0.2];
 	
 	moleculeToDisplay.isBeingDisplayed = NO;
+    if (!moleculeToDisplay.isRenderingCancelled)
+    {
+        [openGLESRenderer freeVertexBuffers];
+    }
+    
 	[moleculeToDisplay release];
 	moleculeToDisplay = [newMolecule retain];
 	moleculeToDisplay.currentVisualizationType = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentVisualizationMode"];
 	moleculeToDisplay.isBeingDisplayed = YES;
-	
-	isFirstDrawingOfMolecule = YES;
-	
+    [moleculeToDisplay performSelectorInBackground:@selector(renderMolecule:) withObject:openGLESRenderer];
+    
 	instantObjectScale = 1.0f;
 	instantXRotation = 1.0f;
 	instantYRotation = 0.0f;

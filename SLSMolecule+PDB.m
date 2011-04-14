@@ -134,6 +134,7 @@ static NSDictionary *pdbResidueLookupTable;
 		}; break;
 		case WATER:
 		case UNKNOWNRESIDUE:
+        default:
 		{
 			
 		}; break;
@@ -363,6 +364,7 @@ static NSDictionary *pdbResidueLookupTable;
 			
 		}; break;
 		case UNKNOWNRESIDUE:
+        default:
 		{
 			
 		}; break;			

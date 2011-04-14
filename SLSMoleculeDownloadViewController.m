@@ -15,7 +15,7 @@
 
 - (id)initWithPDBCode:(NSString *)pdbCode andTitle:(NSString *)title;
 {
-	if (self = [super initWithNibName:@"SLSMoleculeDownloadView" bundle:nil]) 
+	if ((self = [super initWithNibName:@"SLSMoleculeDownloadView" bundle:nil])) 
 	{
 		// Initialization code
 		downloadedFileContents = nil;

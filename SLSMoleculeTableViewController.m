@@ -21,7 +21,7 @@
 
 - (id)initWithStyle:(UITableViewStyle)style initialSelectedMoleculeIndex:(NSInteger)initialSelectedMoleculeIndex;
 {
-	if (self = [super initWithStyle:style]) 
+	if ((self = [super initWithStyle:style])) 
 	{        
         self.title = NSLocalizedStringFromTable(@"Molecules", @"Localized", nil);
 		selectedIndex = initialSelectedMoleculeIndex;

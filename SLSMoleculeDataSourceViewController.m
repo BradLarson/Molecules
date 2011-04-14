@@ -19,7 +19,7 @@
 
 - (id)initWithStyle:(UITableViewStyle)style 
 {
-	if (self = [super initWithStyle:style]) 
+	if ((self = [super initWithStyle:style])) 
 	{
 		if ([SLSMoleculeAppDelegate isRunningOniPad])
 		{

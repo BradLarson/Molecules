@@ -22,7 +22,7 @@
 
 - (id)initWithStyle:(UITableViewStyle)style 
 {
-	if (self = [super initWithStyle:style]) 
+	if ((self = [super initWithStyle:style])) 
 	{
 		// Initialize the search bar and title
 		

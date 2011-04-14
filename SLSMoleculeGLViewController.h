@@ -13,6 +13,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 @class SLSMolecule;
+@class SLSOpenGLESRenderer;
 
 @interface SLSMoleculeGLViewController : UIViewController <UIActionSheetDelegate>
 {	
@@ -22,6 +23,8 @@
 	UILabel *renderingActivityLabel;
 	UIActionSheet *visualizationActionSheet;
 
+    SLSOpenGLESRenderer *openGLESRenderer;
+    
 	SLSMolecule *moleculeToDisplay;
 	CATransform3D currentCalculatedMatrix;
 	BOOL isAutorotating;

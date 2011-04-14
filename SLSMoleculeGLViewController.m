@@ -12,6 +12,7 @@
 #import "SLSMoleculeGLView.h"
 #import "SLSMolecule.h"
 #import "SLSMoleculeAppDelegate.h"
+#import "SLSOpenGLESRenderer.h"
 
 //#define RUN_OPENGL_BENCHMARKS
 
@@ -22,7 +23,7 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
 {
-	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) 
+	if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) 
 	{
 		// Set up an observer that catches the molecule update notifications and shows and updates the rendering indicator
 		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -90,6 +91,7 @@
 	SLSMoleculeGLView *glView = [[SLSMoleculeGLView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, applicationFrame.size.width, applicationFrame.size.height)];
 
 	self.view = glView;
+    openGLESRenderer = glView.openGLESRenderer;
 	
 	[glView release];
 }
@@ -172,7 +174,7 @@
 	renderingActivityLabel.backgroundColor = [UIColor clearColor];
 	renderingActivityLabel.textColor = [UIColor whiteColor];
 
-	[(SLSMoleculeGLView *)self.view clearScreen];
+	[openGLESRenderer clearScreen];
 	[renderingProgressIndicator setProgress:0.0];
 	[self.view addSubview:renderingProgressIndicator];
 	[self.view addSubview:renderingActivityLabel];
@@ -333,13 +335,11 @@
 {
 	isFrameRenderingFinished = NO;
 	
-	SLSMoleculeGLView *glView = (SLSMoleculeGLView *)self.view;
-	
-	[glView startDrawingFrame];
+	[openGLESRenderer startDrawingFrame];
 	
 	if (isFirstDrawingOfMolecule)
 	{
-		[glView configureProjection];
+		[openGLESRenderer configureProjection];
 	}
 	
 	GLfloat currentModelViewMatrix[16]  = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
@@ -351,7 +351,7 @@
 	{
 		glLoadIdentity();
 		glMultMatrixf(currentModelViewMatrix);
-		[glView configureLighting];
+		[openGLESRenderer configureLighting];
 		
 		isFirstDrawingOfMolecule = NO;
 	}
@@ -394,17 +394,16 @@
 	if (moleculeToDisplay.isDoneRendering)
 		[moleculeToDisplay drawMolecule];
 	
-	[glView presentRenderBuffer];
+	[openGLESRenderer presentRenderBuffer];
 	isFrameRenderingFinished = YES;
 }
 
 - (void)resizeView;
 {
-	SLSMoleculeGLView *glView = (SLSMoleculeGLView *)self.view;
-	[EAGLContext setCurrentContext:glView.context];
-	[glView destroyFramebuffer];
-	[glView createFramebuffer];
-	[glView configureProjection];
+//	[EAGLContext setCurrentContext:glView.context];
+	[openGLESRenderer destroyFramebuffer];
+	[openGLESRenderer createFramebuffersForLayer:(CAEAGLLayer *)self.view.layer];
+	[openGLESRenderer configureProjection];
 	if (displayLink == nil)
 	{
 		[self _drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];	
@@ -446,16 +445,22 @@
 
 - (void)handleFinishOfMoleculeRendering:(NSNotification *)note;
 {
-	[(SLSMoleculeGLView *)self.view clearScreen];
+	[openGLESRenderer clearScreen];
 	[NSThread sleepForTimeInterval:0.1];
 
 	GLfloat currentModelViewMatrix[16]  = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
 	[self convertMatrix:currentModelViewMatrix to3DTransform:&currentCalculatedMatrix];
 	
 #ifdef RUN_OPENGL_BENCHMARKS
-	NSInvocationOperation *invocationOperation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(runOpenGLBenchmarks) object:nil];
-	[renderingQueue addOperation:invocationOperation];
-	[invocationOperation release];
+    
+    [self.displayLink invalidate];
+    self.displayLink = nil;
+    
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleRotationSelected" object:[NSNumber numberWithBool:NO]];
+	[NSThread sleepForTimeInterval:0.2];
+
+    
+    [self runOpenGLBenchmarks];
 #else
 	[self startOrStopAutorotation:self];	
 #endif	

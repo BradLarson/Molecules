@@ -25,7 +25,7 @@
 
 - (id)initWithStyle:(UITableViewStyle)style andMolecule:(SLSMolecule *)newMolecule;
 {
-	if (self = [super initWithStyle:style]) 
+	if ((self = [super initWithStyle:style])) 
 	{
 		self.view.frame = [[UIScreen mainScreen] applicationFrame];
 		self.view.autoresizesSubviews = YES;

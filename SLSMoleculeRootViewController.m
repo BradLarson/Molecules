@@ -23,7 +23,7 @@
 
 - (id)init; 
 {
-    if (self = [super init]) 
+    if ((self = [super init])) 
 	{
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toggleView:) name:@"ToggleView" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toggleRotationButton:) name:@"ToggleRotationSelected" object:nil];

@@ -17,7 +17,7 @@
 
 - (id)initWithTitle:(NSString *)newTitle andContent:(NSString *)newContent;
 {
-	if (self = [super initWithStyle:UITableViewStyleGrouped])
+	if ((self = [super initWithStyle:UITableViewStyleGrouped]))
 	{
 		// this title will appear in the navigation bar
 		self.title = newTitle;

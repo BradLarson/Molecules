@@ -246,7 +246,7 @@
 		// TODO: Can you fast enumerate this?
 		NSDirectoryEnumerator *direnum = [fileManager enumeratorAtPath:[[NSBundle mainBundle] resourcePath]];
 		NSString *pname;
-		while (pname = [direnum nextObject])
+		while ((pname = [direnum nextObject]))
 		{
 			if ([[pname pathExtension] isEqualToString:@"gz"])
 			{
@@ -341,7 +341,7 @@
 	NSDirectoryEnumerator *direnum = [[NSFileManager defaultManager]
 									  enumeratorAtPath:documentsDirectory];
 	NSString *pname;
-	while (pname = [direnum nextObject])
+	while ((pname = [direnum nextObject]))
 	{
 		NSString *lastPathComponent = [pname lastPathComponent];
 		if (![lastPathComponent isEqualToString:pname])

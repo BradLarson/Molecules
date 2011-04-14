@@ -271,18 +271,18 @@
 //		glViewController.view = [[SLSMoleculeGLView alloc] initWithFrame:externalBounds];
 
 		
-		SLSMoleculeGLView *glView = (SLSMoleculeGLView *)glViewController.view;
-		[EAGLContext setCurrentContext:glView.context];
-		[glView destroyFramebuffer];
+//		SLSMoleculeGLView *glView = (SLSMoleculeGLView *)glViewController.view;
+//		[EAGLContext setCurrentContext:glView.context];
+//		[opengl destroyFramebuffer];
 		
 		
 //		glView.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
 		[externalWindow addSubview:glViewController.view];
 
-		[EAGLContext setCurrentContext:glView.context];		
-		[glView createFramebuffer];
-		[glView configureProjection];
-		[glViewController _drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];	
+//		[EAGLContext setCurrentContext:glView.context];		
+//		[glView createFramebuffer];
+//		[glView configureProjection];
+//		[glViewController _drawViewByRotatingAroundX:0.0f rotatingAroundY:0.0f scaling:1.0f translationInX:0.0f translationInY:0.0f];	
 		
 //		UILabel *helloWorld = [[UILabel alloc] initWithFrame:CGRectMake(200.0f, 400.0f, 400.0f, 60.0f)];
 //		helloWorld.text = @"This page intentionally left blank.";

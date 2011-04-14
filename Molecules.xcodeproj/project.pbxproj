@@ -40,6 +40,9 @@
 		BC61CC320E2463180074BE04 /* SLSTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC61CC300E2463180074BE04 /* SLSTextViewController.m */; };
 		BC6A9FCC11CAA8CB00E62D55 /* MoleculesIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC6A9FCB11CAA8CB00E62D55 /* MoleculesIcon@2x.png */; };
 		BC835184117545C600B478D5 /* 69-display.png in Resources */ = {isa = PBXBuildFile; fileRef = BC835183117545C600B478D5 /* 69-display.png */; };
+		BCB3A67A13553F9D000A286B /* SLSOpenGLESRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB3A67913553F9D000A286B /* SLSOpenGLESRenderer.m */; };
+		BCB3A67D13553FC1000A286B /* SLSOpenGLES11Renderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB3A67C13553FC1000A286B /* SLSOpenGLES11Renderer.m */; };
+		BCB3A68013553FD2000A286B /* SLSOpenGLES20Renderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB3A67F13553FD2000A286B /* SLSOpenGLES20Renderer.m */; };
 		BCC2812A0E1B1FCD00978ECA /* NSData+Gzip.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC281290E1B1FCD00978ECA /* NSData+Gzip.m */; };
 		BCC286C10E1D8F9300978ECA /* SLSMoleculeAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286BE0E1D8F9300978ECA /* SLSMoleculeAppDelegate.m */; };
 		BCC286C20E1D8F9300978ECA /* SLSMoleculeRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */; };
@@ -103,6 +106,12 @@
 		BC61CC300E2463180074BE04 /* SLSTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSTextViewController.m; sourceTree = "<group>"; };
 		BC6A9FCB11CAA8CB00E62D55 /* MoleculesIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MoleculesIcon@2x.png"; sourceTree = "<group>"; };
 		BC835183117545C600B478D5 /* 69-display.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "69-display.png"; sourceTree = "<group>"; };
+		BCB3A67813553F9D000A286B /* SLSOpenGLESRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSOpenGLESRenderer.h; sourceTree = "<group>"; };
+		BCB3A67913553F9D000A286B /* SLSOpenGLESRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSOpenGLESRenderer.m; sourceTree = "<group>"; };
+		BCB3A67B13553FC0000A286B /* SLSOpenGLES11Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSOpenGLES11Renderer.h; sourceTree = "<group>"; };
+		BCB3A67C13553FC1000A286B /* SLSOpenGLES11Renderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSOpenGLES11Renderer.m; sourceTree = "<group>"; };
+		BCB3A67E13553FD2000A286B /* SLSOpenGLES20Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSOpenGLES20Renderer.h; sourceTree = "<group>"; };
+		BCB3A67F13553FD2000A286B /* SLSOpenGLES20Renderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSOpenGLES20Renderer.m; sourceTree = "<group>"; };
 		BCC246AD112E3DB700710932 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = "Resources-iPad/English.lproj/SLSMoleculeDownloadView.xib"; sourceTree = "<group>"; };
 		BCC246AE112E3DB700710932 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = "Resources-iPad/French.lproj/SLSMoleculeDownloadView.xib"; sourceTree = "<group>"; };
 		BCC281280E1B1FCD00978ECA /* NSData+Gzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Gzip.h"; sourceTree = "<group>"; };
@@ -272,6 +281,12 @@
 				BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */,
 				BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */,
 				BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */,
+				BCB3A67813553F9D000A286B /* SLSOpenGLESRenderer.h */,
+				BCB3A67913553F9D000A286B /* SLSOpenGLESRenderer.m */,
+				BCB3A67B13553FC0000A286B /* SLSOpenGLES11Renderer.h */,
+				BCB3A67C13553FC1000A286B /* SLSOpenGLES11Renderer.m */,
+				BCB3A67E13553FD2000A286B /* SLSOpenGLES20Renderer.h */,
+				BCB3A67F13553FD2000A286B /* SLSOpenGLES20Renderer.m */,
 			);
 			name = "3D Molecule Display";
 			sourceTree = "<group>";
@@ -426,6 +441,9 @@
 				BCC8FE800EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m in Sources */,
 				BC146A9B0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m in Sources */,
 				BCD12CFA11308E1000737166 /* SLSMoleculeiPadRootViewController.m in Sources */,
+				BCB3A67A13553F9D000A286B /* SLSOpenGLESRenderer.m in Sources */,
+				BCB3A67D13553FC1000A286B /* SLSOpenGLES11Renderer.m in Sources */,
+				BCB3A68013553FD2000A286B /* SLSOpenGLES20Renderer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,7 +512,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos3.0]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
@@ -506,7 +523,6 @@
 				PRODUCT_NAME = Molecules;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos3.0]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -518,6 +534,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_THUMB_SUPPORT = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -562,6 +580,8 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -583,6 +603,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos2.0]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_THUMB_SUPPORT = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;

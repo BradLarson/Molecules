@@ -19,7 +19,7 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
 {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) 
+    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) 
 	{
 		self.title = NSLocalizedStringFromTable(@"Custom Location", @"Localized", @"");		
 		self.navigationItem.rightBarButtonItem = nil;		

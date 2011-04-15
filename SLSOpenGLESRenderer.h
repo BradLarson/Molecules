@@ -17,6 +17,8 @@
 
 #import "SLSMolecule.h"
 
+#define MAX_BOND_VBOS 2
+
 // OpenGL helper functions
 void normalize(GLfloat *v);
 
@@ -39,8 +41,8 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
     {255, 255,  48, 1.80f}, // SULFUR
     {255, 128,   0, 1.80f}, // PHOSPHOROUS
     {224, 102,  51, 2.00f}, // IRON
-    {255, 255, 255, 1.09f}, // UNKNOWN
-    {  0, 255,   0, 1.70f}, // SILICON
+    {  0, 255,   0, 1.70f}, // UNKNOWN
+    {200, 200,  90, 1.09f}, // SILICON
 };
 
 @interface SLSOpenGLESRenderer : NSObject 
@@ -66,10 +68,11 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
     // 16384 bonds per indexed VBO
     NSMutableData *atomVBOs[NUM_ATOMTYPES], *atomIndexBuffers[NUM_ATOMTYPES];
     GLuint atomVertexBufferHandles[NUM_ATOMTYPES], atomIndexBufferHandle[NUM_ATOMTYPES], numberOfIndicesInBuffer[NUM_ATOMTYPES];
-    GLuint bondVertexBufferHandle, bondIndexBufferHandle, numberOfBondIndicesInBuffer;
-    unsigned int numberOfAtomVertices[NUM_ATOMTYPES], numberOfBondVertices, numberOfAtomIndices[NUM_ATOMTYPES], numberOfBondIndices;
+    GLuint bondVertexBufferHandle[MAX_BOND_VBOS], bondIndexBufferHandle[MAX_BOND_VBOS], numberOfBondIndicesInBuffer[MAX_BOND_VBOS];
+    unsigned int numberOfAtomVertices[NUM_ATOMTYPES], numberOfBondVertices[MAX_BOND_VBOS], numberOfAtomIndices[NUM_ATOMTYPES], numberOfBondIndices[MAX_BOND_VBOS];
 
-    NSMutableData *bondVBO, *bondIndexBuffer;
+    NSMutableData *bondVBOs[MAX_BOND_VBOS], *bondIndexBuffers[MAX_BOND_VBOS];
+    unsigned int currentBondVBO;
 }
 
 @property(readwrite, retain, nonatomic) EAGLContext *context;

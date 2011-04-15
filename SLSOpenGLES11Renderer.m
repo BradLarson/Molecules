@@ -237,6 +237,8 @@ void normalize(GLfloat *v)
 
 - (void)renderFrameForMolecule:(SLSMolecule *)molecule;
 {
+//    CFAbsoluteTime elapsedTime, startTime = CFAbsoluteTimeGetCurrent();
+
     isFrameRenderingFinished = NO;
 	
 	[self startDrawingFrame];
@@ -277,6 +279,8 @@ void normalize(GLfloat *v)
 	[self presentRenderBuffer];
 	isFrameRenderingFinished = YES;
 
+//    elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
+//	NSLog(@"Render time: %.1f ms, Triangles per second: %.0f", elapsedTime * 1000.0, (CGFloat)totalNumberOfTriangles / elapsedTime);
 }
 
 #pragma mark -
@@ -337,9 +341,9 @@ void normalize(GLfloat *v)
 
 - (void)addBondNormal:(GLfloat *)newNormal;
 {
-    if (bondVBO == nil)
+    if (bondVBOs[currentBondVBO] == nil)
     {
-        bondVBO = [[NSMutableData alloc] init];
+        bondVBOs[currentBondVBO] = [[NSMutableData alloc] init];
     }
     
     GLshort shortNormals[4];
@@ -348,14 +352,14 @@ void normalize(GLfloat *v)
 	shortNormals[2] = (GLshort)round(newNormal[2] * 32767.0f);
 	shortNormals[3] = 0;
 	
-	[bondVBO appendBytes:shortNormals length:(sizeof(GLshort) * 4)];
+	[bondVBOs[currentBondVBO] appendBytes:shortNormals length:(sizeof(GLshort) * 4)];
 }
 
 - (void)addBondVertex:(GLfloat *)newVertex;
 {
-    if (bondVBO == nil)
+    if (bondVBOs[currentBondVBO] == nil)
     {
-        bondVBO = [[NSMutableData alloc] init];
+        bondVBOs[currentBondVBO] = [[NSMutableData alloc] init];
     }
     
     GLshort shortVertex[4];
@@ -369,22 +373,22 @@ void normalize(GLfloat *v)
     //		NSLog(@"Vertex outside range: %f, %f, %f", newVertex[0], newVertex[1], newVertex[2]);
     //	}
 	
-	[bondVBO appendBytes:shortVertex length:(sizeof(GLshort) * 4)];	
+	[bondVBOs[currentBondVBO] appendBytes:shortVertex length:(sizeof(GLshort) * 4)];	
     
     //	[m_vertexArray appendBytes:newVertex length:(sizeof(GLfloat) * 3)];
-	numberOfBondVertices++;
+	numberOfBondVertices[currentBondVBO]++;
 	totalNumberOfVertices++;
 }
 
 - (void)addBondIndex:(GLushort *)newIndex;
 {
-    if (bondIndexBuffer == nil)
+    if (bondIndexBuffers[currentBondVBO] == nil)
     {
-        bondIndexBuffer = [[NSMutableData alloc] init];
+        bondIndexBuffers[currentBondVBO] = [[NSMutableData alloc] init];
     }
     
-	[bondIndexBuffer appendBytes:newIndex length:sizeof(GLushort)];
-	numberOfBondIndices++;
+	[bondIndexBuffers[currentBondVBO] appendBytes:newIndex length:sizeof(GLushort)];
+	numberOfBondIndices[currentBondVBO]++;
 }
 
 - (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint radiusScaleFactor:(float)radiusScaleFactor;
@@ -439,6 +443,10 @@ void normalize(GLfloat *v)
 
 - (void)addBondToVertexBuffersWithStartPoint:(SLS3DPoint)startPoint endPoint:(SLS3DPoint)endPoint bondColor:(GLubyte *)bondColor bondType:(SLSBondType)bondType radiusScaleFactor:(float)radiusScaleFactor;
 {
+    if (currentBondVBO >= MAX_BOND_VBOS)
+    {
+        return;
+    }
     //	SLS3DPoint startPoint, endPoint;
     //	if ( (startValue == nil) || (endValue == nil) )
     //		return;
@@ -454,8 +462,20 @@ void normalize(GLfloat *v)
 	GLfloat xyHypotenuse = sqrt(xDifference * xDifference + yDifference * yDifference);
 	GLfloat xzHypotenuse = sqrt(xDifference * xDifference + zDifference * zDifference);
     
-	GLushort baseToAddToIndices = numberOfBondVertices;
-	
+	GLushort baseToAddToIndices = numberOfBondVertices[currentBondVBO];
+    if (baseToAddToIndices > 65500)
+    {
+        baseToAddToIndices = 0;
+        numberOfBondVertices[currentBondVBO] = 0;
+        numberOfBondIndices[currentBondVBO] = 0;
+        
+        currentBondVBO++;
+        if (currentBondVBO >= MAX_BOND_VBOS)
+        {
+            return;
+        }
+    }
+
 	// Do first edge vertices, colors, and normals
 	for (unsigned int edgeCounter = 0; edgeCounter < 4; edgeCounter++)
 	{
@@ -555,24 +575,27 @@ void normalize(GLfloat *v)
         }
     }
     
-    if (bondVBO != nil)
+    for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
     {
-        glGenBuffers(1, &bondIndexBufferHandle);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bondIndexBufferHandle);   
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, [bondIndexBuffer length], (GLushort *)[bondIndexBuffer bytes], GL_STATIC_DRAW);    
-        
-        numberOfBondIndicesInBuffer = ([bondIndexBuffer length] / sizeof(GLushort));
-        
-        [bondIndexBuffer release];
-        bondIndexBuffer = nil;
-
-        glGenBuffers(1, &bondVertexBufferHandle);
-        glBindBuffer(GL_ARRAY_BUFFER, bondVertexBufferHandle);
-        glBufferData(GL_ARRAY_BUFFER, [bondVBO length], (void *)[bondVBO bytes], GL_STATIC_DRAW); 
-        
-        [bondVBO release];
-        bondVBO = nil;
-    }
+        if (bondVBOs[currentBondVBOIndex] != nil)
+        {
+            glGenBuffers(1, &bondIndexBufferHandle[currentBondVBOIndex]);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bondIndexBufferHandle[currentBondVBOIndex]);   
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, [bondIndexBuffers[currentBondVBOIndex] length], (GLushort *)[bondIndexBuffers[currentBondVBOIndex] bytes], GL_STATIC_DRAW);    
+            
+            numberOfBondIndicesInBuffer[currentBondVBOIndex] = ([bondIndexBuffers[currentBondVBOIndex] length] / sizeof(GLushort));
+            
+            [bondIndexBuffers[currentBondVBOIndex] release];
+            bondIndexBuffers[currentBondVBOIndex] = nil;
+            
+            glGenBuffers(1, &bondVertexBufferHandle[currentBondVBOIndex]);
+            glBindBuffer(GL_ARRAY_BUFFER, bondVertexBufferHandle[currentBondVBOIndex]);
+            glBufferData(GL_ARRAY_BUFFER, [bondVBOs[currentBondVBOIndex] length], (void *)[bondVBOs[currentBondVBOIndex] bytes], GL_STATIC_DRAW); 
+            
+            [bondVBOs[currentBondVBOIndex] release];
+            bondVBOs[currentBondVBOIndex] = nil;
+        }
+    }    
 }
 
 - (void)drawMolecule;
@@ -600,26 +623,29 @@ void normalize(GLfloat *v)
         }        
     }
     
-    // Draw bonds next
-    if (bondVertexBufferHandle != 0)
+    for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
     {
-		GLubyte bondColor[4] = {200,200,200,255};  // Bonds are grey by default
-
-        glColor4f((GLfloat)bondColor[0] / 255.0f , (GLfloat)bondColor[1] / 255.0f, (GLfloat)bondColor[2] / 255.0f, 1.0);
-
-        // Bind the buffers
-        glBindBuffer(GL_ARRAY_BUFFER, bondVertexBufferHandle); 
-        glVertexPointer(3, GL_SHORT, 16, (char *)NULL + 0); 		
-        glNormalPointer(GL_SHORT, 16, (char *)NULL + 8); 
-        
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bondIndexBufferHandle);    
-        
-        // Do the actual drawing to the screen
-        glDrawElements(GL_TRIANGLES, numberOfBondIndicesInBuffer, GL_UNSIGNED_SHORT, NULL);
-        
-        // Unbind the buffers
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
-        glBindBuffer(GL_ARRAY_BUFFER, 0); 
+        // Draw bonds next
+        if (bondVertexBufferHandle[currentBondVBOIndex] != 0)
+        {
+            GLubyte bondColor[4] = {200,200,200,255};  // Bonds are grey by default
+            
+            glColor4f((GLfloat)bondColor[0] / 255.0f , (GLfloat)bondColor[1] / 255.0f, (GLfloat)bondColor[2] / 255.0f, 1.0);
+            
+            // Bind the buffers
+            glBindBuffer(GL_ARRAY_BUFFER, bondVertexBufferHandle[currentBondVBOIndex]); 
+            glVertexPointer(3, GL_SHORT, 16, (char *)NULL + 0); 		
+            glNormalPointer(GL_SHORT, 16, (char *)NULL + 8); 
+            
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bondIndexBufferHandle[currentBondVBOIndex]);    
+            
+            // Do the actual drawing to the screen
+            glDrawElements(GL_TRIANGLES, numberOfBondIndicesInBuffer[currentBondVBOIndex], GL_UNSIGNED_SHORT, NULL);
+            
+            // Unbind the buffers
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
+            glBindBuffer(GL_ARRAY_BUFFER, 0); 
+        }
     }
 }
 
@@ -638,11 +664,17 @@ void normalize(GLfloat *v)
     }
     if (bondVertexBufferHandle != 0)
     {
-        glDeleteBuffers(1, &bondVertexBufferHandle);
-        glDeleteBuffers(1, &bondIndexBufferHandle);   
-        
-        bondVertexBufferHandle = 0;
-        bondIndexBufferHandle = 0;
+        for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
+        {
+            if (bondIndexBufferHandle[currentBondVBOIndex] != 0)
+            {
+                glDeleteBuffers(1, &bondVertexBufferHandle[currentBondVBOIndex]);
+                glDeleteBuffers(1, &bondIndexBufferHandle[currentBondVBOIndex]);   
+            }
+
+            bondVertexBufferHandle[currentBondVBOIndex] = 0;
+            bondIndexBufferHandle[currentBondVBOIndex] = 0;
+        }
     }
 
 	totalNumberOfTriangles = 0;
@@ -655,9 +687,15 @@ void normalize(GLfloat *v)
     {
         numberOfAtomVertices[currentAtomTypeIndex] = 0;
         numberOfAtomIndices[currentAtomTypeIndex] = 0;
-    }    
-    numberOfBondVertices = 0;
-    numberOfBondIndices = 0;
+    }
+    
+    for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
+    {
+        numberOfBondVertices[currentBondVBOIndex] = 0;
+        numberOfBondIndices[currentBondVBOIndex] = 0;
+    }
+    
+    currentBondVBO = 0;
 }
 
 - (void)terminateMoleculeRendering;
@@ -681,11 +719,15 @@ void normalize(GLfloat *v)
         }
     }
     
-    [bondVBO release];
-    bondVBO = nil;
+    for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
+    {
+        [bondVBOs[currentBondVBOIndex] release];
+        bondVBOs[currentBondVBOIndex] = nil;
+
+        [bondIndexBuffers[currentBondVBOIndex] release];
+        bondIndexBuffers[currentBondVBOIndex] = nil;
+    }
     
-    [bondIndexBuffer release];
-    bondIndexBuffer = nil;
 }
 
 

@@ -860,8 +860,8 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
             // Use a smaller radius for the models in the ball-and-stick visualization
             if (currentVisualizationType == BALLANDSTICK)
             {
-//                radiusScaleFactor *= 0.27;
-                radiusScaleFactor *= 0.4;
+                radiusScaleFactor *= 0.27;
+//                radiusScaleFactor *= 0.4;
             }            
 
 			[openGLESRenderer addAtomToVertexBuffers:atomType atPoint:atomCoordinate radiusScaleFactor:radiusScaleFactor];

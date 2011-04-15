@@ -57,16 +57,19 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
     
     GLuint viewRenderbuffer, viewFramebuffer, viewDepthBuffer;	
 
+    
 	// OpenGL performance tuning statistics
 	NSInteger totalNumberOfVertices, totalNumberOfTriangles;
     
     // Binned atom types
     // 16384 atoms per indexed VBO per atom type
     // 16384 bonds per indexed VBO
-    NSMutableDictionary *atomVBOs, *atomIndices;
-    
-    NSMutableArray *bondVBOs, *bondIndexObjects, *bondDirections;
-    
+    NSMutableData *atomVBOs[NUM_ATOMTYPES], *atomIndexBuffers[NUM_ATOMTYPES];
+    GLuint atomVertexBufferHandles[NUM_ATOMTYPES], atomIndexBufferHandle[NUM_ATOMTYPES], numberOfIndicesInBuffer[NUM_ATOMTYPES];
+    GLuint bondVertexBufferHandle, bondIndexBufferHandle, numberOfBondIndicesInBuffer;
+    unsigned int numberOfAtomVertices[NUM_ATOMTYPES], numberOfBondVertices, numberOfAtomIndices[NUM_ATOMTYPES], numberOfBondIndices;
+
+    NSMutableData *bondVBO, *bondIndexBuffer;
 }
 
 @property(readwrite, retain, nonatomic) EAGLContext *context;
@@ -101,14 +104,14 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
 - (void)renderFrameForMolecule:(SLSMolecule *)molecule;
 
 // Molecule 3-D geometry generation
-- (void)addNormal:(GLfloat *)newNormal;
-- (void)addVertex:(GLfloat *)newVertex;
-- (void)addIndex:(GLushort *)newIndex;
+- (void)addVertex:(GLfloat *)newVertex forAtomType:(SLSAtomType)atomType;
+- (void)addIndex:(GLushort *)newIndex forAtomType:(SLSAtomType)atomType;
+- (void)addBondVertex:(GLfloat *)newVertex;
+- (void)addBondIndex:(GLushort *)newIndex;
 - (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint radiusScaleFactor:(float)radiusScaleFactor;
 - (void)addBondToVertexBuffersWithStartPoint:(SLS3DPoint)startPoint endPoint:(SLS3DPoint)endPoint bondColor:(GLubyte *)bondColor bondType:(SLSBondType)bondType radiusScaleFactor:(float)radiusScaleFactor;
 
 // OpenGL drawing routines
-- (void)addVertexBuffer;
 - (void)bindVertexBuffersForMolecule;
 - (void)drawMolecule;
 - (void)freeVertexBuffers;

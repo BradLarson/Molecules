@@ -834,7 +834,9 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 	{
 		//(id,molecule,residue,structure,element,x,y,z);"
 		if ( (currentFeatureBeingRendered % 100) == 0)
+        {
 			[self performSelectorOnMainThread:@selector(updateStatusIndicator) withObject:nil waitUntilDone:NO];
+        }
 		currentFeatureBeingRendered++;		
         
 		SLSResidueType residueType = sqlite3_column_int(retrieveAtomSQLStatement, 0);
@@ -953,7 +955,10 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 - (void)setIsBeingDisplayed:(BOOL)newValue;
 {
 	if (newValue == isBeingDisplayed)
+    {
 		return;
+    }
+    
 	isBeingDisplayed = newValue;
 	if (isBeingDisplayed)
 	{

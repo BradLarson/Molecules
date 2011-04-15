@@ -235,17 +235,22 @@
 #pragma mark -
 #pragma mark Molecule 3-D geometry generation
 
-- (void)addNormal:(GLfloat *)newNormal;
+- (void)addVertex:(GLfloat *)newVertex forAtomType:(SLSAtomType)atomType;
 {
     NSAssert(NO, @"Method not overridden");
 }
 
-- (void)addVertex:(GLfloat *)newVertex;
+- (void)addIndex:(GLushort *)newIndex forAtomType:(SLSAtomType)atomType;
 {
     NSAssert(NO, @"Method not overridden");
 }
 
-- (void)addIndex:(GLushort *)newIndex;
+- (void)addBondVertex:(GLfloat *)newVertex;
+{
+    NSAssert(NO, @"Method not overridden");
+}
+
+- (void)addBondIndex:(GLushort *)newIndex;
 {
     NSAssert(NO, @"Method not overridden");
 }

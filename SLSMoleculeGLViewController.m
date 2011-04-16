@@ -245,7 +245,7 @@
 - (void)resizeView;
 {
 //	[EAGLContext setCurrentContext:glView.context];
-	[openGLESRenderer destroyFramebuffer];
+	[openGLESRenderer destroyFramebuffers];
 	[openGLESRenderer createFramebuffersForLayer:(CAEAGLLayer *)self.view.layer];
 	[openGLESRenderer configureProjection];
 	if (displayLink == nil)

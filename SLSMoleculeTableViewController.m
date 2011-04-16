@@ -53,8 +53,26 @@
 	return self;
 }
 
-- (void)viewDidLoad 
+- (void)viewDidLoad;
 {
+	[super viewDidLoad];
+    
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+	{
+		//		self.tableView.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.054f alpha:1.0f];
+		self.tableView.backgroundColor = [UIColor blackColor];
+        self.tableView.separatorColor = [UIColor clearColor];
+        self.tableView.rowHeight = 50.0;
+        
+        CAGradientLayer *shadowGradient = [self shadowGradientForSize:CGSizeMake(320.0f, self.navigationController.view.frame.size.height)];
+		[self.navigationController.view.layer setMask:shadowGradient];
+		self.navigationController.view.layer.masksToBounds = NO;
+	}
+	else
+	{
+		self.tableView.backgroundColor = [UIColor whiteColor];
+	}
+	
 }
 
 - (void)dealloc 
@@ -121,6 +139,41 @@
 }
 
 #pragma mark -
+#pragma mark Table customization
+
+- (CAGradientLayer *)glowGradientForSize:(CGSize)gradientSize;
+{
+	CAGradientLayer *newGlow = [[[CAGradientLayer alloc] init] autorelease];
+	//	self.tableView.rowHeight = 20.0f + MAXHEIGHTFOREQUATIONSINTABLEVIEW;
+	
+	CGRect newGlowFrame = CGRectMake(0, 0, gradientSize.width, gradientSize.height);
+	newGlow.frame = newGlowFrame;
+//	CGColorRef topColor = [UIColor colorWithRed:0.5585f green:0.7695f blue:1.0f alpha:0.33f].CGColor;
+//	CGColorRef middleColor = [UIColor colorWithRed:0.5585f green:0.7695f blue:1.0f alpha:0.0f].CGColor;
+//	CGColorRef bottomColor = [UIColor colorWithRed:0.5585f green:0.672f blue:1.0f alpha:0.14f].CGColor;
+//	CGColorRef topColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.33f].CGColor;
+	CGColorRef topColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.40f].CGColor;
+	CGColorRef middleColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.0f].CGColor;
+	CGColorRef bottomColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.16f].CGColor;
+	newGlow.colors = [NSArray arrayWithObjects:(id)(topColor), (id)(middleColor), (id)(bottomColor), nil];
+	return newGlow;
+}
+
+- (CAGradientLayer *)shadowGradientForSize:(CGSize)gradientSize;
+{
+	CAGradientLayer *newShadow = [[[CAGradientLayer alloc] init] autorelease];
+	newShadow.startPoint = CGPointMake(1.0f, 0.5);
+	newShadow.endPoint = CGPointMake(0.9f, 0.5);
+	
+	CGRect newShadowFrame = CGRectMake(0, 0, gradientSize.width, gradientSize.height);
+	newShadow.frame = newShadowFrame;
+	CGColorRef rightColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.5f].CGColor;
+	CGColorRef leftColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:1.0f].CGColor;
+	newShadow.colors = [NSArray arrayWithObjects:(id)(rightColor), (id)(leftColor), nil];
+	return newShadow;
+}
+
+#pragma mark -
 #pragma mark Table view data source delegate methods
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -137,7 +190,18 @@
 		if (cell == nil) 
 		{
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Download"] autorelease];
-			cell.textLabel.textColor = [UIColor blackColor];
+            
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+            {
+                cell.backgroundColor = [UIColor blackColor];
+                cell.textLabel.textColor = [UIColor whiteColor];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+            else
+            {
+                cell.textLabel.textColor = [UIColor blackColor];
+            }
+
 		}		
 		
 		cell.textLabel.text = NSLocalizedStringFromTable(@"Download new molecules", @"Localized", nil);
@@ -150,13 +214,43 @@
 		if (cell == nil) 
 		{
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Molecules"] autorelease];
-			cell.textLabel.textColor = [UIColor blackColor];
+
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+            {
+                cell.backgroundColor = [UIColor blackColor];
+                cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                [cell.layer insertSublayer:[self glowGradientForSize:CGSizeMake(self.view.frame.size.width, 50.0)] atIndex:10];
+            }
+            else
+            {
+                cell.textLabel.textColor = [UIColor blackColor];
+            }
 		}
 		
-		if ((index - 1) == selectedIndex)
-			cell.textLabel.textColor = [UIColor blueColor];
-		else
-			cell.textLabel.textColor = [UIColor blackColor];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        {
+            if ((index - 1) == selectedIndex)
+            {
+                cell.textLabel.textColor = [UIColor colorWithRed:0 green:0.73 blue:0.95 alpha:1.0];
+            }
+            else
+            {
+                cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
+            }
+        }
+        else
+        {
+            if ((index - 1) == selectedIndex)
+            {
+                cell.textLabel.textColor = [UIColor blueColor];
+            }
+            else
+            {
+                cell.textLabel.textColor = [UIColor blackColor];
+            }
+        }
 
 		cell.textLabel.text = [[molecules objectAtIndex:(index-1)] compound];
 

@@ -9,6 +9,7 @@
 //  This controller manages the root table of molecules that are stored on the device
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 #import "SLSMoleculeRootViewController.h"
 #import "SLSMoleculeSearchViewController.h"
@@ -35,8 +36,12 @@
 @property(readwrite,retain) NSMutableArray *molecules;
 @property(readwrite) NSInteger selectedIndex;
 
-
+// Initialization and teardown
 - (id)initWithStyle:(UITableViewStyle)style initialSelectedMoleculeIndex:(NSInteger)initialSelectedMoleculeIndex;
+
+// Table customization
+- (CAGradientLayer *)glowGradientForSize:(CGSize)gradientSize;
+- (CAGradientLayer *)shadowGradientForSize:(CGSize)gradientSize;
 
 - (IBAction)displayMoleculeDownloadView;
 - (IBAction)switchBackToGLView;

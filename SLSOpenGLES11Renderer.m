@@ -144,7 +144,7 @@ void normalize(GLfloat *v)
 	return YES;
 }
 
-- (void)destroyFramebuffer 
+- (void)destroyFramebuffers
 {
 	glDeleteFramebuffersOES(1, &viewFramebuffer);
 	viewFramebuffer = 0;

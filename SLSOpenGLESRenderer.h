@@ -96,7 +96,7 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
 
 // OpenGL drawing support
 - (BOOL)createFramebuffersForLayer:(CAEAGLLayer *)glLayer;
-- (void)destroyFramebuffer;
+- (void)destroyFramebuffers;
 - (void)configureLighting;
 - (void)clearScreen;
 - (void)startDrawingFrame;

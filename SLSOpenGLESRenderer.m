@@ -194,9 +194,8 @@
     return YES;
 }
 
-- (void)destroyFramebuffer;
+- (void)destroyFramebuffers;
 {
-    NSAssert(NO, @"Method not overridden");
 }
 
 - (void)configureLighting;

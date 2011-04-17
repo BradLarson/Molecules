@@ -60,7 +60,6 @@
     }    
 }
 
-
 #pragma mark -
 #pragma mark OpenGL drawing support
 
@@ -306,6 +305,11 @@
     //    glBindTexture(GL_TEXTURE_2D, depthPassTexture);
 }
 
+- (void)generateSphereDepthMapTexture;
+{
+    
+}
+
 - (void)destroyFramebuffers;
 {
 	if (viewFramebuffer)
@@ -495,7 +499,6 @@
 	numberOfBondVertices[currentBondVBO]++;
 	totalNumberOfVertices++;
 }
-
 
 - (void)addTextureCoordinate:(GLfloat *)newTextureCoordinate forAtomType:(SLSAtomType)atomType;
 {

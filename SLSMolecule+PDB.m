@@ -203,7 +203,7 @@ static NSDictionary *pdbResidueLookupTable;
 			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"C4"] endPoint:[atomDictionary objectForKey:@"O4"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
 			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"C4"] endPoint:[atomDictionary objectForKey:@"C5"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
 			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"C5"] endPoint:[atomDictionary objectForKey:@"C6"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
-			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"C5"] endPoint:[atomDictionary objectForKey:@"N1"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
+			[self addBondToDatabaseWithStartPoint:[atomDictionary objectForKey:@"C6"] endPoint:[atomDictionary objectForKey:@"N1"] bondType:SINGLEBOND structureNumber:structureNumber residueKey:residueIdentifier];
 		}; break;
 		case ALANINE:
 		{

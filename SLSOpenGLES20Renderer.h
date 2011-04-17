@@ -31,7 +31,9 @@
     GLint cylinderRaytracingDepthTexture;
 
     GLuint depthPassTexture;
-	GLuint depthPassRenderbuffer, depthPassFramebuffer, depthPassDepthBuffer;
+    GLuint depthPassRenderbuffer, depthPassFramebuffer, depthPassDepthBuffer;
+
+    GLuint sphereDepthMappingTexture;
 
     GLfloat lightDirection[3];
     GLfloat orthographicMatrix[16];    
@@ -43,6 +45,7 @@
 - (BOOL)createFramebuffer:(GLuint *)framebufferPointer size:(CGSize)bufferSize renderBuffer:(GLuint *)renderbufferPointer depthBuffer:(GLuint *)depthbufferPointer texture:(GLuint *)backingTexturePointer layer:(CAEAGLLayer *)layer;
 - (void)switchToDisplayFramebuffer;
 - (void)switchToDepthPassFramebuffer;
+- (void)generateSphereDepthMapTexture;
 
 // Molecule 3-D geometry generation
 - (void)addTextureCoordinate:(GLfloat *)newTextureCoordinate forAtomType:(SLSAtomType)atomType;

@@ -34,7 +34,7 @@
 	GLuint depthPassRenderbuffer, depthPassFramebuffer, depthPassDepthBuffer;
 
     GLfloat lightDirection[3];
-    GLfloat orthographicMatrix[16];
+    GLfloat orthographicMatrix[16];    
 }
 
 // OpenGL drawing support
@@ -43,5 +43,14 @@
 - (BOOL)createFramebuffer:(GLuint *)framebufferPointer size:(CGSize)bufferSize renderBuffer:(GLuint *)renderbufferPointer depthBuffer:(GLuint *)depthbufferPointer texture:(GLuint *)backingTexturePointer layer:(CAEAGLLayer *)layer;
 - (void)switchToDisplayFramebuffer;
 - (void)switchToDepthPassFramebuffer;
+
+// Molecule 3-D geometry generation
+- (void)addTextureCoordinate:(GLfloat *)newTextureCoordinate forAtomType:(SLSAtomType)atomType;
+- (void)addBondDirection:(GLfloat *)newDirection;
+- (void)addBondTextureCoordinate:(GLfloat *)newTextureCoordinate;
+
+// OpenGL drawing routines
+- (void)renderDepthTextureForModelViewMatrix:(GLfloat *)depthModelViewMatrix;
+- (void)renderRaytracedSceneForModelViewMatrix:(GLfloat *)raytracingModelViewMatrix;
 
 @end

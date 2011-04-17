@@ -53,7 +53,8 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
     CATransform3D currentCalculatedMatrix;
 	BOOL isFirstDrawingOfMolecule, isFrameRenderingFinished;
 
-    float atomRadiusScaleFactor, bondRadiusScaleFactor;
+    float atomRadiusScaleFactor, bondRadiusScaleFactor, overallMoleculeScaleFactor;
+    float currentModelScaleFactor;
     
 	EAGLContext *context;   
     
@@ -78,6 +79,7 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
 @property(readwrite, retain, nonatomic) EAGLContext *context;
 @property (readonly) BOOL isFrameRenderingFinished;
 @property (readonly) NSInteger totalNumberOfVertices, totalNumberOfTriangles;
+@property (readwrite, nonatomic) float atomRadiusScaleFactor, bondRadiusScaleFactor, overallMoleculeScaleFactor;
 
 // Initialization and teardown
 - (id)initWithContext:(EAGLContext *)newContext;
@@ -109,10 +111,12 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
 // Molecule 3-D geometry generation
 - (void)addVertex:(GLfloat *)newVertex forAtomType:(SLSAtomType)atomType;
 - (void)addIndex:(GLushort *)newIndex forAtomType:(SLSAtomType)atomType;
+- (void)addIndices:(GLushort *)newIndices size:(unsigned int)numIndices forAtomType:(SLSAtomType)atomType;
 - (void)addBondVertex:(GLfloat *)newVertex;
 - (void)addBondIndex:(GLushort *)newIndex;
-- (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint radiusScaleFactor:(float)radiusScaleFactor;
-- (void)addBondToVertexBuffersWithStartPoint:(SLS3DPoint)startPoint endPoint:(SLS3DPoint)endPoint bondColor:(GLubyte *)bondColor bondType:(SLSBondType)bondType radiusScaleFactor:(float)radiusScaleFactor;
+- (void)addBondIndices:(GLushort *)newIndices size:(unsigned int)numIndices;
+- (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint;
+- (void)addBondToVertexBuffersWithStartPoint:(SLS3DPoint)startPoint endPoint:(SLS3DPoint)endPoint bondColor:(GLubyte *)bondColor bondType:(SLSBondType)bondType;
 
 // OpenGL drawing routines
 - (void)bindVertexBuffersForMolecule;

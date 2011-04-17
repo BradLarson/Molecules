@@ -286,30 +286,13 @@ void normalize(GLfloat *v)
 #pragma mark -
 #pragma mark Molecule 3-D geometry generation
 
-- (void)addNormal:(GLfloat *)newNormal forAtomType:(SLSAtomType)atomType;
-{
-    if (atomVBOs[atomType] == nil)
-    {
-        atomVBOs[atomType] = [[NSMutableData alloc] init];
-    }
-    
-	GLshort shortNormals[4];
-	shortNormals[0] = (GLshort)round(newNormal[0] * 32767.0f);
-	shortNormals[1] = (GLshort)round(newNormal[1] * 32767.0f);
-	shortNormals[2] = (GLshort)round(newNormal[2] * 32767.0f);
-	shortNormals[3] = 0;
-	
-	[atomVBOs[atomType] appendBytes:shortNormals length:(sizeof(GLshort) * 4)];	
-    //	[m_vertexArray appendBytes:newNormal length:(sizeof(GLfloat) * 3)];	
-}
-
 - (void)addVertex:(GLfloat *)newVertex forAtomType:(SLSAtomType)atomType;
 {
     if (atomVBOs[atomType] == nil)
     {
         atomVBOs[atomType] = [[NSMutableData alloc] init];
     }
-
+    
 	GLshort shortVertex[4];
 	shortVertex[0] = (GLshort)MAX(MIN(round(newVertex[0] * 32767.0f), 32767), -32767);
 	shortVertex[1] = (GLshort)MAX(MIN(round(newVertex[1] * 32767.0f), 32767), -32767);
@@ -326,33 +309,6 @@ void normalize(GLfloat *v)
     //	[m_vertexArray appendBytes:newVertex length:(sizeof(GLfloat) * 3)];
 	numberOfAtomVertices[atomType]++;
 	totalNumberOfVertices++;
-}
-
-- (void)addIndex:(GLushort *)newIndex forAtomType:(SLSAtomType)atomType;
-{
-    if (atomIndexBuffers[atomType] == nil)
-    {
-        atomIndexBuffers[atomType] = [[NSMutableData alloc] init];
-    }
-
-	[atomIndexBuffers[atomType] appendBytes:newIndex length:sizeof(GLushort)];
-	numberOfAtomIndices[atomType]++;
-}
-
-- (void)addBondNormal:(GLfloat *)newNormal;
-{
-    if (bondVBOs[currentBondVBO] == nil)
-    {
-        bondVBOs[currentBondVBO] = [[NSMutableData alloc] init];
-    }
-    
-    GLshort shortNormals[4];
-	shortNormals[0] = (GLshort)round(newNormal[0] * 32767.0f);
-	shortNormals[1] = (GLshort)round(newNormal[1] * 32767.0f);
-	shortNormals[2] = (GLshort)round(newNormal[2] * 32767.0f);
-	shortNormals[3] = 0;
-	
-	[bondVBOs[currentBondVBO] appendBytes:shortNormals length:(sizeof(GLshort) * 4)];
 }
 
 - (void)addBondVertex:(GLfloat *)newVertex;
@@ -380,34 +336,50 @@ void normalize(GLfloat *v)
 	totalNumberOfVertices++;
 }
 
-- (void)addBondIndex:(GLushort *)newIndex;
+- (void)addNormal:(GLfloat *)newNormal forAtomType:(SLSAtomType)atomType;
 {
-    if (bondIndexBuffers[currentBondVBO] == nil)
+    if (atomVBOs[atomType] == nil)
     {
-        bondIndexBuffers[currentBondVBO] = [[NSMutableData alloc] init];
+        atomVBOs[atomType] = [[NSMutableData alloc] init];
     }
     
-	[bondIndexBuffers[currentBondVBO] appendBytes:newIndex length:sizeof(GLushort)];
-	numberOfBondIndices[currentBondVBO]++;
+	GLshort shortNormals[4];
+	shortNormals[0] = (GLshort)round(newNormal[0] * 32767.0f);
+	shortNormals[1] = (GLshort)round(newNormal[1] * 32767.0f);
+	shortNormals[2] = (GLshort)round(newNormal[2] * 32767.0f);
+	shortNormals[3] = 0;
+	
+	[atomVBOs[atomType] appendBytes:shortNormals length:(sizeof(GLshort) * 4)];	
+    //	[m_vertexArray appendBytes:newNormal length:(sizeof(GLfloat) * 3)];	
 }
 
-- (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint radiusScaleFactor:(float)radiusScaleFactor;
+- (void)addBondNormal:(GLfloat *)newNormal;
 {
+    if (bondVBOs[currentBondVBO] == nil)
+    {
+        bondVBOs[currentBondVBO] = [[NSMutableData alloc] init];
+    }
+    
+    GLshort shortNormals[4];
+	shortNormals[0] = (GLshort)round(newNormal[0] * 32767.0f);
+	shortNormals[1] = (GLshort)round(newNormal[1] * 32767.0f);
+	shortNormals[2] = (GLshort)round(newNormal[2] * 32767.0f);
+	shortNormals[3] = 0;
+	
+	[bondVBOs[currentBondVBO] appendBytes:shortNormals length:(sizeof(GLshort) * 4)];
+}
+
+- (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint;
+{
+    float radiusScaleFactor = overallMoleculeScaleFactor * atomRadiusScaleFactor;
 	GLfloat newVertex[3];
-	GLubyte newColor[4];
 	GLfloat atomRadius = 0.4f;
     
 	GLushort baseToAddToIndices = numberOfAtomVertices[atomType];
     
     SLSAtomProperties currentAtomProperties = atomProperties[atomType];
     
-    newColor[0] = currentAtomProperties.redComponent;
-    newColor[1] = currentAtomProperties.greenComponent;
-    newColor[2] = currentAtomProperties.blueComponent;
-    newColor[3] = 1.0f;
-    
     atomRadius = currentAtomProperties.atomRadius;
-
 	atomRadius *= radiusScaleFactor;
     
 	for (int currentCounter = 0; currentCounter < 12; currentCounter++)
@@ -441,8 +413,10 @@ void normalize(GLfloat *v)
 	}	
 }
 
-- (void)addBondToVertexBuffersWithStartPoint:(SLS3DPoint)startPoint endPoint:(SLS3DPoint)endPoint bondColor:(GLubyte *)bondColor bondType:(SLSBondType)bondType radiusScaleFactor:(float)radiusScaleFactor;
+- (void)addBondToVertexBuffersWithStartPoint:(SLS3DPoint)startPoint endPoint:(SLS3DPoint)endPoint bondColor:(GLubyte *)bondColor bondType:(SLSBondType)bondType;
 {
+    float radiusScaleFactor = overallMoleculeScaleFactor * bondRadiusScaleFactor;
+
     if (currentBondVBO >= MAX_BOND_VBOS)
     {
         return;
@@ -453,8 +427,7 @@ void normalize(GLfloat *v)
     //	[startValue getValue:&startPoint];
     //	[endValue getValue:&endPoint];
     
-	GLfloat bondRadius = 0.10;
-	bondRadius *= radiusScaleFactor;
+	GLfloat bondRadius = radiusScaleFactor;
     
 	GLfloat xDifference = endPoint.x - startPoint.x;
 	GLfloat yDifference = endPoint.y - startPoint.y;
@@ -536,68 +509,6 @@ void normalize(GLfloat *v)
 #pragma mark -
 #pragma mark OpenGL drawing routines
 
-- (void)bindVertexBuffersForMolecule;
-{
-	for (unsigned int currentAtomIndexBufferIndex = 0; currentAtomIndexBufferIndex < NUM_ATOMTYPES; currentAtomIndexBufferIndex++)
-    {
-        if (atomIndexBuffers[currentAtomIndexBufferIndex] != nil)
-        {
-            glGenBuffers(1, &atomIndexBufferHandle[currentAtomIndexBufferIndex]);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, atomIndexBufferHandle[currentAtomIndexBufferIndex]);   
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, [atomIndexBuffers[currentAtomIndexBufferIndex] length], (GLushort *)[atomIndexBuffers[currentAtomIndexBufferIndex] bytes], GL_STATIC_DRAW);    
-            
-            numberOfIndicesInBuffer[currentAtomIndexBufferIndex] = ([atomIndexBuffers[currentAtomIndexBufferIndex] length] / sizeof(GLushort));
-            
-            // Now that the data are in the OpenGL buffer, can release the NSData
-            [atomIndexBuffers[currentAtomIndexBufferIndex] release];
-            atomIndexBuffers[currentAtomIndexBufferIndex] = nil;
-        }
-        else
-        {
-            atomIndexBufferHandle[currentAtomIndexBufferIndex] = 0;
-        }
-    }
-    
-	for (unsigned int currentAtomVBOIndex = 0; currentAtomVBOIndex < NUM_ATOMTYPES; currentAtomVBOIndex++)
-    {
-        if (atomVBOs[currentAtomVBOIndex] != nil)
-        {
-            glGenBuffers(1, &atomVertexBufferHandles[currentAtomVBOIndex]);
-            glBindBuffer(GL_ARRAY_BUFFER, atomVertexBufferHandles[currentAtomVBOIndex]);
-            glBufferData(GL_ARRAY_BUFFER, [atomVBOs[currentAtomVBOIndex] length], (void *)[atomVBOs[currentAtomVBOIndex] bytes], GL_STATIC_DRAW); 
-            
-            [atomVBOs[currentAtomVBOIndex] release];
-            atomVBOs[currentAtomVBOIndex] = nil;
-        }
-        else
-        {
-            atomVertexBufferHandles[currentAtomVBOIndex] = 0;
-        }
-    }
-    
-    for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
-    {
-        if (bondVBOs[currentBondVBOIndex] != nil)
-        {
-            glGenBuffers(1, &bondIndexBufferHandle[currentBondVBOIndex]);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bondIndexBufferHandle[currentBondVBOIndex]);   
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, [bondIndexBuffers[currentBondVBOIndex] length], (GLushort *)[bondIndexBuffers[currentBondVBOIndex] bytes], GL_STATIC_DRAW);    
-            
-            numberOfBondIndicesInBuffer[currentBondVBOIndex] = ([bondIndexBuffers[currentBondVBOIndex] length] / sizeof(GLushort));
-            
-            [bondIndexBuffers[currentBondVBOIndex] release];
-            bondIndexBuffers[currentBondVBOIndex] = nil;
-            
-            glGenBuffers(1, &bondVertexBufferHandle[currentBondVBOIndex]);
-            glBindBuffer(GL_ARRAY_BUFFER, bondVertexBufferHandle[currentBondVBOIndex]);
-            glBufferData(GL_ARRAY_BUFFER, [bondVBOs[currentBondVBOIndex] length], (void *)[bondVBOs[currentBondVBOIndex] bytes], GL_STATIC_DRAW); 
-            
-            [bondVBOs[currentBondVBOIndex] release];
-            bondVBOs[currentBondVBOIndex] = nil;
-        }
-    }    
-}
-
 - (void)drawMolecule;
 {
     // Draw all atoms first, binned based on their type
@@ -648,87 +559,5 @@ void normalize(GLfloat *v)
         }
     }
 }
-
-- (void)freeVertexBuffers;
-{    
-    for (unsigned int currentAtomType = 0; currentAtomType < NUM_ATOMTYPES; currentAtomType++)
-    {
-        if (atomIndexBufferHandle[currentAtomType] != 0)
-        {
-            glDeleteBuffers(1, &atomIndexBufferHandle[currentAtomType]);
-            glDeleteBuffers(1, &atomVertexBufferHandles[currentAtomType]);
-            
-            atomIndexBufferHandle[currentAtomType] = 0;
-            atomVertexBufferHandles[currentAtomType] = 0;
-        }
-    }
-    if (bondVertexBufferHandle != 0)
-    {
-        for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
-        {
-            if (bondIndexBufferHandle[currentBondVBOIndex] != 0)
-            {
-                glDeleteBuffers(1, &bondVertexBufferHandle[currentBondVBOIndex]);
-                glDeleteBuffers(1, &bondIndexBufferHandle[currentBondVBOIndex]);   
-            }
-
-            bondVertexBufferHandle[currentBondVBOIndex] = 0;
-            bondIndexBufferHandle[currentBondVBOIndex] = 0;
-        }
-    }
-
-	totalNumberOfTriangles = 0;
-	totalNumberOfVertices = 0;
-}
-
-- (void)initiateMoleculeRendering;
-{
-    for (unsigned int currentAtomTypeIndex = 0; currentAtomTypeIndex < NUM_ATOMTYPES; currentAtomTypeIndex++)
-    {
-        numberOfAtomVertices[currentAtomTypeIndex] = 0;
-        numberOfAtomIndices[currentAtomTypeIndex] = 0;
-    }
-    
-    for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
-    {
-        numberOfBondVertices[currentBondVBOIndex] = 0;
-        numberOfBondIndices[currentBondVBOIndex] = 0;
-    }
-    
-    currentBondVBO = 0;
-}
-
-- (void)terminateMoleculeRendering;
-{
-    // Release all the NSData arrays that were partially generated
-    for (unsigned int currentVBOIndex = 0; currentVBOIndex < NUM_ATOMTYPES; currentVBOIndex++)
-    {
-        if (atomVBOs[currentVBOIndex] != nil)
-        {
-            [atomVBOs[currentVBOIndex] release];
-            atomVBOs[currentVBOIndex] = nil;
-        }
-    }
-    
-    for (unsigned int currentIndexBufferIndex = 0; currentIndexBufferIndex < NUM_ATOMTYPES; currentIndexBufferIndex++)
-    {
-        if (atomIndexBuffers[currentIndexBufferIndex] != nil)
-        {
-            [atomIndexBuffers[currentIndexBufferIndex] release];
-            atomIndexBuffers[currentIndexBufferIndex] = nil;
-        }
-    }
-    
-    for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
-    {
-        [bondVBOs[currentBondVBOIndex] release];
-        bondVBOs[currentBondVBOIndex] = nil;
-
-        [bondIndexBuffers[currentBondVBOIndex] release];
-        bondIndexBuffers[currentBondVBOIndex] = nil;
-    }
-    
-}
-
 
 @end

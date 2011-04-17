@@ -764,7 +764,8 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 	[self performSelectorOnMainThread:@selector(showStatusIndicator) withObject:nil waitUntilDone:NO];
     
     [openGLESRenderer initiateMoleculeRendering];
-    
+    openGLESRenderer.overallMoleculeScaleFactor = scaleAdjustmentForX;
+
 	currentFeatureBeingRendered = 0;
     
 	switch(currentVisualizationType)
@@ -775,16 +776,21 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 			
 			[self readAndRenderAtoms:openGLESRenderer];
 			[self readAndRenderBonds:openGLESRenderer];
+            openGLESRenderer.bondRadiusScaleFactor = 0.15;
+            openGLESRenderer.atomRadiusScaleFactor = 0.35;
+//            openGLESRenderer.atomRadiusScaleFactor = 0.27;
 		}; break;
 		case SPACEFILLING:
 		{
 			totalNumberOfFeaturesToRender = numberOfAtoms;
 			[self readAndRenderAtoms:openGLESRenderer];
+            openGLESRenderer.atomRadiusScaleFactor = 1.0;
 		}; break;
 		case CYLINDRICAL:
 		{
 			totalNumberOfFeaturesToRender = numberOfBonds;
 			[self readAndRenderBonds:openGLESRenderer];
+            openGLESRenderer.bondRadiusScaleFactor = 1.0;
 		}; break;
 	}
 	
@@ -855,16 +861,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 		
 		if (residueType != WATER)
         {
-            float radiusScaleFactor = scaleAdjustmentForX;
-            
-            // Use a smaller radius for the models in the ball-and-stick visualization
-            if (currentVisualizationType == BALLANDSTICK)
-            {
-                radiusScaleFactor *= 0.27;
-//                radiusScaleFactor *= 0.4;
-            }            
-
-			[openGLESRenderer addAtomToVertexBuffers:atomType atPoint:atomCoordinate radiusScaleFactor:radiusScaleFactor];
+			[openGLESRenderer addAtomToVertexBuffers:atomType atPoint:atomCoordinate];
         }
 	}
 	
@@ -931,7 +928,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
         
 		if (residueType != WATER)
         {
-			[openGLESRenderer addBondToVertexBuffersWithStartPoint:startingCoordinate endPoint:endingCoordinate bondColor:bondColor bondType:bondType radiusScaleFactor:scaleAdjustmentForX];
+			[openGLESRenderer addBondToVertexBuffersWithStartPoint:startingCoordinate endPoint:endingCoordinate bondColor:bondColor bondType:bondType];
         }
 	}
 	

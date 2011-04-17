@@ -27,6 +27,7 @@
     isFrameRenderingFinished = YES;
     totalNumberOfVertices = 0;
 	totalNumberOfTriangles = 0;
+    currentModelScaleFactor = 1.0;
 
     GLfloat currentModelViewMatrix[16]  = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
     
@@ -157,6 +158,7 @@
 	if ((temporaryMatrix.m11 >= -100.0) && (temporaryMatrix.m11 <= 100.0))
     {
 		currentCalculatedMatrix = temporaryMatrix;
+        currentModelScaleFactor = currentModelScaleFactor * scaleFactor;
     }
 }
 
@@ -182,6 +184,7 @@
 {
  	GLfloat currentModelViewMatrix[16]  = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
 	[self convertMatrix:currentModelViewMatrix to3DTransform:&currentCalculatedMatrix];   
+    currentModelScaleFactor = 1.0;
     
     isFirstDrawingOfMolecule = YES;
 }
@@ -236,30 +239,62 @@
 
 - (void)addVertex:(GLfloat *)newVertex forAtomType:(SLSAtomType)atomType;
 {
-    NSAssert(NO, @"Method not overridden");
 }
 
 - (void)addIndex:(GLushort *)newIndex forAtomType:(SLSAtomType)atomType;
 {
-    NSAssert(NO, @"Method not overridden");
+    if (atomIndexBuffers[atomType] == nil)
+    {
+        atomIndexBuffers[atomType] = [[NSMutableData alloc] init];
+    }
+    
+	[atomIndexBuffers[atomType] appendBytes:newIndex length:sizeof(GLushort)];
+	numberOfAtomIndices[atomType]++;
+}
+
+- (void)addIndices:(GLushort *)newIndices size:(unsigned int)numIndices forAtomType:(SLSAtomType)atomType;
+{
+    if (atomIndexBuffers[atomType] == nil)
+    {
+        atomIndexBuffers[atomType] = [[NSMutableData alloc] init];
+    }
+
+    [atomIndexBuffers[atomType] appendBytes:newIndices length:(sizeof(GLushort) * numIndices)];
+	numberOfAtomIndices[atomType] += numIndices;
 }
 
 - (void)addBondVertex:(GLfloat *)newVertex;
 {
-    NSAssert(NO, @"Method not overridden");
 }
 
 - (void)addBondIndex:(GLushort *)newIndex;
 {
-    NSAssert(NO, @"Method not overridden");
+    if (bondIndexBuffers[currentBondVBO] == nil)
+    {
+        bondIndexBuffers[currentBondVBO] = [[NSMutableData alloc] init];
+    }
+    
+	[bondIndexBuffers[currentBondVBO] appendBytes:newIndex length:sizeof(GLushort)];
+	numberOfBondIndices[currentBondVBO]++;
 }
 
-- (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint radiusScaleFactor:(float)radiusScaleFactor;
+- (void)addBondIndices:(GLushort *)newIndices size:(unsigned int)numIndices;
+{
+    if (bondIndexBuffers[currentBondVBO] == nil)
+    {
+        bondIndexBuffers[currentBondVBO] = [[NSMutableData alloc] init];
+    }
+    
+	[bondIndexBuffers[currentBondVBO] appendBytes:newIndices length:(sizeof(GLushort) * numIndices)];
+	numberOfBondIndices[currentBondVBO] += numIndices;
+}
+
+- (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint;
 {
     NSAssert(NO, @"Method not overridden");
 }
 
-- (void)addBondToVertexBuffersWithStartPoint:(SLS3DPoint)startPoint endPoint:(SLS3DPoint)endPoint bondColor:(GLubyte *)bondColor bondType:(SLSBondType)bondType radiusScaleFactor:(float)radiusScaleFactor;
+- (void)addBondToVertexBuffersWithStartPoint:(SLS3DPoint)startPoint endPoint:(SLS3DPoint)endPoint bondColor:(GLubyte *)bondColor bondType:(SLSBondType)bondType;
 {
     NSAssert(NO, @"Method not overridden");
 }
@@ -274,7 +309,64 @@
 
 - (void)bindVertexBuffersForMolecule;
 {
-    NSAssert(NO, @"Method not overridden");
+	for (unsigned int currentAtomIndexBufferIndex = 0; currentAtomIndexBufferIndex < NUM_ATOMTYPES; currentAtomIndexBufferIndex++)
+    {
+        if (atomIndexBuffers[currentAtomIndexBufferIndex] != nil)
+        {
+            glGenBuffers(1, &atomIndexBufferHandle[currentAtomIndexBufferIndex]);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, atomIndexBufferHandle[currentAtomIndexBufferIndex]);   
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, [atomIndexBuffers[currentAtomIndexBufferIndex] length], (GLushort *)[atomIndexBuffers[currentAtomIndexBufferIndex] bytes], GL_STATIC_DRAW);    
+            
+            numberOfIndicesInBuffer[currentAtomIndexBufferIndex] = ([atomIndexBuffers[currentAtomIndexBufferIndex] length] / sizeof(GLushort));
+            
+            // Now that the data are in the OpenGL buffer, can release the NSData
+            [atomIndexBuffers[currentAtomIndexBufferIndex] release];
+            atomIndexBuffers[currentAtomIndexBufferIndex] = nil;
+        }
+        else
+        {
+            atomIndexBufferHandle[currentAtomIndexBufferIndex] = 0;
+        }
+    }
+    
+	for (unsigned int currentAtomVBOIndex = 0; currentAtomVBOIndex < NUM_ATOMTYPES; currentAtomVBOIndex++)
+    {
+        if (atomVBOs[currentAtomVBOIndex] != nil)
+        {
+            glGenBuffers(1, &atomVertexBufferHandles[currentAtomVBOIndex]);
+            glBindBuffer(GL_ARRAY_BUFFER, atomVertexBufferHandles[currentAtomVBOIndex]);
+            glBufferData(GL_ARRAY_BUFFER, [atomVBOs[currentAtomVBOIndex] length], (void *)[atomVBOs[currentAtomVBOIndex] bytes], GL_STATIC_DRAW); 
+            
+            [atomVBOs[currentAtomVBOIndex] release];
+            atomVBOs[currentAtomVBOIndex] = nil;
+        }
+        else
+        {
+            atomVertexBufferHandles[currentAtomVBOIndex] = 0;
+        }
+    }
+    
+    for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
+    {
+        if (bondVBOs[currentBondVBOIndex] != nil)
+        {
+            glGenBuffers(1, &bondIndexBufferHandle[currentBondVBOIndex]);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bondIndexBufferHandle[currentBondVBOIndex]);   
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, [bondIndexBuffers[currentBondVBOIndex] length], (GLushort *)[bondIndexBuffers[currentBondVBOIndex] bytes], GL_STATIC_DRAW);    
+            
+            numberOfBondIndicesInBuffer[currentBondVBOIndex] = ([bondIndexBuffers[currentBondVBOIndex] length] / sizeof(GLushort));
+            
+            [bondIndexBuffers[currentBondVBOIndex] release];
+            bondIndexBuffers[currentBondVBOIndex] = nil;
+            
+            glGenBuffers(1, &bondVertexBufferHandle[currentBondVBOIndex]);
+            glBindBuffer(GL_ARRAY_BUFFER, bondVertexBufferHandle[currentBondVBOIndex]);
+            glBufferData(GL_ARRAY_BUFFER, [bondVBOs[currentBondVBOIndex] length], (void *)[bondVBOs[currentBondVBOIndex] bytes], GL_STATIC_DRAW); 
+            
+            [bondVBOs[currentBondVBOIndex] release];
+            bondVBOs[currentBondVBOIndex] = nil;
+        }
+    }    
 }
 
 - (void)drawMolecule;
@@ -283,18 +375,84 @@
 }
 
 - (void)freeVertexBuffers;
-{
-    NSAssert(NO, @"Method not overridden");
+{    
+    for (unsigned int currentAtomType = 0; currentAtomType < NUM_ATOMTYPES; currentAtomType++)
+    {
+        if (atomIndexBufferHandle[currentAtomType] != 0)
+        {
+            glDeleteBuffers(1, &atomIndexBufferHandle[currentAtomType]);
+            glDeleteBuffers(1, &atomVertexBufferHandles[currentAtomType]);
+            
+            atomIndexBufferHandle[currentAtomType] = 0;
+            atomVertexBufferHandles[currentAtomType] = 0;
+        }
+    }
+    if (bondVertexBufferHandle != 0)
+    {
+        for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
+        {
+            if (bondIndexBufferHandle[currentBondVBOIndex] != 0)
+            {
+                glDeleteBuffers(1, &bondVertexBufferHandle[currentBondVBOIndex]);
+                glDeleteBuffers(1, &bondIndexBufferHandle[currentBondVBOIndex]);   
+            }
+            
+            bondVertexBufferHandle[currentBondVBOIndex] = 0;
+            bondIndexBufferHandle[currentBondVBOIndex] = 0;
+        }
+    }
+    
+	totalNumberOfTriangles = 0;
+	totalNumberOfVertices = 0;
 }
+
 
 - (void)initiateMoleculeRendering;
 {
-    NSAssert(NO, @"Method not overridden");
+    for (unsigned int currentAtomTypeIndex = 0; currentAtomTypeIndex < NUM_ATOMTYPES; currentAtomTypeIndex++)
+    {
+        numberOfAtomVertices[currentAtomTypeIndex] = 0;
+        numberOfAtomIndices[currentAtomTypeIndex] = 0;
+    }
+    
+    for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
+    {
+        numberOfBondVertices[currentBondVBOIndex] = 0;
+        numberOfBondIndices[currentBondVBOIndex] = 0;
+    }
+    
+    currentBondVBO = 0;
 }
 
 - (void)terminateMoleculeRendering;
 {
-    NSAssert(NO, @"Method not overridden");
+    // Release all the NSData arrays that were partially generated
+    for (unsigned int currentVBOIndex = 0; currentVBOIndex < NUM_ATOMTYPES; currentVBOIndex++)
+    {
+        if (atomVBOs[currentVBOIndex] != nil)
+        {
+            [atomVBOs[currentVBOIndex] release];
+            atomVBOs[currentVBOIndex] = nil;
+        }
+    }
+    
+    for (unsigned int currentIndexBufferIndex = 0; currentIndexBufferIndex < NUM_ATOMTYPES; currentIndexBufferIndex++)
+    {
+        if (atomIndexBuffers[currentIndexBufferIndex] != nil)
+        {
+            [atomIndexBuffers[currentIndexBufferIndex] release];
+            atomIndexBuffers[currentIndexBufferIndex] = nil;
+        }
+    }
+    
+    for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
+    {
+        [bondVBOs[currentBondVBOIndex] release];
+        bondVBOs[currentBondVBOIndex] = nil;
+        
+        [bondIndexBuffers[currentBondVBOIndex] release];
+        bondIndexBuffers[currentBondVBOIndex] = nil;
+    }    
 }
 
 #pragma mark -
@@ -303,5 +461,6 @@
 @synthesize context;
 @synthesize isFrameRenderingFinished;
 @synthesize totalNumberOfVertices, totalNumberOfTriangles;
+@synthesize atomRadiusScaleFactor, bondRadiusScaleFactor, overallMoleculeScaleFactor;
 
 @end

@@ -6,9 +6,10 @@
 //
 
 attribute vec4 position;
-attribute vec4 inputImpostorSpaceCoordinate;
+attribute vec2 inputImpostorSpaceCoordinate;
 
 varying mediump vec2 impostorSpaceCoordinate;
+varying mediump vec2 depthLookupCoordinate;
 varying mediump float normalizedDepth;
 
 uniform mat4 modelViewProjMatrix;
@@ -20,6 +21,7 @@ void main()
     vec4 transformedPosition;
 	transformedPosition = modelViewProjMatrix * position;
     impostorSpaceCoordinate = inputImpostorSpaceCoordinate.xy;
+    depthLookupCoordinate = (inputImpostorSpaceCoordinate + 1.0) / 2.0;
     
     transformedPosition.xy = transformedPosition.xy + inputImpostorSpaceCoordinate.xy * vec2(sphereRadius);
     transformedPosition = transformedPosition * orthographicMatrix;

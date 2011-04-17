@@ -107,7 +107,8 @@
     glEnable(GL_TEXTURE_2D);
 
     [self createFramebuffer:&viewFramebuffer size:CGSizeZero renderBuffer:&viewRenderbuffer depthBuffer:&viewDepthBuffer texture:NULL layer:glLayer];    
-    [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:&depthPassDepthBuffer texture:&depthPassTexture layer:glLayer];
+//    [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:&depthPassDepthBuffer texture:&depthPassTexture layer:glLayer];
+    [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:NULL texture:&depthPassTexture layer:glLayer];
 
     [self switchToDisplayFramebuffer];
     glViewport(0, 0, backingWidth, backingHeight);
@@ -205,6 +206,7 @@
     sphereRaytracingColor = [sphereRaytracingProgram uniformIndex:@"sphereColor"];
     sphereRaytracingDepthTexture = [sphereRaytracingProgram uniformIndex:@"depthTexture"];
     sphereRaytracingOrthographicMatrix = [sphereRaytracingProgram uniformIndex:@"orthographicMatrix"];
+    sphereRaytracingPrecalculatedDepthTexture = [sphereRaytracingProgram uniformIndex:@"precalculatedSphereDepthTexture"];
 
     cylinderRaytracingProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"CylinderRaytracing" fragmentShaderFilename:@"CylinderRaytracing"];
 	[cylinderRaytracingProgram addAttribute:@"position"];
@@ -255,6 +257,8 @@
 	sphereDepthModelViewMatrix = [sphereDepthProgram uniformIndex:@"modelViewProjMatrix"];
     sphereDepthRadius = [sphereDepthProgram uniformIndex:@"sphereRadius"];
     sphereDepthOrthographicMatrix = [sphereDepthProgram uniformIndex:@"orthographicMatrix"];
+    sphereDepthPrecalculatedDepthTexture = [sphereDepthProgram uniformIndex:@"precalculatedSphereDepthTexture"];
+
     
     cylinderDepthProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"CylinderDepth" fragmentShaderFilename:@"CylinderDepth"];
 	[cylinderDepthProgram addAttribute:@"position"];
@@ -281,6 +285,8 @@
     cylinderDepthRadius = [cylinderDepthProgram uniformIndex:@"cylinderRadius"];
     cylinderDepthOrthographicMatrix = [cylinderDepthProgram uniformIndex:@"orthographicMatrix"];
 
+    [self generateSphereDepthMapTexture];
+    
 }
 
 - (void)switchToDisplayFramebuffer;
@@ -305,9 +311,46 @@
     //    glBindTexture(GL_TEXTURE_2D, depthPassTexture);
 }
 
+#define SPHEREDEPTHTEXTUREWIDTH 256
+
 - (void)generateSphereDepthMapTexture;
 {
+    // This takes only 95 ms on an iPad 1, so it's worth it for the 8% - 18% per-frame speedup 
     
+    unsigned char *sphereDepthTextureData = (unsigned char *)malloc(SPHEREDEPTHTEXTUREWIDTH * SPHEREDEPTHTEXTUREWIDTH);
+
+    glGenTextures(1, &sphereDepthMappingTexture);
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    
+    for (unsigned int currentColumnInTexture = 0; currentColumnInTexture < SPHEREDEPTHTEXTUREWIDTH; currentColumnInTexture++)
+    {
+        float normalizedYLocation = -1.0 + 2.0 * (float)currentColumnInTexture / (float)SPHEREDEPTHTEXTUREWIDTH;
+        for (unsigned int currentRowInTexture = 0; currentRowInTexture < SPHEREDEPTHTEXTUREWIDTH; currentRowInTexture++)
+        {
+            float normalizedXLocation = -1.0 + 2.0 * (float)currentRowInTexture / (float)SPHEREDEPTHTEXTUREWIDTH;
+            unsigned char currentDepthByte = 0;
+            
+            float distanceFromCenter = sqrt(normalizedXLocation * normalizedXLocation + normalizedYLocation * normalizedYLocation);
+            if (distanceFromCenter <= 1.0)
+            {
+                currentDepthByte = round(255.0 * sqrt(1.0 - distanceFromCenter * distanceFromCenter));
+            }
+
+            sphereDepthTextureData[currentColumnInTexture * SPHEREDEPTHTEXTUREWIDTH + currentRowInTexture] = currentDepthByte;
+        }
+    }
+    
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, SPHEREDEPTHTEXTUREWIDTH, SPHEREDEPTHTEXTUREWIDTH, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, sphereDepthTextureData);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    free(sphereDepthTextureData);
 }
 
 - (void)destroyFramebuffers;
@@ -366,8 +409,9 @@
     [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
     [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix];
     
-    const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
-    glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
+    // Discarding is only supported starting with 4.0, so I need to do a check here for 3.2 devices
+//    const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
+//    glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
     
     [self presentRenderBuffer];
     
@@ -543,11 +587,18 @@
     glBlendEquation(GL_MIN_EXT);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClear(GL_COLOR_BUFFER_BIT);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     // Draw the spheres
     [sphereDepthProgram use];
     
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
+    glUniform1i(sphereDepthPrecalculatedDepthTexture, 2);
+
+    glUniformMatrix4fv(sphereDepthModelViewMatrix, 1, 0, depthModelViewMatrix);
+    glUniformMatrix4fv(sphereDepthOrthographicMatrix, 1, 0, orthographicMatrix);
+
     float sphereScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * atomRadiusScaleFactor;
     GLsizei atomVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2;
     
@@ -556,8 +607,6 @@
         if (atomIndexBufferHandle[currentAtomType] != 0)
         {
             glUniform1f(sphereDepthRadius, atomProperties[currentAtomType].atomRadius * sphereScaleFactor);
-            glUniformMatrix4fv(sphereDepthModelViewMatrix, 1, 0, depthModelViewMatrix);
-            glUniformMatrix4fv(sphereDepthOrthographicMatrix, 1, 0, orthographicMatrix);
 
             // Bind the VBO and attach it to the program
             glBindBuffer(GL_ARRAY_BUFFER, atomVertexBufferHandles[currentAtomType]); 
@@ -583,15 +632,15 @@
     GLsizei bondVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2;
 	GLfloat bondRadius = 1.0;
 
+    glUniform1f(cylinderDepthRadius, bondRadius * cylinderScaleFactor);
+    glUniformMatrix4fv(cylinderDepthModelViewMatrix, 1, 0, depthModelViewMatrix);
+    glUniformMatrix4fv(cylinderDepthOrthographicMatrix, 1, 0, orthographicMatrix);
+
     for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
     {
         // Draw bonds next
         if (bondVertexBufferHandle[currentBondVBOIndex] != 0)
         {
-            glUniform1f(cylinderDepthRadius, bondRadius * cylinderScaleFactor);
-            glUniformMatrix4fv(cylinderDepthModelViewMatrix, 1, 0, depthModelViewMatrix);
-            glUniformMatrix4fv(cylinderDepthOrthographicMatrix, 1, 0, orthographicMatrix);
-
             // Bind the VBO and attach it to the program
             glBindBuffer(GL_ARRAY_BUFFER, bondVertexBufferHandle[currentBondVBOIndex]); 
             glVertexAttribPointer(cylinderDepthPositionAttribute, 3, GL_FLOAT, 0, bondVBOStride, (char *)NULL + 0);
@@ -636,7 +685,14 @@
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, depthPassTexture);
     glUniform1i(sphereRaytracingDepthTexture, 0);
-    
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
+    glUniform1i(sphereRaytracingPrecalculatedDepthTexture, 2);
+
+    glUniformMatrix4fv(sphereRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
+    glUniformMatrix4fv(sphereRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
+
     float sphereScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * atomRadiusScaleFactor;
     GLsizei atomVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2;
     
@@ -646,8 +702,6 @@
         {
             glUniform1f(sphereRaytracingRadius, atomProperties[currentAtomType].atomRadius * sphereScaleFactor);
             glUniform3f(sphereRaytracingColor, (GLfloat)atomProperties[currentAtomType].redComponent / 255.0f , (GLfloat)atomProperties[currentAtomType].greenComponent / 255.0f, (GLfloat)atomProperties[currentAtomType].blueComponent / 255.0f);
-            glUniformMatrix4fv(sphereRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
-            glUniformMatrix4fv(sphereRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
 
             // Bind the VBO and attach it to the program
             glBindBuffer(GL_ARRAY_BUFFER, atomVertexBufferHandles[currentAtomType]); 
@@ -676,15 +730,16 @@
     GLsizei bondVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2;
 	GLfloat bondRadius = 1.0;
 
+    glUniform1f(cylinderRaytracingRadius, bondRadius * cylinderScaleFactor);
+    glUniform3f(cylinderRaytracingColor, 0.75, 0.75, 0.75);
+    glUniformMatrix4fv(cylinderRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
+    glUniformMatrix4fv(cylinderRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
+
     for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
     {
         // Draw bonds next
         if (bondVertexBufferHandle[currentBondVBOIndex] != 0)
         {
-            glUniform1f(cylinderRaytracingRadius, bondRadius * cylinderScaleFactor);
-            glUniform3f(cylinderRaytracingColor, 0.75, 0.75, 0.75);
-            glUniformMatrix4fv(cylinderRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
-            glUniformMatrix4fv(cylinderRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
 
             // Bind the VBO and attach it to the program
             glBindBuffer(GL_ARRAY_BUFFER, bondVertexBufferHandle[currentBondVBOIndex]); 

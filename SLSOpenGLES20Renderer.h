@@ -15,6 +15,7 @@
     GLProgram *sphereDepthProgram;
 	GLint sphereDepthPositionAttribute, sphereDepthImpostorSpaceAttribute, sphereDepthModelViewMatrix;
     GLint sphereDepthRadius, sphereDepthOrthographicMatrix;
+    GLint sphereDepthPrecalculatedDepthTexture;
     
     GLProgram *cylinderDepthProgram;
     GLint cylinderDepthPositionAttribute, cylinderDepthDirectionAttribute, cylinderDepthImpostorSpaceAttribute, cylinderDepthModelViewMatrix;
@@ -23,7 +24,7 @@
 	GLProgram *sphereRaytracingProgram;
 	GLint sphereRaytracingPositionAttribute, sphereRaytracingImpostorSpaceAttribute, sphereRaytracingModelViewMatrix;
     GLint sphereRaytracingLightPosition, sphereRaytracingRadius, sphereRaytracingColor, sphereRaytracingOrthographicMatrix;
-    GLint sphereRaytracingDepthTexture;
+    GLint sphereRaytracingDepthTexture, sphereRaytracingPrecalculatedDepthTexture;
     
 	GLProgram *cylinderRaytracingProgram;
     GLint cylinderRaytracingPositionAttribute, cylinderRaytracingDirectionAttribute, cylinderRaytracingImpostorSpaceAttribute, cylinderRaytracingModelViewMatrix;

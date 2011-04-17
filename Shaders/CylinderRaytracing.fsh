@@ -13,12 +13,11 @@ varying highp float normalizedRadialDisplacementAtEndCaps;
 varying highp vec2 rotationFactor;
 varying mediump vec3 normalizedViewCoordinate;
 
-const mediump vec3 oneVector = vec3(1.0, 1.0, 1.0);
 const mediump float oneThird = 1.0 / 3.0;
 
 mediump float depthFromEncodedColor(mediump vec4 encodedColor)
 {
-    return dot(encodedColor.rgb, oneVector) * oneThird;
+    return oneThird * (encodedColor.r + encodedColor.g + encodedColor.b);
     //    return encodedColor.r;
 }
 

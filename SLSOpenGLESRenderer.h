@@ -31,18 +31,18 @@ typedef typedef struct {
 
 //typedef enum { CARBON, HYDROGEN, OXYGEN, NITROGEN, SULFUR, PHOSPHOROUS, IRON, UNKNOWN, SILICON, NUM_ATOMTYPES } SLSAtomType;
 // van der Waals radius used here
-
+// http://www.umass.edu/microbio/rasmol/rasbonds.htm
 
 static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
-    {144, 144, 144, 1.70f}, // CARBON
-    {255, 255, 255, 1.09f}, // HYDROGEN
-    {240,   0,   0, 1.52f}, // OXYGEN
-    { 48,  80, 248, 1.55f}, // NITROGEN
-    {255, 255,  48, 1.80f}, // SULFUR
-    {255, 128,   0, 1.80f}, // PHOSPHOROUS
-    {224, 102,  51, 2.00f}, // IRON
-    {  0, 255,   0, 1.70f}, // UNKNOWN
-    {200, 200,  90, 1.09f}, // SILICON
+    {120, 120, 120, 1.55f}, // CARBON
+    {255, 255, 255, 1.10f}, // HYDROGEN
+    {240,  40,  40, 1.35f}, // OXYGEN
+    { 48,  80, 248, 1.40f}, // NITROGEN
+    {255, 255,  48, 1.81f}, // SULFUR
+    {255, 128,   0, 1.88f}, // PHOSPHOROUS
+    {224, 102,  51, 1.95f}, // IRON
+    {  0, 255,   0, 1.50f}, // UNKNOWN
+    {200, 200,  90, 1.50f}, // SILICON
 };
 
 @interface SLSOpenGLESRenderer : NSObject 

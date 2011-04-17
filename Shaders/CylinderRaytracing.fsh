@@ -55,15 +55,15 @@ void main()
     vec3 finalCylinderColor = cylinderColor;
     
     // ambient
-    float lightingIntensity  = 0.5;
-    lightingIntensity += 0.5 * clamp(dot(lightPosition, normal), 0.0, 1.0);
+    float lightingIntensity = 0.3 + 0.7 * clamp(dot(lightPosition, normal), 0.0, 1.0);
     finalCylinderColor *= lightingIntensity;
     
     // Per fragment specular lighting
     lightingIntensity  = clamp(dot(lightPosition, normal), 0.0, 1.0);
     lightingIntensity  = pow(lightingIntensity, 60.0);
-    finalCylinderColor += vec3(0.6, 0.6, 0.6) * lightingIntensity;
+    finalCylinderColor += vec3(0.4, 0.4, 0.4) * lightingIntensity;
     
 //    gl_FragColor = texture2D(depthTexture, normalizedViewCoordinate.xy);
+
     gl_FragColor = vec4(finalCylinderColor, 1.0);
 }

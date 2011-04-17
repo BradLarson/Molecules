@@ -18,6 +18,11 @@ mediump float depthFromEncodedColor(mediump vec4 encodedColor)
 //    return encodedColor.r;
 }
 
+/*vec3 normalizeColor(vec3 color)
+{
+    return color / max(dot(color, vec3(1.0/3.0)), 0.3);
+}*/
+
 void main()
 {
     float distanceFromCenter = length(impostorSpaceCoordinate);
@@ -49,13 +54,13 @@ void main()
     vec3 finalSphereColor = sphereColor;
     
     // ambient
-    float lightingIntensity = 0.5 + 0.5 * clamp(dot(lightPosition, normal), 0.0, 1.0);
+    float lightingIntensity = 0.3 + 0.7 * clamp(dot(lightPosition, normal), 0.0, 1.0);
     finalSphereColor *= lightingIntensity;
     
     // Per fragment specular lighting
     lightingIntensity  = clamp(dot(lightPosition, normal), 0.0, 1.0);
     lightingIntensity  = pow(lightingIntensity, 60.0);
-    finalSphereColor += vec3(0.6, 0.6, 0.6) * lightingIntensity;
+    finalSphereColor += vec3(0.4, 0.4, 0.4) * lightingIntensity;
 
 //    gl_FragColor = texture2D(depthTexture, normalizedViewCoordinate.xy);
     

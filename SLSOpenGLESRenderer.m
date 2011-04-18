@@ -169,6 +169,7 @@
 	
 	xTranslation = xTranslation / (currentScaleFactor * currentScaleFactor);
 	yTranslation = yTranslation / (currentScaleFactor * currentScaleFactor);
+
 	// Use the (0,4,8) components to figure the eye's X axis in the model coordinate system, translate along that
 	CATransform3D temporaryMatrix = CATransform3DTranslate(currentCalculatedMatrix, xTranslation * currentCalculatedMatrix.m11, xTranslation * currentCalculatedMatrix.m21, xTranslation * currentCalculatedMatrix.m31);
 	// Use the (1,5,9) components to figure the eye's Y axis in the model coordinate system, translate along that
@@ -236,6 +237,11 @@
 
 #pragma mark -
 #pragma mark Molecule 3-D geometry generation
+
+- (void)configureBasedOnNumberOfAtoms:(unsigned int)numberOfAtoms numberOfBonds:(unsigned int)numberOfBonds;
+{
+    
+}
 
 - (void)addVertex:(GLfloat *)newVertex forAtomType:(SLSAtomType)atomType;
 {
@@ -405,7 +411,6 @@
 	totalNumberOfTriangles = 0;
 	totalNumberOfVertices = 0;
 }
-
 
 - (void)initiateMoleculeRendering;
 {

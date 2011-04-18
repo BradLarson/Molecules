@@ -3,6 +3,7 @@ precision mediump float;
 uniform vec3 lightPosition;
 uniform vec3 cylinderColor;
 uniform sampler2D depthTexture;
+uniform mat4 inverseModelViewProjMatrix;
 
 varying highp vec2 impostorSpaceCoordinate;
 varying highp vec3 normalAlongCenterAxis;
@@ -28,7 +29,7 @@ void main()
     float depthOffset = depthOffsetAlongCenterAxis * adjustmentFromCenterAxis;
 
     vec3 normal = vec3(normalizedRadialDisplacementAtEndCaps * rotationFactor.x * adjustmentFromCenterAxis + impostorSpaceCoordinate.s * rotationFactor.y,
-                       normalizedRadialDisplacementAtEndCaps * rotationFactor.y * adjustmentFromCenterAxis + impostorSpaceCoordinate.s * rotationFactor.x,
+                       -(normalizedRadialDisplacementAtEndCaps * rotationFactor.y * adjustmentFromCenterAxis + impostorSpaceCoordinate.s * rotationFactor.x),
                        normalizedDepthOffsetAlongCenterAxis * adjustmentFromCenterAxis);
     
     normal = normalize(normal);
@@ -63,6 +64,12 @@ void main()
     finalCylinderColor += vec3(0.4, 0.4, 0.4) * lightingIntensity;
     
 //    gl_FragColor = texture2D(depthTexture, normalizedViewCoordinate.xy);
+
+//    normal.z = -normal.z;
+//    normal = (inverseModelViewProjMatrix * vec4(normal, 0.0)).xyz;
+//    normal.z = -normal.z;
+//    
+//    gl_FragColor = vec4(normal, 1.0);
 
     gl_FragColor = vec4(finalCylinderColor, 1.0);
 }

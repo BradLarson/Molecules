@@ -21,23 +21,35 @@
     GLint cylinderDepthPositionAttribute, cylinderDepthDirectionAttribute, cylinderDepthImpostorSpaceAttribute, cylinderDepthModelViewMatrix;
     GLint cylinderDepthRadius, cylinderDepthOrthographicMatrix;
     
-	GLProgram *sphereRaytracingProgram;
+    GLuint depthPassTexture;
+    GLuint depthPassRenderbuffer, depthPassFramebuffer, depthPassDepthBuffer;
+
+    GLProgram *sphereRaytracingProgram;
 	GLint sphereRaytracingPositionAttribute, sphereRaytracingImpostorSpaceAttribute, sphereRaytracingModelViewMatrix;
-    GLint sphereRaytracingLightPosition, sphereRaytracingRadius, sphereRaytracingColor, sphereRaytracingOrthographicMatrix;
+    GLint sphereRaytracingLightPosition, sphereRaytracingRadius, sphereRaytracingColor, sphereRaytracingOrthographicMatrix, sphereRaytracingInverseModelViewMatrix;
     GLint sphereRaytracingDepthTexture, sphereRaytracingPrecalculatedDepthTexture;
     
 	GLProgram *cylinderRaytracingProgram;
     GLint cylinderRaytracingPositionAttribute, cylinderRaytracingDirectionAttribute, cylinderRaytracingImpostorSpaceAttribute, cylinderRaytracingModelViewMatrix;
     GLint cylinderRaytracingLightPosition, cylinderRaytracingRadius, cylinderRaytracingColor, cylinderRaytracingOrthographicMatrix;
-    GLint cylinderRaytracingDepthTexture;
-
-    GLuint depthPassTexture;
-    GLuint depthPassRenderbuffer, depthPassFramebuffer, depthPassDepthBuffer;
-
+    GLint cylinderRaytracingDepthTexture, cylinderRaytracingInverseModelViewMatrix;
+    
+    GLProgram *sphereAmbientOcclusionProgram;
+	GLint sphereAmbientOcclusionPositionAttribute, sphereAmbientOcclusionImpostorSpaceAttribute, sphereAmbientOcclusionModelViewMatrix;
+    GLint sphereAmbientOcclusionRadius, sphereAmbientOcclusionOrthographicMatrix, sphereAmbientOcclusionInverseModelViewMatrix;
+    GLint sphereAmbientOcclusionDepthTexture, sphereAmbientOcclusionPrecalculatedDepthTexture;
+    
+    GLuint ambientOcclusionTexture;
+    GLuint ambientOcclusionRenderbuffer, ambientOcclusionFramebuffer;
+    
     GLuint sphereDepthMappingTexture;
 
+    GLfloat previousAmbientOcclusionOffset[2];
     GLfloat lightDirection[3];
-    GLfloat orthographicMatrix[16];    
+    GLfloat orthographicMatrix[16];
+    
+    unsigned int widthOfAtomAOTexturePatch;
+    GLfloat normalizedAOTexturePatchWidth;
 }
 
 // OpenGL drawing support
@@ -46,15 +58,19 @@
 - (BOOL)createFramebuffer:(GLuint *)framebufferPointer size:(CGSize)bufferSize renderBuffer:(GLuint *)renderbufferPointer depthBuffer:(GLuint *)depthbufferPointer texture:(GLuint *)backingTexturePointer layer:(CAEAGLLayer *)layer;
 - (void)switchToDisplayFramebuffer;
 - (void)switchToDepthPassFramebuffer;
+- (void)switchToAmbientOcclusionFramebuffer;
 - (void)generateSphereDepthMapTexture;
 
 // Molecule 3-D geometry generation
 - (void)addTextureCoordinate:(GLfloat *)newTextureCoordinate forAtomType:(SLSAtomType)atomType;
+- (void)addAmbientOcclusionTextureOffset:(GLfloat *)ambientOcclusionOffset forAtomType:(SLSAtomType)atomType;
 - (void)addBondDirection:(GLfloat *)newDirection;
 - (void)addBondTextureCoordinate:(GLfloat *)newTextureCoordinate;
 
 // OpenGL drawing routines
 - (void)renderDepthTextureForModelViewMatrix:(GLfloat *)depthModelViewMatrix;
 - (void)renderRaytracedSceneForModelViewMatrix:(GLfloat *)raytracingModelViewMatrix;
+- (void)renderAmbientOcclusionTextureForModelViewMatrix:(GLfloat *)ambientOcclusionModelViewMatrix;
+- (void)prepareAmbientOcclusionMap;
 
 @end

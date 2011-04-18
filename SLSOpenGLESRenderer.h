@@ -109,6 +109,7 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
 - (void)renderFrameForMolecule:(SLSMolecule *)molecule;
 
 // Molecule 3-D geometry generation
+- (void)configureBasedOnNumberOfAtoms:(unsigned int)numberOfAtoms numberOfBonds:(unsigned int)numberOfBonds;
 - (void)addVertex:(GLfloat *)newVertex forAtomType:(SLSAtomType)atomType;
 - (void)addIndex:(GLushort *)newIndex forAtomType:(SLSAtomType)atomType;
 - (void)addIndices:(GLushort *)newIndices size:(unsigned int)numIndices forAtomType:(SLSAtomType)atomType;

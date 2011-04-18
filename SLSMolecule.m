@@ -764,6 +764,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 	[self performSelectorOnMainThread:@selector(showStatusIndicator) withObject:nil waitUntilDone:NO];
     
     [openGLESRenderer initiateMoleculeRendering];
+    [openGLESRenderer configureBasedOnNumberOfAtoms:numberOfAtoms numberOfBonds:numberOfBonds];
     openGLESRenderer.overallMoleculeScaleFactor = scaleAdjustmentForX;
 
 	currentFeatureBeingRendered = 0;

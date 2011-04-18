@@ -49,6 +49,9 @@
 		BCA2E7E7135A1B9B00D7206C /* SphereDepth.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BCA2E7DF135A1B9B00D7206C /* SphereDepth.vsh */; };
 		BCA2E7E8135A1B9B00D7206C /* SphereRaytracing.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCA2E7E0135A1B9B00D7206C /* SphereRaytracing.fsh */; };
 		BCA2E7E9135A1B9B00D7206C /* SphereRaytracing.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BCA2E7E1135A1B9B00D7206C /* SphereRaytracing.vsh */; };
+		BCA2E811135BB90F00D7206C /* caffeine.pdb.gz in Resources */ = {isa = PBXBuildFile; fileRef = BCA2E810135BB90F00D7206C /* caffeine.pdb.gz */; };
+		BCA2E814135BBA3000D7206C /* SphereAmbientOcclusion.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCA2E812135BBA3000D7206C /* SphereAmbientOcclusion.fsh */; };
+		BCA2E815135BBA3000D7206C /* SphereAmbientOcclusion.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BCA2E813135BBA3000D7206C /* SphereAmbientOcclusion.vsh */; };
 		BCB3A67A13553F9D000A286B /* SLSOpenGLESRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB3A67913553F9D000A286B /* SLSOpenGLESRenderer.m */; };
 		BCB3A67D13553FC1000A286B /* SLSOpenGLES11Renderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB3A67C13553FC1000A286B /* SLSOpenGLES11Renderer.m */; };
 		BCB3A68013553FD2000A286B /* SLSOpenGLES20Renderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB3A67F13553FD2000A286B /* SLSOpenGLES20Renderer.m */; };
@@ -125,6 +128,9 @@
 		BCA2E7DF135A1B9B00D7206C /* SphereDepth.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SphereDepth.vsh; path = Shaders/SphereDepth.vsh; sourceTree = "<group>"; };
 		BCA2E7E0135A1B9B00D7206C /* SphereRaytracing.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SphereRaytracing.fsh; path = Shaders/SphereRaytracing.fsh; sourceTree = "<group>"; };
 		BCA2E7E1135A1B9B00D7206C /* SphereRaytracing.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SphereRaytracing.vsh; path = Shaders/SphereRaytracing.vsh; sourceTree = "<group>"; };
+		BCA2E810135BB90F00D7206C /* caffeine.pdb.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = caffeine.pdb.gz; sourceTree = "<group>"; };
+		BCA2E812135BBA3000D7206C /* SphereAmbientOcclusion.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SphereAmbientOcclusion.fsh; path = Shaders/SphereAmbientOcclusion.fsh; sourceTree = "<group>"; };
+		BCA2E813135BBA3000D7206C /* SphereAmbientOcclusion.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SphereAmbientOcclusion.vsh; path = Shaders/SphereAmbientOcclusion.vsh; sourceTree = "<group>"; };
 		BCB3A67813553F9D000A286B /* SLSOpenGLESRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSOpenGLESRenderer.h; sourceTree = "<group>"; };
 		BCB3A67913553F9D000A286B /* SLSOpenGLESRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSOpenGLESRenderer.m; sourceTree = "<group>"; };
 		BCB3A67B13553FC0000A286B /* SLSOpenGLES11Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSOpenGLES11Renderer.h; sourceTree = "<group>"; };
@@ -242,6 +248,7 @@
 				BC5BBBF90E216A170001DFD0 /* 1TRZ.pdb.gz */,
 				BC5BB7DD0E2020B10001DFD0 /* 1EVE.pdb.gz */,
 				BC5BB79B0E200C3B0001DFD0 /* 1BNA.pdb.gz */,
+				BCA2E810135BB90F00D7206C /* caffeine.pdb.gz */,
 				BCDC9F860EB375FB00ADCFA5 /* Info.plist */,
 				BCDFF55F115469BF005C984C /* RotationIconiPad.png */,
 				BCDFF57211546FB2005C984C /* RotationIconiPadCancel.png */,
@@ -287,6 +294,8 @@
 				BCA2E7DF135A1B9B00D7206C /* SphereDepth.vsh */,
 				BCA2E7E0135A1B9B00D7206C /* SphereRaytracing.fsh */,
 				BCA2E7E1135A1B9B00D7206C /* SphereRaytracing.vsh */,
+				BCA2E812135BBA3000D7206C /* SphereAmbientOcclusion.fsh */,
+				BCA2E813135BBA3000D7206C /* SphereAmbientOcclusion.vsh */,
 			);
 			name = Shaders;
 			sourceTree = "<group>";
@@ -458,6 +467,9 @@
 				BCA2E7E7135A1B9B00D7206C /* SphereDepth.vsh in Resources */,
 				BCA2E7E8135A1B9B00D7206C /* SphereRaytracing.fsh in Resources */,
 				BCA2E7E9135A1B9B00D7206C /* SphereRaytracing.vsh in Resources */,
+				BCA2E814135BBA3000D7206C /* SphereAmbientOcclusion.fsh in Resources */,
+				BCA2E815135BBA3000D7206C /* SphereAmbientOcclusion.vsh in Resources */,
+				BCA2E811135BB90F00D7206C /* caffeine.pdb.gz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

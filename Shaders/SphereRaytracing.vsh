@@ -12,7 +12,7 @@ varying mediump vec2 impostorSpaceCoordinate;
 varying mediump vec3 normalizedViewCoordinate;
 varying mediump vec2 depthLookupCoordinate;
 
-uniform mat4 modelViewProjMatrix;
+uniform mediump mat4 modelViewProjMatrix;
 uniform mediump mat4 orthographicMatrix;
 uniform mediump float sphereRadius;
 

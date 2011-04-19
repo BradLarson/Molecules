@@ -58,6 +58,8 @@
     
 	if ((temporaryMatrix.m11 >= -100.0) && (temporaryMatrix.m11 <= 100.0))
     {
+//        currentCalculatedMatrix = CATransform3DMakeRotation(M_PI, 0.0, 0.0, 1.0);
+
 		currentCalculatedMatrix = temporaryMatrix;
     }    
 }
@@ -121,7 +123,7 @@
     [EAGLContext setCurrentContext:context];
 
     // Need this to make the layer dimensions an even multiple of 32 for performance reasons
-	// Also, the 4.2 Simulator will not display the 
+	// Also, the 4.2 Simulator will not display the frame otherwise
 	CGRect layerBounds = glLayer.bounds;
 	CGFloat newWidth = (CGFloat)((int)layerBounds.size.width / 32) * 32.0f;
 	CGFloat newHeight = (CGFloat)((int)layerBounds.size.height / 32) * 32.0f;
@@ -137,7 +139,7 @@
     [self switchToDisplayFramebuffer];
     glViewport(0, 0, backingWidth, backingHeight);
 
-    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-4.0 far:4.0];
+    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-3.0 far:3.0];
     
     return YES;
 }
@@ -177,17 +179,40 @@
 	
     if (backingTexturePointer != NULL)
     {
-        glGenTextures(1, backingTexturePointer);
+        if ( (ambientOcclusionTexture == 0) || (*backingTexturePointer != ambientOcclusionTexture))
+        {
+            if (*backingTexturePointer != 0)
+            {
+                glDeleteTextures(1, backingTexturePointer);
+            }
+            
+            glGenTextures(1, backingTexturePointer);
+
+            glBindTexture(GL_TEXTURE_2D, *backingTexturePointer);
+            if (*backingTexturePointer == ambientOcclusionTexture)
+            {
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bufferSize.width, bufferSize.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+            }
+            else
+            {
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bufferSize.width, bufferSize.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+//                glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, bufferSize.width, bufferSize.height, 0, GL_LUMINANCE, GL_FLOAT, 0);
+            }            
+        }
+        else
+        {
+            glBindTexture(GL_TEXTURE_2D, *backingTexturePointer);
+        }
         
-        glBindTexture(GL_TEXTURE_2D, *backingTexturePointer);
-        //        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-        //        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bufferSize.width, bufferSize.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, *backingTexturePointer, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
     }	
@@ -209,6 +234,7 @@
     sphereRaytracingProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"SphereRaytracing" fragmentShaderFilename:@"SphereRaytracing"];
 	[sphereRaytracingProgram addAttribute:@"position"];
 	[sphereRaytracingProgram addAttribute:@"inputImpostorSpaceCoordinate"];
+    [sphereRaytracingProgram addAttribute:@"ambientOcclusionTextureOffset"];
 	if (![sphereRaytracingProgram link])
 	{
 		NSLog(@"Raytracing shader link failed");
@@ -224,6 +250,7 @@
     
     sphereRaytracingPositionAttribute = [sphereRaytracingProgram attributeIndex:@"position"];
     sphereRaytracingImpostorSpaceAttribute = [sphereRaytracingProgram attributeIndex:@"inputImpostorSpaceCoordinate"];
+    sphereRaytracingAOOffsetAttribute = [sphereRaytracingProgram attributeIndex:@"ambientOcclusionTextureOffset"];
 	sphereRaytracingModelViewMatrix = [sphereRaytracingProgram uniformIndex:@"modelViewProjMatrix"];
     sphereRaytracingLightPosition = [sphereRaytracingProgram uniformIndex:@"lightPosition"];
     sphereRaytracingRadius = [sphereRaytracingProgram uniformIndex:@"sphereRadius"];
@@ -232,6 +259,8 @@
     sphereRaytracingOrthographicMatrix = [sphereRaytracingProgram uniformIndex:@"orthographicMatrix"];
     sphereRaytracingPrecalculatedDepthTexture = [sphereRaytracingProgram uniformIndex:@"precalculatedSphereDepthTexture"];
     sphereRaytracingInverseModelViewMatrix = [sphereRaytracingProgram uniformIndex:@"inverseModelViewProjMatrix"];
+    sphereRaytracingTexturePatchWidth = [sphereRaytracingProgram uniformIndex:@"ambientOcclusionTexturePatchWidth"];
+    sphereRaytracingAOTexture = [sphereRaytracingProgram uniformIndex:@"ambientOcclusionTexture"];
 
     cylinderRaytracingProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"CylinderRaytracing" fragmentShaderFilename:@"CylinderRaytracing"];
 	[cylinderRaytracingProgram addAttribute:@"position"];
@@ -314,6 +343,7 @@
     sphereAmbientOcclusionProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"SphereAmbientOcclusion" fragmentShaderFilename:@"SphereAmbientOcclusion"];
 	[sphereAmbientOcclusionProgram addAttribute:@"position"];
 	[sphereAmbientOcclusionProgram addAttribute:@"inputImpostorSpaceCoordinate"];
+    [sphereAmbientOcclusionProgram addAttribute:@"ambientOcclusionTextureOffset"];
 	if (![sphereAmbientOcclusionProgram link])
 	{
 		NSLog(@"Raytracing shader link failed");
@@ -327,15 +357,18 @@
 		sphereAmbientOcclusionProgram = nil;
 	}
     
-    sphereAmbientOcclusionPositionAttribute = [sphereRaytracingProgram attributeIndex:@"position"];
-    sphereAmbientOcclusionImpostorSpaceAttribute = [sphereRaytracingProgram attributeIndex:@"inputImpostorSpaceCoordinate"];
-	sphereAmbientOcclusionModelViewMatrix = [sphereRaytracingProgram uniformIndex:@"modelViewProjMatrix"];
-    sphereAmbientOcclusionRadius = [sphereRaytracingProgram uniformIndex:@"sphereRadius"];
-    sphereAmbientOcclusionDepthTexture = [sphereRaytracingProgram uniformIndex:@"depthTexture"];
-    sphereAmbientOcclusionOrthographicMatrix = [sphereRaytracingProgram uniformIndex:@"orthographicMatrix"];
-    sphereAmbientOcclusionPrecalculatedDepthTexture = [sphereRaytracingProgram uniformIndex:@"precalculatedSphereDepthTexture"];
-    sphereAmbientOcclusionInverseModelViewMatrix = [sphereRaytracingProgram uniformIndex:@"inverseModelViewProjMatrix"];
-
+    sphereAmbientOcclusionPositionAttribute = [sphereAmbientOcclusionProgram attributeIndex:@"position"];
+    sphereAmbientOcclusionImpostorSpaceAttribute = [sphereAmbientOcclusionProgram attributeIndex:@"inputImpostorSpaceCoordinate"];
+    sphereAmbientOcclusionAOOffsetAttribute = [sphereAmbientOcclusionProgram attributeIndex:@"ambientOcclusionTextureOffset"];
+	sphereAmbientOcclusionModelViewMatrix = [sphereAmbientOcclusionProgram uniformIndex:@"modelViewProjMatrix"];
+    sphereAmbientOcclusionRadius = [sphereAmbientOcclusionProgram uniformIndex:@"sphereRadius"];
+    sphereAmbientOcclusionDepthTexture = [sphereAmbientOcclusionProgram uniformIndex:@"depthTexture"];
+    sphereAmbientOcclusionOrthographicMatrix = [sphereAmbientOcclusionProgram uniformIndex:@"orthographicMatrix"];
+    sphereAmbientOcclusionPrecalculatedDepthTexture = [sphereAmbientOcclusionProgram uniformIndex:@"precalculatedSphereDepthTexture"];
+    sphereAmbientOcclusionInverseModelViewMatrix = [sphereAmbientOcclusionProgram uniformIndex:@"inverseModelViewProjMatrix"];
+    sphereAmbientOcclusionTexturePatchWidth = [sphereAmbientOcclusionProgram uniformIndex:@"ambientOcclusionTexturePatchWidth"];
+    sphereAmbientOcclusionIntensityFactor = [sphereAmbientOcclusionProgram uniformIndex:@"intensityFactor"];
+    
     [self generateSphereDepthMapTexture];
 }
 
@@ -466,8 +499,13 @@
     GLfloat currentModelViewMatrix[16];
     [self convert3DTransform:&currentCalculatedMatrix toMatrix:currentModelViewMatrix];
 
+    CATransform3D inverseMatrix = CATransform3DInvert(currentCalculatedMatrix);
+    GLfloat inverseModelViewMatrix[16];
+    [self convert3DTransform:&inverseMatrix toMatrix:inverseModelViewMatrix];
+
     [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
-    [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix];
+//    [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix];
+    [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix];
     
     // Discarding is only supported starting with 4.0, so I need to do a check here for 3.2 devices
 //    const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
@@ -510,12 +548,16 @@
     // Interleave texture coordinates in VBO
     [self addVertex:newVertex forAtomType:atomType];
     [self addTextureCoordinate:lowerLeftTexture forAtomType:atomType];
+    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
     [self addVertex:newVertex forAtomType:atomType];
     [self addTextureCoordinate:lowerRightTexture forAtomType:atomType];
+    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
     [self addVertex:newVertex forAtomType:atomType];
     [self addTextureCoordinate:upperLeftTexture forAtomType:atomType];
+    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
     [self addVertex:newVertex forAtomType:atomType];
     [self addTextureCoordinate:upperRightTexture forAtomType:atomType];
+    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
 
     //    123243
     GLushort newIndices[6];
@@ -527,6 +569,13 @@
     newIndices[5] = baseToAddToIndices + 2;
 
     [self addIndices:newIndices size:6 forAtomType:atomType];
+    
+    previousAmbientOcclusionOffset[0] += normalizedAOTexturePatchWidth;
+    if (previousAmbientOcclusionOffset[0] > (1.0 - normalizedAOTexturePatchWidth))
+    {
+        previousAmbientOcclusionOffset[0] = 0.0;
+        previousAmbientOcclusionOffset[1] += normalizedAOTexturePatchWidth;
+    }
 }
 
 - (void)addBondToVertexBuffersWithStartPoint:(SLS3DPoint)startPoint endPoint:(SLS3DPoint)endPoint bondColor:(GLubyte *)bondColor bondType:(SLSBondType)bondType;
@@ -625,7 +674,12 @@
 
 - (void)addAmbientOcclusionTextureOffset:(GLfloat *)ambientOcclusionOffset forAtomType:(SLSAtomType)atomType;
 {
+    if (atomVBOs[atomType] == nil)
+    {
+        atomVBOs[atomType] = [[NSMutableData alloc] init];
+    }
     
+	[atomVBOs[atomType] appendBytes:ambientOcclusionOffset length:(sizeof(GLfloat) * 2)];	
 }
 
 - (void)addBondDirection:(GLfloat *)newDirection;
@@ -651,6 +705,49 @@
 #pragma mark -
 #pragma mark OpenGL drawing routines
 
+- (void)testPrecisionOfConversionCalculation;
+{
+    float stepSize = 1.0 / 20.0;
+    
+    for (float inputFloat = 0.0; inputFloat < 1.0; inputFloat += stepSize)
+    {
+        float ceilInputFloat = ceil(inputFloat * 765.0) / 765.0;
+        
+        float blue = MAX(0.0, ceilInputFloat - (2.0 / 3.0));
+        float green = MAX(0.0, ceilInputFloat - (1.0 / 3.0) - blue);
+        float red = ceilInputFloat - blue - green;
+        
+        unsigned char blueValue = (unsigned char)(blue * 3.0 * 255.0);
+        unsigned char greenValue = (unsigned char)(green * 3.0 * 255.0);
+        unsigned char redValue = (unsigned char)(red * 3.0 * 255.0);
+        
+        float result = ((float)blueValue / 255.0 + (float)greenValue / 255.0 + (float)redValue / 255.0) / 3.0;
+        
+        NSLog(@"1: Input value: %f, converted value: %f", inputFloat, result);
+        
+        
+        int convertedInput = ceil(inputFloat * 765.0);
+        int blueInt = MAX(0, convertedInput - 510);
+        int greenInt = MAX(0, convertedInput - 255 - blueInt);
+        int redInt = convertedInput - blueInt - greenInt;
+
+        unsigned char blueValue2 = (unsigned char)(blueInt);
+        unsigned char greenValue2 = (unsigned char)(greenInt);
+        unsigned char redValue2 = (unsigned char)(redInt);
+        
+        float result2 = ((float)blueValue2 / 255.0 + (float)greenValue2 / 255.0 + (float)redValue2 / 255.0) / 3.0;
+        NSLog(@"2: Input value: %f, converted value: %f", inputFloat, result2);
+
+    }
+}
+
+- (void)bindVertexBuffersForMolecule;
+{
+    [super bindVertexBuffersForMolecule];
+//    [self testPrecisionOfConversionCalculation];
+    [self prepareAmbientOcclusionMap];
+}
+
 - (void)renderDepthTextureForModelViewMatrix:(GLfloat *)depthModelViewMatrix;
 {
     [self switchToDepthPassFramebuffer];
@@ -674,7 +771,7 @@
     glUniformMatrix4fv(sphereDepthOrthographicMatrix, 1, 0, orthographicMatrix);
 
     float sphereScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * atomRadiusScaleFactor;
-    GLsizei atomVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2;
+    GLsizei atomVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
     
     for (unsigned int currentAtomType = 0; currentAtomType < NUM_ATOMTYPES; currentAtomType++)
     {
@@ -735,13 +832,9 @@
     }
 }
 
-- (void)renderRaytracedSceneForModelViewMatrix:(GLfloat *)raytracingModelViewMatrix;
+- (void)renderRaytracedSceneForModelViewMatrix:(GLfloat *)raytracingModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix;
 {
     [self switchToDisplayFramebuffer];
-
-    CATransform3D inverseMatrix = CATransform3DInvert(currentCalculatedMatrix);
-    GLfloat inverseModelViewMatrix[16];
-    [self convert3DTransform:&inverseMatrix toMatrix:inverseModelViewMatrix];
     
     glDisable(GL_BLEND);
     //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -767,13 +860,18 @@
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
     glUniform1i(sphereRaytracingPrecalculatedDepthTexture, 2);
+    
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexture);
+    glUniform1i(sphereRaytracingAOTexture, 3);
 
     glUniformMatrix4fv(sphereRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
-    glUniformMatrix4fv(sphereRaytracingInverseModelViewMatrix, 1, 0, inverseModelViewMatrix);
+    glUniformMatrix4fv(sphereRaytracingInverseModelViewMatrix, 1, 0, inverseMatrix);
     glUniformMatrix4fv(sphereRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
+    glUniform1f(sphereRaytracingTexturePatchWidth, normalizedAOTexturePatchWidth);
 
     float sphereScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * atomRadiusScaleFactor;
-    GLsizei atomVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2;
+    GLsizei atomVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
     
     for (unsigned int currentAtomType = 0; currentAtomType < NUM_ATOMTYPES; currentAtomType++)
     {
@@ -788,7 +886,9 @@
             glEnableVertexAttribArray(sphereRaytracingPositionAttribute);
             glVertexAttribPointer(sphereRaytracingImpostorSpaceAttribute, 2, GL_FLOAT, 0, atomVBOStride, (char *)NULL + (sizeof(GLfloat) * 3));
             glEnableVertexAttribArray(sphereRaytracingImpostorSpaceAttribute);
-            
+            glVertexAttribPointer(sphereRaytracingAOOffsetAttribute, 2, GL_FLOAT, 0, atomVBOStride, (char *)NULL + (sizeof(GLfloat) * 3) + (sizeof(GLfloat) * 2));
+            glEnableVertexAttribArray(sphereRaytracingAOOffsetAttribute);
+          
             // Bind the index buffer and draw to the screen
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, atomIndexBufferHandle[currentAtomType]);    
             glDrawElements(GL_TRIANGLES, numberOfIndicesInBuffer[currentAtomType], GL_UNSIGNED_SHORT, NULL);
@@ -813,7 +913,7 @@
     glUniform3f(cylinderRaytracingColor, 0.75, 0.75, 0.75);
     glUniformMatrix4fv(cylinderRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
     glUniformMatrix4fv(cylinderRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
-    glUniformMatrix4fv(cylinderRaytracingInverseModelViewMatrix, 1, 0, inverseModelViewMatrix);
+    glUniformMatrix4fv(cylinderRaytracingInverseModelViewMatrix, 1, 0, inverseMatrix);
 
     for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
     {
@@ -841,24 +941,26 @@
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-- (void)renderAmbientOcclusionTextureForModelViewMatrix:(GLfloat *)ambientOcclusionModelViewMatrix;
+- (void)renderAmbientOcclusionTextureForModelViewMatrix:(GLfloat *)ambientOcclusionModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix fractionOfTotal:(GLfloat)fractionOfTotal;
 {
-    [self switchToAmbientOcclusionFramebuffer];
-    
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    [self switchToAmbientOcclusionFramebuffer];    
     glDisable(GL_DEPTH_TEST); 
     glEnable(GL_BLEND);
     glBlendEquation(GL_FUNC_ADD);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glClear(GL_COLOR_BUFFER_BIT);
-    
+    glBlendFunc(GL_ONE, GL_ONE);
+    //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    float sphereScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * atomRadiusScaleFactor;
+    GLsizei atomVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
+
     // Draw the spheres
     [sphereAmbientOcclusionProgram use];
     
-    CATransform3D inverseMatrix = CATransform3DInvert(currentCalculatedMatrix);
-    GLfloat inverseModelViewMatrix[16];
-    [self convert3DTransform:&inverseMatrix toMatrix:inverseModelViewMatrix];
-    glUniformMatrix4fv(sphereAmbientOcclusionInverseModelViewMatrix, 1, 0, inverseModelViewMatrix);
+    glUniformMatrix4fv(sphereAmbientOcclusionInverseModelViewMatrix, 1, 0, inverseMatrix);
+    
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, depthPassTexture);
+    glUniform1i(sphereAmbientOcclusionDepthTexture, 0);
 
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
@@ -866,9 +968,8 @@
     
     glUniformMatrix4fv(sphereAmbientOcclusionModelViewMatrix, 1, 0, ambientOcclusionModelViewMatrix);
     glUniformMatrix4fv(sphereAmbientOcclusionOrthographicMatrix, 1, 0, orthographicMatrix);
-    
-    float sphereScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * atomRadiusScaleFactor;
-    GLsizei atomVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2;
+    glUniform1f(sphereAmbientOcclusionTexturePatchWidth, normalizedAOTexturePatchWidth);
+    glUniform1f(sphereAmbientOcclusionIntensityFactor, fractionOfTotal);
     
     for (unsigned int currentAtomType = 0; currentAtomType < NUM_ATOMTYPES; currentAtomType++)
     {
@@ -882,6 +983,8 @@
             glEnableVertexAttribArray(sphereAmbientOcclusionPositionAttribute);
             glVertexAttribPointer(sphereAmbientOcclusionImpostorSpaceAttribute, 2, GL_FLOAT, 0, atomVBOStride, (char *)NULL + (sizeof(GLfloat) * 3));
             glEnableVertexAttribArray(sphereAmbientOcclusionImpostorSpaceAttribute);
+            glVertexAttribPointer(sphereAmbientOcclusionAOOffsetAttribute, 2, GL_FLOAT, 0, atomVBOStride, (char *)NULL + (sizeof(GLfloat) * 3) + (sizeof(GLfloat) * 2));
+            glEnableVertexAttribArray(sphereAmbientOcclusionAOOffsetAttribute);
             
             // Bind the index buffer and draw to the screen
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, atomIndexBufferHandle[currentAtomType]);    
@@ -892,6 +995,8 @@
             glBindBuffer(GL_ARRAY_BUFFER, 0); 
         }
     }
+    
+     
     
     /*
     // Draw the cylinders    
@@ -931,15 +1036,102 @@
 */
 }
 
+/*
+#define AMBIENTOCCLUSIONSAMPLINGPOINTS 6
+
+static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] = 
+{
+    {0.0, 0.0},
+    {M_PI / 2.0, 0.0},
+    {M_PI, 0.0},
+    {3.0 * M_PI / 2.0, 0.0},
+    {0.0, M_PI / 2.0},
+    {0.0, 3.0 * M_PI / 2.0}
+};
+ */
+ 
+/*
+
+#define AMBIENTOCCLUSIONSAMPLINGPOINTS 2
+
+static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] = 
+{
+    {0.0, 0.0},
+    {M_PI, 0.0},
+};
+*/
+ 
+/*
+#define AMBIENTOCCLUSIONSAMPLINGPOINTS 4
+
+static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] = 
+{
+    {0.0, 0.0},
+    {M_PI, 0.0},
+    {0.0 , 3.0 * M_PI / 2.0},
+    {0.0 , M_PI / 2.0},
+};
+*/
+
+#define AMBIENTOCCLUSIONSAMPLINGPOINTS 120
+
+#define ARC4RANDOM_MAX 0x100000000
+
 - (void)prepareAmbientOcclusionMap;
 {
+    CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
+
+    // Start fresh on the ambient texture
+    [self switchToAmbientOcclusionFramebuffer];
+    
+    //    glClearColor(0.0f, ambientOcclusionModelViewMatrix[0], 1.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    CATransform3D currentSamplingRotationMatrix;
     GLfloat currentModelViewMatrix[16];
-    CATransform3D currentDepthRotationMatrix = CATransform3DIdentity;
+    CATransform3D inverseMatrix;
+    GLfloat inverseModelViewMatrix[16];
+
+    for (unsigned int currentAOSamplingPoint = 0; currentAOSamplingPoint < AMBIENTOCCLUSIONSAMPLINGPOINTS; currentAOSamplingPoint++)
+    {
+        float u = (float)arc4random() / ARC4RANDOM_MAX;
+        float v = (float)arc4random() / ARC4RANDOM_MAX;
+        
+        float theta = 2.0 * M_PI * u;
+//        float phi = acos(2.0 * v - 1.0);
+        float phi = 2.0 * M_PI * v;
+        
+/*        GLfloat totalRotation = sqrt(theta*theta + phi*phi);
+        
+        currentSamplingRotationMatrix = CATransform3DIdentity;
+        CATransform3D temporaryMatrix = CATransform3DMakeRotation(totalRotation * 4.0 * M_PI, 
+                                                            ((-theta/totalRotation) * currentSamplingRotationMatrix.m12 + (-phi/totalRotation) * currentSamplingRotationMatrix.m11),
+                                                            ((-theta/totalRotation) * currentSamplingRotationMatrix.m22 + (-phi/totalRotation) * currentSamplingRotationMatrix.m21),
+                                                            ((-theta/totalRotation) * currentSamplingRotationMatrix.m32 + (-phi/totalRotation) * currentSamplingRotationMatrix.m31));
+*/
+        
+//        currentSamplingRotationMatrix = temporaryMatrix;
+
+        currentSamplingRotationMatrix = CATransform3DMakeRotation(theta, 1.0, 0.0, 0.0);
+        currentSamplingRotationMatrix = CATransform3DRotate(currentSamplingRotationMatrix, phi, 0.0, 1.0, 0.0);
+        
+//        currentSamplingRotationMatrix = CATransform3DMakeRotation(ambientOcclusionRotationAngles[currentAOSamplingPoint][0], 1.0, 0.0, 0.0);
+//        NSLog(@"Rotation: %f", ambientOcclusionRotationAngles[currentAOSamplingPoint][0]);
+//        currentSamplingRotationMatrix = CATransform3DRotate(currentSamplingRotationMatrix, ambientOcclusionRotationAngles[currentAOSamplingPoint][1], 0.0, 1.0, 0.0);
+//
+        inverseMatrix = CATransform3DInvert(currentSamplingRotationMatrix);
+
+        [self convert3DTransform:&inverseMatrix toMatrix:inverseModelViewMatrix];
+        [self convert3DTransform:&currentSamplingRotationMatrix toMatrix:currentModelViewMatrix];
+
+        [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
+        [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(1.0 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
+    }    
     
-    [self convert3DTransform:&currentDepthRotationMatrix toMatrix:currentModelViewMatrix];
+    CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
     
-    [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
-    [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix];
+    NSLog(@"Ambient occlusion calculation duration: %f s", frameDuration);
 }
 
 @end

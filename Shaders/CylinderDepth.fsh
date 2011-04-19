@@ -1,8 +1,8 @@
 precision mediump float;
 
-varying highp vec2 impostorSpaceCoordinate;
-varying highp float depthOffsetAlongCenterAxis;
-varying highp float normalizedDisplacementAtEndCaps;
+varying mediump vec2 impostorSpaceCoordinate;
+varying mediump float depthOffsetAlongCenterAxis;
+varying mediump float normalizedDisplacementAtEndCaps;
 varying mediump float normalizedDepth;
 
 vec4 encodedColorForDepth(float depthValue)

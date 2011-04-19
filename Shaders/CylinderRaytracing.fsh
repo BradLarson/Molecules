@@ -5,13 +5,13 @@ uniform vec3 cylinderColor;
 uniform sampler2D depthTexture;
 uniform mat4 inverseModelViewProjMatrix;
 
-varying highp vec2 impostorSpaceCoordinate;
-varying highp vec3 normalAlongCenterAxis;
-varying highp float depthOffsetAlongCenterAxis;
-varying highp float normalizedDepthOffsetAlongCenterAxis;
-varying highp float normalizedDisplacementAtEndCaps;
-varying highp float normalizedRadialDisplacementAtEndCaps;
-varying highp vec2 rotationFactor;
+varying mediump vec2 impostorSpaceCoordinate;
+varying mediump vec3 normalAlongCenterAxis;
+varying mediump float depthOffsetAlongCenterAxis;
+varying mediump float normalizedDepthOffsetAlongCenterAxis;
+varying mediump float normalizedDisplacementAtEndCaps;
+varying mediump float normalizedRadialDisplacementAtEndCaps;
+varying mediump vec2 rotationFactor;
 varying mediump vec3 normalizedViewCoordinate;
 
 const mediump float oneThird = 1.0 / 3.0;

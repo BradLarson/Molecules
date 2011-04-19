@@ -3,12 +3,12 @@ attribute vec4 direction;
 attribute vec4 inputImpostorSpaceCoordinate;
 
 uniform mat4 modelViewProjMatrix;
-uniform highp float cylinderRadius;
+uniform mediump float cylinderRadius;
 uniform mediump mat4 orthographicMatrix;
 
-varying highp vec2 impostorSpaceCoordinate;
-varying highp float depthOffsetAlongCenterAxis;
-varying highp float normalizedDisplacementAtEndCaps;
+varying mediump vec2 impostorSpaceCoordinate;
+varying mediump float depthOffsetAlongCenterAxis;
+varying mediump float normalizedDisplacementAtEndCaps;
 varying mediump float normalizedDepth;
 
 void main()

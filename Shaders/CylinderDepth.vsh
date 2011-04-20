@@ -10,6 +10,7 @@ varying mediump vec2 impostorSpaceCoordinate;
 varying mediump float depthOffsetAlongCenterAxis;
 varying mediump float normalizedDisplacementAtEndCaps;
 varying mediump float normalizedDepth;
+varying mediump float depthAdjustmentForOrthographicProjection;
 
 void main()
 {
@@ -18,6 +19,8 @@ void main()
     vec3 viewDisplacementForVertex, displacementDirectionAtEndCap;
     float displacementAtEndCaps, lengthOfCylinder, lengthOfCylinderInView;
     
+    depthAdjustmentForOrthographicProjection = (vec4(0.0, 0.0, 1.0, 0.0) * orthographicMatrix).z;
+
 	transformedPosition = modelViewProjMatrix * position;
     transformedOtherPosition = modelViewProjMatrix * (position + direction);
     transformedDirection = transformedOtherPosition - transformedPosition;

@@ -30,15 +30,20 @@
     GLint sphereRaytracingDepthTexture, sphereRaytracingPrecalculatedDepthTexture, sphereRaytracingAOTexture, sphereRaytracingTexturePatchWidth;
     
 	GLProgram *cylinderRaytracingProgram;
-    GLint cylinderRaytracingPositionAttribute, cylinderRaytracingDirectionAttribute, cylinderRaytracingImpostorSpaceAttribute, cylinderRaytracingModelViewMatrix;
+    GLint cylinderRaytracingPositionAttribute, cylinderRaytracingDirectionAttribute, cylinderRaytracingImpostorSpaceAttribute, cylinderRaytracingAOOffsetAttribute, cylinderRaytracingModelViewMatrix;
     GLint cylinderRaytracingLightPosition, cylinderRaytracingRadius, cylinderRaytracingColor, cylinderRaytracingOrthographicMatrix;
-    GLint cylinderRaytracingDepthTexture, cylinderRaytracingInverseModelViewMatrix;
+    GLint cylinderRaytracingDepthTexture, cylinderRaytracingInverseModelViewMatrix, cylinderRaytracingAOTexture, cylinderRaytracingTexturePatchWidth;
     
     GLProgram *sphereAmbientOcclusionProgram;
 	GLint sphereAmbientOcclusionPositionAttribute, sphereAmbientOcclusionImpostorSpaceAttribute, sphereAmbientOcclusionAOOffsetAttribute, sphereAmbientOcclusionModelViewMatrix;
     GLint sphereAmbientOcclusionRadius, sphereAmbientOcclusionOrthographicMatrix, sphereAmbientOcclusionInverseModelViewMatrix, sphereAmbientOcclusionTexturePatchWidth, sphereAmbientOcclusionIntensityFactor;
     GLint sphereAmbientOcclusionDepthTexture, sphereAmbientOcclusionPrecalculatedDepthTexture;
-    
+
+    GLProgram *cylinderAmbientOcclusionProgram;
+    GLint cylinderAmbientOcclusionPositionAttribute, cylinderAmbientOcclusionDirectionAttribute, cylinderAmbientOcclusionImpostorSpaceAttribute, cylinderAmbientOcclusionAOOffsetAttribute, cylinderAmbientOcclusionModelViewMatrix;
+    GLint cylinderAmbientOcclusionRadius, cylinderAmbientOcclusionOrthographicMatrix, cylinderAmbientOcclusionInverseModelViewMatrix, cylinderAmbientOcclusionTexturePatchWidth, cylinderAmbientOcclusionIntensityFactor;
+    GLint cylinderAmbientOcclusionDepthTexture;
+
     GLuint ambientOcclusionTexture;
     GLuint ambientOcclusionRenderbuffer, ambientOcclusionFramebuffer;
     
@@ -66,6 +71,7 @@
 - (void)addAmbientOcclusionTextureOffset:(GLfloat *)ambientOcclusionOffset forAtomType:(SLSAtomType)atomType;
 - (void)addBondDirection:(GLfloat *)newDirection;
 - (void)addBondTextureCoordinate:(GLfloat *)newTextureCoordinate;
+- (void)addBondAmbientOcclusionTextureOffset:(GLfloat *)ambientOcclusionOffset;
 
 // OpenGL drawing routines
 - (void)renderDepthTextureForModelViewMatrix:(GLfloat *)depthModelViewMatrix;

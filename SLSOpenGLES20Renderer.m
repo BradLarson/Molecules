@@ -266,7 +266,8 @@
 	[cylinderRaytracingProgram addAttribute:@"position"];
 	[cylinderRaytracingProgram addAttribute:@"direction"];
 	[cylinderRaytracingProgram addAttribute:@"inputImpostorSpaceCoordinate"];
-    
+    [cylinderRaytracingProgram addAttribute:@"ambientOcclusionTextureOffset"];
+
 	if (![cylinderRaytracingProgram link])
 	{
 		NSLog(@"Raytracing shader link failed");
@@ -283,6 +284,7 @@
     cylinderRaytracingPositionAttribute = [cylinderRaytracingProgram attributeIndex:@"position"];
     cylinderRaytracingDirectionAttribute = [cylinderRaytracingProgram attributeIndex:@"direction"];
     cylinderRaytracingImpostorSpaceAttribute = [cylinderRaytracingProgram attributeIndex:@"inputImpostorSpaceCoordinate"];
+    cylinderRaytracingAOOffsetAttribute = [cylinderRaytracingProgram attributeIndex:@"ambientOcclusionTextureOffset"];
 	cylinderRaytracingModelViewMatrix = [cylinderRaytracingProgram uniformIndex:@"modelViewProjMatrix"];
     cylinderRaytracingLightPosition = [cylinderRaytracingProgram uniformIndex:@"lightPosition"];
     cylinderRaytracingRadius = [cylinderRaytracingProgram uniformIndex:@"cylinderRadius"];
@@ -290,7 +292,9 @@
     cylinderRaytracingDepthTexture = [cylinderRaytracingProgram uniformIndex:@"depthTexture"];
     cylinderRaytracingOrthographicMatrix = [cylinderRaytracingProgram uniformIndex:@"orthographicMatrix"];
     cylinderRaytracingInverseModelViewMatrix = [cylinderRaytracingProgram uniformIndex:@"inverseModelViewProjMatrix"];
-    
+    cylinderRaytracingTexturePatchWidth = [cylinderRaytracingProgram uniformIndex:@"ambientOcclusionTexturePatchWidth"];
+    cylinderRaytracingAOTexture = [cylinderRaytracingProgram uniformIndex:@"ambientOcclusionTexture"];
+
     sphereDepthProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"SphereDepth" fragmentShaderFilename:@"SphereDepth"];
 	[sphereDepthProgram addAttribute:@"position"];
 	[sphereDepthProgram addAttribute:@"inputImpostorSpaceCoordinate"];
@@ -368,7 +372,37 @@
     sphereAmbientOcclusionInverseModelViewMatrix = [sphereAmbientOcclusionProgram uniformIndex:@"inverseModelViewProjMatrix"];
     sphereAmbientOcclusionTexturePatchWidth = [sphereAmbientOcclusionProgram uniformIndex:@"ambientOcclusionTexturePatchWidth"];
     sphereAmbientOcclusionIntensityFactor = [sphereAmbientOcclusionProgram uniformIndex:@"intensityFactor"];
+
+    cylinderAmbientOcclusionProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"CylinderAmbientOcclusion" fragmentShaderFilename:@"CylinderAmbientOcclusion"];
+	[cylinderAmbientOcclusionProgram addAttribute:@"position"];
+	[cylinderAmbientOcclusionProgram addAttribute:@"direction"];
+	[cylinderAmbientOcclusionProgram addAttribute:@"inputImpostorSpaceCoordinate"];
+    [cylinderAmbientOcclusionProgram addAttribute:@"ambientOcclusionTextureOffset"];
+	if (![sphereAmbientOcclusionProgram link])
+	{
+		NSLog(@"Raytracing shader link failed");
+		NSString *progLog = [cylinderAmbientOcclusionProgram programLog];
+		NSLog(@"Program Log: %@", progLog); 
+		NSString *fragLog = [cylinderAmbientOcclusionProgram fragmentShaderLog];
+		NSLog(@"Frag Log: %@", fragLog);
+		NSString *vertLog = [cylinderAmbientOcclusionProgram vertexShaderLog];
+		NSLog(@"Vert Log: %@", vertLog);
+		[cylinderAmbientOcclusionProgram release];
+		cylinderAmbientOcclusionProgram = nil;
+	}
     
+    cylinderAmbientOcclusionPositionAttribute = [cylinderAmbientOcclusionProgram attributeIndex:@"position"];
+    cylinderAmbientOcclusionDirectionAttribute = [cylinderAmbientOcclusionProgram attributeIndex:@"direction"];
+    cylinderAmbientOcclusionImpostorSpaceAttribute = [cylinderAmbientOcclusionProgram attributeIndex:@"inputImpostorSpaceCoordinate"];
+    cylinderAmbientOcclusionAOOffsetAttribute = [cylinderAmbientOcclusionProgram attributeIndex:@"ambientOcclusionTextureOffset"];
+	cylinderAmbientOcclusionModelViewMatrix = [cylinderAmbientOcclusionProgram uniformIndex:@"modelViewProjMatrix"];
+    cylinderAmbientOcclusionRadius = [cylinderAmbientOcclusionProgram uniformIndex:@"cylinderRadius"];
+    cylinderAmbientOcclusionDepthTexture = [cylinderAmbientOcclusionProgram uniformIndex:@"depthTexture"];
+    cylinderAmbientOcclusionOrthographicMatrix = [cylinderAmbientOcclusionProgram uniformIndex:@"orthographicMatrix"];
+    cylinderAmbientOcclusionInverseModelViewMatrix = [cylinderAmbientOcclusionProgram uniformIndex:@"inverseModelViewProjMatrix"];
+    cylinderAmbientOcclusionTexturePatchWidth = [cylinderAmbientOcclusionProgram uniformIndex:@"ambientOcclusionTexturePatchWidth"];
+    cylinderAmbientOcclusionIntensityFactor = [cylinderAmbientOcclusionProgram uniformIndex:@"intensityFactor"];
+
     [self generateSphereDepthMapTexture];
 }
 
@@ -571,7 +605,7 @@
     [self addIndices:newIndices size:6 forAtomType:atomType];
     
     previousAmbientOcclusionOffset[0] += normalizedAOTexturePatchWidth;
-    if (previousAmbientOcclusionOffset[0] > (1.0 - normalizedAOTexturePatchWidth))
+    if (previousAmbientOcclusionOffset[0] > (1.0 - normalizedAOTexturePatchWidth * 0.5))
     {
         previousAmbientOcclusionOffset[0] = 0.0;
         previousAmbientOcclusionOffset[1] += normalizedAOTexturePatchWidth;
@@ -608,9 +642,11 @@
     [self addBondVertex:newVertex];
     [self addBondDirection:cylinderDirection];
     [self addBondTextureCoordinate:lowerLeftTexture];
+    [self addBondAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset];
     [self addBondVertex:newVertex];
     [self addBondDirection:cylinderDirection];
     [self addBondTextureCoordinate:lowerRightTexture];
+    [self addBondAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset];
     
     newVertex[0] = endPoint.x;
     newVertex[1] = endPoint.y;
@@ -619,9 +655,11 @@
     [self addBondVertex:newVertex];
     [self addBondDirection:cylinderDirection];
     [self addBondTextureCoordinate:upperLeftTexture];
+    [self addBondAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset];
     [self addBondVertex:newVertex];
     [self addBondDirection:cylinderDirection];
     [self addBondTextureCoordinate:upperRightTexture];
+    [self addBondAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset];
     
     // Vertex indices
     //    123243
@@ -634,6 +672,13 @@
     newIndices[5] = baseToAddToIndices + 2;
     
     [self addBondIndices:newIndices size:6];
+    
+    previousAmbientOcclusionOffset[0] += normalizedAOTexturePatchWidth;
+    if (previousAmbientOcclusionOffset[0] > (1.0 - normalizedAOTexturePatchWidth * 0.5))
+    {
+        previousAmbientOcclusionOffset[0] = 0.0;
+        previousAmbientOcclusionOffset[1] += normalizedAOTexturePatchWidth;
+    }
 }
 
 - (void)addVertex:(GLfloat *)newVertex forAtomType:(SLSAtomType)atomType;
@@ -700,6 +745,16 @@
     }
     
 	[bondVBOs[currentBondVBO] appendBytes:newTextureCoordinate length:(sizeof(GLfloat) * 2)];	
+}
+
+- (void)addBondAmbientOcclusionTextureOffset:(GLfloat *)ambientOcclusionOffset;
+{
+    if (bondVBOs[currentBondVBO] == nil)
+    {
+        bondVBOs[currentBondVBO] = [[NSMutableData alloc] init];
+    }
+    
+	[bondVBOs[currentBondVBO] appendBytes:ambientOcclusionOffset length:(sizeof(GLfloat) * 2)];	
 }
 
 #pragma mark -
@@ -800,7 +855,7 @@
     [cylinderDepthProgram use];
 
     float cylinderScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * bondRadiusScaleFactor;
-    GLsizei bondVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2;
+    GLsizei bondVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
 	GLfloat bondRadius = 1.0;
 
     glUniform1f(cylinderDepthRadius, bondRadius * cylinderScaleFactor);
@@ -904,9 +959,11 @@
 
     glUniform3fv(cylinderRaytracingLightPosition, 1, lightDirection);
     glUniform1i(cylinderRaytracingDepthTexture, 0);	
+    glUniform1i(cylinderRaytracingAOTexture, 3);
+    glUniform1f(cylinderRaytracingTexturePatchWidth, normalizedAOTexturePatchWidth);
 
     float cylinderScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * bondRadiusScaleFactor;
-    GLsizei bondVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2;
+    GLsizei bondVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
 	GLfloat bondRadius = 1.0;
 
     glUniform1f(cylinderRaytracingRadius, bondRadius * cylinderScaleFactor);
@@ -929,7 +986,9 @@
             glEnableVertexAttribArray(cylinderRaytracingDirectionAttribute);
             glVertexAttribPointer(cylinderRaytracingImpostorSpaceAttribute, 2, GL_FLOAT, 0, bondVBOStride, (char *)NULL + (sizeof(GLfloat) * 3) + (sizeof(GLfloat) * 3));
             glEnableVertexAttribArray(cylinderRaytracingImpostorSpaceAttribute);
-            
+            glVertexAttribPointer(cylinderRaytracingAOOffsetAttribute, 2, GL_FLOAT, 0, bondVBOStride, (char *)NULL + (sizeof(GLfloat) * 3) + (sizeof(GLfloat) * 3) + (sizeof(GLfloat) * 2));
+            glEnableVertexAttribArray(cylinderRaytracingAOOffsetAttribute);
+
             // Bind the index buffer and draw to the screen
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bondIndexBufferHandle[currentBondVBOIndex]);
             glDrawElements(GL_TRIANGLES, numberOfBondIndicesInBuffer[currentBondVBOIndex], GL_UNSIGNED_SHORT, NULL);
@@ -996,19 +1055,23 @@
         }
     }
     
-     
-    
-    /*
+
     // Draw the cylinders    
     [cylinderAmbientOcclusionProgram use];
     
+    glUniformMatrix4fv(cylinderAmbientOcclusionInverseModelViewMatrix, 1, 0, inverseMatrix);
+
+    glUniform1i(cylinderAmbientOcclusionDepthTexture, 0);
+    
     float cylinderScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * bondRadiusScaleFactor;
-    GLsizei bondVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2;
+    GLsizei bondVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
 	GLfloat bondRadius = 1.0;
     
     glUniform1f(cylinderAmbientOcclusionRadius, bondRadius * cylinderScaleFactor);
-    glUniformMatrix4fv(cylinderAmbientOcclusionModelViewMatrix, 1, 0, depthModelViewMatrix);
+    glUniformMatrix4fv(cylinderAmbientOcclusionModelViewMatrix, 1, 0, ambientOcclusionModelViewMatrix);
     glUniformMatrix4fv(cylinderAmbientOcclusionOrthographicMatrix, 1, 0, orthographicMatrix);
+    glUniform1f(cylinderAmbientOcclusionTexturePatchWidth, normalizedAOTexturePatchWidth);
+    glUniform1f(cylinderAmbientOcclusionIntensityFactor, fractionOfTotal);
     
     for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
     {
@@ -1023,7 +1086,9 @@
             glEnableVertexAttribArray(cylinderAmbientOcclusionDirectionAttribute);
             glVertexAttribPointer(cylinderAmbientOcclusionImpostorSpaceAttribute, 2, GL_FLOAT, 0, bondVBOStride, (char *)NULL + (sizeof(GLfloat) * 3) + (sizeof(GLfloat) * 3));
             glEnableVertexAttribArray(cylinderAmbientOcclusionImpostorSpaceAttribute);
-            
+            glVertexAttribPointer(cylinderAmbientOcclusionAOOffsetAttribute, 2, GL_FLOAT, 0, bondVBOStride, (char *)NULL + (sizeof(GLfloat) * 3) + (sizeof(GLfloat) * 3) + (sizeof(GLfloat) * 2));
+            glEnableVertexAttribArray(cylinderAmbientOcclusionAOOffsetAttribute);
+
             // Bind the index buffer and draw to the screen
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bondIndexBufferHandle[currentBondVBOIndex]);    
             glDrawElements(GL_TRIANGLES, numberOfBondIndicesInBuffer[currentBondVBOIndex], GL_UNSIGNED_SHORT, NULL);
@@ -1033,7 +1098,6 @@
             glBindBuffer(GL_ARRAY_BUFFER, 0); 
         }
     }
-*/
 }
 
 /*
@@ -1073,7 +1137,7 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
 };
 */
 
-#define AMBIENTOCCLUSIONSAMPLINGPOINTS 120
+#define AMBIENTOCCLUSIONSAMPLINGPOINTS 50
 
 #define ARC4RANDOM_MAX 0x100000000
 

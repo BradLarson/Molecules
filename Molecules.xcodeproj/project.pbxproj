@@ -52,6 +52,8 @@
 		BCA2E811135BB90F00D7206C /* caffeine.pdb.gz in Resources */ = {isa = PBXBuildFile; fileRef = BCA2E810135BB90F00D7206C /* caffeine.pdb.gz */; };
 		BCA2E814135BBA3000D7206C /* SphereAmbientOcclusion.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCA2E812135BBA3000D7206C /* SphereAmbientOcclusion.fsh */; };
 		BCA2E815135BBA3000D7206C /* SphereAmbientOcclusion.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BCA2E813135BBA3000D7206C /* SphereAmbientOcclusion.vsh */; };
+		BCA2E81E135E54C500D7206C /* CylinderAmbientOcclusion.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCA2E81C135E54C400D7206C /* CylinderAmbientOcclusion.fsh */; };
+		BCA2E81F135E54C500D7206C /* CylinderAmbientOcclusion.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BCA2E81D135E54C400D7206C /* CylinderAmbientOcclusion.vsh */; };
 		BCB3A67A13553F9D000A286B /* SLSOpenGLESRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB3A67913553F9D000A286B /* SLSOpenGLESRenderer.m */; };
 		BCB3A67D13553FC1000A286B /* SLSOpenGLES11Renderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB3A67C13553FC1000A286B /* SLSOpenGLES11Renderer.m */; };
 		BCB3A68013553FD2000A286B /* SLSOpenGLES20Renderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB3A67F13553FD2000A286B /* SLSOpenGLES20Renderer.m */; };
@@ -131,6 +133,8 @@
 		BCA2E810135BB90F00D7206C /* caffeine.pdb.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = caffeine.pdb.gz; sourceTree = "<group>"; };
 		BCA2E812135BBA3000D7206C /* SphereAmbientOcclusion.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SphereAmbientOcclusion.fsh; path = Shaders/SphereAmbientOcclusion.fsh; sourceTree = "<group>"; };
 		BCA2E813135BBA3000D7206C /* SphereAmbientOcclusion.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SphereAmbientOcclusion.vsh; path = Shaders/SphereAmbientOcclusion.vsh; sourceTree = "<group>"; };
+		BCA2E81C135E54C400D7206C /* CylinderAmbientOcclusion.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = CylinderAmbientOcclusion.fsh; path = Shaders/CylinderAmbientOcclusion.fsh; sourceTree = "<group>"; };
+		BCA2E81D135E54C400D7206C /* CylinderAmbientOcclusion.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = CylinderAmbientOcclusion.vsh; path = Shaders/CylinderAmbientOcclusion.vsh; sourceTree = "<group>"; };
 		BCB3A67813553F9D000A286B /* SLSOpenGLESRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSOpenGLESRenderer.h; sourceTree = "<group>"; };
 		BCB3A67913553F9D000A286B /* SLSOpenGLESRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSOpenGLESRenderer.m; sourceTree = "<group>"; };
 		BCB3A67B13553FC0000A286B /* SLSOpenGLES11Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSOpenGLES11Renderer.h; sourceTree = "<group>"; };
@@ -290,6 +294,8 @@
 				BCA2E7DB135A1B9B00D7206C /* CylinderDepth.vsh */,
 				BCA2E7DC135A1B9B00D7206C /* CylinderRaytracing.fsh */,
 				BCA2E7DD135A1B9B00D7206C /* CylinderRaytracing.vsh */,
+				BCA2E81C135E54C400D7206C /* CylinderAmbientOcclusion.fsh */,
+				BCA2E81D135E54C400D7206C /* CylinderAmbientOcclusion.vsh */,
 				BCA2E7DE135A1B9B00D7206C /* SphereDepth.fsh */,
 				BCA2E7DF135A1B9B00D7206C /* SphereDepth.vsh */,
 				BCA2E7E0135A1B9B00D7206C /* SphereRaytracing.fsh */,
@@ -469,6 +475,8 @@
 				BCA2E7E9135A1B9B00D7206C /* SphereRaytracing.vsh in Resources */,
 				BCA2E814135BBA3000D7206C /* SphereAmbientOcclusion.fsh in Resources */,
 				BCA2E815135BBA3000D7206C /* SphereAmbientOcclusion.vsh in Resources */,
+				BCA2E81E135E54C500D7206C /* CylinderAmbientOcclusion.fsh in Resources */,
+				BCA2E81F135E54C500D7206C /* CylinderAmbientOcclusion.vsh in Resources */,
 				BCA2E811135BB90F00D7206C /* caffeine.pdb.gz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

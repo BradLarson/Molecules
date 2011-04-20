@@ -56,8 +56,9 @@ void main()
         impostorSpaceCoordinate = vec2(inputImpostorSpaceCoordinate.s, inputImpostorSpaceCoordinate.t);
     }
         
-    transformedPosition.xyz = transformedPosition.xyz + viewDisplacementForVertex;
+    transformedPosition.xyz = (transformedPosition.xyz + viewDisplacementForVertex);
+    transformedPosition *= orthographicMatrix;
     normalizedDepth = (transformedPosition.z + 1.0) / 2.0;
 
-    gl_Position = transformedPosition * orthographicMatrix;
+    gl_Position = transformedPosition;
 }

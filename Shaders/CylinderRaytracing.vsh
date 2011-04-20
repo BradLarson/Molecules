@@ -16,11 +16,13 @@ varying mediump vec2 rotationFactor;
 varying mediump vec3 normalizedViewCoordinate;
 varying mediump vec2 ambientOcclusionTextureBase;
 varying mediump float depthAdjustmentForOrthographicProjection;
+varying mediump float normalizedDistanceAlongZAxis;
 
 void main()
 {
     ambientOcclusionTextureBase = (ambientOcclusionTextureOffset + 1.0 / 1024.0);
-
+    normalizedDistanceAlongZAxis = inputImpostorSpaceCoordinate.y;
+    
     vec4 transformedDirection, transformedPosition, transformedOtherPosition;
     vec3 viewDisplacementForVertex, displacementDirectionAtEndCap;
     float displacementAtEndCaps, lengthOfCylinder, lengthOfCylinderInView;

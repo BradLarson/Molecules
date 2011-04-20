@@ -735,6 +735,56 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 	
 }
 
+- (NSInteger)countAtomsForFirstStructure;
+{
+    const char *sql = "SELECT COUNT(*) FROM atoms WHERE molecule=? AND structure=?";
+	sqlite3_stmt *atomCountingStatement;
+
+    unsigned int totalAtomCount = 0;
+    
+	if (sqlite3_prepare_v2(database, sql, -1, &atomCountingStatement, NULL) == SQLITE_OK) 
+	{
+        sqlite3_bind_int(atomCountingStatement, 1, databaseKey);
+        sqlite3_bind_int(atomCountingStatement, 2, numberOfStructureBeingDisplayed);
+        
+        if (sqlite3_step(atomCountingStatement) == SQLITE_ROW)
+        {
+            totalAtomCount =  sqlite3_column_int(atomCountingStatement, 0);
+        }
+        else
+        {
+        }
+	}
+	sqlite3_finalize(atomCountingStatement);
+    
+    return totalAtomCount;
+}
+
+- (NSInteger)countBondsForFirstStructure;
+{
+    const char *sql = "SELECT COUNT(*) FROM bonds WHERE molecule=? AND structure=?";
+	sqlite3_stmt *bondCountingStatement;
+    
+    unsigned int totalBondCount = 0;
+    
+	if (sqlite3_prepare_v2(database, sql, -1, &bondCountingStatement, NULL) == SQLITE_OK) 
+	{
+        sqlite3_bind_int(bondCountingStatement, 1, databaseKey);
+        sqlite3_bind_int(bondCountingStatement, 2, numberOfStructureBeingDisplayed);
+        
+        if (sqlite3_step(bondCountingStatement) == SQLITE_ROW)
+        {
+            totalBondCount =  sqlite3_column_int(bondCountingStatement, 0);
+        }
+        else
+        {
+        }
+	}
+	sqlite3_finalize(bondCountingStatement);
+    
+    return totalBondCount;
+}
+
 #pragma mark -
 #pragma mark Status notification methods
 
@@ -764,7 +814,8 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 	[self performSelectorOnMainThread:@selector(showStatusIndicator) withObject:nil waitUntilDone:NO];
     
     [openGLESRenderer initiateMoleculeRendering];
-    [openGLESRenderer configureBasedOnNumberOfAtoms:numberOfAtoms numberOfBonds:numberOfBonds];
+    
+    [openGLESRenderer configureBasedOnNumberOfAtoms:[self countAtomsForFirstStructure] numberOfBonds:[self countBondsForFirstStructure]];
     openGLESRenderer.overallMoleculeScaleFactor = scaleAdjustmentForX;
 
 	currentFeatureBeingRendered = 0;

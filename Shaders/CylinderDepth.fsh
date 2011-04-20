@@ -33,7 +33,7 @@ void main()
         discard;
     }
 
-    float calculatedDepth = normalizedDepth - depthOffset;
+    float calculatedDepth = normalizedDepth - depthOffset + 0.0025;
     
     gl_FragColor = encodedColorForDepth(calculatedDepth);
 }

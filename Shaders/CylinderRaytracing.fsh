@@ -17,6 +17,7 @@ varying mediump vec2 rotationFactor;
 varying mediump vec3 normalizedViewCoordinate;
 varying mediump vec2 ambientOcclusionTextureBase;
 varying mediump float depthAdjustmentForOrthographicProjection;
+varying mediump float normalizedDistanceAlongZAxis;
 
 const mediump float oneThird = 1.0 / 3.0;
 
@@ -26,18 +27,17 @@ mediump float depthFromEncodedColor(mediump vec4 encodedColor)
     //    return encodedColor.r;
 }
 
-mediump vec2 textureCoordinateForSphereSurfacePosition(mediump vec3 sphereSurfacePosition)
+mediump vec2 textureCoordinateForCylinderSurfacePosition(mediump vec3 cylinderSurfacePosition)
 {
-    vec3 absoluteSphereSurfacePosition = abs(sphereSurfacePosition);
-    float d = absoluteSphereSurfacePosition.x + absoluteSphereSurfacePosition.y + absoluteSphereSurfacePosition.z;
+    vec2 halfAbsoluteXY = abs(cylinderSurfacePosition.xy / 2.0);
     
-    if (sphereSurfacePosition.z <= 0.0)
+    if (cylinderSurfacePosition.x >= 0.0)
     {
-        return vec2(sphereSurfacePosition.x / d, sphereSurfacePosition.y / d);
+        return vec2(cylinderSurfacePosition.y / (4.0 * (halfAbsoluteXY.x + halfAbsoluteXY.y)) - 0.5, cylinderSurfacePosition.z);
     }
     else
     {
-        return vec2(sign(sphereSurfacePosition.x) * ( 1.0 - absoluteSphereSurfacePosition.y / d), sign(sphereSurfacePosition.y) * (1.0 - absoluteSphereSurfacePosition.x / d));
+        return vec2(-cylinderSurfacePosition.y / (4.0 * (halfAbsoluteXY.x + halfAbsoluteXY.y)) + 0.5, cylinderSurfacePosition.z);
     }
 }
 
@@ -63,7 +63,7 @@ void main()
         discard;
     }
 
-    float currentDepthValue = normalizedViewCoordinate.z - depthOffset;
+    float currentDepthValue = normalizedViewCoordinate.z - depthOffset + 0.0025;
     float previousDepthValue = depthFromEncodedColor(texture2D(depthTexture, normalizedViewCoordinate.xy));
     
     if ( (floor(currentDepthValue * 765.0)) > (ceil(previousDepthValue * 765.0)) )
@@ -74,19 +74,20 @@ void main()
     vec3 finalCylinderColor = cylinderColor;
     
     // ambient
-    vec3 aoNormal = normal;
-    aoNormal.z = -aoNormal.z;
-    aoNormal = (inverseModelViewProjMatrix * vec4(aoNormal, 0.0)).xyz;
-    aoNormal.z = -aoNormal.z;
-    vec2 textureCoordinateForAOLookup = ambientOcclusionTextureBase + (ambientOcclusionTexturePatchWidth - 2.0 / 1024.0) * (1.00 + textureCoordinateForSphereSurfacePosition(aoNormal)) / 2.00;
+    vec3 aoNormal = vec3(0.5, 0.5, normalizedDistanceAlongZAxis);
+//    vec3 aoNormal = normal;
+//    aoNormal.z = -aoNormal.z;
+//    aoNormal = (inverseModelViewProjMatrix * vec4(aoNormal, 0.0)).xyz;
+//    aoNormal.z = -aoNormal.z;
+    vec2 textureCoordinateForAOLookup = ambientOcclusionTextureBase + (ambientOcclusionTexturePatchWidth - 2.0 / 1024.0) * (1.00 + textureCoordinateForCylinderSurfacePosition(aoNormal)) / 2.00;
     vec3 ambientOcclusionIntensity = texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).rgb;
 
-    float lightingIntensity = 0.3 + 0.7 * clamp(dot(lightPosition, normal), 0.0, 1.0);
+    float lightingIntensity = 0.2 + 1.3 * clamp(dot(lightPosition, normal), 0.0, 1.0) * ambientOcclusionIntensity.r;
     finalCylinderColor *= lightingIntensity;
     
     // Per fragment specular lighting
     lightingIntensity  = clamp(dot(lightPosition, normal), 0.0, 1.0);
-    lightingIntensity  = pow(lightingIntensity, 60.0);
+    lightingIntensity  = pow(lightingIntensity, 60.0) * ambientOcclusionIntensity.r * 1.2;
     finalCylinderColor += vec3(0.4, 0.4, 0.4) * lightingIntensity;
     
 //    gl_FragColor = texture2D(depthTexture, normalizedViewCoordinate.xy);
@@ -97,5 +98,11 @@ void main()
 //    
 //    gl_FragColor = vec4(normal, 1.0);
 
+//    gl_FragColor = vec4(textureCoordinateForCylinderSurfacePosition(aoNormal), 0.0, 1.0);
+//    gl_FragColor = vec4(ambientOcclusionTextureBase, 0.0, 1.0);
+
+//    gl_FragColor = vec4(ambientOcclusionIntensity, 1.0);
+
+//    gl_FragColor = vec4(vec3((1.0 + normalizedDistanceAlongZAxis) / 2.0), 1.0);
     gl_FragColor = vec4(finalCylinderColor, 1.0);
 }

@@ -61,6 +61,7 @@ void main()
     if ( (floor(currentPositionCoordinate.z * 765.0) - 1.0) <= (ceil(previousDepthValue * 765.0)) )
     {
 //        gl_FragColor = vec4(vec3(previousDepthValue - currentPositionCoordinate.z), 1.0);
+//        gl_FragColor = vec4(normalizedViewCoordinate, 1.0);
         gl_FragColor = vec4(vec3(intensityFactor), 1.0);
     }
     else
@@ -68,5 +69,6 @@ void main()
         gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
     }
      
+    
 //    gl_FragColor = vec4(currentSphereSurfaceCoordinate, 1.0);
 }

@@ -58,7 +58,9 @@
 }
 
 // OpenGL drawing support
-- (void)initializeShaders;
+- (void)initializeDepthShaders;
+- (void)initializeAmbientOcclusionShaders;
+- (void)initializeRaytracingShaders;
 - (void)loadOrthoMatrix:(GLfloat *)matrix left:(GLfloat)left right:(GLfloat)right bottom:(GLfloat)bottom top:(GLfloat)top near:(GLfloat)near far:(GLfloat)far;
 - (BOOL)createFramebuffer:(GLuint *)framebufferPointer size:(CGSize)bufferSize renderBuffer:(GLuint *)renderbufferPointer depthBuffer:(GLuint *)depthbufferPointer texture:(GLuint *)backingTexturePointer layer:(CAEAGLLayer *)layer;
 - (void)switchToDisplayFramebuffer;

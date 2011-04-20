@@ -86,6 +86,8 @@ typedef struct {
 - (void)addBondToDatabaseWithStartPoint:(NSValue *)startValue endPoint:(NSValue *)endValue bondType:(SLSBondType)bondType structureNumber:(NSInteger)structureNumber residueKey:(NSInteger)residueKey;
 - (void)readMetadataFromDatabaseIfNecessary;
 - (void)deleteMoleculeDataFromDatabase;
+- (NSInteger)countAtomsForFirstStructure;
+- (NSInteger)countBondsForFirstStructure;
 
 // Status notification methods
 - (void)showStatusIndicator;

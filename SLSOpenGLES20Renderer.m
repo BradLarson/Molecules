@@ -30,8 +30,9 @@
 	lightDirection[1] = 0.248372;
 	lightDirection[2] = 0.916785;
 
-    [self initializeShaders];
-    
+    [self initializeDepthShaders];
+    [self initializeAmbientOcclusionShaders];
+    [self initializeRaytracingShaders];
 
     return self;
 }
@@ -227,8 +228,141 @@
     return YES;
 }
 
-- (void)initializeShaders;
+- (void)initializeDepthShaders;
 {
+    if (sphereDepthProgram != nil)
+    {
+        return;
+    }
+
+    [EAGLContext setCurrentContext:context];
+    
+    sphereDepthProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"SphereDepth" fragmentShaderFilename:@"SphereDepth"];
+	[sphereDepthProgram addAttribute:@"position"];
+	[sphereDepthProgram addAttribute:@"inputImpostorSpaceCoordinate"];
+	if (![sphereDepthProgram link])
+	{
+		NSLog(@"Raytracing shader link failed");
+		NSString *progLog = [sphereDepthProgram programLog];
+		NSLog(@"Program Log: %@", progLog); 
+		NSString *fragLog = [sphereDepthProgram fragmentShaderLog];
+		NSLog(@"Frag Log: %@", fragLog);
+		NSString *vertLog = [sphereDepthProgram vertexShaderLog];
+		NSLog(@"Vert Log: %@", vertLog);
+		[sphereDepthProgram release];
+		sphereDepthProgram = nil;
+	}
+    
+    sphereDepthPositionAttribute = [sphereDepthProgram attributeIndex:@"position"];
+    sphereDepthImpostorSpaceAttribute = [sphereDepthProgram attributeIndex:@"inputImpostorSpaceCoordinate"];
+	sphereDepthModelViewMatrix = [sphereDepthProgram uniformIndex:@"modelViewProjMatrix"];
+    sphereDepthRadius = [sphereDepthProgram uniformIndex:@"sphereRadius"];
+    sphereDepthOrthographicMatrix = [sphereDepthProgram uniformIndex:@"orthographicMatrix"];
+    sphereDepthPrecalculatedDepthTexture = [sphereDepthProgram uniformIndex:@"precalculatedSphereDepthTexture"];
+    
+    
+    cylinderDepthProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"CylinderDepth" fragmentShaderFilename:@"CylinderDepth"];
+	[cylinderDepthProgram addAttribute:@"position"];
+	[cylinderDepthProgram addAttribute:@"direction"];
+	[cylinderDepthProgram addAttribute:@"inputImpostorSpaceCoordinate"];
+    
+	if (![cylinderDepthProgram link])
+	{
+		NSLog(@"Raytracing shader link failed");
+		NSString *progLog = [cylinderDepthProgram programLog];
+		NSLog(@"Program Log: %@", progLog); 
+		NSString *fragLog = [cylinderDepthProgram fragmentShaderLog];
+		NSLog(@"Frag Log: %@", fragLog);
+		NSString *vertLog = [cylinderDepthProgram vertexShaderLog];
+		NSLog(@"Vert Log: %@", vertLog);
+		[cylinderDepthProgram release];
+		cylinderDepthProgram = nil;
+	}
+    
+    cylinderDepthPositionAttribute = [cylinderDepthProgram attributeIndex:@"position"];
+    cylinderDepthDirectionAttribute = [cylinderDepthProgram attributeIndex:@"direction"];
+    cylinderDepthImpostorSpaceAttribute = [cylinderDepthProgram attributeIndex:@"inputImpostorSpaceCoordinate"];
+	cylinderDepthModelViewMatrix = [cylinderDepthProgram uniformIndex:@"modelViewProjMatrix"];
+    cylinderDepthRadius = [cylinderDepthProgram uniformIndex:@"cylinderRadius"];
+    cylinderDepthOrthographicMatrix = [cylinderDepthProgram uniformIndex:@"orthographicMatrix"];
+}
+
+- (void)initializeAmbientOcclusionShaders;
+{
+    if (sphereAmbientOcclusionProgram != nil)
+    {
+        return;
+    }
+
+    [EAGLContext setCurrentContext:context];
+    
+    sphereAmbientOcclusionProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"SphereAmbientOcclusion" fragmentShaderFilename:@"SphereAmbientOcclusion"];
+	[sphereAmbientOcclusionProgram addAttribute:@"position"];
+	[sphereAmbientOcclusionProgram addAttribute:@"inputImpostorSpaceCoordinate"];
+    [sphereAmbientOcclusionProgram addAttribute:@"ambientOcclusionTextureOffset"];
+	if (![sphereAmbientOcclusionProgram link])
+	{
+		NSLog(@"Raytracing shader link failed");
+		NSString *progLog = [sphereAmbientOcclusionProgram programLog];
+		NSLog(@"Program Log: %@", progLog); 
+		NSString *fragLog = [sphereAmbientOcclusionProgram fragmentShaderLog];
+		NSLog(@"Frag Log: %@", fragLog);
+		NSString *vertLog = [sphereAmbientOcclusionProgram vertexShaderLog];
+		NSLog(@"Vert Log: %@", vertLog);
+		[sphereAmbientOcclusionProgram release];
+		sphereAmbientOcclusionProgram = nil;
+	}
+    
+    sphereAmbientOcclusionPositionAttribute = [sphereAmbientOcclusionProgram attributeIndex:@"position"];
+    sphereAmbientOcclusionImpostorSpaceAttribute = [sphereAmbientOcclusionProgram attributeIndex:@"inputImpostorSpaceCoordinate"];
+    sphereAmbientOcclusionAOOffsetAttribute = [sphereAmbientOcclusionProgram attributeIndex:@"ambientOcclusionTextureOffset"];
+	sphereAmbientOcclusionModelViewMatrix = [sphereAmbientOcclusionProgram uniformIndex:@"modelViewProjMatrix"];
+    sphereAmbientOcclusionRadius = [sphereAmbientOcclusionProgram uniformIndex:@"sphereRadius"];
+    sphereAmbientOcclusionDepthTexture = [sphereAmbientOcclusionProgram uniformIndex:@"depthTexture"];
+    sphereAmbientOcclusionOrthographicMatrix = [sphereAmbientOcclusionProgram uniformIndex:@"orthographicMatrix"];
+    sphereAmbientOcclusionPrecalculatedDepthTexture = [sphereAmbientOcclusionProgram uniformIndex:@"precalculatedSphereDepthTexture"];
+    sphereAmbientOcclusionInverseModelViewMatrix = [sphereAmbientOcclusionProgram uniformIndex:@"inverseModelViewProjMatrix"];
+    sphereAmbientOcclusionTexturePatchWidth = [sphereAmbientOcclusionProgram uniformIndex:@"ambientOcclusionTexturePatchWidth"];
+    sphereAmbientOcclusionIntensityFactor = [sphereAmbientOcclusionProgram uniformIndex:@"intensityFactor"];
+    
+    cylinderAmbientOcclusionProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"CylinderAmbientOcclusion" fragmentShaderFilename:@"CylinderAmbientOcclusion"];
+	[cylinderAmbientOcclusionProgram addAttribute:@"position"];
+	[cylinderAmbientOcclusionProgram addAttribute:@"direction"];
+	[cylinderAmbientOcclusionProgram addAttribute:@"inputImpostorSpaceCoordinate"];
+    [cylinderAmbientOcclusionProgram addAttribute:@"ambientOcclusionTextureOffset"];
+	if (![cylinderAmbientOcclusionProgram link])
+	{
+		NSLog(@"Raytracing shader link failed");
+		NSString *progLog = [cylinderAmbientOcclusionProgram programLog];
+		NSLog(@"Program Log: %@", progLog); 
+		NSString *fragLog = [cylinderAmbientOcclusionProgram fragmentShaderLog];
+		NSLog(@"Frag Log: %@", fragLog);
+		NSString *vertLog = [cylinderAmbientOcclusionProgram vertexShaderLog];
+		NSLog(@"Vert Log: %@", vertLog);
+		[cylinderAmbientOcclusionProgram release];
+		cylinderAmbientOcclusionProgram = nil;
+	}
+    
+    cylinderAmbientOcclusionPositionAttribute = [cylinderAmbientOcclusionProgram attributeIndex:@"position"];
+    cylinderAmbientOcclusionDirectionAttribute = [cylinderAmbientOcclusionProgram attributeIndex:@"direction"];
+    cylinderAmbientOcclusionImpostorSpaceAttribute = [cylinderAmbientOcclusionProgram attributeIndex:@"inputImpostorSpaceCoordinate"];
+    cylinderAmbientOcclusionAOOffsetAttribute = [cylinderAmbientOcclusionProgram attributeIndex:@"ambientOcclusionTextureOffset"];
+	cylinderAmbientOcclusionModelViewMatrix = [cylinderAmbientOcclusionProgram uniformIndex:@"modelViewProjMatrix"];
+    cylinderAmbientOcclusionRadius = [cylinderAmbientOcclusionProgram uniformIndex:@"cylinderRadius"];
+    cylinderAmbientOcclusionDepthTexture = [cylinderAmbientOcclusionProgram uniformIndex:@"depthTexture"];
+    cylinderAmbientOcclusionOrthographicMatrix = [cylinderAmbientOcclusionProgram uniformIndex:@"orthographicMatrix"];
+    cylinderAmbientOcclusionInverseModelViewMatrix = [cylinderAmbientOcclusionProgram uniformIndex:@"inverseModelViewProjMatrix"];
+    cylinderAmbientOcclusionTexturePatchWidth = [cylinderAmbientOcclusionProgram uniformIndex:@"ambientOcclusionTexturePatchWidth"];
+    cylinderAmbientOcclusionIntensityFactor = [cylinderAmbientOcclusionProgram uniformIndex:@"intensityFactor"];
+}
+
+- (void)initializeRaytracingShaders;
+{
+    if (sphereRaytracingProgram != nil)
+    {
+        return;
+    }
+
     [EAGLContext setCurrentContext:context];
 
     sphereRaytracingProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"SphereRaytracing" fragmentShaderFilename:@"SphereRaytracing"];
@@ -294,114 +428,6 @@
     cylinderRaytracingInverseModelViewMatrix = [cylinderRaytracingProgram uniformIndex:@"inverseModelViewProjMatrix"];
     cylinderRaytracingTexturePatchWidth = [cylinderRaytracingProgram uniformIndex:@"ambientOcclusionTexturePatchWidth"];
     cylinderRaytracingAOTexture = [cylinderRaytracingProgram uniformIndex:@"ambientOcclusionTexture"];
-
-    sphereDepthProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"SphereDepth" fragmentShaderFilename:@"SphereDepth"];
-	[sphereDepthProgram addAttribute:@"position"];
-	[sphereDepthProgram addAttribute:@"inputImpostorSpaceCoordinate"];
-	if (![sphereDepthProgram link])
-	{
-		NSLog(@"Raytracing shader link failed");
-		NSString *progLog = [sphereDepthProgram programLog];
-		NSLog(@"Program Log: %@", progLog); 
-		NSString *fragLog = [sphereDepthProgram fragmentShaderLog];
-		NSLog(@"Frag Log: %@", fragLog);
-		NSString *vertLog = [sphereDepthProgram vertexShaderLog];
-		NSLog(@"Vert Log: %@", vertLog);
-		[sphereDepthProgram release];
-		sphereDepthProgram = nil;
-	}
-    
-    sphereDepthPositionAttribute = [sphereDepthProgram attributeIndex:@"position"];
-    sphereDepthImpostorSpaceAttribute = [sphereDepthProgram attributeIndex:@"inputImpostorSpaceCoordinate"];
-	sphereDepthModelViewMatrix = [sphereDepthProgram uniformIndex:@"modelViewProjMatrix"];
-    sphereDepthRadius = [sphereDepthProgram uniformIndex:@"sphereRadius"];
-    sphereDepthOrthographicMatrix = [sphereDepthProgram uniformIndex:@"orthographicMatrix"];
-    sphereDepthPrecalculatedDepthTexture = [sphereDepthProgram uniformIndex:@"precalculatedSphereDepthTexture"];
-
-    
-    cylinderDepthProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"CylinderDepth" fragmentShaderFilename:@"CylinderDepth"];
-	[cylinderDepthProgram addAttribute:@"position"];
-	[cylinderDepthProgram addAttribute:@"direction"];
-	[cylinderDepthProgram addAttribute:@"inputImpostorSpaceCoordinate"];
-    
-	if (![cylinderDepthProgram link])
-	{
-		NSLog(@"Raytracing shader link failed");
-		NSString *progLog = [cylinderDepthProgram programLog];
-		NSLog(@"Program Log: %@", progLog); 
-		NSString *fragLog = [cylinderDepthProgram fragmentShaderLog];
-		NSLog(@"Frag Log: %@", fragLog);
-		NSString *vertLog = [cylinderDepthProgram vertexShaderLog];
-		NSLog(@"Vert Log: %@", vertLog);
-		[cylinderDepthProgram release];
-		cylinderDepthProgram = nil;
-	}
-    
-    cylinderDepthPositionAttribute = [cylinderDepthProgram attributeIndex:@"position"];
-    cylinderDepthDirectionAttribute = [cylinderDepthProgram attributeIndex:@"direction"];
-    cylinderDepthImpostorSpaceAttribute = [cylinderDepthProgram attributeIndex:@"inputImpostorSpaceCoordinate"];
-	cylinderDepthModelViewMatrix = [cylinderDepthProgram uniformIndex:@"modelViewProjMatrix"];
-    cylinderDepthRadius = [cylinderDepthProgram uniformIndex:@"cylinderRadius"];
-    cylinderDepthOrthographicMatrix = [cylinderDepthProgram uniformIndex:@"orthographicMatrix"];
-
-    sphereAmbientOcclusionProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"SphereAmbientOcclusion" fragmentShaderFilename:@"SphereAmbientOcclusion"];
-	[sphereAmbientOcclusionProgram addAttribute:@"position"];
-	[sphereAmbientOcclusionProgram addAttribute:@"inputImpostorSpaceCoordinate"];
-    [sphereAmbientOcclusionProgram addAttribute:@"ambientOcclusionTextureOffset"];
-	if (![sphereAmbientOcclusionProgram link])
-	{
-		NSLog(@"Raytracing shader link failed");
-		NSString *progLog = [sphereAmbientOcclusionProgram programLog];
-		NSLog(@"Program Log: %@", progLog); 
-		NSString *fragLog = [sphereAmbientOcclusionProgram fragmentShaderLog];
-		NSLog(@"Frag Log: %@", fragLog);
-		NSString *vertLog = [sphereAmbientOcclusionProgram vertexShaderLog];
-		NSLog(@"Vert Log: %@", vertLog);
-		[sphereAmbientOcclusionProgram release];
-		sphereAmbientOcclusionProgram = nil;
-	}
-    
-    sphereAmbientOcclusionPositionAttribute = [sphereAmbientOcclusionProgram attributeIndex:@"position"];
-    sphereAmbientOcclusionImpostorSpaceAttribute = [sphereAmbientOcclusionProgram attributeIndex:@"inputImpostorSpaceCoordinate"];
-    sphereAmbientOcclusionAOOffsetAttribute = [sphereAmbientOcclusionProgram attributeIndex:@"ambientOcclusionTextureOffset"];
-	sphereAmbientOcclusionModelViewMatrix = [sphereAmbientOcclusionProgram uniformIndex:@"modelViewProjMatrix"];
-    sphereAmbientOcclusionRadius = [sphereAmbientOcclusionProgram uniformIndex:@"sphereRadius"];
-    sphereAmbientOcclusionDepthTexture = [sphereAmbientOcclusionProgram uniformIndex:@"depthTexture"];
-    sphereAmbientOcclusionOrthographicMatrix = [sphereAmbientOcclusionProgram uniformIndex:@"orthographicMatrix"];
-    sphereAmbientOcclusionPrecalculatedDepthTexture = [sphereAmbientOcclusionProgram uniformIndex:@"precalculatedSphereDepthTexture"];
-    sphereAmbientOcclusionInverseModelViewMatrix = [sphereAmbientOcclusionProgram uniformIndex:@"inverseModelViewProjMatrix"];
-    sphereAmbientOcclusionTexturePatchWidth = [sphereAmbientOcclusionProgram uniformIndex:@"ambientOcclusionTexturePatchWidth"];
-    sphereAmbientOcclusionIntensityFactor = [sphereAmbientOcclusionProgram uniformIndex:@"intensityFactor"];
-
-    cylinderAmbientOcclusionProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"CylinderAmbientOcclusion" fragmentShaderFilename:@"CylinderAmbientOcclusion"];
-	[cylinderAmbientOcclusionProgram addAttribute:@"position"];
-	[cylinderAmbientOcclusionProgram addAttribute:@"direction"];
-	[cylinderAmbientOcclusionProgram addAttribute:@"inputImpostorSpaceCoordinate"];
-    [cylinderAmbientOcclusionProgram addAttribute:@"ambientOcclusionTextureOffset"];
-	if (![sphereAmbientOcclusionProgram link])
-	{
-		NSLog(@"Raytracing shader link failed");
-		NSString *progLog = [cylinderAmbientOcclusionProgram programLog];
-		NSLog(@"Program Log: %@", progLog); 
-		NSString *fragLog = [cylinderAmbientOcclusionProgram fragmentShaderLog];
-		NSLog(@"Frag Log: %@", fragLog);
-		NSString *vertLog = [cylinderAmbientOcclusionProgram vertexShaderLog];
-		NSLog(@"Vert Log: %@", vertLog);
-		[cylinderAmbientOcclusionProgram release];
-		cylinderAmbientOcclusionProgram = nil;
-	}
-    
-    cylinderAmbientOcclusionPositionAttribute = [cylinderAmbientOcclusionProgram attributeIndex:@"position"];
-    cylinderAmbientOcclusionDirectionAttribute = [cylinderAmbientOcclusionProgram attributeIndex:@"direction"];
-    cylinderAmbientOcclusionImpostorSpaceAttribute = [cylinderAmbientOcclusionProgram attributeIndex:@"inputImpostorSpaceCoordinate"];
-    cylinderAmbientOcclusionAOOffsetAttribute = [cylinderAmbientOcclusionProgram attributeIndex:@"ambientOcclusionTextureOffset"];
-	cylinderAmbientOcclusionModelViewMatrix = [cylinderAmbientOcclusionProgram uniformIndex:@"modelViewProjMatrix"];
-    cylinderAmbientOcclusionRadius = [cylinderAmbientOcclusionProgram uniformIndex:@"cylinderRadius"];
-    cylinderAmbientOcclusionDepthTexture = [cylinderAmbientOcclusionProgram uniformIndex:@"depthTexture"];
-    cylinderAmbientOcclusionOrthographicMatrix = [cylinderAmbientOcclusionProgram uniformIndex:@"orthographicMatrix"];
-    cylinderAmbientOcclusionInverseModelViewMatrix = [cylinderAmbientOcclusionProgram uniformIndex:@"inverseModelViewProjMatrix"];
-    cylinderAmbientOcclusionTexturePatchWidth = [cylinderAmbientOcclusionProgram uniformIndex:@"ambientOcclusionTexturePatchWidth"];
-    cylinderAmbientOcclusionIntensityFactor = [cylinderAmbientOcclusionProgram uniformIndex:@"intensityFactor"];
 
     [self generateSphereDepthMapTexture];
 }
@@ -557,7 +583,7 @@
 
 - (void)configureBasedOnNumberOfAtoms:(unsigned int)numberOfAtoms numberOfBonds:(unsigned int)numberOfBonds;
 {
-    widthOfAtomAOTexturePatch = AMBIENTOCCLUSIONTEXTUREWIDTH / sqrt(numberOfAtoms + numberOfAtoms);
+    widthOfAtomAOTexturePatch = (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH / sqrt((GLfloat)numberOfAtoms + (GLfloat)numberOfBonds);
     normalizedAOTexturePatchWidth = (GLfloat)widthOfAtomAOTexturePatch / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH;
     
     previousAmbientOcclusionOffset[0] = 0.0;
@@ -677,7 +703,7 @@
     if (previousAmbientOcclusionOffset[0] > (1.0 - normalizedAOTexturePatchWidth * 0.5))
     {
         previousAmbientOcclusionOffset[0] = 0.0;
-        previousAmbientOcclusionOffset[1] += normalizedAOTexturePatchWidth;
+        previousAmbientOcclusionOffset[1] += normalizedAOTexturePatchWidth;        
     }
 }
 
@@ -1138,6 +1164,7 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
 */
 
 #define AMBIENTOCCLUSIONSAMPLINGPOINTS 50
+//#define AMBIENTOCCLUSIONSAMPLINGPOINTS 1
 
 #define ARC4RANDOM_MAX 0x100000000
 

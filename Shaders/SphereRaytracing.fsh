@@ -73,17 +73,17 @@ void main()
     vec2 textureCoordinateForAOLookup = ambientOcclusionTextureBase + (ambientOcclusionTexturePatchWidth - 2.0 / 1024.0) * (1.00 + textureCoordinateForSphereSurfacePosition(aoNormal)) / 2.00;
     vec3 ambientOcclusionIntensity = texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).rgb;
         
-    float lightingIntensity = 0.3 + 0.7 * clamp(dot(lightPosition, normal), 0.0, 1.0);
+    float lightingIntensity = 0.2 + 1.3 * clamp(dot(lightPosition, normal), 0.0, 1.0) * ambientOcclusionIntensity.r;
     finalSphereColor *= lightingIntensity;
     
     // Per fragment specular lighting
     lightingIntensity  = clamp(dot(lightPosition, normal), 0.0, 1.0);
-    lightingIntensity  = pow(lightingIntensity, 60.0);
-    finalSphereColor += vec3(0.4, 0.4, 0.4) * lightingIntensity;
+    lightingIntensity  = pow(lightingIntensity, 60.0) * ambientOcclusionIntensity.r * 1.2;
+    finalSphereColor += vec3(0.4, 0.4, 0.4) * lightingIntensity + vec3(1.0, 1.0, 1.0) * 0.2 * ambientOcclusionIntensity.r;
     
 //
 //    finalSphereColor *= sqrt(ambientOcclusionIntensity);
-    finalSphereColor = finalSphereColor * 0.5 + vec3(1.0) * ambientOcclusionIntensity;
+//    finalSphereColor = finalSphereColor * 0.75 + vec3(1.0) * 0.5 * ambientOcclusionIntensity;
 
     
 //    gl_FragColor = vec4(ambientOcclusionIntensity, 1.0);
@@ -94,9 +94,9 @@ void main()
     
 //    gl_FragColor = texture2D(depthTexture, normalizedViewCoordinate.xy);
 //    gl_FragColor = texture2D(precalculatedSphereDepthTexture, depthLookupCoordinate);
-    
+//    gl_FragColor = vec4(ambientOcclusionTextureBase, 0.0, 1.0);
+
 //    gl_FragColor = vec4(texture2D(ambientOcclusionTexture, normalizedViewCoordinate.xy).rgb, 1.0);
-//    gl_FragColor = vec4(texture2D(ambientOcclusionTexture, (normalizedViewCoordinate.xy)).rgb, 1.0);
 //    gl_FragColor = vec4(sphereColor, 1.0);
     gl_FragColor = vec4(finalSphereColor, 1.0);
 

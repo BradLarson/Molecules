@@ -6,15 +6,15 @@ varying mediump float normalizedDisplacementAtEndCaps;
 varying mediump float normalizedDepth;
 varying mediump float depthAdjustmentForOrthographicProjection;
 
+const vec3 stepValues = vec3(510.0, 255.0, 0.0);
+const float scaleDownFactor = 1.0 / 255.0;
+
 vec4 encodedColorForDepth(float depthValue)
 {
-    float intDepthValue = ceil(depthValue * 765.0);
+    vec3 intDepthValue = vec3(ceil(depthValue * 765.0));
     
-    float blueInt = max(0.0, intDepthValue - 510.0);
-    float greenInt = max(0.0, intDepthValue - 255.0 - blueInt);
-    float redInt = intDepthValue - blueInt - greenInt;
-    
-    return vec4(vec3(blueInt, greenInt, redInt) / 255.0, 1.0);
+    intDepthValue = (intDepthValue - stepValues) * scaleDownFactor;
+    return vec4(clamp(intDepthValue, 0.0, 1.0), 1.0);
 }
 
 void main()

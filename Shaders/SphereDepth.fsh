@@ -8,43 +8,36 @@ varying mediump float normalizedDepth;
 varying mediump float halfSphereRadius;
 varying mediump float depthAdjustmentForOrthographicProjection;
 
-/*vec4 encodedColorForDepth(float depthValue)
-{
-    vec4 encodedColor;
-    encodedColor.a = 1.0;
-    encodedColor.b = max(0.0, depthValue - (2.0 / 3.0));
-    encodedColor.g = max(0.0, depthValue - (1.0 / 3.0) - encodedColor.b);
-    encodedColor.r = depthValue - encodedColor.b - encodedColor.g;
-    encodedColor.rgb *= 3.0;
-    return encodedColor;
-    
-//    return vec4(vec3(depthValue), 1.0);
-}*/
-
 /*
-vec4 encodedColorForDepth(float depthValue)
-{
-    float intDepthValue = ceil(depthValue * 765.0);
-    
-    float blueInt = max(0.0, ceil(intDepthValue - 510.0));
-    float greenInt = max(0.0, ceil(intDepthValue - 255.0 - blueInt));
-    float redInt = intDepthValue - blueInt - greenInt;
-
-    return vec4(vec3(blueInt, greenInt, redInt) / 255.0, 1.0);
-}
- */
+const vec2 stepValues = vec2(510.0, 255.0);
+const float scaleDownFactor = 1.0 / 255.0;
 
 vec4 encodedColorForDepth(float depthValue)
 {
-    float intDepthValue = ceil(depthValue * 765.0);
+    vec2 intDepthValue = vec2(ceil(depthValue * 765.0));
+    vec2 thresholds = step(stepValues, intDepthValue);
     
-    float blueInt = max(0.0, intDepthValue - 510.0);
-    float greenInt = max(0.0, intDepthValue - 255.0 - blueInt);
-    float redInt = intDepthValue - blueInt - greenInt;
+    vec2 differences = (intDepthValue - stepValues) * thresholds;
     
-    return vec4(vec3(blueInt, greenInt, redInt) / 255.0, 1.0);
-}
+    vec3 calculatedValues = vec3(intDepthValue.r - differences.g,
+                         differences.g - differences.r, 
+                         differences.r);
 
+    return vec4((calculatedValues * scaleDownFactor), 1.0);
+}
+*/
+ 
+const vec3 stepValues = vec3(510.0, 255.0, 0.0);
+const float scaleDownFactor = 1.0 / 255.0;
+
+vec4 encodedColorForDepth(float depthValue)
+{
+    vec3 intDepthValue = vec3(ceil(depthValue * 765.0));
+    
+    intDepthValue = (intDepthValue - stepValues) * scaleDownFactor;
+    return vec4(clamp(intDepthValue, 0.0, 1.0), 1.0);
+}
+ 
 void main()
 {
     mediump float precalculatedDepth = texture2D(precalculatedSphereDepthTexture, depthLookupCoordinate).r * depthAdjustmentForOrthographicProjection;

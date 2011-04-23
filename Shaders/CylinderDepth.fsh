@@ -33,6 +33,7 @@ void main()
         discard;
     }
 
+    // Use a little fudge factor to account for rounding errors when zoomed out on the ball and stick mode
     float calculatedDepth = normalizedDepth - depthOffset + 0.0025;
     
     gl_FragColor = encodedColorForDepth(calculatedDepth);

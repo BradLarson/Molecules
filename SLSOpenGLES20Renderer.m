@@ -9,7 +9,8 @@
 #import "SLSOpenGLES20Renderer.h"
 #import "GLProgram.h"
 
-#define AMBIENTOCCLUSIONTEXTUREWIDTH 1024
+//#define AMBIENTOCCLUSIONTEXTUREWIDTH 1024
+#define AMBIENTOCCLUSIONTEXTUREWIDTH 512
 
 @implementation SLSOpenGLES20Renderer
 
@@ -140,7 +141,8 @@
     [self switchToDisplayFramebuffer];
     glViewport(0, 0, backingWidth, backingHeight);
 
-    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-3.0 far:3.0];
+//    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-3.0 far:3.0];
+    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-2.0 far:2.0];
     
     return YES;
 }
@@ -197,14 +199,21 @@
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
                 
+                glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
+
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bufferSize.width, bufferSize.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+//                glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, bufferSize.width, bufferSize.height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0);
             }
             else
             {
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+//                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+//                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
+
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bufferSize.width, bufferSize.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 //                glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, bufferSize.width, bufferSize.height, 0, GL_LUMINANCE, GL_FLOAT, 0);
             }            
@@ -429,6 +438,29 @@
     cylinderRaytracingTexturePatchWidth = [cylinderRaytracingProgram uniformIndex:@"ambientOcclusionTexturePatchWidth"];
     cylinderRaytracingAOTexture = [cylinderRaytracingProgram uniformIndex:@"ambientOcclusionTexture"];
 
+#ifdef ENABLETEXTUREDISPLAYDEBUGGING
+    passthroughProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"PlainDisplay" fragmentShaderFilename:@"PlainDisplay"];
+	[passthroughProgram addAttribute:@"position"];
+	[passthroughProgram addAttribute:@"inputTextureCoordinate"];
+    
+    if (![passthroughProgram link])
+	{
+		NSLog(@"Raytracing shader link failed");
+		NSString *progLog = [passthroughProgram programLog];
+		NSLog(@"Program Log: %@", progLog); 
+		NSString *fragLog = [passthroughProgram fragmentShaderLog];
+		NSLog(@"Frag Log: %@", fragLog);
+		NSString *vertLog = [passthroughProgram vertexShaderLog];
+		NSLog(@"Vert Log: %@", vertLog);
+		[passthroughProgram release];
+		passthroughProgram = nil;
+	}
+    
+    passthroughPositionAttribute = [passthroughProgram attributeIndex:@"position"];
+    passthroughTextureCoordinateAttribute = [passthroughProgram attributeIndex:@"inputTextureCoordinate"];
+    passthroughTexture = [passthroughProgram uniformIndex:@"texture"];
+#endif
+    
     [self generateSphereDepthMapTexture];
 }
 
@@ -466,44 +498,89 @@
 
 - (void)generateSphereDepthMapTexture;
 {
-    // This takes only 95 ms on an iPad 1, so it's worth it for the 8% - 18% per-frame speedup 
+    CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
+
+    // Luminance for depth: This takes only 95 ms on an iPad 1, so it's worth it for the 8% - 18% per-frame speedup 
+    // Full lighting precalculation: This only takes 264 ms on an iPad 1
     
-    unsigned char *sphereDepthTextureData = (unsigned char *)malloc(SPHEREDEPTHTEXTUREWIDTH * SPHEREDEPTHTEXTUREWIDTH);
+    unsigned char *sphereDepthTextureData = (unsigned char *)malloc(SPHEREDEPTHTEXTUREWIDTH * SPHEREDEPTHTEXTUREWIDTH * 4);
 
     glGenTextures(1, &sphereDepthMappingTexture);
 
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    
+    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+        
     for (unsigned int currentColumnInTexture = 0; currentColumnInTexture < SPHEREDEPTHTEXTUREWIDTH; currentColumnInTexture++)
     {
         float normalizedYLocation = -1.0 + 2.0 * (float)currentColumnInTexture / (float)SPHEREDEPTHTEXTUREWIDTH;
         for (unsigned int currentRowInTexture = 0; currentRowInTexture < SPHEREDEPTHTEXTUREWIDTH; currentRowInTexture++)
         {
             float normalizedXLocation = -1.0 + 2.0 * (float)currentRowInTexture / (float)SPHEREDEPTHTEXTUREWIDTH;
-            unsigned char currentDepthByte = 0;
+            unsigned char currentDepthByte = 0, currentAmbientLightingByte = 0, currentSpecularLightingByte = 0, alphaByte = 0;
             
             float distanceFromCenter = sqrt(normalizedXLocation * normalizedXLocation + normalizedYLocation * normalizedYLocation);
             if (distanceFromCenter <= 1.0)
             {
-                currentDepthByte = round(255.0 * sqrt(1.0 - distanceFromCenter * distanceFromCenter));
+                // First, calculate the depth of the sphere at this point
+                float currentSphereDepth = sqrt(1.0 - distanceFromCenter * distanceFromCenter);
+                currentDepthByte = round(255.0 * currentSphereDepth);
+                
+                // Then, do the ambient lighting factor
+                float dotProductForLighting = normalizedXLocation * lightDirection[0] + normalizedYLocation * lightDirection[1] + currentSphereDepth * lightDirection[2];
+                if (dotProductForLighting < 0.0)
+                {
+                    dotProductForLighting = 0.0;
+                }
+                else if (dotProductForLighting > 1.0)
+                {
+                    dotProductForLighting = 1.0;
+                }
+                
+                currentAmbientLightingByte = round(255.0 * dotProductForLighting);
+                
+                // Finally, do the specular lighting factor
+                float specularIntensity = pow(dotProductForLighting, 60.0);
+                currentSpecularLightingByte = round(255.0 * specularIntensity);
+                
+                alphaByte = 255;
             }
 
-            sphereDepthTextureData[currentColumnInTexture * SPHEREDEPTHTEXTUREWIDTH + currentRowInTexture] = currentDepthByte;
+            sphereDepthTextureData[currentColumnInTexture * SPHEREDEPTHTEXTUREWIDTH * 4 + (currentRowInTexture * 4)] = currentDepthByte;
+            sphereDepthTextureData[currentColumnInTexture * SPHEREDEPTHTEXTUREWIDTH * 4 + (currentRowInTexture * 4) + 1] = currentAmbientLightingByte;
+            sphereDepthTextureData[currentColumnInTexture * SPHEREDEPTHTEXTUREWIDTH * 4 + (currentRowInTexture * 4) + 2] = currentSpecularLightingByte;            
+            sphereDepthTextureData[currentColumnInTexture * SPHEREDEPTHTEXTUREWIDTH * 4 + (currentRowInTexture * 4) + 3] = alphaByte;
+/*            
+            float lightingIntensity = 0.2 + 1.3 * clamp(dot(lightPosition, normal), 0.0, 1.0) * ambientOcclusionIntensity.r;
+            finalSphereColor *= lightingIntensity;
+            
+            // Per fragment specular lighting
+            lightingIntensity  = clamp(dot(lightPosition, normal), 0.0, 1.0);
+            lightingIntensity  = pow(lightingIntensity, 60.0) * ambientOcclusionIntensity.r * 1.2;
+            finalSphereColor += vec3(0.4, 0.4, 0.4) * lightingIntensity + vec3(1.0, 1.0, 1.0) * 0.2 * ambientOcclusionIntensity.r;
+*/
+            
         }
     }
     
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, SPHEREDEPTHTEXTUREWIDTH, SPHEREDEPTHTEXTUREWIDTH, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, sphereDepthTextureData);
-    glGenerateMipmap(GL_TEXTURE_2D);
+//	glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, SPHEREDEPTHTEXTUREWIDTH, SPHEREDEPTHTEXTUREWIDTH, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, sphereDepthTextureData);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, SPHEREDEPTHTEXTUREWIDTH, SPHEREDEPTHTEXTUREWIDTH, 0, GL_RGBA, GL_UNSIGNED_BYTE, sphereDepthTextureData);
+ //   glGenerateMipmap(GL_TEXTURE_2D);
+    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
 
     free(sphereDepthTextureData);
+    
+    CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
+    
+    NSLog(@"Texture generation duration: %f ms", frameDuration * 1000.0);
+
 }
 
 - (void)destroyFramebuffers;
@@ -564,6 +641,7 @@
     [self convert3DTransform:&inverseMatrix toMatrix:inverseModelViewMatrix];
 
     [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
+//    [self displayTextureToScreen:sphereDepthMappingTexture];
 //    [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix];
     [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix];
     
@@ -598,7 +676,7 @@
     newVertex[0] = newPoint.x;
     newVertex[1] = newPoint.y;
     newVertex[2] = newPoint.z;
-
+    
     GLfloat lowerLeftTexture[2] = {-1.0, -1.0};
     GLfloat lowerRightTexture[2] = {1.0, -1.0};
     GLfloat upperLeftTexture[2] = {-1.0, 1.0};
@@ -917,13 +995,15 @@
 {
     [self switchToDisplayFramebuffer];
     
-    glDisable(GL_BLEND);
-    //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //    glBlendEquation(GL_FUNC_ADD);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendEquation(GL_FUNC_ADD);
     
-    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_DEPTH_TEST);
+//    glDisable(GL_BLEND);
+//    glEnable(GL_DEPTH_TEST);
     
-    //    glDepthMask(GL_FALSE);
+    glDepthMask(GL_FALSE);
     
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -1223,6 +1303,47 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
     CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
     
     NSLog(@"Ambient occlusion calculation duration: %f s", frameDuration);
+}
+
+- (void)displayTextureToScreen:(GLuint)textureToDisplay;
+{
+    [self switchToDisplayFramebuffer];
+
+    glDisable(GL_DEPTH_TEST); 
+    glEnable(GL_BLEND);
+    glBlendEquation(GL_FUNC_ADD);
+    glBlendFunc(GL_ONE, GL_ONE);
+
+    [passthroughProgram use];
+    
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    static const GLfloat squareVertices[] = {
+        -1.0f, -1.0f,
+        1.0f, -1.0f,
+        -1.0f,  1.0f,
+        1.0f,  1.0f,
+    };
+    
+    static const GLfloat textureCoordinates[] = {
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        0.0f,  1.0f,
+        1.0f,  1.0f,
+    };
+    
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textureToDisplay);
+	glUniform1i(passthroughTexture, 0);	
+    
+    glVertexAttribPointer(passthroughPositionAttribute, 2, GL_FLOAT, 0, 0, squareVertices);
+	glEnableVertexAttribArray(passthroughPositionAttribute);
+	glVertexAttribPointer(passthroughTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
+	glEnableVertexAttribArray(passthroughTextureCoordinateAttribute);
+    
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
 }
 
 @end

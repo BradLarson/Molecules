@@ -8,25 +8,6 @@ varying mediump float normalizedDepth;
 varying mediump float halfSphereRadius;
 varying mediump float depthAdjustmentForOrthographicProjection;
 
-/*
-const vec2 stepValues = vec2(510.0, 255.0);
-const float scaleDownFactor = 1.0 / 255.0;
-
-vec4 encodedColorForDepth(float depthValue)
-{
-    vec2 intDepthValue = vec2(ceil(depthValue * 765.0));
-    vec2 thresholds = step(stepValues, intDepthValue);
-    
-    vec2 differences = (intDepthValue - stepValues) * thresholds;
-    
-    vec3 calculatedValues = vec3(intDepthValue.r - differences.g,
-                         differences.g - differences.r, 
-                         differences.r);
-
-    return vec4((calculatedValues * scaleDownFactor), 1.0);
-}
-*/
- 
 const vec3 stepValues = vec3(510.0, 255.0, 0.0);
 const float scaleDownFactor = 1.0 / 255.0;
 

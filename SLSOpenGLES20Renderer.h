@@ -8,6 +8,8 @@
 
 #import "SLSOpenGLESRenderer.h"
 
+#define ENABLETEXTUREDISPLAYDEBUGGING 1
+
 @class GLProgram;
 
 @interface SLSOpenGLES20Renderer : SLSOpenGLESRenderer 
@@ -44,6 +46,12 @@
     GLint cylinderAmbientOcclusionRadius, cylinderAmbientOcclusionOrthographicMatrix, cylinderAmbientOcclusionInverseModelViewMatrix, cylinderAmbientOcclusionTexturePatchWidth, cylinderAmbientOcclusionIntensityFactor;
     GLint cylinderAmbientOcclusionDepthTexture;
 
+#ifdef ENABLETEXTUREDISPLAYDEBUGGING
+    GLProgram *passthroughProgram;
+    GLint passthroughPositionAttribute, passthroughTextureCoordinateAttribute;
+    GLint passthroughTexture;
+#endif
+    
     GLuint ambientOcclusionTexture;
     GLuint ambientOcclusionRenderbuffer, ambientOcclusionFramebuffer;
     
@@ -80,5 +88,6 @@
 - (void)renderRaytracedSceneForModelViewMatrix:(GLfloat *)raytracingModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix;
 - (void)renderAmbientOcclusionTextureForModelViewMatrix:(GLfloat *)ambientOcclusionModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix fractionOfTotal:(GLfloat)fractionOfTotal;
 - (void)prepareAmbientOcclusionMap;
+- (void)displayTextureToScreen:(GLuint)textureToDisplay;
 
 @end

@@ -31,56 +31,65 @@ mediump vec2 textureCoordinateForSphereSurfacePosition(mediump vec3 sphereSurfac
     
     if (sphereSurfacePosition.z <= 0.0)
     {
-        return vec2(sphereSurfacePosition.x / d, sphereSurfacePosition.y / d);
+        return sphereSurfacePosition.xy / d;
     }
     else
     {
-        return vec2(sign(sphereSurfacePosition.x) * ( 1.0 - absoluteSphereSurfacePosition.y / d), sign(sphereSurfacePosition.y) * (1.0 - absoluteSphereSurfacePosition.x / d));
+        return sign(sphereSurfacePosition.xy) * ( 1.0 - absoluteSphereSurfacePosition.yx / d);
     }
 }
 
 void main()
 {
-    float distanceFromCenter = length(impostorSpaceCoordinate);
+//    float distanceFromCenter = length(impostorSpaceCoordinate);
+    float alphaValue = 1.0;
     
     // Establish the visual bounds of the sphere
-    if (distanceFromCenter > 1.0)
-    {
-        discard;
-    }
+//    if (distanceFromCenter > 1.0)
+//    {
+//        discard;
+//    }
     
-    float precalculatedDepth = texture2D(precalculatedSphereDepthTexture, depthLookupCoordinate).r;    
+    vec4 precalculatedDepthAndLighting = texture2D(precalculatedSphereDepthTexture, depthLookupCoordinate);
+    alphaValue = precalculatedDepthAndLighting.a;
     float previousDepthValue = depthFromEncodedColor(texture2D(depthTexture, normalizedViewCoordinate.xy));
-    float currentDepthValue = normalizedViewCoordinate.z - 0.5 * sphereRadius * precalculatedDepth * depthAdjustmentForOrthographicProjection;        
+    float currentDepthValue = normalizedViewCoordinate.z - 0.5 * sphereRadius * precalculatedDepthAndLighting.r * depthAdjustmentForOrthographicProjection;        
     
     // Check to see that this fragment is the frontmost one for this area
     if ( (floor(currentDepthValue * 765.0)) > (ceil(previousDepthValue * 765.0)) )
     {
-        discard;
+        alphaValue = 0.0;
+//        discard;
     }
     
     // Calculate the lighting normal for the sphere
-    vec3 normal = vec3(impostorSpaceCoordinate, precalculatedDepth);
+    vec3 normal = vec3(impostorSpaceCoordinate, precalculatedDepthAndLighting.r);
     
-    vec3 finalSphereColor = sphereColor;
-    
+    // Ambient occlusion factor
+//    vec3 aoNormal = normal;
+//    aoNormal.z = -aoNormal.z;
+//    aoNormal = (inverseModelViewProjMatrix * vec4(aoNormal, 0.0)).xyz;
+//    aoNormal.z = -aoNormal.z;
+//    vec2 textureCoordinateForAOLookup = ambientOcclusionTextureBase + (ambientOcclusionTexturePatchWidth - 2.0 / 1024.0) * (1.00 + textureCoordinateForSphereSurfacePosition(aoNormal)) / 2.00;
+//    vec3 ambientOcclusionIntensity = texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).rgb;
 
-    // ambient
-    vec3 aoNormal = normal;
-    aoNormal.z = -aoNormal.z;
-    aoNormal = (inverseModelViewProjMatrix * vec4(aoNormal, 0.0)).xyz;
-    aoNormal.z = -aoNormal.z;
-    vec2 textureCoordinateForAOLookup = ambientOcclusionTextureBase + (ambientOcclusionTexturePatchWidth - 2.0 / 1024.0) * (1.00 + textureCoordinateForSphereSurfacePosition(aoNormal)) / 2.00;
-    vec3 ambientOcclusionIntensity = texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).rgb;
-        
-    float lightingIntensity = 0.2 + 1.3 * clamp(dot(lightPosition, normal), 0.0, 1.0) * ambientOcclusionIntensity.r;
-    finalSphereColor *= lightingIntensity;
+    // Ambient lighting
+//    float lightingIntensity = 0.2 + 1.3 * precalculatedDepthAndLighting.g * ambientOcclusionIntensity.r;
+    float lightingIntensity = 0.2 + 1.3 * precalculatedDepthAndLighting.g;
+    vec3 finalSphereColor = sphereColor * lightingIntensity;
     
-    // Per fragment specular lighting
-    lightingIntensity  = clamp(dot(lightPosition, normal), 0.0, 1.0);
-    lightingIntensity  = pow(lightingIntensity, 60.0) * ambientOcclusionIntensity.r * 1.2;
-    finalSphereColor += vec3(0.4, 0.4, 0.4) * lightingIntensity + vec3(1.0, 1.0, 1.0) * 0.2 * ambientOcclusionIntensity.r;
+    // Specular lighting
+//    finalSphereColor += vec3(0.4) * precalculatedDepthAndLighting.b * ambientOcclusionIntensity * 1.2 + vec3(0.2) * ambientOcclusionIntensity.r;
+    finalSphereColor += vec3(0.4) * precalculatedDepthAndLighting.b;
     
+    
+//    float lightingIntensity = 0.2 + 1.3 * clamp(dot(lightPosition, normal), 0.0, 1.0) * ambientOcclusionIntensity.r;
+//    finalSphereColor *= lightingIntensity;
+//    
+//    // Per fragment specular lighting
+//    lightingIntensity  = clamp(dot(lightPosition, normal), 0.0, 1.0);
+//    lightingIntensity  = pow(lightingIntensity, 60.0) * ambientOcclusionIntensity.r * 1.2;
+//    finalSphereColor += vec3(0.4, 0.4, 0.4) * lightingIntensity + vec3(1.0, 1.0, 1.0) * 0.2 * ambientOcclusionIntensity.r;
 //
 //    finalSphereColor *= sqrt(ambientOcclusionIntensity);
 //    finalSphereColor = finalSphereColor * 0.75 + vec3(1.0) * 0.5 * ambientOcclusionIntensity;
@@ -98,6 +107,8 @@ void main()
 
 //    gl_FragColor = vec4(texture2D(ambientOcclusionTexture, normalizedViewCoordinate.xy).rgb, 1.0);
 //    gl_FragColor = vec4(sphereColor, 1.0);
-    gl_FragColor = vec4(finalSphereColor, 1.0);
+    gl_FragColor = vec4(finalSphereColor, alphaValue);
+//    gl_FragColor = vec4(normalizedViewCoordinate, 1.0);
+//    gl_FragColor = vec4(precalculatedDepthAndLighting, 1.0);
 
 }

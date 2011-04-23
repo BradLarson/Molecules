@@ -548,7 +548,7 @@
                 
                 // Finally, do the specular lighting factor
                 float specularIntensity = pow(dotProductForLighting, 60.0);
-                currentSpecularLightingByte = round(255.0 * specularIntensity);
+                currentSpecularLightingByte = round(255.0 * specularIntensity * 0.48);
                 
                 alphaByte = 255;
             }

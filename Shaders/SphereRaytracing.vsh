@@ -13,7 +13,7 @@ varying mediump vec2 impostorSpaceCoordinate;
 varying mediump vec3 normalizedViewCoordinate;
 varying mediump vec2 depthLookupCoordinate;
 varying mediump vec2 ambientOcclusionTextureBase;
-varying mediump float depthAdjustmentForOrthographicProjection;
+varying mediump float adjustedSphereRadius;
 
 uniform mediump mat4 modelViewProjMatrix;
 uniform mediump mat4 orthographicMatrix;
@@ -31,7 +31,8 @@ void main()
     transformedPosition.xy = transformedPosition.xy + inputImpostorSpaceCoordinate.xy * vec2(sphereRadius);
     transformedPosition = transformedPosition * orthographicMatrix;
     
-    depthAdjustmentForOrthographicProjection = (vec4(0.0, 0.0, 1.0, 0.0) * orthographicMatrix).z;
+    float depthAdjustmentForOrthographicProjection = (vec4(0.0, 0.0, 1.0, 0.0) * orthographicMatrix).z;
+    adjustedSphereRadius = sphereRadius * 0.5 * depthAdjustmentForOrthographicProjection;
 
     normalizedViewCoordinate = (transformedPosition.xyz + 1.0) / 2.0;
     gl_Position = transformedPosition;

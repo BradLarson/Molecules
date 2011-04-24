@@ -8,7 +8,7 @@ uniform mediump float intensityFactor;
 varying mediump vec2 impostorSpaceCoordinate;
 varying mediump vec2 depthLookupCoordinate;
 varying mediump vec3 normalizedViewCoordinate;
-varying mediump float halfSphereRadius;
+varying mediump float adjustedSphereRadius;
 varying mediump vec3 adjustmentForOrthographicProjection;
 
 const mediump float oneThird = 1.0 / 3.0;
@@ -38,27 +38,15 @@ mediump vec3 coordinateFromTexturePosition(mediump vec2 texturePosition)
 void main()
 {
     vec3 currentSphereSurfaceCoordinate = coordinateFromTexturePosition(impostorSpaceCoordinate);
-//    currentSphereSurfaceCoordinate.z = -currentSphereSurfaceCoordinate.z;
-//    currentSphereSurfaceCoordinate = (inverseModelViewProjMatrix * vec4(currentSphereSurfaceCoordinate, 0.0)).xyz;
-//    currentSphereSurfaceCoordinate.z = -currentSphereSurfaceCoordinate.z;
 
-    
-//    currentSphereSurfaceCoordinate.z = -currentSphereSurfaceCoordinate.z;
     currentSphereSurfaceCoordinate = normalize((modelViewProjMatrix * vec4(currentSphereSurfaceCoordinate, 0.0)).xyz);
-//    currentSphereSurfaceCoordinate.z = -currentSphereSurfaceCoordinate.z;
      
-    vec3 currentPositionCoordinate = normalizedViewCoordinate + halfSphereRadius * currentSphereSurfaceCoordinate * adjustmentForOrthographicProjection;
-//    vec3 currentPositionCoordinate = normalizedViewCoordinate + halfSphereRadius * vec3(impostorSpaceCoordinate, 0.0) * vec3(radiusAdjustment, 1.0);
-//    currentPositionCoordinate = (vec4(currentPositionCoordinate, 0.0) * orthographicMatrix).xyz;
+    vec3 currentPositionCoordinate = normalizedViewCoordinate + adjustedSphereRadius * currentSphereSurfaceCoordinate * adjustmentForOrthographicProjection;
     
                                                                  
     float previousDepthValue = depthFromEncodedColor(texture2D(depthTexture, currentPositionCoordinate.xy));
 
-//    gl_FragColor = vec4(texture2D(depthTexture, currentPositionCoordinate.xy).rgb, 1.0);
-
-//    gl_FragColor = vec4(currentSphereSurfaceCoordinate, 1.0);
-
-    if ( (floor(currentPositionCoordinate.z * 765.0) - 1.0) <= (ceil(previousDepthValue * 765.0)) )
+    if ( (floor(currentPositionCoordinate.z * 765.0 - 1.0)) <= (ceil(previousDepthValue * 765.0)) )
     {
 //        gl_FragColor = vec4(vec3(previousDepthValue - currentPositionCoordinate.z), 1.0);
 //        gl_FragColor = vec4(normalizedViewCoordinate, 1.0);

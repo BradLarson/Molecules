@@ -32,8 +32,10 @@ void main()
     transformedPosition = transformedPosition * orthographicMatrix;
     
     float depthAdjustmentForOrthographicProjection = (vec4(0.0, 0.0, 1.0, 0.0) * orthographicMatrix).z;
-    adjustedSphereRadius = sphereRadius * 0.5 * depthAdjustmentForOrthographicProjection;
+//    adjustedSphereRadius = sphereRadius * 0.5 * depthAdjustmentForOrthographicProjection;
+    adjustedSphereRadius = sphereRadius * depthAdjustmentForOrthographicProjection;
 
-    normalizedViewCoordinate = (transformedPosition.xyz + 1.0) / 2.0;
+    normalizedViewCoordinate.xy = (transformedPosition.xy + 1.0) / 2.0;
+    normalizedViewCoordinate.z = transformedPosition.z + 1.0;
     gl_Position = transformedPosition;
 }

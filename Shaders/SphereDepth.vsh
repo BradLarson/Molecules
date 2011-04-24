@@ -11,8 +11,7 @@ attribute vec2 inputImpostorSpaceCoordinate;
 varying mediump vec2 impostorSpaceCoordinate;
 varying mediump vec2 depthLookupCoordinate;
 varying mediump float normalizedDepth;
-varying mediump float halfSphereRadius;
-varying mediump float depthAdjustmentForOrthographicProjection;
+varying mediump float adjustedSphereRadius;
 
 uniform mediump mat4 modelViewProjMatrix;
 uniform mediump float sphereRadius;
@@ -25,13 +24,14 @@ void main()
     impostorSpaceCoordinate = inputImpostorSpaceCoordinate.xy;
     depthLookupCoordinate = (inputImpostorSpaceCoordinate + 1.0) / 2.0;
     
-    halfSphereRadius = sphereRadius * 0.5;
-    
     transformedPosition.xy = transformedPosition.xy + inputImpostorSpaceCoordinate.xy * vec2(sphereRadius);
     transformedPosition = transformedPosition * orthographicMatrix;
 
-    depthAdjustmentForOrthographicProjection = (vec4(0.0, 0.0, 1.0, 0.0) * orthographicMatrix).z;
+    float depthAdjustmentForOrthographicProjection = (vec4(0.0, 0.0, 1.0, 0.0) * orthographicMatrix).z;
+//    adjustedSphereRadius = sphereRadius * 0.5 * depthAdjustmentForOrthographicProjection;
+    adjustedSphereRadius = sphereRadius * depthAdjustmentForOrthographicProjection;
     
-    normalizedDepth = (transformedPosition.z + 1.0) / 2.0;
+//    normalizedDepth = (transformedPosition.z + 1.0) / 2.0;
+    normalizedDepth = transformedPosition.z + 1.0;
     gl_Position = transformedPosition;
 }

@@ -32,29 +32,41 @@ mediump vec2 textureCoordinateForSphereSurfacePosition(mediump vec3 sphereSurfac
 void main()
 {
     vec4 precalculatedDepthAndLighting = texture2D(precalculatedSphereDepthTexture, depthLookupCoordinate);
-    float alphaValue = precalculatedDepthAndLighting.a;
-    float previousDepthValue = depthFromEncodedColor(texture2D(depthTexture, normalizedViewCoordinate.xy));
-    float currentDepthValue = normalizedViewCoordinate.z - adjustedSphereRadius * precalculatedDepthAndLighting.r;        
-    
-    // Check to see that this fragment is the frontmost one for this area
-    alphaValue = ( (floor(currentDepthValue * 765.0)) > (ceil(previousDepthValue * 765.0)) ) ? 0.0 : alphaValue;
-    
-    // Ambient occlusion factor
-    vec3 aoNormal = vec3(impostorSpaceCoordinate, -precalculatedDepthAndLighting.r);
-    aoNormal = (inverseModelViewProjMatrix * vec4(aoNormal, 0.0)).xyz;
-    aoNormal.z = -aoNormal.z;
-    vec2 textureCoordinateForAOLookup = ambientOcclusionTextureBase + (ambientOcclusionTexturePatchWidth - 2.0 / 1024.0) * (1.00 + textureCoordinateForSphereSurfacePosition(aoNormal)) / 2.00;
-    float ambientOcclusionIntensity = texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).r;
-
-    // Ambient lighting
-    float lightingIntensity = 0.2 + 1.3 * precalculatedDepthAndLighting.g * ambientOcclusionIntensity;
-    vec3 finalSphereColor = sphereColor * lightingIntensity;
-    
-    // Specular lighting
-    finalSphereColor += vec3(precalculatedDepthAndLighting.b * ambientOcclusionIntensity);
-    
-    gl_FragColor = vec4(finalSphereColor, alphaValue);
-//    gl_FragColor = vec4(normalizedViewCoordinate, 1.0);
-//    gl_FragColor = vec4(precalculatedDepthAndLighting, 1.0);
-
+//    if (precalculatedDepth < 0.05)
+    if (precalculatedDepthAndLighting.r < 0.05)
+    {
+        gl_FragColor = vec4(0.0);
+    }
+    else
+    {
+        float previousDepthValue = depthFromEncodedColor(texture2D(depthTexture, normalizedViewCoordinate.xy));
+        float currentDepthValue = normalizedViewCoordinate.z - adjustedSphereRadius * precalculatedDepthAndLighting.r;        
+        
+        // Check to see that this fragment is the frontmost one for this area
+        if ( (floor(currentDepthValue * 765.0)) > (ceil(previousDepthValue * 765.0)) )
+        {
+            gl_FragColor = vec4(0.0);
+        }
+        else
+        {            
+            // Ambient occlusion factor
+            vec3 aoNormal = vec3(impostorSpaceCoordinate, -precalculatedDepthAndLighting.r);
+            aoNormal = (inverseModelViewProjMatrix * vec4(aoNormal, 0.0)).xyz;
+            aoNormal.z = -aoNormal.z;
+            vec2 textureCoordinateForAOLookup = ambientOcclusionTextureBase + (ambientOcclusionTexturePatchWidth - 2.0 / 1024.0) * (1.00 + textureCoordinateForSphereSurfacePosition(aoNormal)) / 2.00;
+            float ambientOcclusionIntensity = texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).r;
+            
+            // Ambient lighting
+            float lightingIntensity = 0.3 + 1.5 * precalculatedDepthAndLighting.g * ambientOcclusionIntensity;
+            vec3 finalSphereColor = sphereColor * lightingIntensity;
+            
+            // Specular lighting
+            finalSphereColor += vec3(precalculatedDepthAndLighting.b * ambientOcclusionIntensity);
+            
+//            gl_FragColor = vec4(finalSphereColor, 1.0);
+            gl_FragColor = vec4(vec3(ambientOcclusionIntensity), 1.0);
+            //    gl_FragColor = vec4(normalizedViewCoordinate, 1.0);
+            //    gl_FragColor = vec4(precalculatedDepthAndLighting, 1.0);
+        }
+    }
 }

@@ -9,8 +9,8 @@
 #import "SLSOpenGLES20Renderer.h"
 #import "GLProgram.h"
 
-//#define AMBIENTOCCLUSIONTEXTUREWIDTH 1024
-#define AMBIENTOCCLUSIONTEXTUREWIDTH 512
+#define AMBIENTOCCLUSIONTEXTUREWIDTH 1024
+//#define AMBIENTOCCLUSIONTEXTUREWIDTH 512
 
 @implementation SLSOpenGLES20Renderer
 
@@ -509,14 +509,14 @@
 
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+//    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
         
     for (unsigned int currentColumnInTexture = 0; currentColumnInTexture < SPHEREDEPTHTEXTUREWIDTH; currentColumnInTexture++)
     {
@@ -524,34 +524,43 @@
         for (unsigned int currentRowInTexture = 0; currentRowInTexture < SPHEREDEPTHTEXTUREWIDTH; currentRowInTexture++)
         {
             float normalizedXLocation = -1.0 + 2.0 * (float)currentRowInTexture / (float)SPHEREDEPTHTEXTUREWIDTH;
-            unsigned char currentDepthByte = 0, currentAmbientLightingByte = 0, currentSpecularLightingByte = 0, alphaByte = 0;
+            unsigned char currentDepthByte = 0, currentAmbientLightingByte = 0, currentSpecularLightingByte = 0, alphaByte = 255;
             
             float distanceFromCenter = sqrt(normalizedXLocation * normalizedXLocation + normalizedYLocation * normalizedYLocation);
+            float currentSphereDepth = 0.0;
+            float lightingNormalX = normalizedXLocation, lightingNormalY = normalizedYLocation;
+            
             if (distanceFromCenter <= 1.0)
             {
                 // First, calculate the depth of the sphere at this point
-                float currentSphereDepth = sqrt(1.0 - distanceFromCenter * distanceFromCenter);
+                currentSphereDepth = sqrt(1.0 - distanceFromCenter * distanceFromCenter);
                 currentDepthByte = round(255.0 * currentSphereDepth);
-                
-                // Then, do the ambient lighting factor
-                float dotProductForLighting = normalizedXLocation * lightDirection[0] + normalizedYLocation * lightDirection[1] + currentSphereDepth * lightDirection[2];
-                if (dotProductForLighting < 0.0)
-                {
-                    dotProductForLighting = 0.0;
-                }
-                else if (dotProductForLighting > 1.0)
-                {
-                    dotProductForLighting = 1.0;
-                }
-                
-                currentAmbientLightingByte = round(255.0 * dotProductForLighting);
-                
-                // Finally, do the specular lighting factor
-                float specularIntensity = pow(dotProductForLighting, 60.0);
-                currentSpecularLightingByte = round(255.0 * specularIntensity * 0.48);
-                
+                                
                 alphaByte = 255;
             }
+            else
+            {
+                float normalizationFactor = sqrt(normalizedXLocation * normalizedXLocation + normalizedYLocation * normalizedYLocation);
+                lightingNormalX = lightingNormalX / normalizationFactor;
+                lightingNormalY = lightingNormalY / normalizationFactor;
+            }
+            
+            // Then, do the ambient lighting factor
+            float dotProductForLighting = lightingNormalX * lightDirection[0] + lightingNormalY * lightDirection[1] + currentSphereDepth * lightDirection[2];
+            if (dotProductForLighting < 0.0)
+            {
+                dotProductForLighting = 0.0;
+            }
+            else if (dotProductForLighting > 1.0)
+            {
+                dotProductForLighting = 1.0;
+            }
+            
+            currentAmbientLightingByte = round(255.0 * dotProductForLighting);
+            
+            // Finally, do the specular lighting factor
+            float specularIntensity = pow(dotProductForLighting, 60.0);
+            currentSpecularLightingByte = round(255.0 * specularIntensity * 0.48);
 
             sphereDepthTextureData[currentColumnInTexture * SPHEREDEPTHTEXTUREWIDTH * 4 + (currentRowInTexture * 4)] = currentDepthByte;
             sphereDepthTextureData[currentColumnInTexture * SPHEREDEPTHTEXTUREWIDTH * 4 + (currentRowInTexture * 4) + 1] = currentAmbientLightingByte;
@@ -572,8 +581,8 @@
     
 //	glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, SPHEREDEPTHTEXTUREWIDTH, SPHEREDEPTHTEXTUREWIDTH, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, sphereDepthTextureData);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, SPHEREDEPTHTEXTUREWIDTH, SPHEREDEPTHTEXTUREWIDTH, 0, GL_RGBA, GL_UNSIGNED_BYTE, sphereDepthTextureData);
- //   glGenerateMipmap(GL_TEXTURE_2D);
-    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
+//    glGenerateMipmap(GL_TEXTURE_2D);
+//    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
 
     free(sphereDepthTextureData);
     
@@ -640,8 +649,8 @@
     GLfloat inverseModelViewMatrix[16];
     [self convert3DTransform:&inverseMatrix toMatrix:inverseModelViewMatrix];
 
-    [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
-//    [self displayTextureToScreen:sphereDepthMappingTexture];
+   [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
+//   [self displayTextureToScreen:depthPassTexture];
 //    [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix];
     [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix];
     
@@ -1003,7 +1012,7 @@
 //    glDisable(GL_BLEND);
 //    glEnable(GL_DEPTH_TEST);
     
-    glDepthMask(GL_FALSE);
+//    glDepthMask(GL_FALSE);
     
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -1218,8 +1227,178 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
     {0.0, M_PI / 2.0},
     {0.0, 3.0 * M_PI / 2.0}
 };
+
  */
- 
+
+/*
+#define AMBIENTOCCLUSIONSAMPLINGPOINTS 12
+
+static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] = 
+{
+    {1.017222, 0.000000},
+    {0.553574, 1.570796},
+    {1.017222, 0.000000},
+    {0.000000, -0.553574},
+    {-0.553574, 1.570796},
+    {0.000000, 0.553574},
+    {0.000000, -0.553574},
+    {-1.017222, 0.000000},
+    {-1.017222, -0.000000},
+    {-0.553574, 4.712389},
+    {0.553574, 4.712389},
+    {0.000000, 0.553574}
+};
+*/
+
+/*
+#define AMBIENTOCCLUSIONSAMPLINGPOINTS 14
+
+static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] = 
+{
+    {0.0, 0.0},
+    {M_PI / 2.0, 0.0},
+    {M_PI, 0.0},
+    {3.0 * M_PI / 2.0, 0.0},
+    {0.0, M_PI / 2.0},
+    {0.0, 3.0 * M_PI / 2.0},
+    
+    {M_PI / 4.0, M_PI / 4.0},
+    {3.0 * M_PI / 4.0, M_PI / 4.0},
+    {5.0 * M_PI / 4.0, M_PI / 4.0},
+    {7.0 * M_PI / 4.0, M_PI / 4.0},
+
+    {M_PI / 4.0, 7.0 * M_PI / 4.0},
+    {3.0 * M_PI / 4.0, 7.0 * M_PI / 4.0},
+    {5.0 * M_PI / 4.0, 7.0 * M_PI / 4.0},
+    {7.0 * M_PI / 4.0, 7.0 * M_PI / 4.0},
+};
+*/
+
+
+#define AMBIENTOCCLUSIONSAMPLINGPOINTS 22
+
+static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] = 
+{
+    {0.0, 0.0},
+    {M_PI / 2.0, 0.0},
+    {M_PI, 0.0},
+    {3.0 * M_PI / 2.0, 0.0},
+    {0.0, M_PI / 2.0},
+    {0.0, 3.0 * M_PI / 2.0},
+    
+    {M_PI / 4.0, M_PI / 4.0},
+    {3.0 * M_PI / 4.0, M_PI / 4.0},
+    {5.0 * M_PI / 4.0, M_PI / 4.0},
+    {7.0 * M_PI / 4.0, M_PI / 4.0},
+    
+    {M_PI / 4.0, 7.0 * M_PI / 4.0},
+    {3.0 * M_PI / 4.0, 7.0 * M_PI / 4.0},
+    {5.0 * M_PI / 4.0, 7.0 * M_PI / 4.0},
+    {7.0 * M_PI / 4.0, 7.0 * M_PI / 4.0},
+    
+    {M_PI / 4.0, 0.0},
+    {3.0 * M_PI / 4.0, 0.0},
+    {5.0 * M_PI / 4.0, 0.0},
+    {7.0 * M_PI / 4.0, 0.0},
+    
+    {0.0, M_PI / 4.0},
+    {0.0, 3.0 * M_PI / 4.0},
+    {0.0, 5.0 * M_PI / 4.0},
+    {0.0, 7.0 * M_PI / 4.0},
+};
+
+
+
+
+
+
+
+#define X .525731112119133606 
+#define Z .850650808352039932
+
+static GLfloat vdata[12][3] = 
+{    
+	{-X, 0.0f, Z}, 
+	{0.0f, Z, X}, 
+	{X, 0.0f, Z}, 
+	{-Z, X, 0.0f}, 	
+	{0.0f, Z, -X}, 
+	{Z, X, 0.0f}, 
+	{Z, -X, 0.0f}, 
+	{X, 0.0f, -Z},
+	{-X, 0.0f, -Z},
+	{0.0f, -Z, -X},
+    {0.0f, -Z, X},
+	{-Z, -X, 0.0f} 
+};
+
+//static GLuint tindices[20][3] = { 
+//    {0,4,1}, {0,9,4}, {9,5,4}, {4,5,8}, {4,8,1},    
+//    {8,10,1}, {8,3,10}, {5,3,8}, {5,2,3}, {2,7,3},    
+//    {7,10,3}, {7,6,10}, {7,11,6}, {11,0,6}, {0,1,6}, 
+//    {6,1,10}, {9,0,11}, {9,11,2}, {9,2,5}, {7,2,11} };
+
+void normalize2(float v[3]);
+
+void normalize2(float v[3]) 
+{    
+    GLfloat d = sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]); 
+    if (d == 0.0) {
+        return;
+    }
+    v[0] /= d; v[1] /= d; v[2] /= d; 
+}
+
+void convertToAngles(GLfloat *vertex);
+
+void convertToAngles(GLfloat *vertex)
+{
+//    NSLog(@"Vertex: %f, %f, %f", vertex[0], vertex[1], vertex[2]);
+    
+//    float phi = acos(vertex[2]);
+    float phi = asin(vertex[2]);
+    float theta;
+    
+    if (vertex[0] == 0.0)
+    {
+        if (vertex[1] < 0.0)
+        {
+            theta = 3.0 * M_PI / 2.0;
+        }
+        else
+        {
+            theta = M_PI / 2.0;
+        }
+    }
+    else
+    {
+        theta = atan(vertex[1] / vertex[0]);
+    }
+    
+    NSLog(@"Angle: %f, %f", phi, theta);
+}
+
+void subdivide(float *v1, float *v2, float *v3);
+
+void subdivide(float *v1, float *v2, float *v3) 
+{ 
+    GLfloat v12[3], v23[3], v31[3];    
+    GLint i;
+    
+    for (i = 0; i < 3; i++) { 
+        v12[i] = v1[i]+v2[i]; 
+        v23[i] = v2[i]+v3[i];     
+        v31[i] = v3[i]+v1[i];    
+    } 
+    normalize2(v12);    
+    normalize2(v23); 
+    normalize2(v31);
+    
+    convertToAngles(v12);
+    convertToAngles(v23);
+    convertToAngles(v31);
+}
+
 /*
 
 #define AMBIENTOCCLUSIONSAMPLINGPOINTS 2
@@ -1243,13 +1422,25 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
 };
 */
 
-#define AMBIENTOCCLUSIONSAMPLINGPOINTS 50
+//#define AMBIENTOCCLUSIONSAMPLINGPOINTS 50
 //#define AMBIENTOCCLUSIONSAMPLINGPOINTS 1
 
 #define ARC4RANDOM_MAX 0x100000000
 
 - (void)prepareAmbientOcclusionMap;
 {
+/*    for (unsigned int i = 0; i < 20; i++) { 
+        subdivide(&vdata[tindices[i][0]][0],       
+                  &vdata[tindices[i][1]][0],       
+                  &vdata[tindices[i][2]][0]); 
+    }*/
+    
+    for (unsigned int j = 0; j < 12; j++)
+    {
+        convertToAngles(vdata[j]);
+    }
+
+    
     CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
 
     // Start fresh on the ambient texture
@@ -1270,27 +1461,14 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
         float v = (float)arc4random() / ARC4RANDOM_MAX;
         
         float theta = 2.0 * M_PI * u;
-//        float phi = acos(2.0 * v - 1.0);
         float phi = 2.0 * M_PI * v;
         
-/*        GLfloat totalRotation = sqrt(theta*theta + phi*phi);
+        theta = ambientOcclusionRotationAngles[currentAOSamplingPoint][0];
+        phi = ambientOcclusionRotationAngles[currentAOSamplingPoint][1];
         
-        currentSamplingRotationMatrix = CATransform3DIdentity;
-        CATransform3D temporaryMatrix = CATransform3DMakeRotation(totalRotation * 4.0 * M_PI, 
-                                                            ((-theta/totalRotation) * currentSamplingRotationMatrix.m12 + (-phi/totalRotation) * currentSamplingRotationMatrix.m11),
-                                                            ((-theta/totalRotation) * currentSamplingRotationMatrix.m22 + (-phi/totalRotation) * currentSamplingRotationMatrix.m21),
-                                                            ((-theta/totalRotation) * currentSamplingRotationMatrix.m32 + (-phi/totalRotation) * currentSamplingRotationMatrix.m31));
-*/
-        
-//        currentSamplingRotationMatrix = temporaryMatrix;
-
         currentSamplingRotationMatrix = CATransform3DMakeRotation(theta, 1.0, 0.0, 0.0);
         currentSamplingRotationMatrix = CATransform3DRotate(currentSamplingRotationMatrix, phi, 0.0, 1.0, 0.0);
-        
-//        currentSamplingRotationMatrix = CATransform3DMakeRotation(ambientOcclusionRotationAngles[currentAOSamplingPoint][0], 1.0, 0.0, 0.0);
-//        NSLog(@"Rotation: %f", ambientOcclusionRotationAngles[currentAOSamplingPoint][0]);
-//        currentSamplingRotationMatrix = CATransform3DRotate(currentSamplingRotationMatrix, ambientOcclusionRotationAngles[currentAOSamplingPoint][1], 0.0, 1.0, 0.0);
-//
+
         inverseMatrix = CATransform3DInvert(currentSamplingRotationMatrix);
 
         [self convert3DTransform:&inverseMatrix toMatrix:inverseModelViewMatrix];

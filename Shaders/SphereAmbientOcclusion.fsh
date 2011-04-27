@@ -10,6 +10,7 @@ varying mediump vec2 depthLookupCoordinate;
 varying mediump vec3 normalizedViewCoordinate;
 varying mediump float adjustedSphereRadius;
 varying mediump vec3 adjustmentForOrthographicProjection;
+varying mediump vec2 textureOffset;
 
 const mediump float oneThird = 1.0 / 3.0;
 
@@ -46,17 +47,18 @@ void main()
                                                                  
     float previousDepthValue = depthFromEncodedColor(texture2D(depthTexture, currentPositionCoordinate.xy));
 
-    if ( (floor(currentPositionCoordinate.z * 765.0 - 1.0)) <= (ceil(previousDepthValue * 765.0)) )
+    if ( (floor(currentPositionCoordinate.z * 765.0)) <= (ceil(previousDepthValue * 765.0)) )
     {
-//        gl_FragColor = vec4(vec3(previousDepthValue - currentPositionCoordinate.z), 1.0);
-//        gl_FragColor = vec4(normalizedViewCoordinate, 1.0);
+//        gl_FragColor = vec4(texture2D(depthTexture, currentPositionCoordinate.xy).rgb, 1.0);
         gl_FragColor = vec4(vec3(intensityFactor), 1.0);
+//        gl_FragColor = vec4(currentPositionCoordinate, 1.0);
     }
     else
     {
         gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
     }
-     
     
+//    gl_FragColor = vec4(currentPositionCoordinate, 1.0);
 //    gl_FragColor = vec4(currentSphereSurfaceCoordinate, 1.0);
+//    gl_FragColor = vec4(textureOffset, 0.0 , 1.0);
 }

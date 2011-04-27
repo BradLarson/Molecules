@@ -651,7 +651,8 @@
 
    [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
 //   [self displayTextureToScreen:depthPassTexture];
-//    [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix];
+//    [self displayTextureToScreen:ambientOcclusionTexture];
+//   [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix];
     [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix];
     
     // Discarding is only supported starting with 4.0, so I need to do a check here for 3.2 devices
@@ -670,11 +671,11 @@
 
 - (void)configureBasedOnNumberOfAtoms:(unsigned int)numberOfAtoms numberOfBonds:(unsigned int)numberOfBonds;
 {
-    widthOfAtomAOTexturePatch = (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH / sqrt((GLfloat)numberOfAtoms + (GLfloat)numberOfBonds);
+    widthOfAtomAOTexturePatch = (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH / (ceil(sqrt((GLfloat)numberOfAtoms + (GLfloat)numberOfBonds)));
     normalizedAOTexturePatchWidth = (GLfloat)widthOfAtomAOTexturePatch / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH;
     
-    previousAmbientOcclusionOffset[0] = 0.0;
-    previousAmbientOcclusionOffset[1] = 0.0;
+    previousAmbientOcclusionOffset[0] = normalizedAOTexturePatchWidth / 2.0;
+    previousAmbientOcclusionOffset[1] = normalizedAOTexturePatchWidth / 2.0;;
 }
 
 - (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint;
@@ -718,9 +719,9 @@
     [self addIndices:newIndices size:6 forAtomType:atomType];
     
     previousAmbientOcclusionOffset[0] += normalizedAOTexturePatchWidth;
-    if (previousAmbientOcclusionOffset[0] > (1.0 - normalizedAOTexturePatchWidth * 0.5))
+    if (previousAmbientOcclusionOffset[0] > (1.0 - normalizedAOTexturePatchWidth * 0.15))
     {
-        previousAmbientOcclusionOffset[0] = 0.0;
+        previousAmbientOcclusionOffset[0] = normalizedAOTexturePatchWidth / 2.0;
         previousAmbientOcclusionOffset[1] += normalizedAOTexturePatchWidth;
     }
 }
@@ -787,10 +788,10 @@
     [self addBondIndices:newIndices size:6];
     
     previousAmbientOcclusionOffset[0] += normalizedAOTexturePatchWidth;
-    if (previousAmbientOcclusionOffset[0] > (1.0 - normalizedAOTexturePatchWidth * 0.5))
+    if (previousAmbientOcclusionOffset[0] > (1.0 - normalizedAOTexturePatchWidth * 0.15))
     {
-        previousAmbientOcclusionOffset[0] = 0.0;
-        previousAmbientOcclusionOffset[1] += normalizedAOTexturePatchWidth;        
+        previousAmbientOcclusionOffset[0] = normalizedAOTexturePatchWidth / 2.0;
+        previousAmbientOcclusionOffset[1] += normalizedAOTexturePatchWidth;
     }
 }
 
@@ -1038,7 +1039,8 @@
     glUniformMatrix4fv(sphereRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
     glUniformMatrix4fv(sphereRaytracingInverseModelViewMatrix, 1, 0, inverseMatrix);
     glUniformMatrix4fv(sphereRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
-    glUniform1f(sphereRaytracingTexturePatchWidth, normalizedAOTexturePatchWidth);
+    glUniform1f(sphereRaytracingTexturePatchWidth, normalizedAOTexturePatchWidth - 1.5 / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH);
+//    glUniform1f(sphereRaytracingTexturePatchWidth, normalizedAOTexturePatchWidth);
 
     float sphereScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * atomRadiusScaleFactor;
     GLsizei atomVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
@@ -1075,7 +1077,7 @@
     glUniform3fv(cylinderRaytracingLightPosition, 1, lightDirection);
     glUniform1i(cylinderRaytracingDepthTexture, 0);	
     glUniform1i(cylinderRaytracingAOTexture, 3);
-    glUniform1f(cylinderRaytracingTexturePatchWidth, normalizedAOTexturePatchWidth);
+    glUniform1f(cylinderRaytracingTexturePatchWidth, normalizedAOTexturePatchWidth - 0.5 / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH);
 
     float cylinderScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * bondRadiusScaleFactor;
     GLsizei bondVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
@@ -1231,26 +1233,6 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
  */
 
 /*
-#define AMBIENTOCCLUSIONSAMPLINGPOINTS 12
-
-static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] = 
-{
-    {1.017222, 0.000000},
-    {0.553574, 1.570796},
-    {1.017222, 0.000000},
-    {0.000000, -0.553574},
-    {-0.553574, 1.570796},
-    {0.000000, 0.553574},
-    {0.000000, -0.553574},
-    {-1.017222, 0.000000},
-    {-1.017222, -0.000000},
-    {-0.553574, 4.712389},
-    {0.553574, 4.712389},
-    {0.000000, 0.553574}
-};
-*/
-
-/*
 #define AMBIENTOCCLUSIONSAMPLINGPOINTS 14
 
 static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] = 
@@ -1273,7 +1255,6 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
     {7.0 * M_PI / 4.0, 7.0 * M_PI / 4.0},
 };
 */
-
 
 #define AMBIENTOCCLUSIONSAMPLINGPOINTS 22
 
@@ -1307,140 +1288,17 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
     {0.0, 7.0 * M_PI / 4.0},
 };
 
-
-
-
-
-
-
-#define X .525731112119133606 
-#define Z .850650808352039932
-
-static GLfloat vdata[12][3] = 
-{    
-	{-X, 0.0f, Z}, 
-	{0.0f, Z, X}, 
-	{X, 0.0f, Z}, 
-	{-Z, X, 0.0f}, 	
-	{0.0f, Z, -X}, 
-	{Z, X, 0.0f}, 
-	{Z, -X, 0.0f}, 
-	{X, 0.0f, -Z},
-	{-X, 0.0f, -Z},
-	{0.0f, -Z, -X},
-    {0.0f, -Z, X},
-	{-Z, -X, 0.0f} 
-};
-
-//static GLuint tindices[20][3] = { 
-//    {0,4,1}, {0,9,4}, {9,5,4}, {4,5,8}, {4,8,1},    
-//    {8,10,1}, {8,3,10}, {5,3,8}, {5,2,3}, {2,7,3},    
-//    {7,10,3}, {7,6,10}, {7,11,6}, {11,0,6}, {0,1,6}, 
-//    {6,1,10}, {9,0,11}, {9,11,2}, {9,2,5}, {7,2,11} };
-
-void normalize2(float v[3]);
-
-void normalize2(float v[3]) 
-{    
-    GLfloat d = sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]); 
-    if (d == 0.0) {
-        return;
-    }
-    v[0] /= d; v[1] /= d; v[2] /= d; 
-}
-
-void convertToAngles(GLfloat *vertex);
-
-void convertToAngles(GLfloat *vertex)
-{
-//    NSLog(@"Vertex: %f, %f, %f", vertex[0], vertex[1], vertex[2]);
-    
-//    float phi = acos(vertex[2]);
-    float phi = asin(vertex[2]);
-    float theta;
-    
-    if (vertex[0] == 0.0)
-    {
-        if (vertex[1] < 0.0)
-        {
-            theta = 3.0 * M_PI / 2.0;
-        }
-        else
-        {
-            theta = M_PI / 2.0;
-        }
-    }
-    else
-    {
-        theta = atan(vertex[1] / vertex[0]);
-    }
-    
-    NSLog(@"Angle: %f, %f", phi, theta);
-}
-
-void subdivide(float *v1, float *v2, float *v3);
-
-void subdivide(float *v1, float *v2, float *v3) 
-{ 
-    GLfloat v12[3], v23[3], v31[3];    
-    GLint i;
-    
-    for (i = 0; i < 3; i++) { 
-        v12[i] = v1[i]+v2[i]; 
-        v23[i] = v2[i]+v3[i];     
-        v31[i] = v3[i]+v1[i];    
-    } 
-    normalize2(v12);    
-    normalize2(v23); 
-    normalize2(v31);
-    
-    convertToAngles(v12);
-    convertToAngles(v23);
-    convertToAngles(v31);
-}
-
 /*
-
-#define AMBIENTOCCLUSIONSAMPLINGPOINTS 2
+#define AMBIENTOCCLUSIONSAMPLINGPOINTS 1
 
 static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] = 
 {
     {0.0, 0.0},
-    {M_PI, 0.0},
 };
 */
- 
-/*
-#define AMBIENTOCCLUSIONSAMPLINGPOINTS 4
-
-static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] = 
-{
-    {0.0, 0.0},
-    {M_PI, 0.0},
-    {0.0 , 3.0 * M_PI / 2.0},
-    {0.0 , M_PI / 2.0},
-};
-*/
-
-//#define AMBIENTOCCLUSIONSAMPLINGPOINTS 50
-//#define AMBIENTOCCLUSIONSAMPLINGPOINTS 1
-
-#define ARC4RANDOM_MAX 0x100000000
 
 - (void)prepareAmbientOcclusionMap;
-{
-/*    for (unsigned int i = 0; i < 20; i++) { 
-        subdivide(&vdata[tindices[i][0]][0],       
-                  &vdata[tindices[i][1]][0],       
-                  &vdata[tindices[i][2]][0]); 
-    }*/
-    
-    for (unsigned int j = 0; j < 12; j++)
-    {
-        convertToAngles(vdata[j]);
-    }
-
-    
+{    
     CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
 
     // Start fresh on the ambient texture
@@ -1456,15 +1314,9 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
     GLfloat inverseModelViewMatrix[16];
 
     for (unsigned int currentAOSamplingPoint = 0; currentAOSamplingPoint < AMBIENTOCCLUSIONSAMPLINGPOINTS; currentAOSamplingPoint++)
-    {
-        float u = (float)arc4random() / ARC4RANDOM_MAX;
-        float v = (float)arc4random() / ARC4RANDOM_MAX;
-        
-        float theta = 2.0 * M_PI * u;
-        float phi = 2.0 * M_PI * v;
-        
-        theta = ambientOcclusionRotationAngles[currentAOSamplingPoint][0];
-        phi = ambientOcclusionRotationAngles[currentAOSamplingPoint][1];
+    {        
+        float theta = ambientOcclusionRotationAngles[currentAOSamplingPoint][0];
+        float phi = ambientOcclusionRotationAngles[currentAOSamplingPoint][1];
         
         currentSamplingRotationMatrix = CATransform3DMakeRotation(theta, 1.0, 0.0, 0.0);
         currentSamplingRotationMatrix = CATransform3DRotate(currentSamplingRotationMatrix, phi, 0.0, 1.0, 0.0);
@@ -1475,7 +1327,22 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
         [self convert3DTransform:&currentSamplingRotationMatrix toMatrix:currentModelViewMatrix];
 
         [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
+        [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(0.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
         [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(1.0 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
+
+        theta = theta + M_PI / 8.0;
+        phi = phi + M_PI / 8.0;
+
+        currentSamplingRotationMatrix = CATransform3DMakeRotation(theta, 1.0, 0.0, 0.0);
+        currentSamplingRotationMatrix = CATransform3DRotate(currentSamplingRotationMatrix, phi, 0.0, 1.0, 0.0);
+        
+        inverseMatrix = CATransform3DInvert(currentSamplingRotationMatrix);
+        
+        [self convert3DTransform:&inverseMatrix toMatrix:inverseModelViewMatrix];
+        [self convert3DTransform:&currentSamplingRotationMatrix toMatrix:currentModelViewMatrix];
+        
+        [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
+        [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(0.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
     }    
     
     CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;

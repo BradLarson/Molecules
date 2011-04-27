@@ -6,7 +6,6 @@ uniform mediump mat4 inverseModelViewProjMatrix;
 uniform mediump float intensityFactor;
 
 varying mediump vec2 impostorSpaceCoordinate;
-varying mediump vec2 depthLookupCoordinate;
 varying mediump vec3 normalizedStartingCoordinate;
 varying mediump vec3 normalizedEndingCoordinate;
 varying mediump float halfCylinderRadius;
@@ -47,16 +46,12 @@ void main()
 //    vec3 currentPositionCoordinate = currentBaseCoordinate;
     
     float previousDepthValue = depthFromEncodedColor(texture2D(depthTexture, currentPositionCoordinate.xy));
-    
-    //    gl_FragColor = vec4(texture2D(depthTexture, currentPositionCoordinate.xy).rgb, 1.0);
-    
-    //    gl_FragColor = vec4(currentSphereSurfaceCoordinate, 1.0);
-    
-    if ( (floor(currentPositionCoordinate.z * 765.0) - 1.0) <= (ceil(previousDepthValue * 765.0)) )
+  
+    if ( floor(currentPositionCoordinate.z * 765.0) <= (ceil(previousDepthValue * 765.0)) )
     {
-        //        gl_FragColor = vec4(vec3(previousDepthValue - currentPositionCoordinate.z), 1.0);
-//        gl_FragColor = vec4(currentPositionCoordinate.z, previousDepthValue, 0.0, 1.0);
-        gl_FragColor = vec4(vec3(intensityFactor), 1.0);
+//        gl_FragColor = vec4(currentPositionCoordinate, 1.0);
+//        gl_FragColor = vec4(texture2D(depthTexture, currentPositionCoordinate.xy).rgb, 1.0);
+        gl_FragColor = vec4(vec3(intensityFactor * 0.5), 1.0);
     }
     else
     {
@@ -64,6 +59,8 @@ void main()
     }
     
  //   gl_FragColor = vec4(currentCylinderSurfaceCoordinate, 1.0);
-//   gl_FragColor = vec4(currentBaseCoordinate, 1.0);
- //   gl_FragColor = vec4(vec3(fractionalZPosition), 1.0);
+//    gl_FragColor = vec4((impostorSpaceCoordinate + 1.0) / 2.0, 0.0, 1.0);
+//    gl_FragColor = vec4(texture2D(depthTexture, currentPositionCoordinate.xy).rgb, 1.0);
+//  gl_FragColor = vec4(currentPositionCoordinate, 1.0);
+//   gl_FragColor = vec4(vec3(fractionalZPosition), 1.0);
 }

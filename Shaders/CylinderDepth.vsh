@@ -33,8 +33,8 @@ void main()
     
     normalizedDisplacementAtEndCaps = displacementAtEndCaps / lengthOfCylinderInView;
     
-    depthOffsetAlongCenterAxis = cylinderRadius * 0.5 * lengthOfCylinder * inversesqrt(lengthOfCylinder * lengthOfCylinder - (transformedOtherPosition.z - transformedPosition.z) * (transformedOtherPosition.z - transformedPosition.z));
-    depthOffsetAlongCenterAxis = clamp(depthOffsetAlongCenterAxis, 0.0, cylinderRadius);
+    depthOffsetAlongCenterAxis = cylinderRadius * lengthOfCylinder * inversesqrt(lengthOfCylinder * lengthOfCylinder - (transformedOtherPosition.z - transformedPosition.z) * (transformedOtherPosition.z - transformedPosition.z));
+    depthOffsetAlongCenterAxis = clamp(depthOffsetAlongCenterAxis, 0.0, cylinderRadius * 2.0);
 
     displacementDirectionAtEndCap.xy = displacementAtEndCaps * rotationFactor;
     displacementDirectionAtEndCap.z = transformedDirection.z * displacementAtEndCaps / lengthOfCylinder;
@@ -58,7 +58,7 @@ void main()
         
     transformedPosition.xyz = (transformedPosition.xyz + viewDisplacementForVertex);
     transformedPosition *= orthographicMatrix;
-    normalizedDepth = (transformedPosition.z + 1.0) / 2.0;
+    normalizedDepth = transformedPosition.z + 1.0;
 
     gl_Position = transformedPosition;
 }

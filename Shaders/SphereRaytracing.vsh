@@ -21,7 +21,7 @@ uniform mediump float sphereRadius;
 
 void main()
 {
-    ambientOcclusionTextureBase = (ambientOcclusionTextureOffset + 1.0 / 1024.0);
+    ambientOcclusionTextureBase = ambientOcclusionTextureOffset;
     
     vec4 transformedPosition;
 	transformedPosition = modelViewProjMatrix * position;

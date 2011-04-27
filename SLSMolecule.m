@@ -815,7 +815,6 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
     
     [openGLESRenderer initiateMoleculeRendering];
     
-    [openGLESRenderer configureBasedOnNumberOfAtoms:[self countAtomsForFirstStructure] numberOfBonds:[self countBondsForFirstStructure]];
     openGLESRenderer.overallMoleculeScaleFactor = scaleAdjustmentForX;
 
 	currentFeatureBeingRendered = 0;
@@ -824,6 +823,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 	{
 		case BALLANDSTICK:
 		{
+            [openGLESRenderer configureBasedOnNumberOfAtoms:[self countAtomsForFirstStructure] numberOfBonds:[self countBondsForFirstStructure]];
 			totalNumberOfFeaturesToRender = numberOfAtoms + numberOfBonds;
 			
 			[self readAndRenderAtoms:openGLESRenderer];
@@ -834,15 +834,18 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 		}; break;
 		case SPACEFILLING:
 		{
+            [openGLESRenderer configureBasedOnNumberOfAtoms:[self countAtomsForFirstStructure] numberOfBonds:0];
 			totalNumberOfFeaturesToRender = numberOfAtoms;
 			[self readAndRenderAtoms:openGLESRenderer];
             openGLESRenderer.atomRadiusScaleFactor = 1.0;
 		}; break;
 		case CYLINDRICAL:
 		{
+            [openGLESRenderer configureBasedOnNumberOfAtoms:0 numberOfBonds:[self countBondsForFirstStructure]];
+
 			totalNumberOfFeaturesToRender = numberOfBonds;
 			[self readAndRenderBonds:openGLESRenderer];
-            openGLESRenderer.bondRadiusScaleFactor = 1.0;
+            openGLESRenderer.bondRadiusScaleFactor = 0.15;
 		}; break;
 	}
 	

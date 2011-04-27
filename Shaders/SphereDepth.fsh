@@ -21,7 +21,7 @@ lowp vec4 encodedColorForDepth(float depthValue)
 void main()
 {
     lowp float precalculatedDepth = texture2D(precalculatedSphereDepthTexture, depthLookupCoordinate).r;
-    if (precalculatedDepth < 0.05)
+    if (precalculatedDepth < 0.01)
     {
         gl_FragColor = vec4(1.0);
     }

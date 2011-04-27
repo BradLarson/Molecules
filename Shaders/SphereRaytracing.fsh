@@ -32,7 +32,6 @@ mediump vec2 textureCoordinateForSphereSurfacePosition(mediump vec3 sphereSurfac
 void main()
 {
     vec4 precalculatedDepthAndLighting = texture2D(precalculatedSphereDepthTexture, depthLookupCoordinate);
-//    if (precalculatedDepth < 0.05)
     if (precalculatedDepthAndLighting.r < 0.05)
     {
         gl_FragColor = vec4(0.0);
@@ -53,18 +52,19 @@ void main()
             vec3 aoNormal = vec3(impostorSpaceCoordinate, -precalculatedDepthAndLighting.r);
             aoNormal = (inverseModelViewProjMatrix * vec4(aoNormal, 0.0)).xyz;
             aoNormal.z = -aoNormal.z;
-            vec2 textureCoordinateForAOLookup = ambientOcclusionTextureBase + (ambientOcclusionTexturePatchWidth - 2.0 / 1024.0) * (1.00 + textureCoordinateForSphereSurfacePosition(aoNormal)) / 2.00;
+            vec2 textureCoordinateForAOLookup = ambientOcclusionTextureBase + ambientOcclusionTexturePatchWidth * 0.5 * textureCoordinateForSphereSurfacePosition(aoNormal);
             float ambientOcclusionIntensity = texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).r;
             
             // Ambient lighting
-            float lightingIntensity = 0.3 + 1.5 * precalculatedDepthAndLighting.g * ambientOcclusionIntensity;
+            float lightingIntensity = 0.2 + 1.3 * precalculatedDepthAndLighting.g * ambientOcclusionIntensity;
             vec3 finalSphereColor = sphereColor * lightingIntensity;
             
             // Specular lighting
             finalSphereColor += vec3(precalculatedDepthAndLighting.b * ambientOcclusionIntensity);
             
-//            gl_FragColor = vec4(finalSphereColor, 1.0);
-            gl_FragColor = vec4(vec3(ambientOcclusionIntensity), 1.0);
+            gl_FragColor = vec4(finalSphereColor, 1.0);
+//            gl_FragColor = vec4(texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).rgb, 1.0);
+//            gl_FragColor = vec4(textureCoordinateForAOLookup, 0.0, 1.0);
             //    gl_FragColor = vec4(normalizedViewCoordinate, 1.0);
             //    gl_FragColor = vec4(precalculatedDepthAndLighting, 1.0);
         }

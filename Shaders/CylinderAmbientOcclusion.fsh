@@ -19,6 +19,9 @@ mediump float depthFromEncodedColor(mediump vec4 encodedColor)
     //    return encodedColor.r;
 }
 
+
+// X and Y are from -0.5 .. 0.5, Z is from -1.0 .. 1.0
+
 mediump vec3 coordinateFromTexturePosition(mediump vec2 texturePosition)
 {
     float halfS = texturePosition.s / 2.0;
@@ -37,6 +40,7 @@ mediump vec3 coordinateFromTexturePosition(mediump vec2 texturePosition)
 void main()
 {
     vec3 currentCylinderSurfaceCoordinate = coordinateFromTexturePosition(impostorSpaceCoordinate);
+    currentCylinderSurfaceCoordinate.xy = normalize(currentCylinderSurfaceCoordinate.xy);
     float fractionalZPosition = (currentCylinderSurfaceCoordinate.z + 1.0) / 2.0;
 
     vec3 currentBaseCoordinate = (normalizedEndingCoordinate * fractionalZPosition) + (normalizedStartingCoordinate * (1.0 - fractionalZPosition));
@@ -51,14 +55,15 @@ void main()
     {
 //        gl_FragColor = vec4(currentPositionCoordinate, 1.0);
 //        gl_FragColor = vec4(texture2D(depthTexture, currentPositionCoordinate.xy).rgb, 1.0);
-        gl_FragColor = vec4(vec3(intensityFactor * 0.5), 1.0);
+//        gl_FragColor = vec4(vec3(intensityFactor * 0.75), 1.0);
+        gl_FragColor = vec4(vec3(intensityFactor), 1.0);
     }
     else
     {
         gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
     }
     
- //   gl_FragColor = vec4(currentCylinderSurfaceCoordinate, 1.0);
+//    gl_FragColor = vec4((1.0 + currentCylinderSurfaceCoordinate) / 2.0, 1.0);
 //    gl_FragColor = vec4((impostorSpaceCoordinate + 1.0) / 2.0, 0.0, 1.0);
 //    gl_FragColor = vec4(texture2D(depthTexture, currentPositionCoordinate.xy).rgb, 1.0);
 //  gl_FragColor = vec4(currentPositionCoordinate, 1.0);

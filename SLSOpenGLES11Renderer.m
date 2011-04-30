@@ -2,8 +2,9 @@
 //  SLSOpenGLES11Renderer.m
 //  Molecules
 //
+//  The source code for Molecules is available under a BSD license.  See License.txt for details.
+//
 //  Created by Brad Larson on 4/12/2011.
-//  Copyright 2011 Sunset Lake Software LLC. All rights reserved.
 //
 
 #import "SLSOpenGLES11Renderer.h"

@@ -806,6 +806,20 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 #pragma mark -
 #pragma mark Rendering
 
+- (void)switchToDefaultVisualizationMode;
+{
+    if (numberOfAtoms < 600)
+    {
+        self.currentVisualizationType = BALLANDSTICK;
+    }
+    else
+    {
+        self.currentVisualizationType = SPACEFILLING;
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setInteger:currentVisualizationType forKey:@"currentVisualizationMode"];
+}
+
 - (BOOL)renderMolecule:(SLSOpenGLESRenderer *)openGLESRenderer;
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];

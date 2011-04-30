@@ -56,7 +56,7 @@ void main()
             float ambientOcclusionIntensity = texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).r;
             
             // Ambient lighting
-            float lightingIntensity = 0.2 + 1.3 * precalculatedDepthAndLighting.g * ambientOcclusionIntensity;
+            float lightingIntensity = 0.2 + 1.7 * precalculatedDepthAndLighting.g * ambientOcclusionIntensity;
             vec3 finalSphereColor = sphereColor * lightingIntensity;
             
             // Specular lighting

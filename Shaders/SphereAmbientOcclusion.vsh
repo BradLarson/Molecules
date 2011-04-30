@@ -9,28 +9,25 @@ attribute vec4 position;
 attribute vec2 inputImpostorSpaceCoordinate;
 attribute vec2 ambientOcclusionTextureOffset;
 
-varying mediump vec2 impostorSpaceCoordinate;
+varying highp vec2 impostorSpaceCoordinate;
 varying mediump vec2 depthLookupCoordinate;
 varying mediump vec3 normalizedViewCoordinate;
 varying mediump float adjustedSphereRadius;
 varying mediump vec3 adjustmentForOrthographicProjection;
 varying mediump float depthAdjustmentForOrthographicProjection;
-varying mediump vec2 textureOffset;
 
-uniform mediump mat4 modelViewProjMatrix;
+uniform highp mat4 modelViewProjMatrix;
 uniform mediump float sphereRadius;
 uniform mediump mat4 orthographicMatrix;
 uniform mediump float ambientOcclusionTexturePatchWidth;
 
 void main()
 {
-    textureOffset = ambientOcclusionTextureOffset;
-    
 	vec4 transformedPosition = modelViewProjMatrix * position;
-    impostorSpaceCoordinate = inputImpostorSpaceCoordinate.xy;
-    depthLookupCoordinate = (inputImpostorSpaceCoordinate + 1.0) / 2.0;
-    
-    adjustedSphereRadius = sphereRadius * 0.99;
+//    impostorSpaceCoordinate = inputImpostorSpaceCoordinate;
+    impostorSpaceCoordinate = inputImpostorSpaceCoordinate * (1.0 + 2.0 / (1024.0 * ambientOcclusionTexturePatchWidth));
+
+    adjustedSphereRadius = sphereRadius;
     
     transformedPosition = transformedPosition * orthographicMatrix;
     
@@ -39,5 +36,5 @@ void main()
     normalizedViewCoordinate.xy = (transformedPosition.xy + 1.0) / 2.0;
     normalizedViewCoordinate.z = transformedPosition.z + 1.0;
 
-    gl_Position = vec4(ambientOcclusionTextureOffset * 2.0 - vec2(1.0) + (ambientOcclusionTexturePatchWidth * impostorSpaceCoordinate), 0.0, 1.0);
+    gl_Position = vec4(ambientOcclusionTextureOffset * 2.0 - vec2(1.0) + (ambientOcclusionTexturePatchWidth * inputImpostorSpaceCoordinate), 0.0, 1.0);
 }

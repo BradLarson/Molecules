@@ -2,8 +2,9 @@
 //  SLSOpenGLES20Renderer.m
 //  Molecules
 //
+//  The source code for Molecules is available under a BSD license.  See License.txt for details.
+//
 //  Created by Brad Larson on 4/12/2011.
-//  Copyright 2011 Sunset Lake Software LLC. All rights reserved.
 //
 
 #import "SLSOpenGLES20Renderer.h"
@@ -194,13 +195,15 @@
             glBindTexture(GL_TEXTURE_2D, *backingTexturePointer);
             if (*backingTexturePointer == ambientOcclusionTexture)
             {
+//                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+//                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-                
                 glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
 
+                
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bufferSize.width, bufferSize.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 //                glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, bufferSize.width, bufferSize.height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0);
             }
@@ -560,7 +563,8 @@
             
             // Finally, do the specular lighting factor
             float specularIntensity = pow(dotProductForLighting, 60.0);
-            currentSpecularLightingByte = round(255.0 * specularIntensity * 0.48);
+//            currentSpecularLightingByte = round(255.0 * specularIntensity * 0.48);
+            currentSpecularLightingByte = round(255.0 * specularIntensity * 0.6);
 
             sphereDepthTextureData[currentColumnInTexture * SPHEREDEPTHTEXTUREWIDTH * 4 + (currentRowInTexture * 4)] = currentDepthByte;
             sphereDepthTextureData[currentColumnInTexture * SPHEREDEPTHTEXTUREWIDTH * 4 + (currentRowInTexture * 4) + 1] = currentAmbientLightingByte;
@@ -652,7 +656,6 @@
    [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
 //   [self displayTextureToScreen:depthPassTexture];
 //    [self displayTextureToScreen:ambientOcclusionTexture];
-//   [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix];
     [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix];
     
     // Discarding is only supported starting with 4.0, so I need to do a check here for 3.2 devices
@@ -925,7 +928,8 @@
     glDisable(GL_DEPTH_TEST); 
     glEnable(GL_BLEND);
     glBlendEquation(GL_MIN_EXT);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_ONE, GL_ONE);
     glClear(GL_COLOR_BUFFER_BIT);
 //    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
@@ -1006,8 +1010,9 @@
     [self switchToDisplayFramebuffer];
     
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glBlendEquation(GL_FUNC_ADD);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_ONE, GL_ONE);
+    glBlendEquation(GL_MAX_EXT);
     
     glDisable(GL_DEPTH_TEST);
 //    glDisable(GL_BLEND);
@@ -1039,7 +1044,7 @@
     glUniformMatrix4fv(sphereRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
     glUniformMatrix4fv(sphereRaytracingInverseModelViewMatrix, 1, 0, inverseMatrix);
     glUniformMatrix4fv(sphereRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
-    glUniform1f(sphereRaytracingTexturePatchWidth, normalizedAOTexturePatchWidth - 1.5 / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH);
+    glUniform1f(sphereRaytracingTexturePatchWidth, normalizedAOTexturePatchWidth - 2.0 / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH);
 //    glUniform1f(sphereRaytracingTexturePatchWidth, normalizedAOTexturePatchWidth);
 
     float sphereScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * atomRadiusScaleFactor;
@@ -1295,10 +1300,20 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
 {
     {0.0, 0.0},
 };
-*/
-
+ */
+ 
 - (void)prepareAmbientOcclusionMap;
 {    
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    // Use bilinear filtering here to smooth out the ambient occlusion shadowing
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, depthPassTexture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
+
     CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
 
     // Start fresh on the ambient texture
@@ -1328,7 +1343,7 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
 
         [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
         [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(0.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
-        [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(1.0 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
+//        [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(1.0 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
 
         theta = theta + M_PI / 8.0;
         phi = phi + M_PI / 8.0;
@@ -1348,6 +1363,20 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
     CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
     
     NSLog(@"Ambient occlusion calculation duration: %f s", frameDuration);
+
+    // Reset depth texture to nearest filtering to prevent some border transparency artifacts
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, depthPassTexture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+
+    /*
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexture);
+
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    */
 }
 
 - (void)displayTextureToScreen:(GLuint)textureToDisplay;

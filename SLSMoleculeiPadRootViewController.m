@@ -202,7 +202,9 @@
 	if ([[note object] boolValue])
 	{
 		if (selectedRotationImage == nil)
+        {
 			selectedRotationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIconiPadCancel" ofType:@"png"]];
+        }
 		
 		rotationBarButton.image = selectedRotationImage;
 	}

@@ -13,6 +13,7 @@
 #import "SLSMolecule.h"
 #import "SLSMoleculeAppDelegate.h"
 #import "SLSOpenGLESRenderer.h"
+#import "SLSOpenGLES20Renderer.h"
 
 //#define RUN_OPENGL_BENCHMARKS
 
@@ -636,16 +637,19 @@
 		}; break;
 	}
 	
-	if (isAutorotating)
-	{
-		[self startOrStopAutorotation:self];
-	}
-	
-	moleculeToDisplay.currentVisualizationType = newVisualizationType;
-	[[NSUserDefaults standardUserDefaults] setInteger:newVisualizationType forKey:@"currentVisualizationMode"];
-    
-    [openGLESRenderer freeVertexBuffers];
-    [moleculeToDisplay performSelectorInBackground:@selector(renderMolecule:) withObject:openGLESRenderer];
+    if (moleculeToDisplay.currentVisualizationType != newVisualizationType)
+    {
+        if (isAutorotating)
+        {
+            [self startOrStopAutorotation:self];
+        }
+
+        moleculeToDisplay.currentVisualizationType = newVisualizationType;
+        [[NSUserDefaults standardUserDefaults] setInteger:newVisualizationType forKey:@"currentVisualizationMode"];
+        
+        [openGLESRenderer freeVertexBuffers];
+        [moleculeToDisplay performSelectorInBackground:@selector(renderMolecule:) withObject:openGLESRenderer];
+    }
     
 	visualizationActionSheet = nil;
 }
@@ -693,7 +697,16 @@
     
 	[moleculeToDisplay release];
 	moleculeToDisplay = [newMolecule retain];
-	moleculeToDisplay.currentVisualizationType = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentVisualizationMode"];
+    if ([openGLESRenderer isKindOfClass:[SLSOpenGLES20Renderer class]])
+    {
+        [moleculeToDisplay switchToDefaultVisualizationMode];
+        
+    }
+    else
+    {
+        moleculeToDisplay.currentVisualizationType = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentVisualizationMode"];
+    }
+    
 	moleculeToDisplay.isBeingDisplayed = YES;
     [moleculeToDisplay performSelectorInBackground:@selector(renderMolecule:) withObject:openGLESRenderer];
     

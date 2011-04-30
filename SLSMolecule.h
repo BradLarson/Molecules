@@ -95,6 +95,7 @@ typedef struct {
 - (void)hideStatusIndicator;
 
 // Rendering
+- (void)switchToDefaultVisualizationMode;
 - (BOOL)renderMolecule:(SLSOpenGLESRenderer *)openGLESRenderer;
 - (void)readAndRenderAtoms:(SLSOpenGLESRenderer *)openGLESRenderer;
 - (void)readAndRenderBonds:(SLSOpenGLESRenderer *)openGLESRenderer;

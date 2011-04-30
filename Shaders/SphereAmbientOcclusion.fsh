@@ -31,7 +31,6 @@ highp vec3 coordinateFromTexturePosition(highp vec2 texturePosition)
     {
         return vec3(sign(texturePosition.s) * (1.0 - absoluteTexturePosition.t), sign(texturePosition.t) * (1.0 - absoluteTexturePosition.s), h);
     }
-    
 }
 
 void main()
@@ -45,7 +44,7 @@ void main()
                                                                  
     float previousDepthValue = depthFromEncodedColor(texture2D(depthTexture, currentPositionCoordinate.xy));
 
-    if ( (floor(currentPositionCoordinate.z * 765.0)) <= (ceil(previousDepthValue * 765.0)) )
+    if ( (floor(currentPositionCoordinate.z * 765.0 - 5.0)) <= (ceil(previousDepthValue * 765.0)) )
     {
 //        gl_FragColor = vec4(texture2D(depthTexture, currentPositionCoordinate.xy).rgb, 1.0);
         gl_FragColor = vec4(vec3(intensityFactor), 1.0);

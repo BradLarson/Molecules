@@ -686,7 +686,8 @@
     GLushort baseToAddToIndices = numberOfAtomVertices[atomType];
 
     GLfloat newVertex[3];
-    newVertex[0] = newPoint.x;
+//    newVertex[0] = newPoint.x;
+    newVertex[0] = -newPoint.x;
     newVertex[1] = newPoint.y;
     newVertex[2] = newPoint.z;
     
@@ -742,7 +743,8 @@
     // Interleave the directions and texture coordinates for the VBO
     GLfloat newVertex[3], cylinderDirection[3];
     
-    cylinderDirection[0] = endPoint.x - startPoint.x;
+//    cylinderDirection[0] = endPoint.x - startPoint.x;
+    cylinderDirection[0] = startPoint.x - endPoint.x;
     cylinderDirection[1] = endPoint.y - startPoint.y;
     cylinderDirection[2] = endPoint.z - startPoint.z;
 
@@ -752,7 +754,8 @@
     GLfloat upperLeftTexture[2] = {-1.0, 1.0};
     GLfloat upperRightTexture[2] = {1.0, 1.0};
 
-    newVertex[0] = startPoint.x;
+//    newVertex[0] = startPoint.x;
+    newVertex[0] = -startPoint.x;
     newVertex[1] = startPoint.y;
     newVertex[2] = startPoint.z;
 
@@ -765,7 +768,8 @@
     [self addBondTextureCoordinate:lowerRightTexture];
     [self addBondAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset];
     
-    newVertex[0] = endPoint.x;
+//    newVertex[0] = endPoint.x;
+    newVertex[0] = -endPoint.x;
     newVertex[1] = endPoint.y;
     newVertex[2] = endPoint.z;
     

@@ -808,7 +808,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 
 - (void)switchToDefaultVisualizationMode;
 {
-    if (numberOfAtoms < 600)
+    if ((numberOfAtoms < 600) && (numberOfBonds > 0))
     {
         self.currentVisualizationType = BALLANDSTICK;
     }

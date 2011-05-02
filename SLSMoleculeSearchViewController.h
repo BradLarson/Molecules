@@ -19,7 +19,8 @@
 	NSMutableData *downloadedFileContents;
 	NSURLConnection *searchResultRetrievalConnection, *nextResultsRetrievalConnection;
 	NSUInteger currentPageOfResults;
-	BOOL searchCancelled;
+	BOOL searchCancelled, isDownloading;
+    NSInteger indexOfDownloadingMolecule;
 }
 
 // Performing search

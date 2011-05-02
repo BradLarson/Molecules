@@ -5,6 +5,8 @@
 //  Created by Brad Larson on 4/20/2010.
 //
 
+#define AMBIENTOCCLUSIONTEXTUREWIDTH 512.0
+
 attribute vec4 position;
 attribute vec2 inputImpostorSpaceCoordinate;
 attribute vec2 ambientOcclusionTextureOffset;
@@ -25,7 +27,7 @@ void main()
 {
 	vec4 transformedPosition = modelViewProjMatrix * position;
 //    impostorSpaceCoordinate = inputImpostorSpaceCoordinate;
-    impostorSpaceCoordinate = inputImpostorSpaceCoordinate * (1.0 + 2.0 / (1024.0 * ambientOcclusionTexturePatchWidth));
+    impostorSpaceCoordinate = inputImpostorSpaceCoordinate * (1.0 + 2.0 / (AMBIENTOCCLUSIONTEXTUREWIDTH * ambientOcclusionTexturePatchWidth));
 
     adjustedSphereRadius = sphereRadius;
     

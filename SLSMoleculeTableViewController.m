@@ -11,8 +11,10 @@
 #import "SLSMoleculeTableViewController.h"
 #import "SLSMoleculeRootViewController.h"
 #import "SLSMoleculeDataSourceViewController.h"
+#import "SLSMoleculeSearchViewController.h"
 #import "SLSMolecule.h"
 #import "SLSMoleculeAppDelegate.h"
+#import "SLSMoleculeLibraryTableCell.h"
 
 @implementation SLSMoleculeTableViewController
 
@@ -41,6 +43,10 @@
 //			self.tableView.backgroundColor = [UIColor blackColor];
 //			tableTextColor = [[UIColor whiteColor] retain];
 			self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
+
+			UIBarButtonItem *downloadButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(displayMoleculeDownloadView)];
+			self.navigationItem.leftBarButtonItem = downloadButtonItem;
+			[downloadButtonItem release];
 		}
 		else
 		{
@@ -64,15 +70,14 @@
         self.tableView.separatorColor = [UIColor clearColor];
         self.tableView.rowHeight = 50.0;
         
-        CAGradientLayer *shadowGradient = [self shadowGradientForSize:CGSizeMake(320.0f, self.navigationController.view.frame.size.height)];
+        CAGradientLayer *shadowGradient = [SLSMoleculeTableViewController shadowGradientForSize:CGSizeMake(320.0f, self.navigationController.view.frame.size.height)];
 		[self.navigationController.view.layer setMask:shadowGradient];
 		self.navigationController.view.layer.masksToBounds = NO;
 	}
 	else
 	{
 		self.tableView.backgroundColor = [UIColor whiteColor];
-	}
-	
+	}	
 }
 
 - (void)dealloc 
@@ -92,10 +97,17 @@
 
 - (IBAction)displayMoleculeDownloadView;
 {
+    SLSMoleculeSearchViewController *searchViewController = [[SLSMoleculeSearchViewController alloc] initWithStyle:UITableViewStylePlain];
+    
+    [self.navigationController pushViewController:searchViewController animated:YES];
+    [searchViewController release];
+
+/*    
 	SLSMoleculeDataSourceViewController *dataSourceViewController = [[SLSMoleculeDataSourceViewController alloc] initWithStyle:UITableViewStylePlain];
 	
 	[self.navigationController pushViewController:dataSourceViewController animated:YES];
 	[dataSourceViewController release];
+ */
 }
 
 - (void)moleculeDidFinishDownloading:(NSNotification *)note;
@@ -141,7 +153,7 @@
 #pragma mark -
 #pragma mark Table customization
 
-- (CAGradientLayer *)glowGradientForSize:(CGSize)gradientSize;
++ (CAGradientLayer *)glowGradientForSize:(CGSize)gradientSize;
 {
 	CAGradientLayer *newGlow = [[[CAGradientLayer alloc] init] autorelease];
 	//	self.tableView.rowHeight = 20.0f + MAXHEIGHTFOREQUATIONSINTABLEVIEW;
@@ -159,7 +171,7 @@
 	return newGlow;
 }
 
-- (CAGradientLayer *)shadowGradientForSize:(CGSize)gradientSize;
++ (CAGradientLayer *)shadowGradientForSize:(CGSize)gradientSize;
 {
 	CAGradientLayer *newShadow = [[[CAGradientLayer alloc] init] autorelease];
 	newShadow.startPoint = CGPointMake(1.0f, 0.5);
@@ -213,15 +225,17 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:@"Molecules"];
 		if (cell == nil) 
 		{
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Molecules"] autorelease];
+			cell = [[[SLSMoleculeLibraryTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Molecules"] autorelease];
 
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
             {
                 cell.backgroundColor = [UIColor blackColor];
                 cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                CAGradientLayer *glowGradientLayer = [SLSMoleculeTableViewController glowGradientForSize:CGSizeMake(self.view.frame.size.width, 50.0)];
+                [(SLSMoleculeLibraryTableCell *)cell setHighlightGradientLayer:glowGradientLayer];
                 
-                [cell.layer insertSublayer:[self glowGradientForSize:CGSizeMake(self.view.frame.size.width, 50.0)] atIndex:10];
+                [cell.layer insertSublayer:glowGradientLayer atIndex:10];
             }
             else
             {
@@ -234,10 +248,32 @@
             if ((index - 1) == selectedIndex)
             {
                 cell.textLabel.textColor = [UIColor colorWithRed:0 green:0.73 blue:0.95 alpha:1.0];
+                
+                if (![(SLSMoleculeLibraryTableCell *)cell isSelected])
+                {
+                    CAGradientLayer *glowGradient = [(SLSMoleculeLibraryTableCell *)cell highlightGradientLayer];
+                    CGColorRef topColor = [UIColor colorWithRed:0.5f green:0.7f blue:1.0f alpha:0.6f].CGColor;
+                    CGColorRef middleColor = [UIColor colorWithRed:0.5f green:0.7f blue:1.0f alpha:0.1f].CGColor;
+                    CGColorRef bottomColor = [UIColor colorWithRed:0.5585f green:0.672f blue:1.0f alpha:0.30f].CGColor;
+                    glowGradient.colors = [NSArray arrayWithObjects:(id)(topColor), (id)(middleColor), (id)(bottomColor), nil];
+                    
+                    [(SLSMoleculeLibraryTableCell *)cell setIsSelected:YES];
+                }
             }
             else
             {
                 cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
+                
+                if ([(SLSMoleculeLibraryTableCell *)cell isSelected])
+                {
+                    CAGradientLayer *glowGradient = [(SLSMoleculeLibraryTableCell *)cell highlightGradientLayer];
+                    CGColorRef topColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.20f].CGColor;
+                    CGColorRef middleColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.0f].CGColor;
+                    CGColorRef bottomColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.08f].CGColor;
+                    glowGradient.colors = [NSArray arrayWithObjects:(id)(topColor), (id)(middleColor), (id)(bottomColor), nil];
+
+                    [(SLSMoleculeLibraryTableCell *)cell setIsSelected:NO];
+                }
             }
         }
         else
@@ -282,6 +318,7 @@
 	if ([SLSMoleculeAppDelegate isRunningOniPad])
 	{
 		index++;
+        indexPath = [NSIndexPath indexPathForRow:index inSection:[indexPath section]];
 	}
 	
 	if (index == 0)
@@ -293,8 +330,8 @@
 		selectedIndex = (index - 1);
 		
 		[self.delegate selectedMoleculeDidChange:(index - 1)];
+		[tableView deselectRowAtIndexPath:indexPath animated:NO];
 		[tableView reloadData];
-		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 }
 

@@ -40,8 +40,8 @@
 - (id)initWithStyle:(UITableViewStyle)style initialSelectedMoleculeIndex:(NSInteger)initialSelectedMoleculeIndex;
 
 // Table customization
-- (CAGradientLayer *)glowGradientForSize:(CGSize)gradientSize;
-- (CAGradientLayer *)shadowGradientForSize:(CGSize)gradientSize;
++ (CAGradientLayer *)glowGradientForSize:(CGSize)gradientSize;
++ (CAGradientLayer *)shadowGradientForSize:(CGSize)gradientSize;
 
 - (IBAction)displayMoleculeDownloadView;
 - (IBAction)switchBackToGLView;

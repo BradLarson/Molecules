@@ -87,6 +87,7 @@
 	else
 	{*/
 		[mainToolbar setItems:[NSArray arrayWithObjects:spacerItem, downloadBarButton, visualizationBarButton, rotationBarButton, nil] animated:NO];
+    [mainToolbar setItems:[NSArray arrayWithObjects:spacerItem, visualizationBarButton, rotationBarButton, nil] animated:NO];
 //	}
 		
 	[downloadBarButton release];

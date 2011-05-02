@@ -119,11 +119,11 @@ void normalize(GLfloat *v)
     
 	// Need this to make the layer dimensions an even multiple of 32 for performance reasons
 	// Also, the 4.2 Simulator will not display the 
-	CGRect layerBounds = glLayer.bounds;
+/*	CGRect layerBounds = glLayer.bounds;
 	CGFloat newWidth = (CGFloat)((int)layerBounds.size.width / 32) * 32.0f;
 	CGFloat newHeight = (CGFloat)((int)layerBounds.size.height / 32) * 32.0f;
 	glLayer.bounds = CGRectMake(layerBounds.origin.x, layerBounds.origin.y, newWidth, newHeight);
-	
+*/	
 	[context renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:glLayer];
 	glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, viewRenderbuffer);
 	

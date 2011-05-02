@@ -810,7 +810,15 @@ static NSDictionary *pdbResidueLookupTable;
 	}
 	else
 	{
-		compound = [filename copy];
+        NSRange rangeUntilFirstPeriod = [filename rangeOfString:@"."];
+        if (rangeUntilFirstPeriod.location == NSNotFound)
+        {
+            compound = [filename copy];
+        }
+        else
+        {
+            compound = [[[filename substringToIndex:rangeUntilFirstPeriod.location] titlecaseString] retain];	
+        }
 	}
 
 	[self writeMoleculeDataToDatabase];

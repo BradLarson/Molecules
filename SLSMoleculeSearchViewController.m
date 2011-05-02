@@ -10,8 +10,10 @@
 
 #import "SLSMoleculeSearchViewController.h"
 #import "SLSMoleculeDownloadViewController.h"
+#import "SLSMoleculeTableViewController.h"
 #import "VCTitleCase.h"
 #import "SLSMoleculeAppDelegate.h"
+#import "SLSMoleculeWebDetailViewController.h"
 
 #define MAX_SEARCH_RESULT_CODES 25
 
@@ -33,9 +35,17 @@
 		keywordSearchBar.placeholder = NSLocalizedStringFromTable(@"Search for molecules", @"Localized", nil);
 		keywordSearchBar.delegate = self;
 		keywordSearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+        keywordSearchBar.scopeButtonTitles = [NSArray arrayWithObjects:@"PubChem", @"Protein Data Bank", nil];
+        keywordSearchBar.showsScopeBar = YES;
+        [keywordSearchBar sizeToFit];
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        {
+            keywordSearchBar.barStyle = UIBarStyleBlack;
+        }
 		[keywordSearchBar becomeFirstResponder];
 				
-		self.navigationItem.title = NSLocalizedStringFromTable(@"Protein Data Bank", @"Localized", nil);
+		self.navigationItem.title = NSLocalizedStringFromTable(@"Search For Molecules", @"Localized", nil);
 		self.navigationItem.rightBarButtonItem = nil;
 
 		self.tableView.tableHeaderView = keywordSearchBar;
@@ -56,6 +66,28 @@
 	}
 	return self;
 }
+
+- (void)viewDidLoad;
+{
+	[super viewDidLoad];
+    
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+	{
+		//		self.tableView.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.054f alpha:1.0f];
+		self.tableView.backgroundColor = [UIColor blackColor];
+        self.tableView.separatorColor = [UIColor clearColor];
+        self.tableView.rowHeight = 50.0;
+
+        CAGradientLayer *shadowGradient = [SLSMoleculeTableViewController shadowGradientForSize:CGSizeMake(320.0f, self.navigationController.view.frame.size.height)];
+		[self.navigationController.view.layer setMask:shadowGradient];
+		self.navigationController.view.layer.masksToBounds = NO;
+	}
+	else
+	{
+		self.tableView.backgroundColor = [UIColor whiteColor];
+	}	
+}
+
 
 - (void)dealloc 
 {
@@ -273,7 +305,17 @@
 		if (cell == nil) 
 		{		
 			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"SearchInProgress"] autorelease];
-			cell.textLabel.textColor = [UIColor blackColor];
+            
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+            {
+                cell.backgroundColor = [UIColor blackColor];
+                cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
+            }
+            else
+            {
+                cell.textLabel.textColor = [UIColor blackColor];
+            }
+
 			cell.textLabel.font = [UIFont boldSystemFontOfSize:12.0];
 			
 			//		CGRect frame = CGRectMake(CGRectGetMaxX(cell.contentView.bounds) - 250.0, 5.0, 240.0, 32.0);
@@ -299,7 +341,17 @@
 		if (cell == nil) 
 		{		
 			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"NoResults"] autorelease];
-			cell.textLabel.textColor = [UIColor blackColor];
+
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+            {
+                cell.backgroundColor = [UIColor blackColor];
+                cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
+            }
+            else
+            {
+                cell.textLabel.textColor = [UIColor blackColor];
+            }
+
 			cell.textLabel.font = [UIFont systemFontOfSize:16.0];
 			cell.textLabel.text = NSLocalizedStringFromTable(@"No results", @"Localized", nil);
 			cell.textLabel.textAlignment = UITextAlignmentCenter;
@@ -314,7 +366,17 @@
 			if (cell == nil) 
 			{		
 				cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"LoadMore"] autorelease];
-				cell.textLabel.textColor = [UIColor blackColor];
+
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+                {
+                    cell.backgroundColor = [UIColor blackColor];
+                    cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
+                }
+                else
+                {
+                    cell.textLabel.textColor = [UIColor blackColor];
+                }
+                
 				cell.textLabel.font = [UIFont systemFontOfSize:16.0];
 				cell.textLabel.textAlignment = UITextAlignmentCenter;
 				cell.textLabel.text = NSLocalizedStringFromTable(@"Load next 25 results", @"Localized", nil);
@@ -328,15 +390,34 @@
 			if (cell == nil) 
 			{		
 				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:NSLocalizedStringFromTable(@"Results", @"Localized", nil)] autorelease];
-				cell.textLabel.textColor = [UIColor blackColor];
+
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+                {
+                    cell.backgroundColor = [UIColor blackColor];
+                    cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
+                    CAGradientLayer *glowGradientLayer = [SLSMoleculeTableViewController glowGradientForSize:CGSizeMake(self.view.frame.size.width, 60.0)];
+                    
+                    [cell.layer insertSublayer:glowGradientLayer atIndex:10];
+                }
+                else
+                {
+                    cell.textLabel.textColor = [UIColor blackColor];
+                }
+
 				cell.textLabel.font = [UIFont boldSystemFontOfSize:12.0];
 				cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:12.0];
 			}
 
+            if ((isDownloading) && ([indexPath row] != indexOfDownloadingMolecule))
+            {
+                cell.textLabel.textColor = [UIColor colorWithWhite:0.3 alpha:1.0];
+                cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+            }
+            
 			cell.textLabel.text = [searchResultTitles objectAtIndex:[indexPath row]];
 			cell.detailTextLabel.text = [searchResultPDBCodes objectAtIndex:[indexPath row]];
 			
-			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 		}
 	}
 
@@ -371,6 +452,18 @@
 	}	
 }
 
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+//	NSInteger index = [indexPath row];
+
+    NSString *selectedPDBCode = [searchResultPDBCodes objectAtIndex:[indexPath row]];
+
+    SLSMoleculeWebDetailViewController *detailViewController = [[SLSMoleculeWebDetailViewController alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.rcsb.org/pdb/explore/explore.do?structureId=%@", selectedPDBCode]]];
+    
+    [self.navigationController pushViewController:detailViewController animated:YES];
+    [detailViewController release];
+}
+
 - (void)didReceiveMemoryWarning 
 {
 }
@@ -398,6 +491,13 @@
 	// Hide the keyboard once search has been initiated
 	[searchBar resignFirstResponder];
 	[self performSearchWithKeyword:searchBar.text];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
+{
+    indexOfDownloadingMolecule = 2;
+    isDownloading = YES;
+    [self.tableView reloadData];
 }
 
 #pragma mark -

@@ -314,32 +314,32 @@
 - (UIActionSheet *)actionSheetForVisualizationState;
 {
 	NSString *buttonTitle1;
-	NSString *buttonTitle2;
+//	NSString *buttonTitle2;
 	NSString *cancelButtonTitle;
 	switch (moleculeToDisplay.currentVisualizationType)
 	{
 		case BALLANDSTICK:
 		{
 			buttonTitle1 = NSLocalizedStringFromTable(@"Spacefilling", @"Localized", nil);
-			buttonTitle2 = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
+//			buttonTitle2 = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
 			cancelButtonTitle = NSLocalizedStringFromTable(@"Ball-and-stick", @"Localized", nil);
 		}; break;
 		case SPACEFILLING:
 		{
 			buttonTitle1 = NSLocalizedStringFromTable(@"Ball-and-stick", @"Localized", nil);
-			buttonTitle2 = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
+//			buttonTitle2 = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
 			cancelButtonTitle = NSLocalizedStringFromTable(@"Spacefilling", @"Localized", nil);
 		}; break;
 		case CYLINDRICAL:
 		{
 			buttonTitle1 = NSLocalizedStringFromTable(@"Ball-and-stick", @"Localized", nil);
-			buttonTitle2 = NSLocalizedStringFromTable(@"Spacefilling", @"Localized", nil);
+//			buttonTitle2 = NSLocalizedStringFromTable(@"Spacefilling", @"Localized", nil);
 			cancelButtonTitle = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
 		}; break;
 		default:
 		{
 			buttonTitle1 = NSLocalizedStringFromTable(@"Spacefilling", @"Localized", nil);
-			buttonTitle2 = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
+//			buttonTitle2 = NSLocalizedStringFromTable(@"Cylinders", @"Localized", nil);
 			cancelButtonTitle = NSLocalizedStringFromTable(@"Ball-and-stick", @"Localized", nil);
 		};
 	}
@@ -348,12 +348,13 @@
 	if ([SLSMoleculeAppDelegate isRunningOniPad])
 	{
 		titleForActionSheet = nil;
-		cancelButtonTitle = nil;
+//		cancelButtonTitle = nil;
 	}
 	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:titleForActionSheet
-																 delegate:self cancelButtonTitle:cancelButtonTitle destructiveButtonTitle:nil
-														otherButtonTitles:buttonTitle1, buttonTitle2, nil];
+                                                             delegate:self cancelButtonTitle:cancelButtonTitle destructiveButtonTitle:nil
+                                                    otherButtonTitles:buttonTitle1, nil];
+//otherButtonTitles:buttonTitle1, buttonTitle2, nil];
 	if ([SLSMoleculeAppDelegate isRunningOniPad])
     {
         actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
@@ -608,10 +609,10 @@
 			{
 				newVisualizationType = SPACEFILLING;
 			}
-			else if (buttonIndex == 1)
-			{
-				newVisualizationType = CYLINDRICAL;
-			}
+//			else if (buttonIndex == 1)
+//			{
+//				newVisualizationType = CYLINDRICAL;
+//			}
 		}; break;
 		case SPACEFILLING:
 		{
@@ -619,10 +620,10 @@
 			{
 				newVisualizationType = BALLANDSTICK;
 			}
-			else if (buttonIndex == 1)
-			{
-				newVisualizationType = CYLINDRICAL;
-			}
+//			else if (buttonIndex == 1)
+//			{
+//				newVisualizationType = CYLINDRICAL;
+//			}
 		}; break;
 		case CYLINDRICAL:
 		{
@@ -630,10 +631,10 @@
 			{
 				newVisualizationType = BALLANDSTICK;
 			}
-			else if (buttonIndex == 1)
-			{
-				newVisualizationType = SPACEFILLING;
-			}
+//			else if (buttonIndex == 1)
+//			{
+//				newVisualizationType = SPACEFILLING;
+//			}
 		}; break;
 	}
 	

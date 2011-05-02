@@ -14,6 +14,9 @@
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
 		28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
 		BC146A9B0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC146A9A0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m */; };
+		BC157287136CBE9200EEFBEC /* 3QE5.pdb.gz in Resources */ = {isa = PBXBuildFile; fileRef = BC157286136CBE9200EEFBEC /* 3QE5.pdb.gz */; };
+		BC15728A136CC58A00EEFBEC /* SLSMoleculeLibraryTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BC157289136CC58A00EEFBEC /* SLSMoleculeLibraryTableCell.m */; };
+		BC15728D136CD96800EEFBEC /* SLSMoleculeWebDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC15728C136CD96800EEFBEC /* SLSMoleculeWebDetailViewController.m */; };
 		BC1EF3830E36BD6100B09043 /* SLSMoleculeSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC1EF3820E36BD6100B09043 /* SLSMoleculeSearchViewController.m */; };
 		BC2795BA1162500A006DE4C8 /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2795B81162500A006DE4C8 /* Default-Landscape.png */; };
 		BC2795BB1162500A006DE4C8 /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2795B91162500A006DE4C8 /* Default-Portrait.png */; };
@@ -89,6 +92,11 @@
 		8D1107310486CEB800E47090 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = English; path = English.lproj/Info.plist; sourceTree = "<group>"; };
 		BC146A990EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeCustomDownloadViewController.h; sourceTree = "<group>"; };
 		BC146A9A0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeCustomDownloadViewController.m; sourceTree = "<group>"; };
+		BC157286136CBE9200EEFBEC /* 3QE5.pdb.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = 3QE5.pdb.gz; sourceTree = "<group>"; };
+		BC157288136CC58A00EEFBEC /* SLSMoleculeLibraryTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeLibraryTableCell.h; sourceTree = "<group>"; };
+		BC157289136CC58A00EEFBEC /* SLSMoleculeLibraryTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeLibraryTableCell.m; sourceTree = "<group>"; };
+		BC15728B136CD96800EEFBEC /* SLSMoleculeWebDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeWebDetailViewController.h; sourceTree = "<group>"; };
+		BC15728C136CD96800EEFBEC /* SLSMoleculeWebDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeWebDetailViewController.m; sourceTree = "<group>"; };
 		BC1EF3810E36BD6100B09043 /* SLSMoleculeSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeSearchViewController.h; sourceTree = "<group>"; };
 		BC1EF3820E36BD6100B09043 /* SLSMoleculeSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeSearchViewController.m; sourceTree = "<group>"; };
 		BC2795B81162500A006DE4C8 /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
@@ -256,6 +264,7 @@
 				BC5BBBF90E216A170001DFD0 /* 1TRZ.pdb.gz */,
 				BC5BB7DD0E2020B10001DFD0 /* 1EVE.pdb.gz */,
 				BC5BB79B0E200C3B0001DFD0 /* 1BNA.pdb.gz */,
+				BC157286136CBE9200EEFBEC /* 3QE5.pdb.gz */,
 				BCA2E810135BB90F00D7206C /* caffeine.pdb.gz */,
 				BCDC9F860EB375FB00ADCFA5 /* Info.plist */,
 				BCDFF55F115469BF005C984C /* RotationIconiPad.png */,
@@ -323,6 +332,8 @@
 		BCC709540E19C6580054D0EB /* Downloaded Molecules Table */ = {
 			isa = PBXGroup;
 			children = (
+				BC157288136CC58A00EEFBEC /* SLSMoleculeLibraryTableCell.h */,
+				BC157289136CC58A00EEFBEC /* SLSMoleculeLibraryTableCell.m */,
 				BCC286CF0E1D905400978ECA /* SLSMoleculeTableViewController.h */,
 				BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */,
 			);
@@ -389,6 +400,8 @@
 				BCC8FE7F0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m */,
 				BC146A990EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.h */,
 				BC146A9A0EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.m */,
+				BC15728B136CD96800EEFBEC /* SLSMoleculeWebDetailViewController.h */,
+				BC15728C136CD96800EEFBEC /* SLSMoleculeWebDetailViewController.m */,
 			);
 			name = "Searching and Retrieving Molecules";
 			sourceTree = "<group>";
@@ -486,6 +499,7 @@
 				BCCB1EFB1361E6BC006F00A0 /* PlainDisplay.fsh in Resources */,
 				BCCB1EFC1361E6BC006F00A0 /* PlainDisplay.vsh in Resources */,
 				BCA2E811135BB90F00D7206C /* caffeine.pdb.gz in Resources */,
+				BC157287136CBE9200EEFBEC /* 3QE5.pdb.gz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -518,6 +532,8 @@
 				BCB3A67D13553FC1000A286B /* SLSOpenGLES11Renderer.m in Sources */,
 				BCB3A68013553FD2000A286B /* SLSOpenGLES20Renderer.m in Sources */,
 				BC57EBFB1358DE9000FA1060 /* GLProgram.m in Sources */,
+				BC15728A136CC58A00EEFBEC /* SLSMoleculeLibraryTableCell.m in Sources */,
+				BC15728D136CD96800EEFBEC /* SLSMoleculeWebDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

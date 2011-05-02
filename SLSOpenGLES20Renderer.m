@@ -10,7 +10,7 @@
 #import "SLSOpenGLES20Renderer.h"
 #import "GLProgram.h"
 
-#define AMBIENTOCCLUSIONTEXTUREWIDTH 1024
+#define AMBIENTOCCLUSIONTEXTUREWIDTH 512
 //#define AMBIENTOCCLUSIONTEXTUREWIDTH 512
 
 @implementation SLSOpenGLES20Renderer
@@ -127,11 +127,16 @@
 
     // Need this to make the layer dimensions an even multiple of 32 for performance reasons
 	// Also, the 4.2 Simulator will not display the frame otherwise
-	CGRect layerBounds = glLayer.bounds;
+/*	CGRect layerBounds = glLayer.bounds;
 	CGFloat newWidth = (CGFloat)((int)layerBounds.size.width / 32) * 32.0f;
 	CGFloat newHeight = (CGFloat)((int)layerBounds.size.height / 32) * 32.0f;
+    
+    NSLog(@"Bounds before: %@", NSStringFromCGRect(glLayer.bounds));
+    
 	glLayer.bounds = CGRectMake(layerBounds.origin.x, layerBounds.origin.y, newWidth, newHeight);
 
+    NSLog(@"Bounds after: %@", NSStringFromCGRect(glLayer.bounds));
+*/
     glEnable(GL_TEXTURE_2D);
 
     [self createFramebuffer:&viewFramebuffer size:CGSizeZero renderBuffer:&viewRenderbuffer depthBuffer:&viewDepthBuffer texture:NULL layer:glLayer];    
@@ -1322,51 +1327,61 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
 
     // Start fresh on the ambient texture
     [self switchToAmbientOcclusionFramebuffer];
+
+    BOOL disableAOTextureGeneration = NO;
     
-    //    glClearColor(0.0f, ambientOcclusionModelViewMatrix[0], 1.0f, 1.0f);
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    CATransform3D currentSamplingRotationMatrix;
-    GLfloat currentModelViewMatrix[16];
-    CATransform3D inverseMatrix;
-    GLfloat inverseModelViewMatrix[16];
-
-    for (unsigned int currentAOSamplingPoint = 0; currentAOSamplingPoint < AMBIENTOCCLUSIONSAMPLINGPOINTS; currentAOSamplingPoint++)
-    {        
-        float theta = ambientOcclusionRotationAngles[currentAOSamplingPoint][0];
-        float phi = ambientOcclusionRotationAngles[currentAOSamplingPoint][1];
+    if (disableAOTextureGeneration)
+    {
+        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+    }
+    else
+    {
+        //    glClearColor(0.0f, ambientOcclusionModelViewMatrix[0], 1.0f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
         
-        currentSamplingRotationMatrix = CATransform3DMakeRotation(theta, 1.0, 0.0, 0.0);
-        currentSamplingRotationMatrix = CATransform3DRotate(currentSamplingRotationMatrix, phi, 0.0, 1.0, 0.0);
-
-        inverseMatrix = CATransform3DInvert(currentSamplingRotationMatrix);
-
-        [self convert3DTransform:&inverseMatrix toMatrix:inverseModelViewMatrix];
-        [self convert3DTransform:&currentSamplingRotationMatrix toMatrix:currentModelViewMatrix];
-
-        [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
-        [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(0.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
-//        [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(1.0 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
-
-        theta = theta + M_PI / 8.0;
-        phi = phi + M_PI / 8.0;
-
-        currentSamplingRotationMatrix = CATransform3DMakeRotation(theta, 1.0, 0.0, 0.0);
-        currentSamplingRotationMatrix = CATransform3DRotate(currentSamplingRotationMatrix, phi, 0.0, 1.0, 0.0);
+        CATransform3D currentSamplingRotationMatrix;
+        GLfloat currentModelViewMatrix[16];
+        CATransform3D inverseMatrix;
+        GLfloat inverseModelViewMatrix[16];
         
-        inverseMatrix = CATransform3DInvert(currentSamplingRotationMatrix);
+        for (unsigned int currentAOSamplingPoint = 0; currentAOSamplingPoint < AMBIENTOCCLUSIONSAMPLINGPOINTS; currentAOSamplingPoint++)
+        {        
+            float theta = ambientOcclusionRotationAngles[currentAOSamplingPoint][0];
+            float phi = ambientOcclusionRotationAngles[currentAOSamplingPoint][1];
+            
+            currentSamplingRotationMatrix = CATransform3DMakeRotation(theta, 1.0, 0.0, 0.0);
+            currentSamplingRotationMatrix = CATransform3DRotate(currentSamplingRotationMatrix, phi, 0.0, 1.0, 0.0);
+            
+            inverseMatrix = CATransform3DInvert(currentSamplingRotationMatrix);
+            
+            [self convert3DTransform:&inverseMatrix toMatrix:inverseModelViewMatrix];
+            [self convert3DTransform:&currentSamplingRotationMatrix toMatrix:currentModelViewMatrix];
+            
+            [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
+            [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(0.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
+            //        [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(1.0 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
+            
+            theta = theta + M_PI / 8.0;
+            phi = phi + M_PI / 8.0;
+            
+            currentSamplingRotationMatrix = CATransform3DMakeRotation(theta, 1.0, 0.0, 0.0);
+            currentSamplingRotationMatrix = CATransform3DRotate(currentSamplingRotationMatrix, phi, 0.0, 1.0, 0.0);
+            
+            inverseMatrix = CATransform3DInvert(currentSamplingRotationMatrix);
+            
+            [self convert3DTransform:&inverseMatrix toMatrix:inverseModelViewMatrix];
+            [self convert3DTransform:&currentSamplingRotationMatrix toMatrix:currentModelViewMatrix];
+            
+            [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
+            [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(0.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
+        }    
         
-        [self convert3DTransform:&inverseMatrix toMatrix:inverseModelViewMatrix];
-        [self convert3DTransform:&currentSamplingRotationMatrix toMatrix:currentModelViewMatrix];
+        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
         
-        [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
-        [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(0.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
-    }    
-    
-    CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
-    
-    NSLog(@"Ambient occlusion calculation duration: %f s", frameDuration);
+        NSLog(@"Ambient occlusion calculation duration: %f s", frameDuration);
+    }
 
     // Reset depth texture to nearest filtering to prevent some border transparency artifacts
     glActiveTexture(GL_TEXTURE0);

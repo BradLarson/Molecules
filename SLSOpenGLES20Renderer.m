@@ -925,7 +925,6 @@
 - (void)bindVertexBuffersForMolecule;
 {
     [super bindVertexBuffersForMolecule];
-//    [self testPrecisionOfConversionCalculation];
     [self prepareAmbientOcclusionMap];
 }
 

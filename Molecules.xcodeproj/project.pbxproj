@@ -65,13 +65,12 @@
 		BCC286C20E1D8F9300978ECA /* SLSMoleculeRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286C00E1D8F9300978ECA /* SLSMoleculeRootViewController.m */; };
 		BCC286C80E1D8FB100978ECA /* SLSMoleculeGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */; };
 		BCC286CA0E1D8FB100978ECA /* SLSMoleculeGLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */; };
-		BCC286D20E1D905400978ECA /* SLSMoleculeDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286CD0E1D905400978ECA /* SLSMoleculeDownloadViewController.m */; };
+		BCC286D20E1D905400978ECA /* SLSMoleculeDownloadController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286CD0E1D905400978ECA /* SLSMoleculeDownloadController.m */; };
 		BCC286D40E1D905400978ECA /* SLSMoleculeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */; };
 		BCC8FE800EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCC8FE7F0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m */; };
 		BCCB1EFB1361E6BC006F00A0 /* PlainDisplay.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCCB1EF91361E6BC006F00A0 /* PlainDisplay.fsh */; };
 		BCCB1EFC1361E6BC006F00A0 /* PlainDisplay.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BCCB1EFA1361E6BC006F00A0 /* PlainDisplay.vsh */; };
 		BCD12CFA11308E1000737166 /* SLSMoleculeiPadRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */; };
-		BCDC9F840EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F830EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib */; };
 		BCDC9F9D0EB37B3400ADCFA5 /* Localized.strings in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F9C0EB37B3400ADCFA5 /* Localized.strings */; };
 		BCDFF560115469C1005C984C /* RotationIconiPad.png in Resources */ = {isa = PBXBuildFile; fileRef = BCDFF55F115469BF005C984C /* RotationIconiPad.png */; };
 		BCDFF57311546FB2005C984C /* RotationIconiPadCancel.png in Resources */ = {isa = PBXBuildFile; fileRef = BCDFF57211546FB2005C984C /* RotationIconiPadCancel.png */; };
@@ -163,9 +162,8 @@
 		BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeGLView.m; sourceTree = SOURCE_ROOT; };
 		BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeGLViewController.h; sourceTree = SOURCE_ROOT; };
 		BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeGLViewController.m; sourceTree = SOURCE_ROOT; };
-		BCC286CB0E1D905400978ECA /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SLSMoleculeDownloadView.xib; sourceTree = "<group>"; };
-		BCC286CC0E1D905400978ECA /* SLSMoleculeDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeDownloadViewController.h; sourceTree = "<group>"; };
-		BCC286CD0E1D905400978ECA /* SLSMoleculeDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeDownloadViewController.m; sourceTree = "<group>"; };
+		BCC286CC0E1D905400978ECA /* SLSMoleculeDownloadController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = SLSMoleculeDownloadController.h; sourceTree = "<group>"; };
+		BCC286CD0E1D905400978ECA /* SLSMoleculeDownloadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeDownloadController.m; sourceTree = "<group>"; };
 		BCC286CF0E1D905400978ECA /* SLSMoleculeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeTableViewController.h; sourceTree = SOURCE_ROOT; };
 		BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeTableViewController.m; sourceTree = SOURCE_ROOT; };
 		BCC286D50E1D909600978ECA /* Molecules_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Molecules_Prefix.pch; sourceTree = SOURCE_ROOT; };
@@ -175,7 +173,6 @@
 		BCCB1EFA1361E6BC006F00A0 /* PlainDisplay.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = PlainDisplay.vsh; path = Shaders/PlainDisplay.vsh; sourceTree = "<group>"; };
 		BCD12CF711308E1000737166 /* SLSMoleculeiPadRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeiPadRootViewController.h; sourceTree = "<group>"; };
 		BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeiPadRootViewController.m; sourceTree = "<group>"; };
-		BCDC9F850EB375D500ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = French.lproj/SLSMoleculeDownloadView.xib; sourceTree = "<group>"; };
 		BCDC9F870EB3760300ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = French; path = French.lproj/Info.plist; sourceTree = "<group>"; };
 		BCDC9F9A0EB37B1E00ADCFA5 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localized.strings; sourceTree = "<group>"; };
 		BCDC9F9E0EB37B4100ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localized.strings; sourceTree = "<group>"; };
@@ -393,9 +390,8 @@
 			children = (
 				BC1EF3810E36BD6100B09043 /* SLSMoleculeSearchViewController.h */,
 				BC1EF3820E36BD6100B09043 /* SLSMoleculeSearchViewController.m */,
-				BCC286CC0E1D905400978ECA /* SLSMoleculeDownloadViewController.h */,
-				BCC286CD0E1D905400978ECA /* SLSMoleculeDownloadViewController.m */,
-				BCDC9F830EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib */,
+				BCC286CC0E1D905400978ECA /* SLSMoleculeDownloadController.h */,
+				BCC286CD0E1D905400978ECA /* SLSMoleculeDownloadController.m */,
 				BCC8FE7E0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.h */,
 				BCC8FE7F0EC7E4CA00853857 /* SLSMoleculeDataSourceViewController.m */,
 				BC146A990EC9173000CE5E72 /* SLSMoleculeCustomDownloadViewController.h */,
@@ -458,7 +454,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BCDC9F840EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib in Resources */,
 				BC5BB79C0E200C3B0001DFD0 /* 1BNA.pdb.gz in Resources */,
 				BC5BB7DF0E2020B10001DFD0 /* 1EVE.pdb.gz in Resources */,
 				BC5BBBFA0E216A170001DFD0 /* 1TRZ.pdb.gz in Resources */,
@@ -517,7 +512,7 @@
 				BCC286C20E1D8F9300978ECA /* SLSMoleculeRootViewController.m in Sources */,
 				BCC286C80E1D8FB100978ECA /* SLSMoleculeGLView.m in Sources */,
 				BCC286CA0E1D8FB100978ECA /* SLSMoleculeGLViewController.m in Sources */,
-				BCC286D20E1D905400978ECA /* SLSMoleculeDownloadViewController.m in Sources */,
+				BCC286D20E1D905400978ECA /* SLSMoleculeDownloadController.m in Sources */,
 				BCC286D40E1D905400978ECA /* SLSMoleculeTableViewController.m in Sources */,
 				BC5BB8BD0E204DC20001DFD0 /* SLSMoleculeDetailViewController.m in Sources */,
 				BC61CC310E2463180074BE04 /* SLSCellTextView.m in Sources */,
@@ -545,15 +540,6 @@
 			children = (
 				BCC246AD112E3DB700710932 /* English */,
 				BCC246AE112E3DB700710932 /* French */,
-			);
-			name = SLSMoleculeDownloadView.xib;
-			sourceTree = "<group>";
-		};
-		BCDC9F830EB375CC00ADCFA5 /* SLSMoleculeDownloadView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				BCC286CB0E1D905400978ECA /* English */,
-				BCDC9F850EB375D500ADCFA5 /* French */,
 			);
 			name = SLSMoleculeDownloadView.xib;
 			sourceTree = "<group>";

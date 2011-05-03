@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SLSMoleculeTableViewController.h"
-#import "SLSMoleculeDownloadViewController.h"
+#import "SLSMoleculeDownloadController.h"
 
 @interface SLSMoleculeSearchViewController : UITableViewController <UISearchBarDelegate>
 {

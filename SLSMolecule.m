@@ -845,27 +845,30 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 		{
             [openGLESRenderer configureBasedOnNumberOfAtoms:[self countAtomsForFirstStructure] numberOfBonds:[self countBondsForFirstStructure]];
 			totalNumberOfFeaturesToRender = numberOfAtoms + numberOfBonds;
+
+            openGLESRenderer.bondRadiusScaleFactor = 0.15;
+            openGLESRenderer.atomRadiusScaleFactor = 0.35;
 			
 			[self readAndRenderAtoms:openGLESRenderer];
 			[self readAndRenderBonds:openGLESRenderer];
-            openGLESRenderer.bondRadiusScaleFactor = 0.15;
-            openGLESRenderer.atomRadiusScaleFactor = 0.35;
 //            openGLESRenderer.atomRadiusScaleFactor = 0.27;
 		}; break;
 		case SPACEFILLING:
 		{
             [openGLESRenderer configureBasedOnNumberOfAtoms:[self countAtomsForFirstStructure] numberOfBonds:0];
 			totalNumberOfFeaturesToRender = numberOfAtoms;
-			[self readAndRenderAtoms:openGLESRenderer];
+
             openGLESRenderer.atomRadiusScaleFactor = 1.0;
+            [self readAndRenderAtoms:openGLESRenderer];
 		}; break;
 		case CYLINDRICAL:
 		{
             [openGLESRenderer configureBasedOnNumberOfAtoms:0 numberOfBonds:[self countBondsForFirstStructure]];
 
 			totalNumberOfFeaturesToRender = numberOfBonds;
-			[self readAndRenderBonds:openGLESRenderer];
+
             openGLESRenderer.bondRadiusScaleFactor = 0.15;
+			[self readAndRenderBonds:openGLESRenderer];
 		}; break;
 	}
 	

@@ -13,15 +13,13 @@
 
 #import "SLSMoleculeRootViewController.h"
 #import "SLSMoleculeSearchViewController.h"
-#import "SLSMoleculeDownloadViewController.h"
+#import "SLSMoleculeDownloadController.h"
 #import "SLSMoleculeDetailViewController.h"
 #import "SLSMoleculeCustomDownloadViewController.h"
 
 
 @interface SLSMoleculeTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
 {
-	SLSMoleculeDownloadViewController *downloadController;
-
 	NSMutableArray *molecules;
 	SLSMoleculeRootViewController *delegate;
 	NSInteger selectedIndex;
@@ -30,7 +28,6 @@
 	sqlite3 *database;
 }
 
-@property(readwrite,retain) SLSMoleculeDownloadViewController *downloadController;
 @property(readwrite,assign) SLSMoleculeRootViewController *delegate;
 @property(readwrite,assign) sqlite3 *database;
 @property(readwrite,retain) NSMutableArray *molecules;

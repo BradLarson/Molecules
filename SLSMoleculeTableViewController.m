@@ -427,7 +427,6 @@
 #pragma mark -
 #pragma mark Accessors
 
-@synthesize downloadController;
 @synthesize delegate;
 @synthesize database;
 @synthesize molecules;

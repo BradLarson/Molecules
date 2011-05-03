@@ -9,7 +9,7 @@
 //  This handles the keyword searching functionality of the Protein Data Bank
 
 #import "SLSMoleculeSearchViewController.h"
-#import "SLSMoleculeDownloadViewController.h"
+#import "SLSMoleculeDownloadController.h"
 #import "SLSMoleculeTableViewController.h"
 #import "VCTitleCase.h"
 #import "SLSMoleculeAppDelegate.h"
@@ -442,13 +442,13 @@
 	}
 	else
 	{
-		NSString *selectedTitle = [searchResultTitles objectAtIndex:[indexPath row]];
-		NSString *selectedPDBCode = [searchResultPDBCodes objectAtIndex:[indexPath row]];
-		
-		SLSMoleculeDownloadViewController *downloadViewController = [[SLSMoleculeDownloadViewController alloc] initWithPDBCode:selectedPDBCode andTitle:selectedTitle];
-		
-		[self.navigationController pushViewController:downloadViewController animated:YES];
-		[downloadViewController release];	
+//		NSString *selectedTitle = [searchResultTitles objectAtIndex:[indexPath row]];
+//		NSString *selectedPDBCode = [searchResultPDBCodes objectAtIndex:[indexPath row]];
+//		
+//		SLSMoleculeDownloadViewController *downloadViewController = [[SLSMoleculeDownloadViewController alloc] initWithPDBCode:selectedPDBCode andTitle:selectedTitle];
+//		
+//		[self.navigationController pushViewController:downloadViewController animated:YES];
+//		[downloadViewController release];	
 	}	
 }
 

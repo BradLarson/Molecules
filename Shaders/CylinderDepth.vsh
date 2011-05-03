@@ -1,10 +1,10 @@
-attribute vec4 position;
-attribute vec4 direction;
-attribute vec4 inputImpostorSpaceCoordinate;
+attribute vec3 position;
+attribute vec3 direction;
+attribute vec3 inputImpostorSpaceCoordinate;
 
-uniform mat4 modelViewProjMatrix;
+uniform mat3 modelViewProjMatrix;
 uniform mediump float cylinderRadius;
-uniform mediump mat4 orthographicMatrix;
+uniform mediump mat3 orthographicMatrix;
 
 varying mediump vec2 impostorSpaceCoordinate;
 varying mediump float depthOffsetAlongCenterAxis;
@@ -15,11 +15,11 @@ varying mediump float depthAdjustmentForOrthographicProjection;
 void main()
 {
     vec2 rotationFactor;
-    vec4 transformedDirection, transformedPosition, transformedOtherPosition;
+    vec3 transformedDirection, transformedPosition, transformedOtherPosition;
     vec3 viewDisplacementForVertex, displacementDirectionAtEndCap;
     float displacementAtEndCaps, lengthOfCylinder, lengthOfCylinderInView;
     
-    depthAdjustmentForOrthographicProjection = (vec4(0.0, 0.0, 1.0, 0.0) * orthographicMatrix).z;
+    depthAdjustmentForOrthographicProjection = (vec3(0.0, 0.0, 0.5) * orthographicMatrix).z;
 
 	transformedPosition = modelViewProjMatrix * position;
     transformedOtherPosition = modelViewProjMatrix * (position + direction);
@@ -58,7 +58,7 @@ void main()
         
     transformedPosition.xyz = (transformedPosition.xyz + viewDisplacementForVertex);
     transformedPosition *= orthographicMatrix;
-    normalizedDepth = transformedPosition.z + 1.0;
+    normalizedDepth = transformedPosition.z / 2.0 + 0.5;
 
-    gl_Position = transformedPosition;
+    gl_Position = vec4(transformedPosition, 1.0);
 }

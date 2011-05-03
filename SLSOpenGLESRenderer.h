@@ -17,6 +17,10 @@
 
 #import "SLSMolecule.h"
 
+extern NSString *const kSLSMoleculeShadowCalculationStartedNotification;
+extern NSString *const kSLSMoleculeShadowCalculationUpdateNotification;
+extern NSString *const kSLSMoleculeShadowCalculationEndedNotification;
+
 #define MAX_BOND_VBOS 2
 
 // OpenGL helper functions
@@ -74,6 +78,8 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
 
     NSMutableData *bondVBOs[MAX_BOND_VBOS], *bondIndexBuffers[MAX_BOND_VBOS];
     unsigned int currentBondVBO;
+    
+    dispatch_queue_t openGLESContextQueue;
 }
 
 @property(readwrite, retain, nonatomic) EAGLContext *context;
@@ -87,6 +93,7 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
 // OpenGL matrix helper methods
 - (void)convertMatrix:(GLfloat *)matrix to3DTransform:(CATransform3D *)transform3D;
 - (void)convert3DTransform:(CATransform3D *)transform3D toMatrix:(GLfloat *)matrix;
+- (void)convert3DTransform:(CATransform3D *)transform3D to3x3Matrix:(GLfloat *)matrix;
 - (void)print3DTransform:(CATransform3D *)transform3D;
 - (void)printMatrix:(GLfloat *)fixedPointMatrix;
 

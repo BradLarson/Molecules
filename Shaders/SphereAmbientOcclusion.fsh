@@ -1,8 +1,8 @@
 precision mediump float;
 
 uniform sampler2D depthTexture;
-uniform highp mat4 modelViewProjMatrix;
-uniform mediump mat4 inverseModelViewProjMatrix;
+uniform highp mat3 modelViewProjMatrix;
+uniform mediump mat3 inverseModelViewProjMatrix;
 uniform mediump float intensityFactor;
 
 varying highp vec2 impostorSpaceCoordinate;
@@ -37,7 +37,7 @@ void main()
 {
     highp vec3 currentSphereSurfaceCoordinate = coordinateFromTexturePosition(clamp(impostorSpaceCoordinate, -1.0, 1.0));
 
-    currentSphereSurfaceCoordinate = normalize((modelViewProjMatrix * vec4(currentSphereSurfaceCoordinate, 0.0)).xyz);
+    currentSphereSurfaceCoordinate = normalize(modelViewProjMatrix * currentSphereSurfaceCoordinate);
      
     vec3 currentPositionCoordinate = normalizedViewCoordinate + adjustedSphereRadius * currentSphereSurfaceCoordinate * adjustmentForOrthographicProjection;
     

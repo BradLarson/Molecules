@@ -1,8 +1,8 @@
 precision mediump float;
 
 uniform sampler2D depthTexture;
-uniform mediump mat4 modelViewProjMatrix;
-uniform mediump mat4 inverseModelViewProjMatrix;
+uniform mediump mat3 modelViewProjMatrix;
+uniform mediump mat3 inverseModelViewProjMatrix;
 uniform mediump float intensityFactor;
 
 varying mediump vec2 impostorSpaceCoordinate;

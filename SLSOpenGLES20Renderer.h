@@ -60,7 +60,7 @@
 
     GLfloat previousAmbientOcclusionOffset[2];
     GLfloat lightDirection[3];
-    GLfloat orthographicMatrix[16];
+    GLfloat orthographicMatrix[9];
     
     unsigned int widthOfAtomAOTexturePatch;
     GLfloat normalizedAOTexturePatchWidth;

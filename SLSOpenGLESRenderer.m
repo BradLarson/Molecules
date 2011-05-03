@@ -8,6 +8,10 @@
 
 #import "SLSOpenGLESRenderer.h"
 
+NSString *const kSLSMoleculeShadowCalculationStartedNotification = @"MoleculeShadowCalculationStarted";
+NSString *const kSLSMoleculeShadowCalculationUpdateNotification = @"MoleculeShadowCalculationUpdate";
+NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShadowCalculationEnded";
+
 @implementation SLSOpenGLESRenderer
 
 #pragma mark -
@@ -35,6 +39,8 @@
     
     [self convertMatrix:currentModelViewMatrix to3DTransform:&currentCalculatedMatrix];
 
+    openGLESContextQueue = dispatch_queue_create("com.sunsetlakesoftware.openGLESContextQueue", NULL);;
+
 //    [self clearScreen];		
 
     return self;
@@ -56,6 +62,8 @@
 	}
 	
 	[context release];	
+    
+    dispatch_release(openGLESContextQueue);
     
 	[super dealloc];
 }
@@ -109,6 +117,19 @@
 	matrix[13] = (GLfloat)transform3D->m42;
 	matrix[14] = (GLfloat)transform3D->m43;
 	matrix[15] = (GLfloat)transform3D->m44;
+}
+
+- (void)convert3DTransform:(CATransform3D *)transform3D to3x3Matrix:(GLfloat *)matrix;
+{
+	matrix[0] = (GLfloat)transform3D->m11;
+	matrix[1] = (GLfloat)transform3D->m12;
+	matrix[2] = (GLfloat)transform3D->m13;
+	matrix[3] = (GLfloat)transform3D->m21;
+	matrix[4] = (GLfloat)transform3D->m22;
+	matrix[5] = (GLfloat)transform3D->m23;
+	matrix[6] = (GLfloat)transform3D->m31;
+	matrix[7] = (GLfloat)transform3D->m32;
+	matrix[8] = (GLfloat)transform3D->m33;
 }
 
 - (void)print3DTransform:(CATransform3D *)transform3D;

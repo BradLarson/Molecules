@@ -4,7 +4,7 @@ uniform vec3 lightPosition;
 uniform vec3 cylinderColor;
 uniform sampler2D depthTexture;
 uniform sampler2D ambientOcclusionTexture;
-uniform mat4 inverseModelViewProjMatrix;
+uniform mat3 inverseModelViewProjMatrix;
 uniform mediump float ambientOcclusionTexturePatchWidth;
 
 varying mediump vec2 impostorSpaceCoordinate;
@@ -53,22 +53,23 @@ void main()
     
     normal = normalize(normal);
     
-    if ( (impostorSpaceCoordinate.t <= (-1.0 + displacementFromCurvature)) || (impostorSpaceCoordinate.t >= (1.0 + displacementFromCurvature)))
-    {
-        gl_FragColor = vec4(0.0);
-    }
-    else
-    {
-        if ( impostorSpaceCoordinate.t <= (-1.0 + displacementFromCurvature))
-        {
-            gl_FragColor = vec4(0.0);
-        }
-        else
-        {
+//    if ( (impostorSpaceCoordinate.t <= (-1.0 + displacementFromCurvature)) || (impostorSpaceCoordinate.t >= (1.0 + displacementFromCurvature)))
+  //  {
+  //      gl_FragColor = vec4(0.0);
+   // }
+   // else
+   // {
+//        if ( impostorSpaceCoordinate.t <= (-1.0 + displacementFromCurvature))
+//        {
+//            gl_FragColor = vec4(0.0);
+//        }
+//        else
+//        {
             float currentDepthValue = normalizedViewCoordinate.z - depthOffset + 0.0025;
             float previousDepthValue = depthFromEncodedColor(texture2D(depthTexture, normalizedViewCoordinate.xy));
             
-            if ( (floor(currentDepthValue * 765.0)) > (ceil(previousDepthValue * 765.0)) )
+            //if ( (floor(currentDepthValue * 765.0)) > (ceil(previousDepthValue * 765.0)) )
+            if ( (currentDepthValue - 0.002) > (previousDepthValue) )
             {
                 gl_FragColor = vec4(0.0);
             }
@@ -91,7 +92,7 @@ void main()
                 // Per fragment specular lighting
                 lightingIntensity  = clamp(dot(lightPosition, normal), 0.0, 1.0);
                 lightingIntensity  = pow(lightingIntensity, 60.0) * ambientOcclusionIntensity.r * 1.2;
-                finalCylinderColor += vec3(0.4, 0.4, 0.4) * lightingIntensity;
+                finalCylinderColor += 0.4 * lightingIntensity;
                 
                 //    gl_FragColor = texture2D(depthTexture, normalizedViewCoordinate.xy);
                 
@@ -109,6 +110,6 @@ void main()
                 //    gl_FragColor = vec4(vec3((1.0 + normalizedDistanceAlongZAxis) / 2.0), 1.0);
                 gl_FragColor = vec4(finalCylinderColor, 1.0);
             }            
-        }
-    }        
+  //      }
+   // }        
 }

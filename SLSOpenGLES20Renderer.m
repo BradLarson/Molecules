@@ -96,29 +96,18 @@
     GLfloat r_l = right - left;
     GLfloat t_b = top - bottom;
     GLfloat f_n = far - near;
-    GLfloat tx = - (right + left) / (right - left);
-    GLfloat ty = - (top + bottom) / (top - bottom);
-    GLfloat tz = - (far + near) / (far - near);
     
     matrix[0] = 2.0f / r_l;
     matrix[1] = 0.0f;
     matrix[2] = 0.0f;
-    matrix[3] = tx;
     
-    matrix[4] = 0.0f;
-    matrix[5] = 2.0f / t_b;
+    matrix[3] = 0.0f;
+    matrix[4] = 2.0f / t_b;
+    matrix[5] = 0.0f;
+    
     matrix[6] = 0.0f;
-    matrix[7] = ty;
-    
-    matrix[8] = 0.0f;
-    matrix[9] = 0.0f;
-    matrix[10] = 2.0f / f_n;
-    matrix[11] = tz;
-    
-    matrix[12] = 0.0f;
-    matrix[13] = 0.0f;
-    matrix[14] = 0.0f;
-    matrix[15] = 1.0f;
+    matrix[7] = 0.0f;
+    matrix[8] = 2.0f / f_n;    
 }
 
 - (BOOL)createFramebuffersForLayer:(CAEAGLLayer *)glLayer;
@@ -148,7 +137,9 @@
     glViewport(0, 0, backingWidth, backingHeight);
 
 //    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-3.0 far:3.0];
-    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-2.0 far:2.0];
+//    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-2.0 far:2.0];
+//    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-0.5 far:0.5];
+    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-1.0 far:1.0];
     
     return YES;
 }
@@ -624,7 +615,7 @@
 
 - (void)configureProjection;
 {
-    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-1.0 far:4.0];
+    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-1.0 far:1.0];
 }
 
 - (void)presentRenderBuffer;
@@ -649,14 +640,16 @@
 
 - (void)renderFrameForMolecule:(SLSMolecule *)molecule;
 {
+    isFrameRenderingFinished = NO;
+
     CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
 
-    GLfloat currentModelViewMatrix[16];
-    [self convert3DTransform:&currentCalculatedMatrix toMatrix:currentModelViewMatrix];
+    GLfloat currentModelViewMatrix[9];
+    [self convert3DTransform:&currentCalculatedMatrix to3x3Matrix:currentModelViewMatrix];
 
     CATransform3D inverseMatrix = CATransform3DInvert(currentCalculatedMatrix);
-    GLfloat inverseModelViewMatrix[16];
-    [self convert3DTransform:&inverseMatrix toMatrix:inverseModelViewMatrix];
+    GLfloat inverseModelViewMatrix[9];
+    [self convert3DTransform:&inverseMatrix to3x3Matrix:inverseModelViewMatrix];
 
    [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
 //   [self displayTextureToScreen:depthPassTexture];
@@ -672,6 +665,7 @@
     CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
     
     NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
+    isFrameRenderingFinished = YES;
 }
 
 #pragma mark -
@@ -948,8 +942,8 @@
     glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
     glUniform1i(sphereDepthPrecalculatedDepthTexture, 2);
 
-    glUniformMatrix4fv(sphereDepthModelViewMatrix, 1, 0, depthModelViewMatrix);
-    glUniformMatrix4fv(sphereDepthOrthographicMatrix, 1, 0, orthographicMatrix);
+    glUniformMatrix3fv(sphereDepthModelViewMatrix, 1, 0, depthModelViewMatrix);
+    glUniformMatrix3fv(sphereDepthOrthographicMatrix, 1, 0, orthographicMatrix);
 
     float sphereScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * atomRadiusScaleFactor;
     GLsizei atomVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
@@ -985,8 +979,8 @@
 	GLfloat bondRadius = 1.0;
 
     glUniform1f(cylinderDepthRadius, bondRadius * cylinderScaleFactor);
-    glUniformMatrix4fv(cylinderDepthModelViewMatrix, 1, 0, depthModelViewMatrix);
-    glUniformMatrix4fv(cylinderDepthOrthographicMatrix, 1, 0, orthographicMatrix);
+    glUniformMatrix3fv(cylinderDepthModelViewMatrix, 1, 0, depthModelViewMatrix);
+    glUniformMatrix3fv(cylinderDepthOrthographicMatrix, 1, 0, orthographicMatrix);
 
     for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
     {
@@ -1049,10 +1043,10 @@
     glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexture);
     glUniform1i(sphereRaytracingAOTexture, 3);
 
-    glUniformMatrix4fv(sphereRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
-    glUniformMatrix4fv(sphereRaytracingInverseModelViewMatrix, 1, 0, inverseMatrix);
-    glUniformMatrix4fv(sphereRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
-    glUniform1f(sphereRaytracingTexturePatchWidth, normalizedAOTexturePatchWidth - 2.0 / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH);
+    glUniformMatrix3fv(sphereRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
+    glUniformMatrix3fv(sphereRaytracingInverseModelViewMatrix, 1, 0, inverseMatrix);
+    glUniformMatrix3fv(sphereRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
+    glUniform1f(sphereRaytracingTexturePatchWidth, (normalizedAOTexturePatchWidth - 2.0 / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH) * 0.5);
 //    glUniform1f(sphereRaytracingTexturePatchWidth, normalizedAOTexturePatchWidth);
 
     float sphereScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * atomRadiusScaleFactor;
@@ -1098,9 +1092,9 @@
 
     glUniform1f(cylinderRaytracingRadius, bondRadius * cylinderScaleFactor);
     glUniform3f(cylinderRaytracingColor, 0.75, 0.75, 0.75);
-    glUniformMatrix4fv(cylinderRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
-    glUniformMatrix4fv(cylinderRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
-    glUniformMatrix4fv(cylinderRaytracingInverseModelViewMatrix, 1, 0, inverseMatrix);
+    glUniformMatrix3fv(cylinderRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
+    glUniformMatrix3fv(cylinderRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
+    glUniformMatrix3fv(cylinderRaytracingInverseModelViewMatrix, 1, 0, inverseMatrix);
 
     for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
     {
@@ -1145,7 +1139,7 @@
     // Draw the spheres
     [sphereAmbientOcclusionProgram use];
     
-    glUniformMatrix4fv(sphereAmbientOcclusionInverseModelViewMatrix, 1, 0, inverseMatrix);
+    glUniformMatrix3fv(sphereAmbientOcclusionInverseModelViewMatrix, 1, 0, inverseMatrix);
     
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, depthPassTexture);
@@ -1155,8 +1149,8 @@
     glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
     glUniform1i(sphereAmbientOcclusionPrecalculatedDepthTexture, 2);
     
-    glUniformMatrix4fv(sphereAmbientOcclusionModelViewMatrix, 1, 0, ambientOcclusionModelViewMatrix);
-    glUniformMatrix4fv(sphereAmbientOcclusionOrthographicMatrix, 1, 0, orthographicMatrix);
+    glUniformMatrix3fv(sphereAmbientOcclusionModelViewMatrix, 1, 0, ambientOcclusionModelViewMatrix);
+    glUniformMatrix3fv(sphereAmbientOcclusionOrthographicMatrix, 1, 0, orthographicMatrix);
     glUniform1f(sphereAmbientOcclusionTexturePatchWidth, normalizedAOTexturePatchWidth);
     glUniform1f(sphereAmbientOcclusionIntensityFactor, fractionOfTotal);
     
@@ -1189,7 +1183,7 @@
     // Draw the cylinders    
     [cylinderAmbientOcclusionProgram use];
     
-    glUniformMatrix4fv(cylinderAmbientOcclusionInverseModelViewMatrix, 1, 0, inverseMatrix);
+    glUniformMatrix3fv(cylinderAmbientOcclusionInverseModelViewMatrix, 1, 0, inverseMatrix);
 
     glUniform1i(cylinderAmbientOcclusionDepthTexture, 0);
     
@@ -1198,8 +1192,8 @@
 	GLfloat bondRadius = 1.0;
     
     glUniform1f(cylinderAmbientOcclusionRadius, bondRadius * cylinderScaleFactor);
-    glUniformMatrix4fv(cylinderAmbientOcclusionModelViewMatrix, 1, 0, ambientOcclusionModelViewMatrix);
-    glUniformMatrix4fv(cylinderAmbientOcclusionOrthographicMatrix, 1, 0, orthographicMatrix);
+    glUniformMatrix3fv(cylinderAmbientOcclusionModelViewMatrix, 1, 0, ambientOcclusionModelViewMatrix);
+    glUniformMatrix3fv(cylinderAmbientOcclusionOrthographicMatrix, 1, 0, orthographicMatrix);
     glUniform1f(cylinderAmbientOcclusionTexturePatchWidth, normalizedAOTexturePatchWidth);
     glUniform1f(cylinderAmbientOcclusionIntensityFactor, fractionOfTotal);
     
@@ -1341,9 +1335,9 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
         glClear(GL_COLOR_BUFFER_BIT);
         
         CATransform3D currentSamplingRotationMatrix;
-        GLfloat currentModelViewMatrix[16];
+        GLfloat currentModelViewMatrix[9];
         CATransform3D inverseMatrix;
-        GLfloat inverseModelViewMatrix[16];
+        GLfloat inverseModelViewMatrix[9];
         
         for (unsigned int currentAOSamplingPoint = 0; currentAOSamplingPoint < AMBIENTOCCLUSIONSAMPLINGPOINTS; currentAOSamplingPoint++)
         {        
@@ -1355,8 +1349,8 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
             
             inverseMatrix = CATransform3DInvert(currentSamplingRotationMatrix);
             
-            [self convert3DTransform:&inverseMatrix toMatrix:inverseModelViewMatrix];
-            [self convert3DTransform:&currentSamplingRotationMatrix toMatrix:currentModelViewMatrix];
+            [self convert3DTransform:&inverseMatrix to3x3Matrix:inverseModelViewMatrix];
+            [self convert3DTransform:&currentSamplingRotationMatrix to3x3Matrix:currentModelViewMatrix];
             
             [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
             [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(0.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
@@ -1370,8 +1364,8 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
             
             inverseMatrix = CATransform3DInvert(currentSamplingRotationMatrix);
             
-            [self convert3DTransform:&inverseMatrix toMatrix:inverseModelViewMatrix];
-            [self convert3DTransform:&currentSamplingRotationMatrix toMatrix:currentModelViewMatrix];
+            [self convert3DTransform:&inverseMatrix to3x3Matrix:inverseModelViewMatrix];
+            [self convert3DTransform:&currentSamplingRotationMatrix to3x3Matrix:currentModelViewMatrix];
             
             [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
             [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(0.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];

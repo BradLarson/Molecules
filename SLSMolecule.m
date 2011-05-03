@@ -13,6 +13,10 @@
 #import "SLSMolecule+PDB.h"
 #import "SLSOpenGLESRenderer.h"
 
+NSString *const kSLSMoleculeRenderingStartedNotification = @"MoleculeRenderingStarted";
+NSString *const kSLSMoleculeRenderingUpdateNotification = @"MoleculeRenderingUpdate";
+NSString *const kSLSMoleculeRenderingEndedNotification = @"MoleculeRenderingEnded";
+
 #define BOND_LENGTH_LIMIT 3.0f
 
 static sqlite3_stmt *insertMoleculeSQLStatement = nil;
@@ -790,17 +794,17 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 
 - (void)showStatusIndicator;
 {
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"MoleculeRenderingStarted" object:nil ];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kSLSMoleculeRenderingStartedNotification object:nil ];
 }
 
 - (void)updateStatusIndicator;
 {
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"MoleculeRenderingUpdate" object:[NSNumber numberWithDouble:(double)currentFeatureBeingRendered/(double)totalNumberOfFeaturesToRender] ];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kSLSMoleculeRenderingUpdateNotification object:[NSNumber numberWithDouble:(double)currentFeatureBeingRendered/(double)totalNumberOfFeaturesToRender] ];
 }
 
 - (void)hideStatusIndicator;
 {
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"MoleculeRenderingEnded" object:nil ];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kSLSMoleculeRenderingEndedNotification object:nil ];
 }
 
 #pragma mark -

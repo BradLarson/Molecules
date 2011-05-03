@@ -14,6 +14,10 @@
 #import <OpenGLES/ES1/glext.h>
 #import <sqlite3.h>
 
+extern NSString *const kSLSMoleculeRenderingStartedNotification;
+extern NSString *const kSLSMoleculeRenderingUpdateNotification;
+extern NSString *const kSLSMoleculeRenderingEndedNotification;
+
 @class SLSOpenGLESRenderer;
 
 // TODO: Convert enum to elemental number

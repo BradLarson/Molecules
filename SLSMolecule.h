@@ -62,6 +62,7 @@ typedef struct {
 	float minimumXPosition, maximumXPosition, minimumYPosition, maximumYPosition, minimumZPosition, maximumZPosition;
 	float scaleAdjustmentForX, scaleAdjustmentForY, scaleAdjustmentForZ;
 
+    SLSOpenGLESRenderer *currentRenderer;
 }
 
 @property (readonly) float centerOfMassInX, centerOfMassInY, centerOfMassInZ;

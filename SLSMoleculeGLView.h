@@ -16,6 +16,7 @@
 @interface SLSMoleculeGLView : UIView
 {
     SLSOpenGLESRenderer *openGLESRenderer;
+    CGSize previousSize;
 }
 
 @property(readonly) SLSOpenGLESRenderer *openGLESRenderer;

@@ -12,6 +12,7 @@
 // Filetypes
 #import "SLSMolecule+PDB.h"
 #import "SLSOpenGLESRenderer.h"
+#import "SLSOpenGLES20Renderer.h"
 
 NSString *const kSLSMoleculeRenderingStartedNotification = @"MoleculeRenderingStarted";
 NSString *const kSLSMoleculeRenderingUpdateNotification = @"MoleculeRenderingUpdate";
@@ -826,6 +827,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 
 - (BOOL)renderMolecule:(SLSOpenGLESRenderer *)openGLESRenderer;
 {
+    currentRenderer = openGLESRenderer;
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
 	isDoneRendering = NO;
@@ -869,8 +871,12 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 	
 	if (!isRenderingCancelled)
 	{
-		[openGLESRenderer performSelectorOnMainThread:@selector(bindVertexBuffersForMolecule) withObject:nil waitUntilDone:YES];
-		
+        [openGLESRenderer bindVertexBuffersForMolecule];
+//        }
+//        else
+//        {
+//            [openGLESRenderer performSelectorOnMainThread:@selector(bindVertexBuffersForMolecule) withObject:nil waitUntilDone:YES];   
+//        }		
 	}
 	else
 	{
@@ -885,6 +891,8 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 	[self performSelectorOnMainThread:@selector(hideStatusIndicator) withObject:nil waitUntilDone:YES];
     
 	[pool release];
+    
+    currentRenderer = nil;
 	return YES;
 }
 
@@ -1039,7 +1047,8 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 		if (!isDoneRendering)
 		{
 			self.isRenderingCancelled = YES;
-			[NSThread sleepForTimeInterval:0.1];
+            [currentRenderer cancelMoleculeRendering];
+			[NSThread sleepForTimeInterval:1.0];
 		}
 	}
 }

@@ -109,54 +109,58 @@ void normalize(GLfloat *v)
 
 - (BOOL)createFramebuffersForLayer:(CAEAGLLayer *)glLayer;
 {	
-    [EAGLContext setCurrentContext:context];
-    
-	glGenFramebuffersOES(1, &viewFramebuffer);
-	glGenRenderbuffersOES(1, &viewRenderbuffer);
-	
-	glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
-	glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
-    
-	// Need this to make the layer dimensions an even multiple of 32 for performance reasons
-	// Also, the 4.2 Simulator will not display the 
-/*	CGRect layerBounds = glLayer.bounds;
-	CGFloat newWidth = (CGFloat)((int)layerBounds.size.width / 32) * 32.0f;
-	CGFloat newHeight = (CGFloat)((int)layerBounds.size.height / 32) * 32.0f;
-	glLayer.bounds = CGRectMake(layerBounds.origin.x, layerBounds.origin.y, newWidth, newHeight);
-*/	
-	[context renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:glLayer];
-	glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, viewRenderbuffer);
-	
-	glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_WIDTH_OES, &backingWidth);
-	glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_HEIGHT_OES, &backingHeight);
-	
-    glGenRenderbuffersOES(1, &viewDepthBuffer);
-    glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewDepthBuffer);
-    glRenderbufferStorageOES(GL_RENDERBUFFER_OES, GL_DEPTH_COMPONENT16_OES, backingWidth, backingHeight);
-    glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_DEPTH_ATTACHMENT_OES, GL_RENDERBUFFER_OES, viewDepthBuffer);
-	
-	if(glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES) != GL_FRAMEBUFFER_COMPLETE_OES) 
-	{
-		return NO;
-	}
-	
-	glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
+    dispatch_async(openGLESContextQueue, ^{
+        [EAGLContext setCurrentContext:context];
+        
+        glGenFramebuffersOES(1, &viewFramebuffer);
+        glGenRenderbuffersOES(1, &viewRenderbuffer);
+        
+        glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
+        glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
+        
+        // Need this to make the layer dimensions an even multiple of 32 for performance reasons
+        // Also, the 4.2 Simulator will not display the 
+        /*	CGRect layerBounds = glLayer.bounds;
+         CGFloat newWidth = (CGFloat)((int)layerBounds.size.width / 32) * 32.0f;
+         CGFloat newHeight = (CGFloat)((int)layerBounds.size.height / 32) * 32.0f;
+         glLayer.bounds = CGRectMake(layerBounds.origin.x, layerBounds.origin.y, newWidth, newHeight);
+         */	
+        [context renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:glLayer];
+        glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, viewRenderbuffer);
+        
+        glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_WIDTH_OES, &backingWidth);
+        glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_HEIGHT_OES, &backingHeight);
+        
+        glGenRenderbuffersOES(1, &viewDepthBuffer);
+        glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewDepthBuffer);
+        glRenderbufferStorageOES(GL_RENDERBUFFER_OES, GL_DEPTH_COMPONENT16_OES, backingWidth, backingHeight);
+        glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_DEPTH_ATTACHMENT_OES, GL_RENDERBUFFER_OES, viewDepthBuffer);
+        
+        if(glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES) != GL_FRAMEBUFFER_COMPLETE_OES) 
+        {
+            return;
+        }
+        
+        glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
+    });
     
 	return YES;
 }
 
 - (void)destroyFramebuffers
 {
-	glDeleteFramebuffersOES(1, &viewFramebuffer);
-	viewFramebuffer = 0;
-	glDeleteRenderbuffersOES(1, &viewRenderbuffer);
-	viewRenderbuffer = 0;
-	
-	if(viewDepthBuffer) 
-    {
-		glDeleteRenderbuffersOES(1, &viewDepthBuffer);
-		viewDepthBuffer = 0;
-	}
+    dispatch_async(openGLESContextQueue, ^{
+        glDeleteFramebuffersOES(1, &viewFramebuffer);
+        viewFramebuffer = 0;
+        glDeleteRenderbuffersOES(1, &viewRenderbuffer);
+        viewRenderbuffer = 0;
+        
+        if(viewDepthBuffer) 
+        {
+            glDeleteRenderbuffersOES(1, &viewDepthBuffer);
+            viewDepthBuffer = 0;
+        }
+    });
 }
 
 - (void)configureLighting;
@@ -199,14 +203,16 @@ void normalize(GLfloat *v)
 
 - (void)clearScreen;
 {
-	[EAGLContext setCurrentContext:context];
-	
-	glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-	glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
-	[context presentRenderbuffer:GL_RENDERBUFFER_OES];
+    dispatch_async(openGLESContextQueue, ^{
+        [EAGLContext setCurrentContext:context];
+        
+        glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
+        glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
+        [context presentRenderbuffer:GL_RENDERBUFFER_OES];
+    });
 }
 
 - (void)startDrawingFrame;
@@ -238,50 +244,52 @@ void normalize(GLfloat *v)
 
 - (void)renderFrameForMolecule:(SLSMolecule *)molecule;
 {
-//    CFAbsoluteTime elapsedTime, startTime = CFAbsoluteTimeGetCurrent();
-
-    isFrameRenderingFinished = NO;
-	
-	[self startDrawingFrame];
-	
-	if (isFirstDrawingOfMolecule)
-	{
-		[self configureProjection];
-	}
-	
-	GLfloat currentModelViewMatrix[16] = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
-    
-	glMatrixMode(GL_MODELVIEW);
-	
-	// Reset rotation system
-	if (isFirstDrawingOfMolecule)
-	{
-		glLoadIdentity();
-		glMultMatrixf(currentModelViewMatrix);
-		[self configureLighting];
+    dispatch_async(openGLESContextQueue, ^{
+        //    CFAbsoluteTime elapsedTime, startTime = CFAbsoluteTimeGetCurrent();
+        
+        isFrameRenderingFinished = NO;
+        
+        [self startDrawingFrame];
+        
+        if (isFirstDrawingOfMolecule)
+        {
+            [self configureProjection];
+        }
+        
+        GLfloat currentModelViewMatrix[16] = {0.402560,0.094840,0.910469,0.000000, 0.913984,-0.096835,-0.394028,0.000000, 0.050796,0.990772,-0.125664,0.000000, 0.000000,0.000000,0.000000,1.000000};
+        
+        glMatrixMode(GL_MODELVIEW);
+        
+        // Reset rotation system
+        if (isFirstDrawingOfMolecule)
+        {
+            glLoadIdentity();
+            glMultMatrixf(currentModelViewMatrix);
+            [self configureLighting];
+            
+            isFirstDrawingOfMolecule = NO;
+        }
 		
-		isFirstDrawingOfMolecule = NO;
-	}
-		
-	// Set the new matrix that has been calculated from the Core Animation transform
-	[self convert3DTransform:&currentCalculatedMatrix toMatrix:currentModelViewMatrix];
-	
-	glLoadMatrixf(currentModelViewMatrix);
-	
-	// Black background, with depth buffer enabled
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-	if (molecule.isDoneRendering)
-    {
-		[self drawMolecule];
-    }
-	
-	[self presentRenderBuffer];
-	isFrameRenderingFinished = YES;
-
-//    elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
-//	NSLog(@"Render time: %.1f ms, Triangles per second: %.0f", elapsedTime * 1000.0, (CGFloat)totalNumberOfTriangles / elapsedTime);
+        // Set the new matrix that has been calculated from the Core Animation transform
+        [self convert3DTransform:&currentCalculatedMatrix toMatrix:currentModelViewMatrix];
+        
+        glLoadMatrixf(currentModelViewMatrix);
+        
+        // Black background, with depth buffer enabled
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
+        if (molecule.isDoneRendering)
+        {
+            [self drawMolecule];
+        }
+        
+        [self presentRenderBuffer];
+        isFrameRenderingFinished = YES;
+        
+        //    elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
+        //	NSLog(@"Render time: %.1f ms, Triangles per second: %.0f", elapsedTime * 1000.0, (CGFloat)totalNumberOfTriangles / elapsedTime);
+    });
 }
 
 #pragma mark -
@@ -509,6 +517,13 @@ void normalize(GLfloat *v)
 
 #pragma mark -
 #pragma mark OpenGL drawing routines
+
+- (void)bindVertexBuffersForMolecule;
+{
+    [super bindVertexBuffersForMolecule];
+    
+    isSceneReady = YES;
+}
 
 - (void)drawMolecule;
 {

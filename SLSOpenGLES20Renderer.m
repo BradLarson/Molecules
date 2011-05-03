@@ -112,34 +112,38 @@
 
 - (BOOL)createFramebuffersForLayer:(CAEAGLLayer *)glLayer;
 {
-    [EAGLContext setCurrentContext:context];
-
-    // Need this to make the layer dimensions an even multiple of 32 for performance reasons
-	// Also, the 4.2 Simulator will not display the frame otherwise
-/*	CGRect layerBounds = glLayer.bounds;
-	CGFloat newWidth = (CGFloat)((int)layerBounds.size.width / 32) * 32.0f;
-	CGFloat newHeight = (CGFloat)((int)layerBounds.size.height / 32) * 32.0f;
-    
-    NSLog(@"Bounds before: %@", NSStringFromCGRect(glLayer.bounds));
-    
-	glLayer.bounds = CGRectMake(layerBounds.origin.x, layerBounds.origin.y, newWidth, newHeight);
-
-    NSLog(@"Bounds after: %@", NSStringFromCGRect(glLayer.bounds));
-*/
-    glEnable(GL_TEXTURE_2D);
-
-    [self createFramebuffer:&viewFramebuffer size:CGSizeZero renderBuffer:&viewRenderbuffer depthBuffer:&viewDepthBuffer texture:NULL layer:glLayer];    
-//    [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:&depthPassDepthBuffer texture:&depthPassTexture layer:glLayer];
-    [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:NULL texture:&depthPassTexture layer:glLayer];
-    [self createFramebuffer:&ambientOcclusionFramebuffer size:CGSizeMake(AMBIENTOCCLUSIONTEXTUREWIDTH, AMBIENTOCCLUSIONTEXTUREWIDTH) renderBuffer:&ambientOcclusionRenderbuffer depthBuffer:NULL texture:&ambientOcclusionTexture layer:glLayer];
-    
-    [self switchToDisplayFramebuffer];
-    glViewport(0, 0, backingWidth, backingHeight);
-
-//    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-3.0 far:3.0];
-//    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-2.0 far:2.0];
-//    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-0.5 far:0.5];
-    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-1.0 far:1.0];
+    dispatch_async(openGLESContextQueue, ^{
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [EAGLContext setCurrentContext:context];
+            
+            // Need this to make the layer dimensions an even multiple of 32 for performance reasons
+            // Also, the 4.2 Simulator will not display the frame otherwise
+            /*	CGRect layerBounds = glLayer.bounds;
+             CGFloat newWidth = (CGFloat)((int)layerBounds.size.width / 32) * 32.0f;
+             CGFloat newHeight = (CGFloat)((int)layerBounds.size.height / 32) * 32.0f;
+             
+             NSLog(@"Bounds before: %@", NSStringFromCGRect(glLayer.bounds));
+             
+             glLayer.bounds = CGRectMake(layerBounds.origin.x, layerBounds.origin.y, newWidth, newHeight);
+             
+             NSLog(@"Bounds after: %@", NSStringFromCGRect(glLayer.bounds));
+             */
+            glEnable(GL_TEXTURE_2D);
+            
+            [self createFramebuffer:&viewFramebuffer size:CGSizeZero renderBuffer:&viewRenderbuffer depthBuffer:&viewDepthBuffer texture:NULL layer:glLayer];    
+            //    [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:&depthPassDepthBuffer texture:&depthPassTexture layer:glLayer];
+            [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:NULL texture:&depthPassTexture layer:glLayer];
+            [self createFramebuffer:&ambientOcclusionFramebuffer size:CGSizeMake(AMBIENTOCCLUSIONTEXTUREWIDTH, AMBIENTOCCLUSIONTEXTUREWIDTH) renderBuffer:&ambientOcclusionRenderbuffer depthBuffer:NULL texture:&ambientOcclusionTexture layer:glLayer];
+            
+            [self switchToDisplayFramebuffer];
+            glViewport(0, 0, backingWidth, backingHeight);
+            
+            //    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-3.0 far:3.0];
+            //    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-2.0 far:2.0];
+            //    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-0.5 far:0.5];
+            [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-1.0 far:1.0];
+        });        
+    });
     
     return YES;
 }
@@ -594,23 +598,27 @@
 
 - (void)destroyFramebuffers;
 {
-	if (viewFramebuffer)
-	{
-		glDeleteFramebuffers(1, &viewFramebuffer);
-		viewFramebuffer = 0;
-	}
-	
-	if (viewRenderbuffer)
-	{
-		glDeleteRenderbuffers(1, &viewRenderbuffer);
-		viewRenderbuffer = 0;
-	}
-    
-	if (viewDepthBuffer)
-	{
-		glDeleteRenderbuffers(1, &viewDepthBuffer);
-		viewDepthBuffer = 0;
-	}
+    dispatch_async(openGLESContextQueue, ^{
+        [EAGLContext setCurrentContext:context];
+
+        if (viewFramebuffer)
+        {
+            glDeleteFramebuffers(1, &viewFramebuffer);
+            viewFramebuffer = 0;
+        }
+        
+        if (viewRenderbuffer)
+        {
+            glDeleteRenderbuffers(1, &viewRenderbuffer);
+            viewRenderbuffer = 0;
+        }
+        
+        if (viewDepthBuffer)
+        {
+            glDeleteRenderbuffers(1, &viewDepthBuffer);
+            viewDepthBuffer = 0;
+        }
+    });   
 }
 
 - (void)configureProjection;
@@ -625,14 +633,16 @@
 
 - (void)clearScreen;
 {
-	[EAGLContext setCurrentContext:context];
-    
-    [self switchToDisplayFramebuffer];
-	
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    [self presentRenderBuffer];
+    dispatch_async(openGLESContextQueue, ^{
+        [EAGLContext setCurrentContext:context];
+        
+        [self switchToDisplayFramebuffer];
+        
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
+        [self presentRenderBuffer];
+    });
 }
 
 #pragma mark -
@@ -640,32 +650,48 @@
 
 - (void)renderFrameForMolecule:(SLSMolecule *)molecule;
 {
-    isFrameRenderingFinished = NO;
+    if (!isSceneReady)
+    {
+        return;
+    }
 
-    CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
+    // In order to prevent frames to be rendered from building up indefinitely, we use a dispatch semaphore to keep at most two frames in the queue
+    
+    if (dispatch_semaphore_wait(frameRenderingSemaphore, DISPATCH_TIME_NOW) != 0)
+    {
+        return;
+    }
+    
+    dispatch_async(openGLESContextQueue, ^{
+        
+        [EAGLContext setCurrentContext:context];
 
-    GLfloat currentModelViewMatrix[9];
-    [self convert3DTransform:&currentCalculatedMatrix to3x3Matrix:currentModelViewMatrix];
-
-    CATransform3D inverseMatrix = CATransform3DInvert(currentCalculatedMatrix);
-    GLfloat inverseModelViewMatrix[9];
-    [self convert3DTransform:&inverseMatrix to3x3Matrix:inverseModelViewMatrix];
-
-   [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
-//   [self displayTextureToScreen:depthPassTexture];
-//    [self displayTextureToScreen:ambientOcclusionTexture];
-    [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix];
-    
-    // Discarding is only supported starting with 4.0, so I need to do a check here for 3.2 devices
-//    const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
-//    glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
-    
-    [self presentRenderBuffer];
-    
-    CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
-    
-    NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
-    isFrameRenderingFinished = YES;
+        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
+        
+        GLfloat currentModelViewMatrix[9];
+        [self convert3DTransform:&currentCalculatedMatrix to3x3Matrix:currentModelViewMatrix];
+        
+        CATransform3D inverseMatrix = CATransform3DInvert(currentCalculatedMatrix);
+        GLfloat inverseModelViewMatrix[9];
+        [self convert3DTransform:&inverseMatrix to3x3Matrix:inverseModelViewMatrix];
+        
+        [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
+        //   [self displayTextureToScreen:depthPassTexture];
+        //    [self displayTextureToScreen:ambientOcclusionTexture];
+        [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix];
+        
+        // Discarding is only supported starting with 4.0, so I need to do a check here for 3.2 devices
+        //    const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
+        //    glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
+        
+        [self presentRenderBuffer];
+        
+        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
+        
+        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
+        
+        dispatch_semaphore_signal(frameRenderingSemaphore);
+    });
 }
 
 #pragma mark -
@@ -918,8 +944,11 @@
 
 - (void)bindVertexBuffersForMolecule;
 {
+//    [super performSelectorOnMainThread:@selector( bindVertexBuffersForMolecule) withObject:nil waitUntilDone:YES];
     [super bindVertexBuffersForMolecule];
     [self prepareAmbientOcclusionMap];
+    
+    isSceneReady = YES;
 }
 
 - (void)renderDepthTextureForModelViewMatrix:(GLfloat *)depthModelViewMatrix;
@@ -1306,89 +1335,118 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
  
 - (void)prepareAmbientOcclusionMap;
 {    
-    glActiveTexture(GL_TEXTURE3);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    dispatch_sync(openGLESContextQueue, ^{
+        [EAGLContext setCurrentContext:context];
 
-    // Use bilinear filtering here to smooth out the ambient occlusion shadowing
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, depthPassTexture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-
-
-    CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
-
-    // Start fresh on the ambient texture
-    [self switchToAmbientOcclusionFramebuffer];
-
-    BOOL disableAOTextureGeneration = NO;
-    
-    if (disableAOTextureGeneration)
-    {
-        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-    }
-    else
-    {
-        //    glClearColor(0.0f, ambientOcclusionModelViewMatrix[0], 1.0f, 1.0f);
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        if (isRenderingCancelled)
+        {
+            return;
+        }
         
-        CATransform3D currentSamplingRotationMatrix;
-        GLfloat currentModelViewMatrix[9];
-        CATransform3D inverseMatrix;
-        GLfloat inverseModelViewMatrix[9];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//        	[[NSNotificationCenter defaultCenter] postNotificationName:kSLSMoleculeRenderingStartedNotification object:nil ];
+//        });
         
-        for (unsigned int currentAOSamplingPoint = 0; currentAOSamplingPoint < AMBIENTOCCLUSIONSAMPLINGPOINTS; currentAOSamplingPoint++)
-        {        
-            float theta = ambientOcclusionRotationAngles[currentAOSamplingPoint][0];
-            float phi = ambientOcclusionRotationAngles[currentAOSamplingPoint][1];
-            
-            currentSamplingRotationMatrix = CATransform3DMakeRotation(theta, 1.0, 0.0, 0.0);
-            currentSamplingRotationMatrix = CATransform3DRotate(currentSamplingRotationMatrix, phi, 0.0, 1.0, 0.0);
-            
-            inverseMatrix = CATransform3DInvert(currentSamplingRotationMatrix);
-            
-            [self convert3DTransform:&inverseMatrix to3x3Matrix:inverseModelViewMatrix];
-            [self convert3DTransform:&currentSamplingRotationMatrix to3x3Matrix:currentModelViewMatrix];
-            
-            [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
-            [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(0.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
-            //        [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(1.0 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
-            
-            theta = theta + M_PI / 8.0;
-            phi = phi + M_PI / 8.0;
-            
-            currentSamplingRotationMatrix = CATransform3DMakeRotation(theta, 1.0, 0.0, 0.0);
-            currentSamplingRotationMatrix = CATransform3DRotate(currentSamplingRotationMatrix, phi, 0.0, 1.0, 0.0);
-            
-            inverseMatrix = CATransform3DInvert(currentSamplingRotationMatrix);
-            
-            [self convert3DTransform:&inverseMatrix to3x3Matrix:inverseModelViewMatrix];
-            [self convert3DTransform:&currentSamplingRotationMatrix to3x3Matrix:currentModelViewMatrix];
-            
-            [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
-            [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(0.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
-        }    
+        glActiveTexture(GL_TEXTURE3);
+        glBindTexture(GL_TEXTURE_2D, 0);
         
-        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
+        // Use bilinear filtering here to smooth out the ambient occlusion shadowing
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, depthPassTexture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
         
-        NSLog(@"Ambient occlusion calculation duration: %f s", frameDuration);
-    }
+        
+        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
+        
+        // Start fresh on the ambient texture
+        [self switchToAmbientOcclusionFramebuffer];
+        
+        BOOL disableAOTextureGeneration = NO;
+        
+        if (disableAOTextureGeneration)
+        {
+            glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+        }
+        else
+        {
+            //    glClearColor(0.0f, ambientOcclusionModelViewMatrix[0], 1.0f, 1.0f);
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+            
+            CATransform3D currentSamplingRotationMatrix;
+            GLfloat currentModelViewMatrix[9];
+            CATransform3D inverseMatrix;
+            GLfloat inverseModelViewMatrix[9];
+            
+            for (unsigned int currentAOSamplingPoint = 0; currentAOSamplingPoint < AMBIENTOCCLUSIONSAMPLINGPOINTS; currentAOSamplingPoint++)
+            {        
+                if (isRenderingCancelled)
+                {
+                    return;
+                }
+                
+                float theta = ambientOcclusionRotationAngles[currentAOSamplingPoint][0];
+                float phi = ambientOcclusionRotationAngles[currentAOSamplingPoint][1];
+                
+                currentSamplingRotationMatrix = CATransform3DMakeRotation(theta, 1.0, 0.0, 0.0);
+                currentSamplingRotationMatrix = CATransform3DRotate(currentSamplingRotationMatrix, phi, 0.0, 1.0, 0.0);
+                
+                inverseMatrix = CATransform3DInvert(currentSamplingRotationMatrix);
+                
+                [self convert3DTransform:&inverseMatrix to3x3Matrix:inverseModelViewMatrix];
+                [self convert3DTransform:&currentSamplingRotationMatrix to3x3Matrix:currentModelViewMatrix];
+                
+                [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
+                [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(0.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
+                //        [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(1.0 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kSLSMoleculeRenderingUpdateNotification object:[NSNumber numberWithFloat:((float)currentAOSamplingPoint * 2.0) / ((float)AMBIENTOCCLUSIONSAMPLINGPOINTS * 2.0)] ];    
+                });
+                
+                theta = theta + M_PI / 8.0;
+                phi = phi + M_PI / 8.0;
+                
+                currentSamplingRotationMatrix = CATransform3DMakeRotation(theta, 1.0, 0.0, 0.0);
+                currentSamplingRotationMatrix = CATransform3DRotate(currentSamplingRotationMatrix, phi, 0.0, 1.0, 0.0);
+                
+                inverseMatrix = CATransform3DInvert(currentSamplingRotationMatrix);
+                
+                [self convert3DTransform:&inverseMatrix to3x3Matrix:inverseModelViewMatrix];
+                [self convert3DTransform:&currentSamplingRotationMatrix to3x3Matrix:currentModelViewMatrix];
+                
+                [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
+                [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(0.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kSLSMoleculeRenderingUpdateNotification object:[NSNumber numberWithFloat:((float)currentAOSamplingPoint * 2.0 + 1.0) / ((float)AMBIENTOCCLUSIONSAMPLINGPOINTS * 2.0)] ];    
+                });
+            }    
+            
+            CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
+            
+            NSLog(@"Ambient occlusion calculation duration: %f s", frameDuration);
+        }
+        
+        // Reset depth texture to nearest filtering to prevent some border transparency artifacts
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, depthPassTexture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//        	[[NSNotificationCenter defaultCenter] postNotificationName:kSLSMoleculeRenderingEndedNotification object:nil ];
+//        });
 
-    // Reset depth texture to nearest filtering to prevent some border transparency artifacts
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, depthPassTexture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-
-    /*
-    glActiveTexture(GL_TEXTURE3);
-    glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexture);
-
-    glGenerateMipmap(GL_TEXTURE_2D);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    */
+        /*
+         glActiveTexture(GL_TEXTURE3);
+         glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexture);
+         
+         glGenerateMipmap(GL_TEXTURE_2D);
+         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+         */
+    });
 }
 
 - (void)displayTextureToScreen:(GLuint)textureToDisplay;

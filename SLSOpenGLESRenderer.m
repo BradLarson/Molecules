@@ -26,6 +26,8 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
 
     self.context = newContext;
     
+    isSceneReady = NO;
+    
     // Set up the initial model view matrix for the rendering
     isFirstDrawingOfMolecule = YES;
     isFrameRenderingFinished = YES;
@@ -40,6 +42,7 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
     [self convertMatrix:currentModelViewMatrix to3DTransform:&currentCalculatedMatrix];
 
     openGLESContextQueue = dispatch_queue_create("com.sunsetlakesoftware.openGLESContextQueue", NULL);;
+    frameRenderingSemaphore = dispatch_semaphore_create(1);
 
 //    [self clearScreen];		
 
@@ -336,64 +339,70 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
 
 - (void)bindVertexBuffersForMolecule;
 {
-	for (unsigned int currentAtomIndexBufferIndex = 0; currentAtomIndexBufferIndex < NUM_ATOMTYPES; currentAtomIndexBufferIndex++)
-    {
-        if (atomIndexBuffers[currentAtomIndexBufferIndex] != nil)
-        {
-            glGenBuffers(1, &atomIndexBufferHandle[currentAtomIndexBufferIndex]);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, atomIndexBufferHandle[currentAtomIndexBufferIndex]);   
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, [atomIndexBuffers[currentAtomIndexBufferIndex] length], (GLushort *)[atomIndexBuffers[currentAtomIndexBufferIndex] bytes], GL_STATIC_DRAW);    
-            
-            numberOfIndicesInBuffer[currentAtomIndexBufferIndex] = ([atomIndexBuffers[currentAtomIndexBufferIndex] length] / sizeof(GLushort));
-            
-            // Now that the data are in the OpenGL buffer, can release the NSData
-            [atomIndexBuffers[currentAtomIndexBufferIndex] release];
-            atomIndexBuffers[currentAtomIndexBufferIndex] = nil;
+    dispatch_async(openGLESContextQueue, ^{
+        [EAGLContext setCurrentContext:context];
+
+        isRenderingCancelled = NO;
+        
+        for (unsigned int currentAtomIndexBufferIndex = 0; currentAtomIndexBufferIndex < NUM_ATOMTYPES; currentAtomIndexBufferIndex++)
+        {            
+            if (atomIndexBuffers[currentAtomIndexBufferIndex] != nil)
+            {
+                glGenBuffers(1, &atomIndexBufferHandle[currentAtomIndexBufferIndex]);
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, atomIndexBufferHandle[currentAtomIndexBufferIndex]);   
+                glBufferData(GL_ELEMENT_ARRAY_BUFFER, [atomIndexBuffers[currentAtomIndexBufferIndex] length], (GLushort *)[atomIndexBuffers[currentAtomIndexBufferIndex] bytes], GL_STATIC_DRAW);    
+                
+                numberOfIndicesInBuffer[currentAtomIndexBufferIndex] = ([atomIndexBuffers[currentAtomIndexBufferIndex] length] / sizeof(GLushort));
+                
+                // Now that the data are in the OpenGL buffer, can release the NSData
+                [atomIndexBuffers[currentAtomIndexBufferIndex] release];
+                atomIndexBuffers[currentAtomIndexBufferIndex] = nil;
+            }
+            else
+            {
+                atomIndexBufferHandle[currentAtomIndexBufferIndex] = 0;
+            }
         }
-        else
+        
+        for (unsigned int currentAtomVBOIndex = 0; currentAtomVBOIndex < NUM_ATOMTYPES; currentAtomVBOIndex++)
         {
-            atomIndexBufferHandle[currentAtomIndexBufferIndex] = 0;
+            if (atomVBOs[currentAtomVBOIndex] != nil)
+            {
+                glGenBuffers(1, &atomVertexBufferHandles[currentAtomVBOIndex]);
+                glBindBuffer(GL_ARRAY_BUFFER, atomVertexBufferHandles[currentAtomVBOIndex]);
+                glBufferData(GL_ARRAY_BUFFER, [atomVBOs[currentAtomVBOIndex] length], (void *)[atomVBOs[currentAtomVBOIndex] bytes], GL_STATIC_DRAW); 
+                
+                [atomVBOs[currentAtomVBOIndex] release];
+                atomVBOs[currentAtomVBOIndex] = nil;
+            }
+            else
+            {
+                atomVertexBufferHandles[currentAtomVBOIndex] = 0;
+            }
         }
-    }
-    
-	for (unsigned int currentAtomVBOIndex = 0; currentAtomVBOIndex < NUM_ATOMTYPES; currentAtomVBOIndex++)
-    {
-        if (atomVBOs[currentAtomVBOIndex] != nil)
+        
+        for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
         {
-            glGenBuffers(1, &atomVertexBufferHandles[currentAtomVBOIndex]);
-            glBindBuffer(GL_ARRAY_BUFFER, atomVertexBufferHandles[currentAtomVBOIndex]);
-            glBufferData(GL_ARRAY_BUFFER, [atomVBOs[currentAtomVBOIndex] length], (void *)[atomVBOs[currentAtomVBOIndex] bytes], GL_STATIC_DRAW); 
-            
-            [atomVBOs[currentAtomVBOIndex] release];
-            atomVBOs[currentAtomVBOIndex] = nil;
-        }
-        else
-        {
-            atomVertexBufferHandles[currentAtomVBOIndex] = 0;
-        }
-    }
-    
-    for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
-    {
-        if (bondVBOs[currentBondVBOIndex] != nil)
-        {
-            glGenBuffers(1, &bondIndexBufferHandle[currentBondVBOIndex]);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bondIndexBufferHandle[currentBondVBOIndex]);   
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, [bondIndexBuffers[currentBondVBOIndex] length], (GLushort *)[bondIndexBuffers[currentBondVBOIndex] bytes], GL_STATIC_DRAW);    
-            
-            numberOfBondIndicesInBuffer[currentBondVBOIndex] = ([bondIndexBuffers[currentBondVBOIndex] length] / sizeof(GLushort));
-            
-            [bondIndexBuffers[currentBondVBOIndex] release];
-            bondIndexBuffers[currentBondVBOIndex] = nil;
-            
-            glGenBuffers(1, &bondVertexBufferHandle[currentBondVBOIndex]);
-            glBindBuffer(GL_ARRAY_BUFFER, bondVertexBufferHandle[currentBondVBOIndex]);
-            glBufferData(GL_ARRAY_BUFFER, [bondVBOs[currentBondVBOIndex] length], (void *)[bondVBOs[currentBondVBOIndex] bytes], GL_STATIC_DRAW); 
-            
-            [bondVBOs[currentBondVBOIndex] release];
-            bondVBOs[currentBondVBOIndex] = nil;
-        }
-    }    
+            if (bondVBOs[currentBondVBOIndex] != nil)
+            {
+                glGenBuffers(1, &bondIndexBufferHandle[currentBondVBOIndex]);
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bondIndexBufferHandle[currentBondVBOIndex]);   
+                glBufferData(GL_ELEMENT_ARRAY_BUFFER, [bondIndexBuffers[currentBondVBOIndex] length], (GLushort *)[bondIndexBuffers[currentBondVBOIndex] bytes], GL_STATIC_DRAW);    
+                
+                numberOfBondIndicesInBuffer[currentBondVBOIndex] = ([bondIndexBuffers[currentBondVBOIndex] length] / sizeof(GLushort));
+                
+                [bondIndexBuffers[currentBondVBOIndex] release];
+                bondIndexBuffers[currentBondVBOIndex] = nil;
+                
+                glGenBuffers(1, &bondVertexBufferHandle[currentBondVBOIndex]);
+                glBindBuffer(GL_ARRAY_BUFFER, bondVertexBufferHandle[currentBondVBOIndex]);
+                glBufferData(GL_ARRAY_BUFFER, [bondVBOs[currentBondVBOIndex] length], (void *)[bondVBOs[currentBondVBOIndex] bytes], GL_STATIC_DRAW); 
+                
+                [bondVBOs[currentBondVBOIndex] release];
+                bondVBOs[currentBondVBOIndex] = nil;
+            }
+        }    
+    });    
 }
 
 - (void)drawMolecule;
@@ -403,34 +412,40 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
 
 - (void)freeVertexBuffers;
 {    
-    for (unsigned int currentAtomType = 0; currentAtomType < NUM_ATOMTYPES; currentAtomType++)
-    {
-        if (atomIndexBufferHandle[currentAtomType] != 0)
+    dispatch_async(openGLESContextQueue, ^{
+        [EAGLContext setCurrentContext:context];
+        
+        isSceneReady = NO;
+        
+        for (unsigned int currentAtomType = 0; currentAtomType < NUM_ATOMTYPES; currentAtomType++)
         {
-            glDeleteBuffers(1, &atomIndexBufferHandle[currentAtomType]);
-            glDeleteBuffers(1, &atomVertexBufferHandles[currentAtomType]);
-            
-            atomIndexBufferHandle[currentAtomType] = 0;
-            atomVertexBufferHandles[currentAtomType] = 0;
-        }
-    }
-    if (bondVertexBufferHandle != 0)
-    {
-        for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
-        {
-            if (bondIndexBufferHandle[currentBondVBOIndex] != 0)
+            if (atomIndexBufferHandle[currentAtomType] != 0)
             {
-                glDeleteBuffers(1, &bondVertexBufferHandle[currentBondVBOIndex]);
-                glDeleteBuffers(1, &bondIndexBufferHandle[currentBondVBOIndex]);   
+                glDeleteBuffers(1, &atomIndexBufferHandle[currentAtomType]);
+                glDeleteBuffers(1, &atomVertexBufferHandles[currentAtomType]);
+                
+                atomIndexBufferHandle[currentAtomType] = 0;
+                atomVertexBufferHandles[currentAtomType] = 0;
             }
-            
-            bondVertexBufferHandle[currentBondVBOIndex] = 0;
-            bondIndexBufferHandle[currentBondVBOIndex] = 0;
         }
-    }
-    
-	totalNumberOfTriangles = 0;
-	totalNumberOfVertices = 0;
+        if (bondVertexBufferHandle != 0)
+        {
+            for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
+            {
+                if (bondIndexBufferHandle[currentBondVBOIndex] != 0)
+                {
+                    glDeleteBuffers(1, &bondVertexBufferHandle[currentBondVBOIndex]);
+                    glDeleteBuffers(1, &bondIndexBufferHandle[currentBondVBOIndex]);   
+                }
+                
+                bondVertexBufferHandle[currentBondVBOIndex] = 0;
+                bondIndexBufferHandle[currentBondVBOIndex] = 0;
+            }
+        }
+        
+        totalNumberOfTriangles = 0;
+        totalNumberOfVertices = 0;
+    });
 }
 
 - (void)initiateMoleculeRendering;
@@ -481,12 +496,20 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
     }    
 }
 
+- (void)cancelMoleculeRendering;
+{
+    NSLog(@"Cancel rendering");
+    isSceneReady = NO;
+    isRenderingCancelled = YES;    
+}
+
 #pragma mark -
 #pragma mark Accessors
 
 @synthesize context;
-@synthesize isFrameRenderingFinished;
+@synthesize isFrameRenderingFinished, isSceneReady;
 @synthesize totalNumberOfVertices, totalNumberOfTriangles;
 @synthesize atomRadiusScaleFactor, bondRadiusScaleFactor, overallMoleculeScaleFactor;
+@synthesize openGLESContextQueue;
 
 @end

@@ -35,6 +35,8 @@
 	{
 		self.multipleTouchEnabled = YES;
 		self.opaque = YES;
+        
+        previousSize = aRect.size;
 		
 		// Set scaling to account for Retina display	
 		if ([self respondsToSelector:@selector(setContentScaleFactor:)])
@@ -78,7 +80,12 @@
 
 - (void)layoutSubviews 
 {
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"GLViewSizeDidChange" object:nil];
+    CGSize newSize = self.bounds.size;
+    if (!CGSizeEqualToSize(newSize, previousSize))
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"GLViewSizeDidChange" object:nil];
+        previousSize = newSize;
+    }
 }
 
 #pragma mark -

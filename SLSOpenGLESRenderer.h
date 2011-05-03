@@ -55,7 +55,7 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
 	GLint backingHeight;
 	
     CATransform3D currentCalculatedMatrix;
-	BOOL isFirstDrawingOfMolecule, isFrameRenderingFinished;
+	BOOL isFirstDrawingOfMolecule, isFrameRenderingFinished, isSceneReady, isRenderingCancelled;
 
     float atomRadiusScaleFactor, bondRadiusScaleFactor, overallMoleculeScaleFactor;
     float currentModelScaleFactor;
@@ -80,12 +80,14 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
     unsigned int currentBondVBO;
     
     dispatch_queue_t openGLESContextQueue;
+    dispatch_semaphore_t frameRenderingSemaphore;
 }
 
 @property(readwrite, retain, nonatomic) EAGLContext *context;
-@property (readonly) BOOL isFrameRenderingFinished;
-@property (readonly) NSInteger totalNumberOfVertices, totalNumberOfTriangles;
-@property (readwrite, nonatomic) float atomRadiusScaleFactor, bondRadiusScaleFactor, overallMoleculeScaleFactor;
+@property(readonly) BOOL isFrameRenderingFinished, isSceneReady;
+@property(readonly) NSInteger totalNumberOfVertices, totalNumberOfTriangles;
+@property(readwrite, nonatomic) float atomRadiusScaleFactor, bondRadiusScaleFactor, overallMoleculeScaleFactor;
+@property(readonly) dispatch_queue_t openGLESContextQueue;
 
 // Initialization and teardown
 - (id)initWithContext:(EAGLContext *)newContext;
@@ -132,5 +134,6 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
 - (void)freeVertexBuffers;
 - (void)initiateMoleculeRendering;
 - (void)terminateMoleculeRendering;
+- (void)cancelMoleculeRendering;
 
 @end

@@ -176,10 +176,10 @@
 {
 	float percentComplete = [(NSNumber *)[note object] floatValue];
 	
-	if ((percentComplete - renderingProgressIndicator.progress) > 0.01f)
-	{
+//	if ((percentComplete - renderingProgressIndicator.progress) > 0.01f)
+//	{
 		renderingProgressIndicator.progress = percentComplete;
-	}
+//	}
 }
 
 - (void)hideRenderingIndicator:(NSNotification *)note;
@@ -229,13 +229,13 @@
 	if (previousTimestamp == 0)
 	{
         [openGLESRenderer rotateModelFromScreenDisplacementInX:1.0f inY:0.0f];
-        [openGLESRenderer renderFrameForMolecule:moleculeToDisplay];
 	}
 	else
 	{
         [openGLESRenderer rotateModelFromScreenDisplacementInX:(30.0f * (displayLink.timestamp - previousTimestamp)) inY:0.0f];
-        [openGLESRenderer renderFrameForMolecule:moleculeToDisplay];
 	}
+    
+    [openGLESRenderer renderFrameForMolecule:moleculeToDisplay];        
 	
 	previousTimestamp = displayLink.timestamp;
 }
@@ -276,14 +276,14 @@
 
 - (void)updateSizeOfGLView:(NSNotification *)note;
 {
-	if (displayLink == nil)
-	{
+//	if (displayLink == nil)
+//	{
 		[self resizeView];
-	}
-	else
-	{
-		shouldResizeDisplay = YES;
-	}
+//	}
+//	else
+//	{
+//		shouldResizeDisplay = YES;
+//	}
 }
 
 #pragma mark -
@@ -502,6 +502,7 @@
 				twoFingersAreMoving = YES;
                 [openGLESRenderer translateModelByScreenDisplacementInX:directionOfPanning.x inY:directionOfPanning.y];
                 [openGLESRenderer renderFrameForMolecule:moleculeToDisplay];
+
 				previousDirectionOfPanning = CGPointZero;
 			}
 		}

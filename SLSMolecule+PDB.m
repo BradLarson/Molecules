@@ -525,6 +525,7 @@ static NSDictionary *pdbResidueLookupTable;
 				{
 					atomElement = [currentLine substringWithRange:NSMakeRange(76, 2)];
 				}
+                                
 				SLSAtomType processedAtomType;
 				if ([atomElement isEqualToString:@" C"])
 				{
@@ -558,11 +559,48 @@ static NSDictionary *pdbResidueLookupTable;
 				{
 					processedAtomType = SILICON;
 				}
-				else 
+				else if ([atomElement isEqualToString:@" F"])
 				{
-					processedAtomType = UNKNOWN;
+					processedAtomType = FLUORINE;
 				}
-				
+				else if ([atomElement isEqualToString:@"CL"])
+				{
+					processedAtomType = CHLORINE;
+				}
+				else if ([atomElement isEqualToString:@"BR"])
+				{
+					processedAtomType = BROMINE;
+				}
+				else if ([atomElement isEqualToString:@" I"])
+				{
+					processedAtomType = IODINE;
+				}
+				else if ([atomElement isEqualToString:@"CA"])
+				{
+					processedAtomType = CALCIUM;
+				}
+				else if ([atomElement isEqualToString:@"ZN"])
+				{
+					processedAtomType = ZINC;
+				}
+				else if ([atomElement isEqualToString:@"CD"])
+				{
+					processedAtomType = CADMIUM;
+				}
+				else if ([atomElement isEqualToString:@"NA"])
+				{
+					processedAtomType = SODIUM;
+				}
+				else if ([atomElement isEqualToString:@"MG"])
+				{
+					processedAtomType = MAGNESIUM;
+				}
+				else 
+				{                
+					processedAtomType = UNKNOWN;
+				}				
+                
+
 				if ([lineIdentifier isEqualToString:@"HETATM"])
 				{
 					NSString *atomResidueIdentifier = [[currentLine substringWithRange:NSMakeRange(16, 4)] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];

@@ -70,9 +70,9 @@
         self.tableView.separatorColor = [UIColor clearColor];
         self.tableView.rowHeight = 50.0;
         
-        CAGradientLayer *shadowGradient = [SLSMoleculeTableViewController shadowGradientForSize:CGSizeMake(320.0f, self.navigationController.view.frame.size.height)];
-		[self.navigationController.view.layer setMask:shadowGradient];
-		self.navigationController.view.layer.masksToBounds = NO;
+//        CAGradientLayer *shadowGradient = [SLSMoleculeTableViewController shadowGradientForSize:CGSizeMake(320.0f, self.navigationController.view.frame.size.height)];
+//		[self.navigationController.view.layer setMask:shadowGradient];
+//		self.navigationController.view.layer.masksToBounds = NO;
 	}
 	else
 	{

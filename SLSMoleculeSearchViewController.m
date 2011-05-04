@@ -81,9 +81,9 @@
 //        self.tableView.rowHeight = 50.0;
 
 		self.tableView.backgroundColor = [UIColor whiteColor];
-        CAGradientLayer *shadowGradient = [SLSMoleculeTableViewController shadowGradientForSize:CGSizeMake(320.0f, self.navigationController.view.frame.size.height)];
-		[self.navigationController.view.layer setMask:shadowGradient];
-		self.navigationController.view.layer.masksToBounds = NO;
+//        CAGradientLayer *shadowGradient = [SLSMoleculeTableViewController shadowGradientForSize:CGSizeMake(320.0f, self.navigationController.view.frame.size.height)];
+//		[self.navigationController.view.layer setMask:shadowGradient];
+//		self.navigationController.view.layer.masksToBounds = NO;
 	}
 	else
 	{
@@ -132,7 +132,9 @@
     {
         //http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pccompound&retmax=10&term=benzene
         isRetrievingCompoundNames = NO;
-        searchURL = [[NSString alloc] initWithFormat:@"http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pccompound&retmax=%d&term=%@", MAX_SEARCH_RESULT_CODES, [keyword stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSString *keywordWithFilter = [keyword stringByAppendingString:@" \"has 3d conformer\"[Filter]"];
+        searchURL = [[NSString alloc] initWithFormat:@"http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pccompound&retmax=%d&term=%@", MAX_SEARCH_RESULT_CODES, [keywordWithFilter stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }
     
 	

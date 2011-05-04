@@ -146,18 +146,55 @@
             {
                 processedAtomType = PHOSPHOROUS;
             }
-            else if ([atomElement isEqualToString:@"FE"])
+            else if ([[atomElement uppercaseString] isEqualToString:@"FE"])
             {
                 processedAtomType = IRON;
             }
-            else if ([atomElement isEqualToString:@"SI"])
+            else if ([[atomElement uppercaseString] isEqualToString:@"SI"])
             {
                 processedAtomType = SILICON;
+            }
+            else if ([[atomElement uppercaseString] isEqualToString:@"F"])
+            {
+                processedAtomType = FLUORINE;
+            }
+            else if ([[atomElement uppercaseString] isEqualToString:@"CL"])
+            {
+                processedAtomType = CHLORINE;
+            }
+            else if ([[atomElement uppercaseString] isEqualToString:@"BR"])
+            {
+                processedAtomType = BROMINE;
+            }
+            else if ([[atomElement uppercaseString] isEqualToString:@"I"])
+            {
+                processedAtomType = IODINE;
+            }
+            else if ([[atomElement uppercaseString] isEqualToString:@"CA"])
+            {
+                processedAtomType = CALCIUM;
+            }
+            else if ([[atomElement uppercaseString] isEqualToString:@"ZN"])
+            {
+                processedAtomType = ZINC;
+            }
+            else if ([[atomElement uppercaseString] isEqualToString:@"CD"])
+            {
+                processedAtomType = CADMIUM;
+            }
+            else if ([[atomElement uppercaseString] isEqualToString:@"NA"])
+            {
+                processedAtomType = SODIUM;
+            }
+            else if ([[atomElement uppercaseString] isEqualToString:@"MG"])
+            {
+                processedAtomType = MAGNESIUM;
             }
             else 
             {
                 processedAtomType = UNKNOWN;
             }
+
 
             [self addAtomToDatabase:processedAtomType atPoint:atomCoordinate structureNumber:1 residueKey:UNKNOWNRESIDUE];
         }

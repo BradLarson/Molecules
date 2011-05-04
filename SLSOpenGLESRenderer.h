@@ -33,13 +33,12 @@ typedef typedef struct {
     GLfloat atomRadius; 
 } SLSAtomProperties;
 
-//typedef enum { CARBON, HYDROGEN, OXYGEN, NITROGEN, SULFUR, PHOSPHOROUS, IRON, UNKNOWN, SILICON, NUM_ATOMTYPES } SLSAtomType;
 // van der Waals radius used here
 // http://www.umass.edu/microbio/rasmol/rasbonds.htm
 
 static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
     {120, 120, 120, 1.55f}, // CARBON
-    {255, 255, 255, 1.10f}, // HYDROGEN
+    {230, 230, 230, 1.10f}, // HYDROGEN
     {240,  40,  40, 1.35f}, // OXYGEN
     { 48,  80, 248, 1.40f}, // NITROGEN
     {255, 255,  48, 1.81f}, // SULFUR
@@ -47,6 +46,15 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
     {224, 102,  51, 1.95f}, // IRON
     {  0, 255,   0, 1.50f}, // UNKNOWN
     {200, 200,  90, 1.50f}, // SILICON
+    {144, 224,  80, 1.47f}, // FLUORINE
+    { 31, 240,  31, 1.75f}, // CHLORINE
+    {166,  41,  41, 1.85f}, // BROMINE
+    {148,   0, 148, 1.75f}, // IODINE
+    { 61, 255,   0, 1.95f}, // CALCIUM
+    {125, 128, 176, 1.15f}, // ZINC
+    {255, 217, 143, 1.75f}, // CADMIUM
+    {171,  92, 242, 1.02f}, // SODIUM
+    {138, 255,   0, 0.72f}, // MAGNESIUM
 };
 
 @interface SLSOpenGLESRenderer : NSObject 

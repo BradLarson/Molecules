@@ -556,6 +556,7 @@
 //                {
                     cell.textLabel.textColor = [UIColor blackColor];
 //                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
 				cell.textLabel.font = [UIFont boldSystemFontOfSize:12.0];
 				cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:12.0];
@@ -589,7 +590,11 @@
 {
     if ((isDownloading) && ([indexPath row] != indexOfDownloadingMolecule))
     {
-        cell.backgroundColor = [UIColor colorWithWhite:0.6 alpha:1.0];
+        cell.backgroundColor = [UIColor colorWithWhite:0.4 alpha:1.0];
+    }
+    else
+    {
+        cell.backgroundColor = [UIColor whiteColor];
     }
 }
 
@@ -622,6 +627,9 @@
 	{
         indexOfDownloadingMolecule = indexPath.row;
         isDownloading = YES;
+        self.tableView.backgroundColor = [UIColor colorWithWhite:0.4 alpha:1.0];
+        self.tableView.separatorColor = [UIColor colorWithWhite:0.4 alpha:1.0];
+
         [self.tableView reloadData];
 
 		NSString *selectedTitle = [searchResultTitles objectAtIndex:[indexPath row]];

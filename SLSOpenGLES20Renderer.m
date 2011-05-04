@@ -73,9 +73,11 @@
     // Translate the model by the accumulated amount
 	float currentScaleFactor = sqrt(pow(currentCalculatedMatrix.m11, 2.0f) + pow(currentCalculatedMatrix.m12, 2.0f) + pow(currentCalculatedMatrix.m13, 2.0f));	
 	
-	xTranslation = xTranslation / (currentScaleFactor * currentScaleFactor);
-	yTranslation = yTranslation / (currentScaleFactor * currentScaleFactor);
+	xTranslation = xTranslation / (currentScaleFactor * currentScaleFactor * 322.0);
+	yTranslation = yTranslation / (currentScaleFactor * currentScaleFactor * 1000.0);
     
+    NSLog(@"Translation: %f, %f", xTranslation, yTranslation);
+
 	// Use the (0,4,8) components to figure the eye's X axis in the model coordinate system, translate along that
 	CATransform3D temporaryMatrix = CATransform3DTranslate(currentCalculatedMatrix, xTranslation * currentCalculatedMatrix.m11, xTranslation * currentCalculatedMatrix.m21, xTranslation * currentCalculatedMatrix.m31);
 	// Use the (1,5,9) components to figure the eye's Y axis in the model coordinate system, translate along that
@@ -85,6 +87,8 @@
     {
 		currentCalculatedMatrix = temporaryMatrix;
     }
+    
+    [self print3DTransform:&currentCalculatedMatrix];
      */
 }
 

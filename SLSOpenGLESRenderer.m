@@ -190,7 +190,7 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
 {
     // Translate the model by the accumulated amount
 	float currentScaleFactor = sqrt(pow(currentCalculatedMatrix.m11, 2.0f) + pow(currentCalculatedMatrix.m12, 2.0f) + pow(currentCalculatedMatrix.m13, 2.0f));	
-	
+
 	xTranslation = xTranslation / (currentScaleFactor * currentScaleFactor);
 	yTranslation = yTranslation / (currentScaleFactor * currentScaleFactor);
 

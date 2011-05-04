@@ -74,7 +74,7 @@ typedef struct {
 @property (readwrite, nonatomic) SLSVisualizationType currentVisualizationType;
 @property (readwrite) unsigned int numberOfStructureBeingDisplayed;
 
-- (id)initWithFilename:(NSString *)newFilename database:(sqlite3 *)newDatabase;
+- (id)initWithFilename:(NSString *)newFilename database:(sqlite3 *)newDatabase title:(NSString *)newTitle;
 - (id)initWithSQLStatement:(sqlite3_stmt *)moleculeRetrievalStatement database:(sqlite3 *)newDatabase;
 - (void)deleteMolecule;
 

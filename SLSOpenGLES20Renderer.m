@@ -501,7 +501,7 @@
 
 - (void)generateSphereDepthMapTexture;
 {
-    CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
+//    CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
 
     // Luminance for depth: This takes only 95 ms on an iPad 1, so it's worth it for the 8% - 18% per-frame speedup 
     // Full lighting precalculation: This only takes 264 ms on an iPad 1
@@ -590,9 +590,9 @@
 
     free(sphereDepthTextureData);
     
-    CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
+//    CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
     
-    NSLog(@"Texture generation duration: %f ms", frameDuration * 1000.0);
+//    NSLog(@"Texture generation duration: %f ms", frameDuration * 1000.0);
 
 }
 
@@ -666,7 +666,7 @@
         
         [EAGLContext setCurrentContext:context];
 
-        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
+//        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
         
         GLfloat currentModelViewMatrix[9];
         [self convert3DTransform:&currentCalculatedMatrix to3x3Matrix:currentModelViewMatrix];
@@ -686,9 +686,9 @@
         
         [self presentRenderBuffer];
         
-        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
+//        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
         
-        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
+//        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
         
         dispatch_semaphore_signal(frameRenderingSemaphore);
     });
@@ -1357,7 +1357,7 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
         
         
-        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
+//        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
         
         // Start fresh on the ambient texture
         [self switchToAmbientOcclusionFramebuffer];
@@ -1424,9 +1424,9 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
                 });
             }    
             
-            CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
+//            CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
             
-            NSLog(@"Ambient occlusion calculation duration: %f s", frameDuration);
+//            NSLog(@"Ambient occlusion calculation duration: %f s", frameDuration);
         }
         
         // Reset depth texture to nearest filtering to prevent some border transparency artifacts

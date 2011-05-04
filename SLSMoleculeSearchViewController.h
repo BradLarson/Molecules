@@ -15,17 +15,19 @@
 @interface SLSMoleculeSearchViewController : UITableViewController <UISearchBarDelegate, NSXMLParserDelegate>
 {
 	UISearchBar *keywordSearchBar;
-	NSMutableArray *searchResultTitles, *searchResultIDs;
+	NSMutableArray *searchResultTitles, *searchResultIDs, *searchResultIUPACNames;
 	NSMutableData *downloadedFileContents;
 	NSURLConnection *searchResultRetrievalConnection, *nextResultsRetrievalConnection;
 	NSUInteger currentPageOfResults;
-	BOOL searchCancelled, isDownloading;
+	BOOL searchCancelled, isDownloading, isRetrievingCompoundNames;
     NSInteger indexOfDownloadingMolecule;
     
     SLSSearchType currentSearchType;
     SLSMoleculeDownloadController *downloadController;
     NSMutableString *currentXMLElementString;
     NSXMLParser *searchResultsParser;
+    
+    BOOL insideIUPACName, insideSynonym, insideHeavyAtoms;
 }
 
 // Performing search
@@ -33,6 +35,7 @@
 - (void)processSearchResultsAppendingNewData:(BOOL)appendData;
 - (void)processPDBSearchResults;
 - (void)processPubChemKeywordSearch;
+- (void)retrievePubChemCompoundTitles;
 
 - (BOOL)grabNextSetOfSearchResults;
 

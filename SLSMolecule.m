@@ -80,13 +80,14 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 	return self;
 }
 
-- (id)initWithFilename:(NSString *)newFilename database:(sqlite3 *)newDatabase;
+- (id)initWithFilename:(NSString *)newFilename database:(sqlite3 *)newDatabase title:(NSString *)newTitle;
 {
 	if (![self init])
 		return nil;
 
 	database = newDatabase;
 	filename = [newFilename copy];
+    title = [newTitle copy];
 	
 	NSRange rangeUntilFirstPeriod = [filename rangeOfString:@"."];
 	if (rangeUntilFirstPeriod.location == NSNotFound)

@@ -14,8 +14,12 @@
 - (BOOL)readFromSDFFileToDatabase:(NSError **)error;
 {	
 	NSMutableDictionary *atomCoordinates = [[NSMutableDictionary alloc] init];
+    stillCountingAtomsInFirstStructure = YES;
     
 	numberOfAtoms = 0;
+    numberOfBonds = 0;
+    numberOfStructures = 1;
+    
 	float tallyForCenterOfMassInX = 0.0f, tallyForCenterOfMassInY = 0.0f, tallyForCenterOfMassInZ = 0.0f;
 	minimumXPosition = 1000.0f;
 	maximumXPosition = 0.0f;
@@ -53,9 +57,7 @@
         [sdfFileContents release];
 		[atomCoordinates release];
 		return NO;
-        
     }
-
     
     NSUInteger atomSerialNumber = 1;
 	NSUInteger length = [sdfFileContents length];
@@ -116,8 +118,6 @@
             
             NSString *atomElement = [[currentLine substringWithRange:NSMakeRange(31, 3)] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
-            NSLog(@"Atom: %d, |%@| %f, %f, %f", atomSerialNumber, atomElement, atomCoordinate.x, atomCoordinate.y, atomCoordinate.z);
-
             [atomCoordinates setObject:[NSValue valueWithBytes:&atomCoordinate objCType:@encode(SLS3DPoint)] forKey:[NSNumber numberWithInt:atomSerialNumber]];
             atomSerialNumber++;
             
@@ -169,8 +169,6 @@
             NSUInteger indexForFirstAtom  = [[currentLine substringWithRange:NSMakeRange(0, 3)] intValue];
             NSUInteger indexForSecondAtom  = [[currentLine substringWithRange:NSMakeRange(3, 3)] intValue];
 
-            NSLog(@"Bond: %d, %d", indexForFirstAtom, indexForSecondAtom);
-
             NSValue *startValue = [atomCoordinates objectForKey:[NSNumber numberWithInt:indexForFirstAtom]];
             NSValue *endValue = [atomCoordinates objectForKey:[NSNumber numberWithInt:indexForSecondAtom]];
 
@@ -181,9 +179,6 @@
             lineEnd = length + 1;
             break;
         }
-        
-        
-        NSLog(@"Line: %d, %@", [currentLine length], currentLine);
     }
     [sdfFileContents release];
 	
@@ -207,6 +202,15 @@
 
     [atomCoordinates release];
 	
+    if (title == nil)
+	{
+		title = [filename copy];
+	}
+
+    compound = [title copy];
+    
+    [self writeMoleculeDataToDatabase];
+
 	// End the SQLite BEGIN, COMMIT block and write it out to disk
 	[SLSMolecule endTransactionWithDatabase:database];
     

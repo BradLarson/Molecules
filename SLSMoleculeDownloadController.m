@@ -248,7 +248,14 @@
 	}
 	
 	// Notify about the addition of the new molecule
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"MoleculeDidFinishDownloading" object:filename];
+    if (searchType == PROTEINDATABANKSEARCH)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"MoleculeDidFinishDownloading" object:filename];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"MoleculeDidFinishDownloading" object:filename userInfo:[NSDictionary dictionaryWithObject:titleForCurrentlyDownloadingMolecule forKey:@"title"]];        
+    }
 	
 //	if ([SLSMoleculeAppDelegate isRunningOniPad])
 //	{

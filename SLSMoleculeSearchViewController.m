@@ -118,7 +118,10 @@
 	
 	[searchResultIDs release];
 	searchResultIDs = nil;
-	
+    
+    [searchResultIUPACNames release];
+    searchResultIUPACNames = nil;
+
 	NSString *searchURL = nil;
     
     if (currentSearchType == PROTEINDATABANKSEARCH)
@@ -128,7 +131,7 @@
     else
     {
         //http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pccompound&retmax=10&term=benzene
-        
+        isRetrievingCompoundNames = NO;
         searchURL = [[NSString alloc] initWithFormat:@"http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pccompound&retmax=%d&term=%@", MAX_SEARCH_RESULT_CODES, [keyword stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }
     
@@ -273,13 +276,7 @@
 }
 
 - (void)processPubChemKeywordSearch;
-{
-    NSString *compoundIDResponseString = [[NSString alloc] initWithData:downloadedFileContents encoding:NSASCIIStringEncoding];
-
-    NSLog(@"PubChem response: %@", compoundIDResponseString);
-    
-    [compoundIDResponseString release];
-    
+{    
     [currentXMLElementString release];
     currentXMLElementString = nil;
     
@@ -289,7 +286,67 @@
 
     searchResultsParser.delegate = self;
     [searchResultsParser setShouldResolveExternalEntities:YES];
-    [searchResultsParser parse]; 	
+    [searchResultsParser parse];
+}
+
+- (void)retrievePubChemCompoundTitles;
+{
+    NSMutableString *compoundIDList = [[NSMutableString alloc] init];
+    
+    BOOL isFirstID = YES;
+    for (NSString *currentCompoundID in searchResultIDs)
+    {
+        if (!isFirstID)
+        {
+            [compoundIDList appendFormat:@",%@", currentCompoundID];
+        }
+        else
+        {
+            [compoundIDList appendString:currentCompoundID];
+            isFirstID = NO;
+        }
+    }
+    
+        //http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pccompound&retmax=10&term=benzene
+    isRetrievingCompoundNames = YES;
+    NSString *searchURL = [[NSString alloc] initWithFormat:@"http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pccompound&id=%@", compoundIDList];
+    
+    [compoundIDList release];
+    
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+	
+	NSURLRequest *sdfSearchRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:searchURL]
+													cachePolicy:NSURLRequestUseProtocolCachePolicy
+												timeoutInterval:60.0];
+	[searchURL release];
+	searchResultRetrievalConnection = [[NSURLConnection alloc] initWithRequest:sdfSearchRequest delegate:self];
+	
+	downloadedFileContents = [[NSMutableData data] retain];
+	
+	if (!searchResultRetrievalConnection) 
+	{
+        // TODO: Some sort of error handling
+	} 
+}
+
+- (void)processPubChemCompoundTitles;
+{
+    
+    searchResultIUPACNames = [[NSMutableArray alloc] init];
+
+    [searchResultRetrievalConnection release];
+    searchResultRetrievalConnection = nil;
+
+    [currentXMLElementString release];
+    currentXMLElementString = nil;
+    
+	searchResultsParser = [[NSXMLParser alloc] initWithData:downloadedFileContents];
+	[downloadedFileContents release];
+	downloadedFileContents = nil;
+    
+    searchResultsParser.delegate = self;
+    [searchResultsParser setShouldResolveExternalEntities:YES];
+    [searchResultsParser parse];
 }
 
 - (BOOL)grabNextSetOfSearchResults;
@@ -512,7 +569,14 @@
             }
             
 			cell.textLabel.text = [searchResultTitles objectAtIndex:[indexPath row]];
-			cell.detailTextLabel.text = [searchResultIDs objectAtIndex:[indexPath row]];
+            if (currentSearchType == PROTEINDATABANKSEARCH)
+            {
+                cell.detailTextLabel.text = [searchResultIDs objectAtIndex:[indexPath row]];
+            }
+            else
+            {
+                cell.detailTextLabel.text = [searchResultIUPACNames objectAtIndex:[indexPath row]];
+            }
 			
             cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 		}
@@ -589,8 +653,6 @@
     {
         webDetailAddress = [NSString stringWithFormat:@"http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?cid=%@", selectedID];
     }
-    
-    NSLog(@"Web detail address: %@", webDetailAddress);
     
     SLSMoleculeWebDetailViewController *detailViewController = [[SLSMoleculeWebDetailViewController alloc] initWithURL:[NSURL URLWithString:webDetailAddress]];
     
@@ -716,14 +778,21 @@
 {
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
-	if (connection == searchResultRetrievalConnection)
-	{
-		[self processSearchResultsAppendingNewData:NO];
-	}
-	else
-	{
-		[self processSearchResultsAppendingNewData:YES];
-	}
+    if (isRetrievingCompoundNames)
+    {
+        [self processPubChemCompoundTitles];
+    }
+    else
+    {
+        if (connection == searchResultRetrievalConnection)
+        {
+            [self processSearchResultsAppendingNewData:NO];
+        }
+        else
+        {
+            [self processSearchResultsAppendingNewData:YES];
+        }
+    }
 }
 
 #pragma mark -
@@ -739,18 +808,66 @@
     [currentXMLElementString appendString:string];
 }
 
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict
+{
+    if (isRetrievingCompoundNames)
+    {
+        if ([elementName isEqualToString:@"Item"])
+        {
+            NSString *attributeName = [attributeDict valueForKey:@"Name"];
+
+            if ([attributeName isEqualToString:@"IUPACName"])
+            {
+                insideIUPACName = YES;
+            }
+            else if ([attributeName isEqualToString:@"SynonymList"])
+            {
+                insideSynonym = YES;
+            }
+            else if ([attributeName isEqualToString:@"HeavyAtomCount"])
+            {
+                insideHeavyAtoms = YES;
+            }
+        }
+    }
+}
+
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName 
 {
-	if ([elementName isEqualToString:@"Id"])
-	{
-		// Last item is nil, check for that
-		if (currentXMLElementString != nil)
+    if (!isRetrievingCompoundNames)
+    {
+        if ([elementName isEqualToString:@"Id"])
         {
-            NSString *trimmedID = [currentXMLElementString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            [searchResultTitles addObject:trimmedID];            
-            [searchResultIDs addObject:trimmedID];
+            // Last item is nil, check for that
+            if (currentXMLElementString != nil)
+            {
+                NSString *trimmedID = [currentXMLElementString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                [searchResultIDs addObject:trimmedID];
+            }
         }
-	}
+    }
+    else
+    {
+        if (insideIUPACName)
+        {
+            NSString *trimmedIUPACName = [currentXMLElementString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            
+            [searchResultIUPACNames addObject:trimmedIUPACName];
+            insideIUPACName = NO;
+        }
+        else if (insideHeavyAtoms)
+        {
+//            NSUInteger heavyAtoms = [currentXMLElementString intValue];
+            insideHeavyAtoms = NO;
+        }
+        else if (insideSynonym)
+        {
+            NSString *tweakedSynonym = [[currentXMLElementString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] titlecaseString];
+            [searchResultTitles addObject:tweakedSynonym];            
+
+            insideSynonym = NO;
+        }
+    }
 	
 	[currentXMLElementString release];
     currentXMLElementString = nil;
@@ -758,12 +875,21 @@
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser;
 {
-    NSLog(@"Done parsing results");
 //	[self finishParsingXML];
+    if (!isRetrievingCompoundNames)
+    {
+        [self retrievePubChemCompoundTitles];
+    }
+    else
+    {
+        [self.tableView reloadData];
+        isRetrievingCompoundNames = NO;
+    }
 }
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
 {
+
 }
 
 #pragma mark -

@@ -121,7 +121,8 @@
 	NSString *filename = [note object];
 	
 	// Add the new protein to the list by gunzipping the data and pulling out the title
-	SLSMolecule *newMolecule = [[SLSMolecule alloc] initWithFilename:filename database:database];
+    
+	SLSMolecule *newMolecule = [[SLSMolecule alloc] initWithFilename:filename database:database title:[[note userInfo] objectForKey:@"title"]];
 	if (newMolecule == nil)
 	{
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error in downloaded file", @"Localized", nil) message:NSLocalizedStringFromTable(@"The molecule file is either corrupted or not of a supported format", @"Localized", nil)

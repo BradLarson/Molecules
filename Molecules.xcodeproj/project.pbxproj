@@ -26,6 +26,7 @@
 		BC286E1011C4751E005D720C /* RotationIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC286E0F11C4751E005D720C /* RotationIcon@2x.png */; };
 		BC286E2611C47956005D720C /* RotationIconSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC286E2511C47956005D720C /* RotationIconSelected@2x.png */; };
 		BC2CF8650E5784ED00653418 /* SLSMolecule+PDB.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */; };
+		BC33740C1370C6830036428C /* SLSMolecule+SDF.m in Sources */ = {isa = PBXBuildFile; fileRef = BC33740B1370C6830036428C /* SLSMolecule+SDF.m */; };
 		BC37E7CA0E14779E00E11F4F /* SLSMolecule.m in Sources */ = {isa = PBXBuildFile; fileRef = BC37E7C90E14779E00E11F4F /* SLSMolecule.m */; };
 		BC4E97C20E69F736006CD291 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BC4E97C10E69F736006CD291 /* libsqlite3.dylib */; };
 		BC4E97FA0E69F8E1006CD291 /* molecules.sql in Resources */ = {isa = PBXBuildFile; fileRef = BC4E97F90E69F8E1006CD291 /* molecules.sql */; };
@@ -107,6 +108,8 @@
 		BC286E2511C47956005D720C /* RotationIconSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RotationIconSelected@2x.png"; sourceTree = "<group>"; };
 		BC2CF8630E5784EC00653418 /* SLSMolecule+PDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SLSMolecule+PDB.h"; sourceTree = "<group>"; };
 		BC2CF8640E5784ED00653418 /* SLSMolecule+PDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SLSMolecule+PDB.m"; sourceTree = "<group>"; };
+		BC33740A1370C6830036428C /* SLSMolecule+SDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SLSMolecule+SDF.h"; sourceTree = "<group>"; };
+		BC33740B1370C6830036428C /* SLSMolecule+SDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SLSMolecule+SDF.m"; sourceTree = "<group>"; };
 		BC37E7C80E14779E00E11F4F /* SLSMolecule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMolecule.h; sourceTree = "<group>"; };
 		BC37E7C90E14779E00E11F4F /* SLSMolecule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMolecule.m; sourceTree = "<group>"; };
 		BC4E97C10E69F736006CD291 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -162,7 +165,7 @@
 		BCC286C40E1D8FB100978ECA /* SLSMoleculeGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeGLView.m; sourceTree = SOURCE_ROOT; };
 		BCC286C60E1D8FB100978ECA /* SLSMoleculeGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeGLViewController.h; sourceTree = SOURCE_ROOT; };
 		BCC286C70E1D8FB100978ECA /* SLSMoleculeGLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeGLViewController.m; sourceTree = SOURCE_ROOT; };
-		BCC286CC0E1D905400978ECA /* SLSMoleculeDownloadController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = SLSMoleculeDownloadController.h; sourceTree = "<group>"; };
+		BCC286CC0E1D905400978ECA /* SLSMoleculeDownloadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeDownloadController.h; sourceTree = "<group>"; };
 		BCC286CD0E1D905400978ECA /* SLSMoleculeDownloadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeDownloadController.m; sourceTree = "<group>"; };
 		BCC286CF0E1D905400978ECA /* SLSMoleculeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeTableViewController.h; sourceTree = SOURCE_ROOT; };
 		BCC286D00E1D905400978ECA /* SLSMoleculeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeTableViewController.m; sourceTree = SOURCE_ROOT; };
@@ -381,6 +384,8 @@
 				BC37E7C90E14779E00E11F4F /* SLSMolecule.m */,
 				BCC281280E1B1FCD00978ECA /* NSData+Gzip.h */,
 				BCC281290E1B1FCD00978ECA /* NSData+Gzip.m */,
+				BC33740A1370C6830036428C /* SLSMolecule+SDF.h */,
+				BC33740B1370C6830036428C /* SLSMolecule+SDF.m */,
 			);
 			name = Molecules;
 			sourceTree = "<group>";
@@ -529,6 +534,7 @@
 				BC57EBFB1358DE9000FA1060 /* GLProgram.m in Sources */,
 				BC15728A136CC58A00EEFBEC /* SLSMoleculeLibraryTableCell.m in Sources */,
 				BC15728D136CD96800EEFBEC /* SLSMoleculeWebDetailViewController.m in Sources */,
+				BC33740C1370C6830036428C /* SLSMolecule+SDF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

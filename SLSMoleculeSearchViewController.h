@@ -12,20 +12,28 @@
 #import "SLSMoleculeTableViewController.h"
 #import "SLSMoleculeDownloadController.h"
 
-@interface SLSMoleculeSearchViewController : UITableViewController <UISearchBarDelegate>
+@interface SLSMoleculeSearchViewController : UITableViewController <UISearchBarDelegate, NSXMLParserDelegate>
 {
 	UISearchBar *keywordSearchBar;
-	NSMutableArray *searchResultTitles, *searchResultPDBCodes;
+	NSMutableArray *searchResultTitles, *searchResultIDs;
 	NSMutableData *downloadedFileContents;
 	NSURLConnection *searchResultRetrievalConnection, *nextResultsRetrievalConnection;
 	NSUInteger currentPageOfResults;
 	BOOL searchCancelled, isDownloading;
     NSInteger indexOfDownloadingMolecule;
+    
+    SLSSearchType currentSearchType;
+    SLSMoleculeDownloadController *downloadController;
+    NSMutableString *currentXMLElementString;
+    NSXMLParser *searchResultsParser;
 }
 
 // Performing search
 - (BOOL)performSearchWithKeyword:(NSString *)keyword;
 - (void)processSearchResultsAppendingNewData:(BOOL)appendData;
+- (void)processPDBSearchResults;
+- (void)processPubChemKeywordSearch;
+
 - (BOOL)grabNextSetOfSearchResults;
 
 @end

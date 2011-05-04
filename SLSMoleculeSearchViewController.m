@@ -15,7 +15,7 @@
 #import "SLSMoleculeAppDelegate.h"
 #import "SLSMoleculeWebDetailViewController.h"
 
-#define MAX_SEARCH_RESULT_CODES 25
+#define MAX_SEARCH_RESULT_CODES 10
 
 @implementation SLSMoleculeSearchViewController
 
@@ -32,17 +32,19 @@
 		self.view.autoresizesSubviews = YES;
 
 		keywordSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
-		keywordSearchBar.placeholder = NSLocalizedStringFromTable(@"Search for molecules", @"Localized", nil);
+		keywordSearchBar.placeholder = NSLocalizedStringFromTable(@"Search PubChem", @"Localized", nil);
 		keywordSearchBar.delegate = self;
 		keywordSearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
         keywordSearchBar.scopeButtonTitles = [NSArray arrayWithObjects:@"PubChem", @"Protein Data Bank", nil];
         keywordSearchBar.showsScopeBar = YES;
         [keywordSearchBar sizeToFit];
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-        {
-            keywordSearchBar.barStyle = UIBarStyleBlack;
-        }
+        currentSearchType = PUBCHEMSEARCH;
+        
+//        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//        {
+//            keywordSearchBar.barStyle = UIBarStyleBlack;
+//        }
 		[keywordSearchBar becomeFirstResponder];
 				
 		self.navigationItem.title = NSLocalizedStringFromTable(@"Search For Molecules", @"Localized", nil);
@@ -52,7 +54,7 @@
 		
 		downloadedFileContents = nil;
 		searchResultTitles = nil;
-		searchResultPDBCodes = nil;
+		searchResultIDs = nil;
 		searchResultRetrievalConnection = nil;
 		nextResultsRetrievalConnection = nil;
 		searchCancelled = NO;
@@ -60,7 +62,7 @@
 		
 		if ([SLSMoleculeAppDelegate isRunningOniPad])
 		{
-			self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
+			self.contentSizeForViewInPopover = CGSizeMake(320.0, 700.0);
 		}
 		
 	}
@@ -73,11 +75,12 @@
     
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 	{
-		//		self.tableView.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.054f alpha:1.0f];
-		self.tableView.backgroundColor = [UIColor blackColor];
-        self.tableView.separatorColor = [UIColor clearColor];
-        self.tableView.rowHeight = 50.0;
+//		//		self.tableView.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.054f alpha:1.0f];
+//		self.tableView.backgroundColor = [UIColor blackColor];
+//        self.tableView.separatorColor = [UIColor clearColor];
+//        self.tableView.rowHeight = 50.0;
 
+		self.tableView.backgroundColor = [UIColor whiteColor];
         CAGradientLayer *shadowGradient = [SLSMoleculeTableViewController shadowGradientForSize:CGSizeMake(320.0f, self.navigationController.view.frame.size.height)];
 		[self.navigationController.view.layer setMask:shadowGradient];
 		self.navigationController.view.layer.masksToBounds = NO;
@@ -88,13 +91,18 @@
 	}	
 }
 
-
 - (void)dealloc 
 {
+    [downloadController release];
+    downloadController = nil;
+    
+    [currentXMLElementString release];
+    currentXMLElementString = nil;
+
 	[keywordSearchBar release];
 	[searchResultRetrievalConnection release];
 	[searchResultTitles release];
-	[searchResultPDBCodes release];
+	[searchResultIDs release];
 	[downloadedFileContents release];
 	[super dealloc];
 }
@@ -108,17 +116,29 @@
 	[searchResultTitles release];
 	searchResultTitles = nil;
 	
-	[searchResultPDBCodes release];
-	searchResultPDBCodes = nil;
+	[searchResultIDs release];
+	searchResultIDs = nil;
 	
-	NSString *pdbSearchURL = [[NSString alloc] initWithFormat:@"http://www.rcsb.org/pdb/search/navbarsearch.do?newSearch=yes&isAuthorSearch=no&radioset=All&inputQuickSearch=%@&outformat=text&resultsperpage=%d", [keyword stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], MAX_SEARCH_RESULT_CODES];
+	NSString *searchURL = nil;
+    
+    if (currentSearchType == PROTEINDATABANKSEARCH)
+    {
+        searchURL = [[NSString alloc] initWithFormat:@"http://www.rcsb.org/pdb/search/navbarsearch.do?newSearch=yes&isAuthorSearch=no&radioset=All&inputQuickSearch=%@&outformat=text&resultsperpage=%d", [keyword stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], MAX_SEARCH_RESULT_CODES];
+    }
+    else
+    {
+        //http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pccompound&retmax=10&term=benzene
+        
+        searchURL = [[NSString alloc] initWithFormat:@"http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pccompound&retmax=%d&term=%@", MAX_SEARCH_RESULT_CODES, [keyword stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    }
+    
 	
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 	
-	NSURLRequest *pdbSearchRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:pdbSearchURL]
+	NSURLRequest *pdbSearchRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:searchURL]
 													cachePolicy:NSURLRequestUseProtocolCachePolicy
 												timeoutInterval:60.0];
-	[pdbSearchURL release];
+	[searchURL release];
 	searchResultRetrievalConnection = [[NSURLConnection alloc] initWithRequest:pdbSearchRequest delegate:self];
 	
 	downloadedFileContents = [[NSMutableData data] retain];
@@ -142,15 +162,29 @@
 		searchResultRetrievalConnection = nil;
 
 		searchResultTitles = [[NSMutableArray alloc] init];
-		searchResultPDBCodes = [[NSMutableArray alloc] init];
+		searchResultIDs = [[NSMutableArray alloc] init];
 	}
 	else
 	{
 		[nextResultsRetrievalConnection release];
 		nextResultsRetrievalConnection = nil;
 	}	
+    
+    if (currentSearchType == PROTEINDATABANKSEARCH)
+    {
+        [self processPDBSearchResults];
+    }
+    else
+    {
+        [self processPubChemKeywordSearch];
+    }
 
-	NSString *titlesAndPDBCodeString = [[NSString alloc] initWithData:downloadedFileContents encoding:NSASCIIStringEncoding];
+	[self.tableView reloadData];
+}
+
+- (void)processPDBSearchResults;
+{
+    NSString *titlesAndPDBCodeString = [[NSString alloc] initWithData:downloadedFileContents encoding:NSASCIIStringEncoding];
 	[downloadedFileContents release];
 	downloadedFileContents = nil;
 	
@@ -169,7 +203,7 @@
 		}
 		
 		NSString *pdbCode = [titlesAndPDBCodeString substringWithRange:NSMakeRange(locationOfPDBCode.location + locationOfPDBCode.length, 4)];
-
+        
 		NSString *titleString = nil;
 		NSRange locationOfTitleStart = [titlesAndPDBCodeString rangeOfString:@"<title>"];
 		NSRange locationOfTitleEnd = [titlesAndPDBCodeString rangeOfString:@"</title>"];
@@ -179,8 +213,8 @@
 		}
 		else
 		{
-//			<title>RCSB Protein Data Bank - Structure Summary  for 1BNA - STRUCTURE OF A B-DNA DODECAMER. CONFORMATION AND DYNAMICS</title>
-
+            //			<title>RCSB Protein Data Bank - Structure Summary  for 1BNA - STRUCTURE OF A B-DNA DODECAMER. CONFORMATION AND DYNAMICS</title>
+            
 			titleString = [titlesAndPDBCodeString substringWithRange:NSMakeRange(locationOfTitleStart.location + locationOfTitleStart.length, locationOfTitleEnd.location - (locationOfTitleStart.location + locationOfTitleStart.length))];
 			NSRange beginningOfActualTitle = [titleString rangeOfString:pdbCode];
 			if (beginningOfActualTitle.location != NSNotFound)
@@ -189,9 +223,9 @@
 			}
 			
 		}
-	
+        
 		[searchResultTitles addObject:titleString];
-		[searchResultPDBCodes addObject:pdbCode];
+		[searchResultIDs addObject:pdbCode];
 	}
 	else
 	{
@@ -226,7 +260,7 @@
 				if ((pdbCode != nil) && (moleculeTitle != nil))
 				{
 					[searchResultTitles addObject:moleculeTitle];
-					[searchResultPDBCodes addObject:pdbCode];
+					[searchResultIDs addObject:pdbCode];
 				}
 			}
 			
@@ -236,7 +270,26 @@
 	
 	currentPageOfResults = 1;
 	[titlesAndPDBCodeString release];
-	[self.tableView reloadData];
+}
+
+- (void)processPubChemKeywordSearch;
+{
+    NSString *compoundIDResponseString = [[NSString alloc] initWithData:downloadedFileContents encoding:NSASCIIStringEncoding];
+
+    NSLog(@"PubChem response: %@", compoundIDResponseString);
+    
+    [compoundIDResponseString release];
+    
+    [currentXMLElementString release];
+    currentXMLElementString = nil;
+    
+	searchResultsParser = [[NSXMLParser alloc] initWithData:downloadedFileContents];
+	[downloadedFileContents release];
+	downloadedFileContents = nil;
+
+    searchResultsParser.delegate = self;
+    [searchResultsParser setShouldResolveExternalEntities:YES];
+    [searchResultsParser parse]; 	
 }
 
 - (BOOL)grabNextSetOfSearchResults;
@@ -286,7 +339,14 @@
 		return 1;
 	else
 	{
-		return [searchResultTitles count] + 1;
+        if (currentSearchType == PROTEINDATABANKSEARCH)
+        {
+            return [searchResultTitles count] + 1;
+        }
+        else
+        {
+            return [searchResultTitles count];
+        }
 	}
 }
 
@@ -306,15 +366,15 @@
 		{		
 			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"SearchInProgress"] autorelease];
             
-            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-            {
-                cell.backgroundColor = [UIColor blackColor];
-                cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
-            }
-            else
-            {
+//            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//            {
+//                cell.backgroundColor = [UIColor blackColor];
+//                cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
+//            }
+//            else
+//            {
                 cell.textLabel.textColor = [UIColor blackColor];
-            }
+//            }
 
 			cell.textLabel.font = [UIFont boldSystemFontOfSize:12.0];
 			
@@ -333,7 +393,9 @@
 		cell.textLabel.text = NSLocalizedStringFromTable(@"Searching...", @"Localized", nil);
 	}
 	else if (searchResultTitles == nil)
+    {
 		cell = nil;
+    }
 	// No results to the last search, so display one cell explaining that
 	else if ([searchResultTitles count] == 0)
 	{
@@ -342,15 +404,15 @@
 		{		
 			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"NoResults"] autorelease];
 
-            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-            {
-                cell.backgroundColor = [UIColor blackColor];
-                cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
-            }
-            else
-            {
+//            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//            {
+//                cell.backgroundColor = [UIColor blackColor];
+//                cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
+//            }
+//            else
+//            {
                 cell.textLabel.textColor = [UIColor blackColor];
-            }
+//            }
 
 			cell.textLabel.font = [UIFont systemFontOfSize:16.0];
 			cell.textLabel.text = NSLocalizedStringFromTable(@"No results", @"Localized", nil);
@@ -358,6 +420,40 @@
 			cell.accessoryType = UITableViewCellAccessoryNone;
 		}
 	}
+    else if ((isDownloading) && ([indexPath row] == indexOfDownloadingMolecule))
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"DownloadInProgress"];
+		if (cell == nil) 
+		{		
+            
+            cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"DownloadInProgress"] autorelease];
+            
+//            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//            {
+//                cell.backgroundColor = [UIColor blackColor];
+//                cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
+//            }
+//            else
+//            {
+                cell.textLabel.textColor = [UIColor blackColor];
+//            }
+            
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:12.0];
+            
+            //		CGRect frame = CGRectMake(CGRectGetMaxX(cell.contentView.bounds) - 250.0, 5.0, 240.0, 32.0);
+            //			CGRect frame = CGRectMake(CGRectGetMaxX(cell.contentView.bounds) - 70.0, 14.0, 32.0, 32.0);
+            CGRect frame = CGRectMake(CGRectGetMaxX(cell.contentView.bounds) - 70.0f, 20.0f, 20.0f, 20.0f);
+            UIActivityIndicatorView *spinningIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [spinningIndicator startAnimating];
+            spinningIndicator.frame = frame;
+            [cell.contentView addSubview:spinningIndicator];
+            [spinningIndicator release];
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.textLabel.font = [UIFont systemFontOfSize:16.0];
+            cell.textLabel.textAlignment = UITextAlignmentCenter;
+        }
+        cell.textLabel.text = NSLocalizedStringFromTable(@"Downloading...", @"Localized", nil);        
+    }
 	else
 	{
 		if ([indexPath row] >= [searchResultTitles count])
@@ -367,19 +463,19 @@
 			{		
 				cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"LoadMore"] autorelease];
 
-                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-                {
-                    cell.backgroundColor = [UIColor blackColor];
-                    cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
-                }
-                else
-                {
+//                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//                {
+//                    cell.backgroundColor = [UIColor blackColor];
+//                    cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
+//                }
+//                else
+//                {
                     cell.textLabel.textColor = [UIColor blackColor];
-                }
+//                }
                 
 				cell.textLabel.font = [UIFont systemFontOfSize:16.0];
 				cell.textLabel.textAlignment = UITextAlignmentCenter;
-				cell.textLabel.text = NSLocalizedStringFromTable(@"Load next 25 results", @"Localized", nil);
+				cell.textLabel.text = NSLocalizedStringFromTable(@"Load next 10 results", @"Localized", nil);
 				cell.accessoryType = UITableViewCellAccessoryNone;
 				cell.detailTextLabel.text = @"";
 			}
@@ -391,18 +487,18 @@
 			{		
 				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:NSLocalizedStringFromTable(@"Results", @"Localized", nil)] autorelease];
 
-                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-                {
-                    cell.backgroundColor = [UIColor blackColor];
-                    cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
-                    CAGradientLayer *glowGradientLayer = [SLSMoleculeTableViewController glowGradientForSize:CGSizeMake(self.view.frame.size.width, 60.0)];
-                    
-                    [cell.layer insertSublayer:glowGradientLayer atIndex:10];
-                }
-                else
-                {
+//                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//                {
+//                    cell.backgroundColor = [UIColor blackColor];
+//                    cell.textLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1.0];
+//                    CAGradientLayer *glowGradientLayer = [SLSMoleculeTableViewController glowGradientForSize:CGSizeMake(self.view.frame.size.width, 60.0)];
+//                    
+//                    [cell.layer insertSublayer:glowGradientLayer atIndex:10];
+//                }
+//                else
+//                {
                     cell.textLabel.textColor = [UIColor blackColor];
-                }
+//                }
 
 				cell.textLabel.font = [UIFont boldSystemFontOfSize:12.0];
 				cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:12.0];
@@ -410,12 +506,13 @@
 
             if ((isDownloading) && ([indexPath row] != indexOfDownloadingMolecule))
             {
+//                cell.contentView.backgroundColor = [UIColor colorWithWhite:0.6 alpha:1.0];
                 cell.textLabel.textColor = [UIColor colorWithWhite:0.3 alpha:1.0];
                 cell.detailTextLabel.textColor = [UIColor colorWithWhite:0.2 alpha:1.0];
             }
             
 			cell.textLabel.text = [searchResultTitles objectAtIndex:[indexPath row]];
-			cell.detailTextLabel.text = [searchResultPDBCodes objectAtIndex:[indexPath row]];
+			cell.detailTextLabel.text = [searchResultIDs objectAtIndex:[indexPath row]];
 			
             cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 		}
@@ -424,26 +521,51 @@
 	return cell;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+    if ((isDownloading) && ([indexPath row] != indexOfDownloadingMolecule))
+    {
+        cell.backgroundColor = [UIColor colorWithWhite:0.6 alpha:1.0];
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	// Prevent any crashes by clicking on a non-normal cell
 	if (searchResultRetrievalConnection != nil)
+    {
 		return;
+    }
 	else if (searchResultTitles == nil)
+    {
 		return;
+    }
 	// No results to the last search, so display one cell explaining that
 	else if ([searchResultTitles count] == 0)
-		return;	
-	
-	
+    {        
+		return;
+    }
+    else if (isDownloading)
+    {
+        return;
+    }
+		
 	if (indexPath.row >= [searchResultTitles count])
 	{
 		[self grabNextSetOfSearchResults];
 	}
 	else
 	{
-//		NSString *selectedTitle = [searchResultTitles objectAtIndex:[indexPath row]];
-//		NSString *selectedPDBCode = [searchResultPDBCodes objectAtIndex:[indexPath row]];
+        indexOfDownloadingMolecule = indexPath.row;
+        isDownloading = YES;
+        [self.tableView reloadData];
+
+		NSString *selectedTitle = [searchResultTitles objectAtIndex:[indexPath row]];
+		NSString *selectedID = [searchResultIDs objectAtIndex:[indexPath row]];
+
+        downloadController = [[SLSMoleculeDownloadController alloc] initWithID:selectedID title:selectedTitle searchType:currentSearchType];
+        
+        [downloadController downloadNewMolecule];
 //		
 //		SLSMoleculeDownloadViewController *downloadViewController = [[SLSMoleculeDownloadViewController alloc] initWithPDBCode:selectedPDBCode andTitle:selectedTitle];
 //		
@@ -456,9 +578,21 @@
 {
 //	NSInteger index = [indexPath row];
 
-    NSString *selectedPDBCode = [searchResultPDBCodes objectAtIndex:[indexPath row]];
-
-    SLSMoleculeWebDetailViewController *detailViewController = [[SLSMoleculeWebDetailViewController alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.rcsb.org/pdb/explore/explore.do?structureId=%@", selectedPDBCode]]];
+    NSString *selectedID = [searchResultIDs objectAtIndex:[indexPath row]];
+    NSString *webDetailAddress = nil;
+    
+    if (currentSearchType == PROTEINDATABANKSEARCH)
+    {
+        webDetailAddress = [NSString stringWithFormat:@"http://www.rcsb.org/pdb/explore/explore.do?structureId=%@", selectedID];
+    }
+    else
+    {
+        webDetailAddress = [NSString stringWithFormat:@"http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?cid=%@", selectedID];
+    }
+    
+    NSLog(@"Web detail address: %@", webDetailAddress);
+    
+    SLSMoleculeWebDetailViewController *detailViewController = [[SLSMoleculeWebDetailViewController alloc] initWithURL:[NSURL URLWithString:webDetailAddress]];
     
     [self.navigationController pushViewController:detailViewController animated:YES];
     [detailViewController release];
@@ -495,8 +629,26 @@
 
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
 {
-    indexOfDownloadingMolecule = 2;
-    isDownloading = YES;
+    [searchResultTitles release];
+	searchResultTitles = nil;
+	
+	[searchResultIDs release];
+	searchResultIDs = nil;
+
+    switch (selectedScope)
+    {
+        case PUBCHEMSEARCH: 
+        {
+            keywordSearchBar.placeholder = NSLocalizedStringFromTable(@"Search PubChem", @"Localized", nil);            
+        }; break;
+        case PROTEINDATABANKSEARCH:
+        default:
+        {
+            keywordSearchBar.placeholder = NSLocalizedStringFromTable(@"Search RCSB Protein Data Bank", @"Localized", nil);
+        }; break;
+    }
+    
+    currentSearchType = selectedScope;
     [self.tableView reloadData];
 }
 
@@ -505,7 +657,17 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
 {
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Connection failed", @"Localized", nil) message:NSLocalizedStringFromTable(@"Could not connect to the Protein Data Bank", @"Localized", nil)
+    NSString *connectionError = nil;
+    if (currentSearchType == PROTEINDATABANKSEARCH)
+    {
+        connectionError = NSLocalizedStringFromTable(@"Could not connect to the Protein Data Bank", @"Localized", nil);
+    }
+    else
+    {
+        connectionError = NSLocalizedStringFromTable(@"Could not connect to PubChem", @"Localized", nil);
+    }
+    
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Connection failed", @"Localized", nil) message:connectionError
 												   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil, nil];
 	[alert show];
 	[alert release];
@@ -562,6 +724,46 @@
 	{
 		[self processSearchResultsAppendingNewData:YES];
 	}
+}
+
+#pragma mark -
+#pragma mark NSXMLParser delegate methods
+
+// Append new characters from within the element to an existing, or newly created, string
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string 
+{
+    if (currentXMLElementString == nil) 
+	{
+		currentXMLElementString = [[NSMutableString alloc] init];
+    }
+    [currentXMLElementString appendString:string];
+}
+
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName 
+{
+	if ([elementName isEqualToString:@"Id"])
+	{
+		// Last item is nil, check for that
+		if (currentXMLElementString != nil)
+        {
+            NSString *trimmedID = [currentXMLElementString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            [searchResultTitles addObject:trimmedID];            
+            [searchResultIDs addObject:trimmedID];
+        }
+	}
+	
+	[currentXMLElementString release];
+    currentXMLElementString = nil;
+}
+
+- (void)parserDidEndDocument:(NSXMLParser *)parser;
+{
+    NSLog(@"Done parsing results");
+//	[self finishParsingXML];
+}
+
+- (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
+{
 }
 
 #pragma mark -

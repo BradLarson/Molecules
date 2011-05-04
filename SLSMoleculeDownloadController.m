@@ -13,16 +13,18 @@
 
 @implementation SLSMoleculeDownloadController
 
-- (id)initWithPDBCode:(NSString *)pdbCode andTitle:(NSString *)title;
+- (id)initWithID:(NSString *)pdbCode title:(NSString *)title searchType:(SLSSearchType)newSearchType;
 {
 	if ((self = [super init])) 
 	{
 		// Initialization code
 		downloadedFileContents = nil;
 		downloadCancelled = NO;
+        
+        searchType = newSearchType;
 		
-		codeForCurrentlyDownloadingProtein = [pdbCode copy];
-		titleForCurrentlyDownloadingProtein = [title copy];		
+		codeForCurrentlyDownloadingMolecule = [pdbCode copy];
+		titleForCurrentlyDownloadingMolecule = [title copy];		
 	}
 	return self;
 }
@@ -31,52 +33,82 @@
 - (void)dealloc;
 {
 	[self cancelDownload];
-	[codeForCurrentlyDownloadingProtein release];
-	[titleForCurrentlyDownloadingProtein release];
+	[codeForCurrentlyDownloadingMolecule release];
+	[titleForCurrentlyDownloadingMolecule release];
 	[super dealloc];
 }
 
 #pragma mark -
 #pragma mark Protein downloading
 
-- (IBAction)downloadNewProtein;
+- (void)downloadNewMolecule;
 {
 	// Check if you already have a protein by that name
 	// TODO: Put this check in the init method to grey out download button
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 
-	if ([[NSFileManager defaultManager] fileExistsAtPath:[documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.pdb.gz", codeForCurrentlyDownloadingProtein]]])
+    NSString *fileExtension = nil;
+    if (searchType == PROTEINDATABANKSEARCH)
+    {
+        fileExtension = @"pdb.gz";
+    }
+    else
+    {
+        fileExtension = @"sdf";        
+    }
+    
+	if ([[NSFileManager defaultManager] fileExistsAtPath:[documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", codeForCurrentlyDownloadingMolecule, fileExtension]]])
 	{
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"File already exists", @"Localized", nil) message:NSLocalizedStringFromTable(@"The molecule with this PDB code has already been downloaded", @"Localized", nil)
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"File already exists", @"Localized", nil) message:NSLocalizedStringFromTable(@"This molecule has already been downloaded", @"Localized", nil)
 													   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil, nil];
-		alert.backgroundColor = [UIColor redColor];
 		[alert show];
 		[alert release];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"MoleculeDidFinishDownloading" object:nil];
 		return;
 	}
 	
-	if (![self downloadPDBFile])
+	if (![self downloadMolecule])
 	{
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Connection failed", @"Localized", nil) message:NSLocalizedStringFromTable(@"Could not connect to the Protein Data Bank", @"Localized", nil)
+        NSString *errorMessage = nil;
+        
+        if (searchType == PROTEINDATABANKSEARCH)
+        {
+            errorMessage = NSLocalizedStringFromTable(@"Could not connect to the Protein Data Bank", @"Localized", nil);
+        }
+        else
+        {
+            errorMessage = NSLocalizedStringFromTable(@"Could not connect to PubChem", @"Localized", nil);
+        }
+        
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Connection failed", @"Localized", nil) message:errorMessage
 													   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil, nil];
 		[alert show];
 		[alert release];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"MoleculeDidFinishDownloading" object:nil];
 		return;
 	}
 }
 
-- (BOOL)downloadPDBFile;
+- (BOOL)downloadMolecule;
 {
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 //	downloadStatusText.hidden = NO;
 //	downloadStatusText.text = NSLocalizedStringFromTable(@"Connecting...", @"Localized", nil);
 		
 //	NSString *locationOfRemotePDBFile = [NSString stringWithFormat:@"http://www.sunsetlakesoftware.com/sites/default/files/%@.pdb.gz", pdbCode];
-	NSString *locationOfRemotePDBFile = [NSString stringWithFormat:@"http://www.rcsb.org/pdb/files/%@.pdb.gz", codeForCurrentlyDownloadingProtein];
+	NSString *locationOfRemoteFile  = nil;
+    if (searchType == PROTEINDATABANKSEARCH)
+    {
+        locationOfRemoteFile = [NSString stringWithFormat:@"http://www.rcsb.org/pdb/files/%@.pdb.gz", codeForCurrentlyDownloadingMolecule];
+    }
+    else
+    {
+        locationOfRemoteFile = [NSString stringWithFormat:@"http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?cid=%@&disopt=3DSaveSDF", codeForCurrentlyDownloadingMolecule];
+    }
 
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-	NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:locationOfRemotePDBFile]
+	NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:locationOfRemoteFile]
 											  cachePolicy:NSURLRequestUseProtocolCachePolicy
 										  timeoutInterval:60.0];
 	downloadConnection = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
@@ -116,7 +148,18 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
 {
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Connection failed", @"Localized", nil) message:NSLocalizedStringFromTable(@"Could not connect to the Protein Data Bank", @"Localized", nil)
+    NSString *errorMessage = nil;
+    
+    if (searchType == PROTEINDATABANKSEARCH)
+    {
+        errorMessage = NSLocalizedStringFromTable(@"Could not connect to the Protein Data Bank", @"Localized", nil);
+    }
+    else
+    {
+        errorMessage = NSLocalizedStringFromTable(@"Could not connect to PubChem", @"Localized", nil);
+    }
+
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Connection failed", @"Localized", nil) message:errorMessage
 												   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil, nil];
 	[alert show];
 	[alert release];
@@ -128,7 +171,7 @@
 {
 	// Concatenate the new data with the existing data to build up the downloaded file
 	// Update the status of the download
-	
+
 	if (downloadCancelled)
 	{
 		[connection cancel];
@@ -148,7 +191,18 @@
 	// Stop the spinning wheel and start the status bar for download
 	if ([response textEncodingName] != nil)
 	{
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Could not find file", @"Localized", nil) message:[NSString stringWithFormat:NSLocalizedStringFromTable(@"No protein with the code %@ exists in the data bank", @"Localized", nil), codeForCurrentlyDownloadingProtein]
+        NSString *errorMessage = nil;
+        
+        if (searchType == PROTEINDATABANKSEARCH)
+        {
+            errorMessage = [NSString stringWithFormat:NSLocalizedStringFromTable(@"No protein with the code %@ exists in the data bank", @"Localized", nil), codeForCurrentlyDownloadingMolecule];
+        }
+        else
+        {
+            errorMessage = [NSString stringWithFormat:NSLocalizedStringFromTable(@"No structure file for the compound with the code %@ exists at PubChem", @"Localized", nil), codeForCurrentlyDownloadingMolecule];
+        }
+
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Could not find file", @"Localized", nil) message:errorMessage
 													   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil, nil];
 		[alert show];
 		[alert release];		
@@ -173,7 +227,18 @@
 	// Close off the file and write it to disk	
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
-	NSString *filename = [NSString stringWithFormat:@"%@.pdb.gz", codeForCurrentlyDownloadingProtein];
+    
+    NSString *fileExtension = nil;
+    if (searchType == PROTEINDATABANKSEARCH)
+    {
+        fileExtension = @"pdb.gz";
+    }
+    else
+    {
+        fileExtension = @"sdf";        
+    }
+
+	NSString *filename = [NSString stringWithFormat:@"%@.%@", codeForCurrentlyDownloadingMolecule, fileExtension];
 	
 	NSError *error = nil;
 	if (![downloadedFileContents writeToFile:[documentsDirectory stringByAppendingPathComponent:filename] options:NSAtomicWrite error:&error])

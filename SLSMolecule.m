@@ -11,6 +11,8 @@
 #import "SLSMolecule.h"
 // Filetypes
 #import "SLSMolecule+PDB.h"
+#import "SLSMolecule+SDF.h"
+
 #import "SLSOpenGLESRenderer.h"
 #import "SLSOpenGLES20Renderer.h"
 
@@ -88,9 +90,13 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 	
 	NSRange rangeUntilFirstPeriod = [filename rangeOfString:@"."];
 	if (rangeUntilFirstPeriod.location == NSNotFound)
+    {
 		filenameWithoutExtension = filename;
+    }
 	else
+    {
 		filenameWithoutExtension = [[filename substringToIndex:rangeUntilFirstPeriod.location] retain];	
+    }
 	
 	if (insertMoleculeSQLStatement == nil) 
 	{
@@ -113,14 +119,22 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
         databaseKey = sqlite3_last_insert_rowid(database);
     }
 	
-	
-	// TODO: Determine filetype, set up selector to match
-	// Write the format as an integer
 	NSError *error = nil;
-	if (![self readFromPDBFileToDatabase:&error])
-	{
-		return nil;
-	}
+    
+    if ([[[filename pathExtension] lowercaseString] isEqualToString:@"sdf"])
+    {
+        if (![self readFromSDFFileToDatabase:&error])
+        {
+            return nil;
+        }
+    }
+    else
+    {
+        if (![self readFromPDBFileToDatabase:&error])
+        {
+            return nil;
+        }
+    }
 	
 	return self;
 }

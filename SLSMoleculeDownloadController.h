@@ -10,20 +10,24 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum { PUBCHEMSEARCH, PROTEINDATABANKSEARCH } SLSSearchType;
+
 @interface SLSMoleculeDownloadController : NSObject
 {
-	NSString *codeForCurrentlyDownloadingProtein, *titleForCurrentlyDownloadingProtein;
+	NSString *codeForCurrentlyDownloadingMolecule, *titleForCurrentlyDownloadingMolecule;
 	NSMutableData *downloadedFileContents;
 
 	long long downloadFileSize;
 	BOOL downloadCancelled;
-	NSURLConnection *downloadConnection;	
+	NSURLConnection *downloadConnection;
+    SLSSearchType searchType;
 }
 
 // Initialization and teardown
-- (id)initWithPDBCode:(NSString *)pdbCode andTitle:(NSString *)title;
+- (id)initWithID:(NSString *)pdbCode title:(NSString *)title searchType:(SLSSearchType)newSearchType;
 
-- (BOOL)downloadPDBFile;
+- (void)downloadNewMolecule;
+- (BOOL)downloadMolecule;
 - (void)downloadCompleted;
 - (void)cancelDownload;
 

@@ -112,6 +112,12 @@
 
 - (void)moleculeDidFinishDownloading:(NSNotification *)note;
 {
+    if ([note object] == nil)
+    {
+        [self.navigationController popToViewController:self animated:YES];
+        return;
+    }
+    
 	NSString *filename = [note object];
 	
 	// Add the new protein to the list by gunzipping the data and pulling out the title
@@ -142,8 +148,15 @@
 	{
 		[molecules addObject:newMolecule];
 		[newMolecule release];
-		[self.tableView reloadData];
 		
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        {
+            selectedIndex = ([molecules count] - 1);
+
+            [self.delegate selectedMoleculeDidChange:selectedIndex];            
+        }
+
+        [self.tableView reloadData];
 //		[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:([molecules count] - 1) inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];		
 	}			
 
@@ -417,12 +430,11 @@
 {
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
     // Overriden to allow any orientation.
     return YES;
 }
-
-
 
 #pragma mark -
 #pragma mark Accessors

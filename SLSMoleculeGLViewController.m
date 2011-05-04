@@ -151,6 +151,7 @@
 	float renderingIndicatorWidth = round(self.view.frame.size.width * 0.6);
 	renderingProgressIndicator = [[UIProgressView alloc] initWithFrame:CGRectMake(round(self.view.frame.size.width / 2.0f - renderingIndicatorWidth / 2.0f), round(self.view.frame.size.height / 2.0f + 15.0f), renderingIndicatorWidth, 9.0f)];
 	[renderingProgressIndicator setProgress:0.0f];
+    renderingProgressIndicator.progressViewStyle = UIProgressViewStyleBar;
 	
 	if (renderingActivityLabel != nil)
 	{
@@ -307,7 +308,10 @@
     
     [self runOpenGLBenchmarks];
 #else
-	[self startOrStopAutorotation:self];	
+    if (!isAutorotating)
+    {
+        [self startOrStopAutorotation:self];	
+    }
 #endif	
 }
 
@@ -590,6 +594,7 @@
 	if (isAutorotating)
 	{
 		[self startOrStopAutorotation:nil];
+        [openGLESRenderer waitForLastFrameToFinishRendering];
 	}
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleView" object:nil];
@@ -687,9 +692,10 @@
 	if (isAutorotating)
 	{
 		[self startOrStopAutorotation:self];
+        [openGLESRenderer waitForLastFrameToFinishRendering];
 	}
 	
-	[NSThread sleepForTimeInterval:0.2];
+//	[NSThread sleepForTimeInterval:0.2];
 	
 	moleculeToDisplay.isBeingDisplayed = NO;
     if (!moleculeToDisplay.isRenderingCancelled)

@@ -498,9 +498,13 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
 
 - (void)cancelMoleculeRendering;
 {
-    NSLog(@"Cancel rendering");
-    isSceneReady = NO;
     isRenderingCancelled = YES;    
+}
+
+- (void)waitForLastFrameToFinishRendering;
+{
+    dispatch_semaphore_wait(frameRenderingSemaphore, DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_signal(frameRenderingSemaphore);
 }
 
 #pragma mark -

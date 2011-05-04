@@ -244,6 +244,11 @@ void normalize(GLfloat *v)
 
 - (void)renderFrameForMolecule:(SLSMolecule *)molecule;
 {
+    if (dispatch_semaphore_wait(frameRenderingSemaphore, DISPATCH_TIME_NOW) != 0)
+    {
+        return;
+    }
+
     dispatch_async(openGLESContextQueue, ^{
         //    CFAbsoluteTime elapsedTime, startTime = CFAbsoluteTimeGetCurrent();
         
@@ -289,6 +294,8 @@ void normalize(GLfloat *v)
         
         //    elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
         //	NSLog(@"Render time: %.1f ms, Triangles per second: %.0f", elapsedTime * 1000.0, (CGFloat)totalNumberOfTriangles / elapsedTime);
+        
+        dispatch_semaphore_signal(frameRenderingSemaphore);
     });
 }
 

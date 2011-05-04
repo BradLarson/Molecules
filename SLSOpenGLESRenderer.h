@@ -143,5 +143,6 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
 - (void)initiateMoleculeRendering;
 - (void)terminateMoleculeRendering;
 - (void)cancelMoleculeRendering;
+- (void)waitForLastFrameToFinishRendering;
 
 @end

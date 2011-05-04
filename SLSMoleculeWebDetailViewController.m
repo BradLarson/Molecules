@@ -23,7 +23,7 @@
 
 - (void)loadView 
 {	
-	webDetailView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 300.0f, 480.0f)];
+	webDetailView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 480.0f)];
 	webDetailView.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:1.0f];
     webDetailView.scalesPageToFit = YES;
     
@@ -42,6 +42,13 @@
         
     NSURLRequest *theRequest = [NSURLRequest requestWithURL:moleculeDetailWebPageURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
     [webDetailView loadRequest:theRequest];
+    
+    loadingActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    CGSize indicatorSize = loadingActivityIndicator.frame.size;
+	loadingActivityIndicator.frame = CGRectMake(round(webDetailView.frame.size.width / 2.0f - indicatorSize.width / 2.0f), round(webDetailView.frame.size.height / 2.0f + indicatorSize.height / 2.0f), indicatorSize.width, indicatorSize.height);
+    [webDetailView addSubview:loadingActivityIndicator];
+	loadingActivityIndicator.hidesWhenStopped = YES;
+	[loadingActivityIndicator startAnimating];
 }
 
 - (void)dealloc 
@@ -49,6 +56,10 @@
 	webDetailView.delegate = nil;
 	[webDetailView release];
     
+    [loadingActivityIndicator removeFromSuperview];
+    [loadingActivityIndicator release];
+    loadingActivityIndicator = nil;
+
     [moleculeDetailWebPageURL release];
     [super dealloc];
 }
@@ -105,6 +116,10 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    [loadingActivityIndicator removeFromSuperview];
+    [loadingActivityIndicator release];
+    loadingActivityIndicator = nil;
+    
 	if (![webDetailView canGoBack])
     {
 		self.navigationItem.rightBarButtonItem.enabled = NO;

@@ -27,7 +27,7 @@
     NSMutableString *currentXMLElementString;
     NSXMLParser *searchResultsParser;
     
-    BOOL insideIUPACName, insideSynonym, insideHeavyAtoms;
+    BOOL insideIUPACName, insideSynonym;
 }
 
 // Performing search

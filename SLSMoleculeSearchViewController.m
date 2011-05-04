@@ -560,9 +560,13 @@
 //                }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-				cell.textLabel.font = [UIFont boldSystemFontOfSize:12.0];
-				cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:12.0];
-			}
+				cell.textLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                cell.textLabel.numberOfLines = 2;
+				cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:14.0];
+
+//                cell.textLabel.font = [UIFont boldSystemFontOfSize:12.0];
+//				cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:12.0];
+            }
 
             if ((isDownloading) && ([indexPath row] != indexOfDownloadingMolecule))
             {
@@ -834,10 +838,6 @@
             {
                 insideSynonym = YES;
             }
-            else if ([attributeName isEqualToString:@"HeavyAtomCount"])
-            {
-                insideHeavyAtoms = YES;
-            }
         }
     }
 }
@@ -864,11 +864,6 @@
             
             [searchResultIUPACNames addObject:trimmedIUPACName];
             insideIUPACName = NO;
-        }
-        else if (insideHeavyAtoms)
-        {
-//            NSUInteger heavyAtoms = [currentXMLElementString intValue];
-            insideHeavyAtoms = NO;
         }
         else if (insideSynonym)
         {

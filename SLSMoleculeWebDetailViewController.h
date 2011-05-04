@@ -13,6 +13,8 @@
 {
 	UIWebView *webDetailView;
     NSURL *moleculeDetailWebPageURL;
+    
+    UIActivityIndicatorView *loadingActivityIndicator;
 }
 
 @property (retain, nonatomic) NSURL *moleculeDetailWebPageURL;

@@ -14,12 +14,10 @@ varying mediump vec2 ambientOcclusionTextureBase;
 varying mediump float adjustedSphereRadius;
 
 const mediump float oneThird = 1.0 / 3.0;
-//const mediump float oneThird2 = 255.0;
 
 mediump float depthFromEncodedColor(mediump vec3 encodedColor)
 {
-    return oneThird * (encodedColor.r + encodedColor.g + encodedColor.b);
-//    return encodedColor.r;
+    return (encodedColor.r + encodedColor.g + encodedColor.b) * oneThird;
 }
 
 mediump vec2 textureCoordinateForSphereSurfacePosition(mediump vec3 sphereSurfacePosition)
@@ -56,7 +54,7 @@ void main()
             vec3 aoNormal = vec3(impostorSpaceCoordinate, -precalculatedDepthAndLighting.r);
             aoNormal = inverseModelViewProjMatrix * aoNormal;
             aoNormal.z = -aoNormal.z;
-            
+                        
             // Test function inlining for profiling
             
              vec3 absoluteSphereSurfacePosition = abs(aoNormal);

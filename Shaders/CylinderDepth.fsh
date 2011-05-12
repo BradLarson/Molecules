@@ -24,10 +24,10 @@ void main()
     float displacementFromCurvature = normalizedDisplacementAtEndCaps * adjustmentFromCenterAxis;
     float depthOffset = depthOffsetAlongCenterAxis * adjustmentFromCenterAxis * depthAdjustmentForOrthographicProjection;
 
-//    if ( (impostorSpaceCoordinate.t <= (-1.0 + displacementFromCurvature)) || (impostorSpaceCoordinate.t >= (1.0 + displacementFromCurvature)))
-//    {
-//        discard;
-//    }
+    if ( (impostorSpaceCoordinate.t <= (-1.0 + displacementFromCurvature)) || (impostorSpaceCoordinate.t >= (1.0 + displacementFromCurvature)))
+    {
+        discard;
+    }
 
 //    if ( impostorSpaceCoordinate.t <= (-1.0 + displacementFromCurvature))
  //   {

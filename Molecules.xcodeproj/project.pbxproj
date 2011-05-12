@@ -43,6 +43,8 @@
 		BC61CAFC0E2317EE0074BE04 /* 4TRA.pdb.gz in Resources */ = {isa = PBXBuildFile; fileRef = BC61CAFB0E2317EE0074BE04 /* 4TRA.pdb.gz */; };
 		BC61CC310E2463180074BE04 /* SLSCellTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC61CC2E0E2463180074BE04 /* SLSCellTextView.m */; };
 		BC61CC320E2463180074BE04 /* SLSTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC61CC300E2463180074BE04 /* SLSTextViewController.m */; };
+		BC67B8BC137B5DF10075A361 /* SphereAOLookup.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BC67B8BA137B5DF10075A361 /* SphereAOLookup.fsh */; };
+		BC67B8BD137B5DF10075A361 /* SphereAOLookup.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BC67B8BB137B5DF10075A361 /* SphereAOLookup.vsh */; };
 		BC6A9FCC11CAA8CB00E62D55 /* MoleculesIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC6A9FCB11CAA8CB00E62D55 /* MoleculesIcon@2x.png */; };
 		BC835184117545C600B478D5 /* 69-display.png in Resources */ = {isa = PBXBuildFile; fileRef = BC835183117545C600B478D5 /* 69-display.png */; };
 		BCA2E7E2135A1B9B00D7206C /* CylinderDepth.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCA2E7DA135A1B9B00D7206C /* CylinderDepth.fsh */; };
@@ -132,6 +134,8 @@
 		BC61CC2E0E2463180074BE04 /* SLSCellTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSCellTextView.m; sourceTree = "<group>"; };
 		BC61CC2F0E2463180074BE04 /* SLSTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSTextViewController.h; sourceTree = "<group>"; };
 		BC61CC300E2463180074BE04 /* SLSTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSTextViewController.m; sourceTree = "<group>"; };
+		BC67B8BA137B5DF10075A361 /* SphereAOLookup.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SphereAOLookup.fsh; path = Shaders/SphereAOLookup.fsh; sourceTree = "<group>"; };
+		BC67B8BB137B5DF10075A361 /* SphereAOLookup.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SphereAOLookup.vsh; path = Shaders/SphereAOLookup.vsh; sourceTree = "<group>"; };
 		BC6A9FCB11CAA8CB00E62D55 /* MoleculesIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MoleculesIcon@2x.png"; sourceTree = "<group>"; };
 		BC835183117545C600B478D5 /* 69-display.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "69-display.png"; sourceTree = "<group>"; };
 		BCA2E7DA135A1B9B00D7206C /* CylinderDepth.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = CylinderDepth.fsh; path = Shaders/CylinderDepth.fsh; sourceTree = "<group>"; };
@@ -303,20 +307,22 @@
 		BCA2E7D9135A1B7B00D7206C /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				BCCB1EF91361E6BC006F00A0 /* PlainDisplay.fsh */,
 				BCCB1EFA1361E6BC006F00A0 /* PlainDisplay.vsh */,
-				BCA2E7DA135A1B9B00D7206C /* CylinderDepth.fsh */,
+				BCCB1EF91361E6BC006F00A0 /* PlainDisplay.fsh */,
 				BCA2E7DB135A1B9B00D7206C /* CylinderDepth.vsh */,
-				BCA2E7DC135A1B9B00D7206C /* CylinderRaytracing.fsh */,
+				BCA2E7DA135A1B9B00D7206C /* CylinderDepth.fsh */,
 				BCA2E7DD135A1B9B00D7206C /* CylinderRaytracing.vsh */,
-				BCA2E81C135E54C400D7206C /* CylinderAmbientOcclusion.fsh */,
+				BCA2E7DC135A1B9B00D7206C /* CylinderRaytracing.fsh */,
 				BCA2E81D135E54C400D7206C /* CylinderAmbientOcclusion.vsh */,
-				BCA2E7DE135A1B9B00D7206C /* SphereDepth.fsh */,
+				BCA2E81C135E54C400D7206C /* CylinderAmbientOcclusion.fsh */,
 				BCA2E7DF135A1B9B00D7206C /* SphereDepth.vsh */,
-				BCA2E7E0135A1B9B00D7206C /* SphereRaytracing.fsh */,
+				BCA2E7DE135A1B9B00D7206C /* SphereDepth.fsh */,
 				BCA2E7E1135A1B9B00D7206C /* SphereRaytracing.vsh */,
-				BCA2E812135BBA3000D7206C /* SphereAmbientOcclusion.fsh */,
+				BCA2E7E0135A1B9B00D7206C /* SphereRaytracing.fsh */,
 				BCA2E813135BBA3000D7206C /* SphereAmbientOcclusion.vsh */,
+				BCA2E812135BBA3000D7206C /* SphereAmbientOcclusion.fsh */,
+				BC67B8BB137B5DF10075A361 /* SphereAOLookup.vsh */,
+				BC67B8BA137B5DF10075A361 /* SphereAOLookup.fsh */,
 			);
 			name = Shaders;
 			sourceTree = "<group>";
@@ -500,6 +506,8 @@
 				BCCB1EFC1361E6BC006F00A0 /* PlainDisplay.vsh in Resources */,
 				BCA2E811135BB90F00D7206C /* caffeine.pdb.gz in Resources */,
 				BC157287136CBE9200EEFBEC /* 3QE5.pdb.gz in Resources */,
+				BC67B8BC137B5DF10075A361 /* SphereAOLookup.fsh in Resources */,
+				BC67B8BD137B5DF10075A361 /* SphereAOLookup.vsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

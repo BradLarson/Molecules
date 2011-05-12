@@ -47,6 +47,13 @@
     GLint cylinderAmbientOcclusionRadius, cylinderAmbientOcclusionOrthographicMatrix, cylinderAmbientOcclusionInverseModelViewMatrix, cylinderAmbientOcclusionTexturePatchWidth, cylinderAmbientOcclusionIntensityFactor;
     GLint cylinderAmbientOcclusionDepthTexture;
 
+    GLProgram *sphereAOLookupPrecalculationProgram;
+	GLint sphereAOLookupImpostorSpaceAttribute, sphereAOLookupInverseModelViewMatrix;
+    GLint sphereAOLookupPrecalculatedDepthTexture;
+
+    GLuint sphereAOLookupTexture;
+    GLuint sphereAOLookupRenderbuffer, sphereAOLookupFramebuffer;
+
 #ifdef ENABLETEXTUREDISPLAYDEBUGGING
     GLProgram *passthroughProgram;
     GLint passthroughPositionAttribute, passthroughTextureCoordinateAttribute;
@@ -75,6 +82,7 @@
 - (void)switchToDisplayFramebuffer;
 - (void)switchToDepthPassFramebuffer;
 - (void)switchToAmbientOcclusionFramebuffer;
+- (void)switchToAOLookupFramebuffer;
 - (void)generateSphereDepthMapTexture;
 
 // Molecule 3-D geometry generation
@@ -89,6 +97,7 @@
 - (void)renderRaytracedSceneForModelViewMatrix:(GLfloat *)raytracingModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix;
 - (void)renderAmbientOcclusionTextureForModelViewMatrix:(GLfloat *)ambientOcclusionModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix fractionOfTotal:(GLfloat)fractionOfTotal;
 - (void)prepareAmbientOcclusionMap;
+- (void)precalculateAOLookupTextureForInverseMatrix:(GLfloat *)inverseMatrix;
 - (void)displayTextureToScreen:(GLuint)textureToDisplay;
 
 @end

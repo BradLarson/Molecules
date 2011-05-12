@@ -11,7 +11,7 @@
 #import "GLProgram.h"
 
 #define AMBIENTOCCLUSIONTEXTUREWIDTH 512
-//#define AMBIENTOCCLUSIONTEXTUREWIDTH 512
+#define AOLOOKUPTEXTUREWIDTH 256
 
 @implementation SLSOpenGLES20Renderer
 
@@ -43,6 +43,42 @@
 {    
     [self freeVertexBuffers];
     
+    if (ambientOcclusionFramebuffer)
+    {
+        glDeleteFramebuffers(1, &ambientOcclusionFramebuffer);
+        ambientOcclusionFramebuffer = 0;
+    }
+    
+    if (ambientOcclusionRenderbuffer)
+    {
+        glDeleteRenderbuffers(1, &ambientOcclusionRenderbuffer);
+        ambientOcclusionRenderbuffer = 0;
+    }
+
+    if (ambientOcclusionTexture)
+    {
+        glDeleteTextures(1, &ambientOcclusionTexture);
+        ambientOcclusionTexture = 0;
+    }
+
+    if (sphereAOLookupFramebuffer)
+    {
+        glDeleteFramebuffers(1, &sphereAOLookupFramebuffer);
+        sphereAOLookupFramebuffer = 0;
+    }
+    
+    if (sphereAOLookupRenderbuffer)
+    {
+        glDeleteRenderbuffers(1, &sphereAOLookupRenderbuffer);
+        sphereAOLookupRenderbuffer = 0;
+    }
+    
+    if (sphereAOLookupTexture)
+    {
+        glDeleteTextures(1, &sphereAOLookupTexture);
+        sphereAOLookupTexture = 0;
+    }
+
 	[super dealloc];
 }
 
@@ -137,8 +173,17 @@
             [self createFramebuffer:&viewFramebuffer size:CGSizeZero renderBuffer:&viewRenderbuffer depthBuffer:&viewDepthBuffer texture:NULL layer:glLayer];    
             //    [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:&depthPassDepthBuffer texture:&depthPassTexture layer:glLayer];
             [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:NULL texture:&depthPassTexture layer:glLayer];
-            [self createFramebuffer:&ambientOcclusionFramebuffer size:CGSizeMake(AMBIENTOCCLUSIONTEXTUREWIDTH, AMBIENTOCCLUSIONTEXTUREWIDTH) renderBuffer:&ambientOcclusionRenderbuffer depthBuffer:NULL texture:&ambientOcclusionTexture layer:glLayer];
+
+            if (!ambientOcclusionFramebuffer)
+            {
+                [self createFramebuffer:&ambientOcclusionFramebuffer size:CGSizeMake(AMBIENTOCCLUSIONTEXTUREWIDTH, AMBIENTOCCLUSIONTEXTUREWIDTH) renderBuffer:&ambientOcclusionRenderbuffer depthBuffer:NULL texture:&ambientOcclusionTexture layer:glLayer];                
+            }
             
+            if (!sphereAOLookupFramebuffer)
+            {
+                [self createFramebuffer:&sphereAOLookupFramebuffer size:CGSizeMake(AOLOOKUPTEXTUREWIDTH, AOLOOKUPTEXTUREWIDTH) renderBuffer:&sphereAOLookupRenderbuffer depthBuffer:NULL texture:&sphereAOLookupTexture layer:glLayer];
+            }
+
             [self switchToDisplayFramebuffer];
             glViewport(0, 0, backingWidth, backingHeight);
             
@@ -468,6 +513,26 @@
     passthroughTexture = [passthroughProgram uniformIndex:@"texture"];
 #endif
     
+    sphereAOLookupPrecalculationProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"SphereAOLookup" fragmentShaderFilename:@"SphereAOLookup"];
+	[sphereAOLookupPrecalculationProgram addAttribute:@"inputImpostorSpaceCoordinate"];
+	if (![sphereAOLookupPrecalculationProgram link])
+	{
+		NSLog(@"Raytracing shader link failed");
+		NSString *progLog = [sphereAOLookupPrecalculationProgram programLog];
+		NSLog(@"Program Log: %@", progLog); 
+		NSString *fragLog = [sphereAOLookupPrecalculationProgram fragmentShaderLog];
+		NSLog(@"Frag Log: %@", fragLog);
+		NSString *vertLog = [sphereAOLookupPrecalculationProgram vertexShaderLog];
+		NSLog(@"Vert Log: %@", vertLog);
+		[sphereAOLookupPrecalculationProgram release];
+		sphereAOLookupPrecalculationProgram = nil;
+	}
+    
+    sphereAOLookupImpostorSpaceAttribute = [sphereAOLookupPrecalculationProgram attributeIndex:@"inputImpostorSpaceCoordinate"];
+    sphereAOLookupPrecalculatedDepthTexture = [sphereAOLookupPrecalculationProgram uniformIndex:@"precalculatedSphereDepthTexture"];
+    sphereAOLookupInverseModelViewMatrix = [sphereAOLookupPrecalculationProgram uniformIndex:@"inverseModelViewProjMatrix"];
+
+    
     [self generateSphereDepthMapTexture];
 }
 
@@ -499,6 +564,32 @@
     glBindRenderbuffer(GL_RENDERBUFFER, ambientOcclusionRenderbuffer);
     
     glViewport(0, 0, AMBIENTOCCLUSIONTEXTUREWIDTH, AMBIENTOCCLUSIONTEXTUREWIDTH);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+- (void)switchToAOLookupFramebuffer;
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, sphereAOLookupFramebuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, sphereAOLookupRenderbuffer);
+    
+    glViewport(0, 0, AOLOOKUPTEXTUREWIDTH, AOLOOKUPTEXTUREWIDTH);
+    
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 #define SPHEREDEPTHTEXTUREWIDTH 256
@@ -622,6 +713,31 @@
             glDeleteRenderbuffers(1, &viewDepthBuffer);
             viewDepthBuffer = 0;
         }
+
+        if (depthPassFramebuffer)
+        {
+            glDeleteFramebuffers(1, &depthPassFramebuffer);
+            depthPassFramebuffer = 0;
+        }
+        
+        if (depthPassRenderbuffer)
+        {
+            glDeleteRenderbuffers(1, &depthPassRenderbuffer);
+            depthPassRenderbuffer = 0;
+        }
+
+        if (depthPassDepthBuffer)
+        {
+            glDeleteRenderbuffers(1, &depthPassDepthBuffer);
+            depthPassDepthBuffer = 0;
+        }
+
+        if (depthPassTexture)
+        {
+            glDeleteTextures(1, &depthPassTexture);
+            depthPassTexture = 0;
+        }
+
     });   
 }
 
@@ -643,7 +759,7 @@
         [self switchToDisplayFramebuffer];
         
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT);
         
         [self presentRenderBuffer];
     });
@@ -670,7 +786,7 @@
         
         [EAGLContext setCurrentContext:context];
 
-//        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
+        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
         
         GLfloat currentModelViewMatrix[9];
         [self convert3DTransform:&currentCalculatedMatrix to3x3Matrix:currentModelViewMatrix];
@@ -680,9 +796,11 @@
         [self convert3DTransform:&inverseMatrix to3x3Matrix:inverseModelViewMatrix];
         
         [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
-        //   [self displayTextureToScreen:depthPassTexture];
-        //    [self displayTextureToScreen:ambientOcclusionTexture];
-        [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix];
+        [self precalculateAOLookupTextureForInverseMatrix:inverseModelViewMatrix];
+        [self displayTextureToScreen:sphereAOLookupTexture];
+//        [self displayTextureToScreen:depthPassTexture];
+//        [self displayTextureToScreen:ambientOcclusionTexture];
+//        [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix];
         
         // Discarding is only supported starting with 4.0, so I need to do a check here for 3.2 devices
         //    const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
@@ -690,9 +808,9 @@
         
         [self presentRenderBuffer];
         
-//        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
+        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
         
-//        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
+        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
         
         dispatch_semaphore_signal(frameRenderingSemaphore);
     });
@@ -1056,7 +1174,7 @@
 //    glDepthMask(GL_FALSE);
     
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
 
     // Draw the spheres
     [sphereRaytracingProgram use];
@@ -1453,6 +1571,42 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
     });
 }
 
+- (void)precalculateAOLookupTextureForInverseMatrix:(GLfloat *)inverseMatrix;
+{
+    [self switchToAOLookupFramebuffer];
+
+    glDisable(GL_BLEND);
+    //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//    glBlendFunc(GL_ONE, GL_ONE);
+//    glBlendEquation(GL_MAX_EXT);
+    
+    glDisable(GL_DEPTH_TEST);
+    
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+    // Draw the spheres
+    [sphereAOLookupPrecalculationProgram use];
+    
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
+    glUniform1i(sphereAOLookupPrecalculatedDepthTexture, 2);
+        
+    glUniformMatrix3fv(sphereAOLookupInverseModelViewMatrix, 1, 0, inverseMatrix);    
+    
+    static const GLfloat textureCoordinates[] = {
+        -1.0f, -1.0f,
+        1.0f, -1.0f,
+        -1.0f,  1.0f,
+        1.0f,  1.0f,
+    };
+    
+	glVertexAttribPointer(sphereAOLookupImpostorSpaceAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
+	glEnableVertexAttribArray(sphereAOLookupImpostorSpaceAttribute);
+    
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
+
 - (void)displayTextureToScreen:(GLuint)textureToDisplay;
 {
     [self switchToDisplayFramebuffer];
@@ -1465,7 +1619,7 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
     [passthroughProgram use];
     
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
     
     static const GLfloat squareVertices[] = {
         -1.0f, -1.0f,

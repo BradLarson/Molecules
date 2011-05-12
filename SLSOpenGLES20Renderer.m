@@ -11,7 +11,9 @@
 #import "GLProgram.h"
 
 #define AMBIENTOCCLUSIONTEXTUREWIDTH 512
-#define AOLOOKUPTEXTUREWIDTH 256
+#define AOLOOKUPTEXTUREWIDTH 64
+//#define SPHEREDEPTHTEXTUREWIDTH 256
+#define SPHEREDEPTHTEXTUREWIDTH 64
 
 @implementation SLSOpenGLES20Renderer
 
@@ -256,6 +258,17 @@
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bufferSize.width, bufferSize.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 //                glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, bufferSize.width, bufferSize.height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0);
             }
+            else if (*backingTexturePointer == ambientOcclusionTexture)
+            {
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
+                
+                
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bufferSize.width, bufferSize.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+            }
             else
             {
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
@@ -456,6 +469,7 @@
     sphereRaytracingInverseModelViewMatrix = [sphereRaytracingProgram uniformIndex:@"inverseModelViewProjMatrix"];
     sphereRaytracingTexturePatchWidth = [sphereRaytracingProgram uniformIndex:@"ambientOcclusionTexturePatchWidth"];
     sphereRaytracingAOTexture = [sphereRaytracingProgram uniformIndex:@"ambientOcclusionTexture"];
+    sphereRaytracingPrecalculatedAOLookupTexture = [sphereRaytracingProgram uniformIndex:@"precalculatedAOLookupTexture"];
 
     cylinderRaytracingProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"CylinderRaytracing" fragmentShaderFilename:@"CylinderRaytracing"];
 	[cylinderRaytracingProgram addAttribute:@"position"];
@@ -573,6 +587,9 @@
 
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, 0);
+
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 - (void)switchToAOLookupFramebuffer;
@@ -590,9 +607,10 @@
     
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, 0);
+    
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
-
-#define SPHEREDEPTHTEXTUREWIDTH 256
 
 - (void)generateSphereDepthMapTexture;
 {
@@ -797,16 +815,18 @@
         
         [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
         [self precalculateAOLookupTextureForInverseMatrix:inverseModelViewMatrix];
-        [self displayTextureToScreen:sphereAOLookupTexture];
+//        [self displayTextureToScreen:sphereAOLookupTexture];
 //        [self displayTextureToScreen:depthPassTexture];
 //        [self displayTextureToScreen:ambientOcclusionTexture];
-//        [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix];
+        [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix];
         
         // Discarding is only supported starting with 4.0, so I need to do a check here for 3.2 devices
         //    const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
         //    glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
-        
-        [self presentRenderBuffer];
+
+//        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self presentRenderBuffer];
+//        });
         
         CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
         
@@ -825,7 +845,9 @@
     normalizedAOTexturePatchWidth = (GLfloat)widthOfAtomAOTexturePatch / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH;
     
     previousAmbientOcclusionOffset[0] = normalizedAOTexturePatchWidth / 2.0;
-    previousAmbientOcclusionOffset[1] = normalizedAOTexturePatchWidth / 2.0;;
+    previousAmbientOcclusionOffset[1] = normalizedAOTexturePatchWidth / 2.0;
+    
+    shouldDrawBonds = (numberOfBonds > 0);
 }
 
 - (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint;
@@ -1122,38 +1144,41 @@
         }
     }
     
-    // Draw the cylinders    
-    [cylinderDepthProgram use];
-
-    float cylinderScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * bondRadiusScaleFactor;
-    GLsizei bondVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
-	GLfloat bondRadius = 1.0;
-
-    glUniform1f(cylinderDepthRadius, bondRadius * cylinderScaleFactor);
-    glUniformMatrix3fv(cylinderDepthModelViewMatrix, 1, 0, depthModelViewMatrix);
-    glUniformMatrix3fv(cylinderDepthOrthographicMatrix, 1, 0, orthographicMatrix);
-
-    for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
+    if (shouldDrawBonds)
     {
-        // Draw bonds next
-        if (bondVertexBufferHandle[currentBondVBOIndex] != 0)
+        // Draw the cylinders    
+        [cylinderDepthProgram use];
+        
+        float cylinderScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * bondRadiusScaleFactor;
+        GLsizei bondVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
+        GLfloat bondRadius = 1.0;
+        
+        glUniform1f(cylinderDepthRadius, bondRadius * cylinderScaleFactor);
+        glUniformMatrix3fv(cylinderDepthModelViewMatrix, 1, 0, depthModelViewMatrix);
+        glUniformMatrix3fv(cylinderDepthOrthographicMatrix, 1, 0, orthographicMatrix);
+        
+        for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
         {
-            // Bind the VBO and attach it to the program
-            glBindBuffer(GL_ARRAY_BUFFER, bondVertexBufferHandle[currentBondVBOIndex]); 
-            glVertexAttribPointer(cylinderDepthPositionAttribute, 3, GL_FLOAT, 0, bondVBOStride, (char *)NULL + 0);
-            glEnableVertexAttribArray(cylinderDepthPositionAttribute);
-            glVertexAttribPointer(cylinderDepthDirectionAttribute, 3, GL_FLOAT, 0, bondVBOStride, (char *)NULL + (sizeof(GLfloat) * 3));
-            glEnableVertexAttribArray(cylinderDepthDirectionAttribute);
-            glVertexAttribPointer(cylinderDepthImpostorSpaceAttribute, 2, GL_FLOAT, 0, bondVBOStride, (char *)NULL + (sizeof(GLfloat) * 3) + (sizeof(GLfloat) * 3));
-            glEnableVertexAttribArray(cylinderDepthImpostorSpaceAttribute);
-            
-            // Bind the index buffer and draw to the screen
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bondIndexBufferHandle[currentBondVBOIndex]);    
-            glDrawElements(GL_TRIANGLES, numberOfBondIndicesInBuffer[currentBondVBOIndex], GL_UNSIGNED_SHORT, NULL);
-            
-            // Unbind the buffers
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
-            glBindBuffer(GL_ARRAY_BUFFER, 0); 
+            // Draw bonds next
+            if (bondVertexBufferHandle[currentBondVBOIndex] != 0)
+            {
+                // Bind the VBO and attach it to the program
+                glBindBuffer(GL_ARRAY_BUFFER, bondVertexBufferHandle[currentBondVBOIndex]); 
+                glVertexAttribPointer(cylinderDepthPositionAttribute, 3, GL_FLOAT, 0, bondVBOStride, (char *)NULL + 0);
+                glEnableVertexAttribArray(cylinderDepthPositionAttribute);
+                glVertexAttribPointer(cylinderDepthDirectionAttribute, 3, GL_FLOAT, 0, bondVBOStride, (char *)NULL + (sizeof(GLfloat) * 3));
+                glEnableVertexAttribArray(cylinderDepthDirectionAttribute);
+                glVertexAttribPointer(cylinderDepthImpostorSpaceAttribute, 2, GL_FLOAT, 0, bondVBOStride, (char *)NULL + (sizeof(GLfloat) * 3) + (sizeof(GLfloat) * 3));
+                glEnableVertexAttribArray(cylinderDepthImpostorSpaceAttribute);
+                
+                // Bind the index buffer and draw to the screen
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bondIndexBufferHandle[currentBondVBOIndex]);    
+                glDrawElements(GL_TRIANGLES, numberOfBondIndicesInBuffer[currentBondVBOIndex], GL_UNSIGNED_SHORT, NULL);
+                
+                // Unbind the buffers
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
+                glBindBuffer(GL_ARRAY_BUFFER, 0); 
+            }
         }
     }
 }
@@ -1194,6 +1219,10 @@
     glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexture);
     glUniform1i(sphereRaytracingAOTexture, 3);
 
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, sphereAOLookupTexture);
+    glUniform1i(sphereRaytracingPrecalculatedAOLookupTexture, 1);
+
     glUniformMatrix3fv(sphereRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
     glUniformMatrix3fv(sphereRaytracingInverseModelViewMatrix, 1, 0, inverseMatrix);
     glUniformMatrix3fv(sphereRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
@@ -1229,44 +1258,47 @@
         }
     }
         
-    // Draw the cylinders
-    [cylinderRaytracingProgram use];
-
-    glUniform3fv(cylinderRaytracingLightPosition, 1, lightDirection);
-    glUniform1i(cylinderRaytracingDepthTexture, 0);	
-    glUniform1i(cylinderRaytracingAOTexture, 3);
-    glUniform1f(cylinderRaytracingTexturePatchWidth, normalizedAOTexturePatchWidth - 0.5 / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH);
-
-    float cylinderScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * bondRadiusScaleFactor;
-    GLsizei bondVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
-	GLfloat bondRadius = 1.0;
-
-    glUniform1f(cylinderRaytracingRadius, bondRadius * cylinderScaleFactor);
-    glUniform3f(cylinderRaytracingColor, 0.75, 0.75, 0.75);
-    glUniformMatrix3fv(cylinderRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
-    glUniformMatrix3fv(cylinderRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
-    glUniformMatrix3fv(cylinderRaytracingInverseModelViewMatrix, 1, 0, inverseMatrix);
-
-    for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
+    if (shouldDrawBonds)
     {
-        // Draw bonds next
-        if (bondVertexBufferHandle[currentBondVBOIndex] != 0)
+        // Draw the cylinders
+        [cylinderRaytracingProgram use];
+        
+        glUniform3fv(cylinderRaytracingLightPosition, 1, lightDirection);
+        glUniform1i(cylinderRaytracingDepthTexture, 0);	
+        glUniform1i(cylinderRaytracingAOTexture, 3);
+        glUniform1f(cylinderRaytracingTexturePatchWidth, normalizedAOTexturePatchWidth - 0.5 / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH);
+        
+        float cylinderScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * bondRadiusScaleFactor;
+        GLsizei bondVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
+        GLfloat bondRadius = 1.0;
+        
+        glUniform1f(cylinderRaytracingRadius, bondRadius * cylinderScaleFactor);
+        glUniform3f(cylinderRaytracingColor, 0.75, 0.75, 0.75);
+        glUniformMatrix3fv(cylinderRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
+        glUniformMatrix3fv(cylinderRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
+        glUniformMatrix3fv(cylinderRaytracingInverseModelViewMatrix, 1, 0, inverseMatrix);
+        
+        for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
         {
-
-            // Bind the VBO and attach it to the program
-            glBindBuffer(GL_ARRAY_BUFFER, bondVertexBufferHandle[currentBondVBOIndex]); 
-            glVertexAttribPointer(cylinderRaytracingPositionAttribute, 3, GL_FLOAT, 0, bondVBOStride, (char *)NULL + 0);
-            glEnableVertexAttribArray(cylinderRaytracingPositionAttribute);
-            glVertexAttribPointer(cylinderRaytracingDirectionAttribute, 3, GL_FLOAT, 0, bondVBOStride, (char *)NULL + (sizeof(GLfloat) * 3));
-            glEnableVertexAttribArray(cylinderRaytracingDirectionAttribute);
-            glVertexAttribPointer(cylinderRaytracingImpostorSpaceAttribute, 2, GL_FLOAT, 0, bondVBOStride, (char *)NULL + (sizeof(GLfloat) * 3) + (sizeof(GLfloat) * 3));
-            glEnableVertexAttribArray(cylinderRaytracingImpostorSpaceAttribute);
-            glVertexAttribPointer(cylinderRaytracingAOOffsetAttribute, 2, GL_FLOAT, 0, bondVBOStride, (char *)NULL + (sizeof(GLfloat) * 3) + (sizeof(GLfloat) * 3) + (sizeof(GLfloat) * 2));
-            glEnableVertexAttribArray(cylinderRaytracingAOOffsetAttribute);
-
-            // Bind the index buffer and draw to the screen
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bondIndexBufferHandle[currentBondVBOIndex]);
-            glDrawElements(GL_TRIANGLES, numberOfBondIndicesInBuffer[currentBondVBOIndex], GL_UNSIGNED_SHORT, NULL);
+            // Draw bonds next
+            if (bondVertexBufferHandle[currentBondVBOIndex] != 0)
+            {
+                
+                // Bind the VBO and attach it to the program
+                glBindBuffer(GL_ARRAY_BUFFER, bondVertexBufferHandle[currentBondVBOIndex]); 
+                glVertexAttribPointer(cylinderRaytracingPositionAttribute, 3, GL_FLOAT, 0, bondVBOStride, (char *)NULL + 0);
+                glEnableVertexAttribArray(cylinderRaytracingPositionAttribute);
+                glVertexAttribPointer(cylinderRaytracingDirectionAttribute, 3, GL_FLOAT, 0, bondVBOStride, (char *)NULL + (sizeof(GLfloat) * 3));
+                glEnableVertexAttribArray(cylinderRaytracingDirectionAttribute);
+                glVertexAttribPointer(cylinderRaytracingImpostorSpaceAttribute, 2, GL_FLOAT, 0, bondVBOStride, (char *)NULL + (sizeof(GLfloat) * 3) + (sizeof(GLfloat) * 3));
+                glEnableVertexAttribArray(cylinderRaytracingImpostorSpaceAttribute);
+                glVertexAttribPointer(cylinderRaytracingAOOffsetAttribute, 2, GL_FLOAT, 0, bondVBOStride, (char *)NULL + (sizeof(GLfloat) * 3) + (sizeof(GLfloat) * 3) + (sizeof(GLfloat) * 2));
+                glEnableVertexAttribArray(cylinderRaytracingAOOffsetAttribute);
+                
+                // Bind the index buffer and draw to the screen
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bondIndexBufferHandle[currentBondVBOIndex]);
+                glDrawElements(GL_TRIANGLES, numberOfBondIndicesInBuffer[currentBondVBOIndex], GL_UNSIGNED_SHORT, NULL);
+            }
         }
     }
         

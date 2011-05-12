@@ -4,6 +4,7 @@ uniform mediump vec3 sphereColor;
 uniform sampler2D precalculatedSphereDepthTexture;
 uniform sampler2D depthTexture;
 uniform sampler2D ambientOcclusionTexture;
+uniform sampler2D precalculatedAOLookupTexture;
 uniform mediump mat3 inverseModelViewProjMatrix;
 uniform mediump float ambientOcclusionTexturePatchWidth;
 
@@ -20,26 +21,29 @@ mediump float depthFromEncodedColor(mediump vec3 encodedColor)
     return (encodedColor.r + encodedColor.g + encodedColor.b) * oneThird;
 }
 
-mediump vec2 textureCoordinateForSphereSurfacePosition(mediump vec3 sphereSurfacePosition)
-{
-    vec3 absoluteSphereSurfacePosition = abs(sphereSurfacePosition);
-    float d = absoluteSphereSurfacePosition.x + absoluteSphereSurfacePosition.y + absoluteSphereSurfacePosition.z;
-    
-    return (sphereSurfacePosition.z <= 0.0) ? sphereSurfacePosition.xy / d : sign(sphereSurfacePosition.xy) * ( 1.0 - absoluteSphereSurfacePosition.yx / d);    
-}
-
 void main()
 {
-    vec4 precalculatedDepthAndLighting = texture2D(precalculatedSphereDepthTexture, depthLookupCoordinate);
-    vec3 encodedColor = texture2D(depthTexture, normalizedViewCoordinate.xy).rgb;
+//    float distanceFromCenter = length(impostorSpaceCoordinate);
 
+    vec4 precalculatedDepthAndLighting = texture2D(precalculatedSphereDepthTexture, depthLookupCoordinate);
+
+    //    vec4 precalculatedDepthAndLighting = vec4(1.0);
+
+//    if (distanceFromCenter > 1.0)
+//    {
+//        gl_FragColor = vec4(0.0);
+//    }
     if (precalculatedDepthAndLighting.r < 0.05)
     {
         gl_FragColor = vec4(0.0);
     }
     else
     {
+//        float normalizedDepth = sqrt(1.0 - distanceFromCenter * distanceFromCenter);
+
         float currentDepthValue = normalizedViewCoordinate.z - adjustedSphereRadius * precalculatedDepthAndLighting.r;        
+//        float currentDepthValue = normalizedViewCoordinate.z - adjustedSphereRadius * normalizedDepth;        
+        vec3 encodedColor = texture2D(depthTexture, normalizedViewCoordinate.xy).rgb;
         float previousDepthValue = depthFromEncodedColor(encodedColor);
       
         // Check to see that this fragment is the frontmost one for this area
@@ -50,33 +54,13 @@ void main()
         }
         else
         {            
-            // Ambient occlusion factor
-            vec3 aoNormal = vec3(impostorSpaceCoordinate, -precalculatedDepthAndLighting.r);
-            aoNormal = inverseModelViewProjMatrix * aoNormal;
-            aoNormal.z = -aoNormal.z;
-                        
-            // Test function inlining for profiling
+            vec2 lookupTextureCoordinate = texture2D(precalculatedAOLookupTexture, depthLookupCoordinate).st;
+            lookupTextureCoordinate = (lookupTextureCoordinate * 2.0) - 1.0;
             
-             vec3 absoluteSphereSurfacePosition = abs(aoNormal);
-   			 float d = absoluteSphereSurfacePosition.x + absoluteSphereSurfacePosition.y + absoluteSphereSurfacePosition.z;
-    
-    		vec2 lookupTextureCoordinate;
-    		if (aoNormal.z <= 0.0)
-    		{
-    			lookupTextureCoordinate = aoNormal.xy / d;
-    		}
-    		else
-    		{
-    			vec2 theSign = aoNormal.xy / absoluteSphereSurfacePosition.xy;
-    			//vec2 aSign = sign(aoNormal.xy);
-    			lookupTextureCoordinate =  theSign  - absoluteSphereSurfacePosition.yx * (theSign / d); 
-    		}
-            
-            // Test
-            
-           // vec2 lookupTextureCoordinate = textureCoordinateForSphereSurfacePosition(aoNormal);
             vec2 textureCoordinateForAOLookup = ambientOcclusionTextureBase + ambientOcclusionTexturePatchWidth * lookupTextureCoordinate;
             float ambientOcclusionIntensity = texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).r;
+            
+//            float ambientOcclusionIntensity = 1.0;
             
             // Ambient lighting
             float lightingIntensity = 0.2 + 1.7 * precalculatedDepthAndLighting.g * ambientOcclusionIntensity;

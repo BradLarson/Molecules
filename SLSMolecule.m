@@ -830,7 +830,8 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 {
     if ((numberOfAtoms < 600) && (numberOfBonds > 0))
     {
-        self.currentVisualizationType = BALLANDSTICK;
+        self.currentVisualizationType = SPACEFILLING;
+//        self.currentVisualizationType = BALLANDSTICK;
     }
     else
     {
@@ -960,6 +961,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 		
 		if (residueType != WATER)
         {
+//			[openGLESRenderer addAtomToVertexBuffers:OXYGEN atPoint:atomCoordinate];
 			[openGLESRenderer addAtomToVertexBuffers:atomType atPoint:atomCoordinate];
         }
 	}

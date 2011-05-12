@@ -26,11 +26,11 @@
     
     GLuint depthPassTexture;
     GLuint depthPassRenderbuffer, depthPassFramebuffer, depthPassDepthBuffer;
-
+    
     GLProgram *sphereRaytracingProgram;
 	GLint sphereRaytracingPositionAttribute, sphereRaytracingImpostorSpaceAttribute, sphereRaytracingAOOffsetAttribute, sphereRaytracingModelViewMatrix;
     GLint sphereRaytracingLightPosition, sphereRaytracingRadius, sphereRaytracingColor, sphereRaytracingOrthographicMatrix, sphereRaytracingInverseModelViewMatrix;
-    GLint sphereRaytracingDepthTexture, sphereRaytracingPrecalculatedDepthTexture, sphereRaytracingAOTexture, sphereRaytracingTexturePatchWidth;
+    GLint sphereRaytracingDepthTexture, sphereRaytracingPrecalculatedDepthTexture, sphereRaytracingAOTexture, sphereRaytracingTexturePatchWidth, sphereRaytracingPrecalculatedAOLookupTexture;
     
 	GLProgram *cylinderRaytracingProgram;
     GLint cylinderRaytracingPositionAttribute, cylinderRaytracingDirectionAttribute, cylinderRaytracingImpostorSpaceAttribute, cylinderRaytracingAOOffsetAttribute, cylinderRaytracingModelViewMatrix;
@@ -71,6 +71,8 @@
     
     unsigned int widthOfAtomAOTexturePatch;
     GLfloat normalizedAOTexturePatchWidth;
+    
+    BOOL shouldDrawBonds;
 }
 
 // OpenGL drawing support

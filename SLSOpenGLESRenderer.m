@@ -342,6 +342,8 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
     dispatch_async(openGLESContextQueue, ^{
         [EAGLContext setCurrentContext:context];
 
+        [self resetModelViewMatrix];
+
         isRenderingCancelled = NO;
         
         for (unsigned int currentAtomIndexBufferIndex = 0; currentAtomIndexBufferIndex < NUM_ATOMTYPES; currentAtomIndexBufferIndex++)

@@ -45,6 +45,7 @@
 		BC61CC320E2463180074BE04 /* SLSTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC61CC300E2463180074BE04 /* SLSTextViewController.m */; };
 		BC67B8BC137B5DF10075A361 /* SphereAOLookup.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BC67B8BA137B5DF10075A361 /* SphereAOLookup.fsh */; };
 		BC67B8BD137B5DF10075A361 /* SphereAOLookup.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BC67B8BB137B5DF10075A361 /* SphereAOLookup.vsh */; };
+		BC67B8BF137C4B7A0075A361 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC67B8BE137C4B7A0075A361 /* Default@2x.png */; };
 		BC6A9FCC11CAA8CB00E62D55 /* MoleculesIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC6A9FCB11CAA8CB00E62D55 /* MoleculesIcon@2x.png */; };
 		BC835184117545C600B478D5 /* 69-display.png in Resources */ = {isa = PBXBuildFile; fileRef = BC835183117545C600B478D5 /* 69-display.png */; };
 		BCA2E7E2135A1B9B00D7206C /* CylinderDepth.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCA2E7DA135A1B9B00D7206C /* CylinderDepth.fsh */; };
@@ -136,6 +137,7 @@
 		BC61CC300E2463180074BE04 /* SLSTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSTextViewController.m; sourceTree = "<group>"; };
 		BC67B8BA137B5DF10075A361 /* SphereAOLookup.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SphereAOLookup.fsh; path = Shaders/SphereAOLookup.fsh; sourceTree = "<group>"; };
 		BC67B8BB137B5DF10075A361 /* SphereAOLookup.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SphereAOLookup.vsh; path = Shaders/SphereAOLookup.vsh; sourceTree = "<group>"; };
+		BC67B8BE137C4B7A0075A361 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		BC6A9FCB11CAA8CB00E62D55 /* MoleculesIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MoleculesIcon@2x.png"; sourceTree = "<group>"; };
 		BC835183117545C600B478D5 /* 69-display.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "69-display.png"; sourceTree = "<group>"; };
 		BCA2E7DA135A1B9B00D7206C /* CylinderDepth.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = CylinderDepth.fsh; path = Shaders/CylinderDepth.fsh; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				BC67B8BE137C4B7A0075A361 /* Default@2x.png */,
 				BC2795BC11625065006DE4C8 /* Default.png */,
 				BC2795B81162500A006DE4C8 /* Default-Landscape.png */,
 				BC2795B91162500A006DE4C8 /* Default-Portrait.png */,
@@ -508,6 +511,7 @@
 				BC157287136CBE9200EEFBEC /* 3QE5.pdb.gz in Resources */,
 				BC67B8BC137B5DF10075A361 /* SphereAOLookup.fsh in Resources */,
 				BC67B8BD137B5DF10075A361 /* SphereAOLookup.vsh in Resources */,
+				BC67B8BF137C4B7A0075A361 /* Default@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

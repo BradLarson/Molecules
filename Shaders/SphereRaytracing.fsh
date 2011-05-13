@@ -24,6 +24,8 @@ mediump float depthFromEncodedColor(mediump vec3 encodedColor)
 
 void main()
 {
+//    gl_FragColor = vec4(1.0);
+
     float distanceFromCenter = length(impostorSpaceCoordinate);
 
 //    vec4 precalculatedDepthAndLighting = texture2D(precalculatedSphereDepthTexture, depthLookupCoordinate);

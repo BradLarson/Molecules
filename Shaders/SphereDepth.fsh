@@ -17,6 +17,8 @@ mediump vec4 encodedColorForDepth(float depthValue)
 
 void main()
 {
+//    gl_FragColor = vec4(1.0);
+    
     float distanceFromCenter = length(impostorSpaceCoordinate);
     if (distanceFromCenter > 1.0)
     {

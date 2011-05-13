@@ -1,9 +1,6 @@
 precision mediump float;
 
-uniform sampler2D precalculatedSphereDepthTexture;
-
 varying mediump vec2 impostorSpaceCoordinate;
-varying mediump vec2 depthLookupCoordinate;
 varying mediump float normalizedDepth;
 varying mediump float adjustedSphereRadius;
 
@@ -20,21 +17,17 @@ mediump vec4 encodedColorForDepth(float depthValue)
 
 void main()
 {
-    mediump float precalculatedDepth = texture2D(precalculatedSphereDepthTexture, depthLookupCoordinate).r;
-    if (precalculatedDepth < 0.05)
+    float distanceFromCenter = length(impostorSpaceCoordinate);
+    if (distanceFromCenter > 1.0)
     {
-        gl_FragColor = vec4(1.0);
+        gl_FragColor = vec4(1.0);        
     }
     else
     {
+        float precalculatedDepth = sqrt(1.0 - distanceFromCenter * distanceFromCenter);
         mediump float currentDepthValue = normalizedDepth - adjustedSphereRadius * precalculatedDepth;
         
         gl_FragColor = encodedColorForDepth(currentDepthValue);
+        
     }
-    
-    
-    // Establish the visual bounds of the sphere, setting depth to max if it fails
-//    mediump float currentDepthValue = (precalculatedDepth > 0.00) ? normalizedDepth - halfSphereRadius * precalculatedDepth * depthAdjustmentForOrthographicProjection: 1.0;
-//    
-//    gl_FragColor = encodedColorForDepth(currentDepthValue);
 }

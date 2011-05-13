@@ -11,9 +11,10 @@
 #import "GLProgram.h"
 
 #define AMBIENTOCCLUSIONTEXTUREWIDTH 512
-#define AOLOOKUPTEXTUREWIDTH 64
+#define AOLOOKUPTEXTUREWIDTH 128
+//#define AOLOOKUPTEXTUREWIDTH 64
 //#define SPHEREDEPTHTEXTUREWIDTH 256
-#define SPHEREDEPTHTEXTUREWIDTH 64
+#define SPHEREDEPTHTEXTUREWIDTH 32
 
 @implementation SLSOpenGLES20Renderer
 
@@ -258,10 +259,12 @@
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bufferSize.width, bufferSize.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 //                glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, bufferSize.width, bufferSize.height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0);
             }
-            else if (*backingTexturePointer == ambientOcclusionTexture)
+            else if (*backingTexturePointer == sphereAOLookupTexture)
             {
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+//                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+//                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
                 glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
@@ -1111,9 +1114,9 @@
     // Draw the spheres
     [sphereDepthProgram use];
     
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
-    glUniform1i(sphereDepthPrecalculatedDepthTexture, 2);
+//    glActiveTexture(GL_TEXTURE2);
+//    glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
+//    glUniform1i(sphereDepthPrecalculatedDepthTexture, 2);
 
     glUniformMatrix3fv(sphereDepthModelViewMatrix, 1, 0, depthModelViewMatrix);
     glUniformMatrix3fv(sphereDepthOrthographicMatrix, 1, 0, orthographicMatrix);
@@ -1211,9 +1214,9 @@
     glBindTexture(GL_TEXTURE_2D, depthPassTexture);
     glUniform1i(sphereRaytracingDepthTexture, 0);
 
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
-    glUniform1i(sphereRaytracingPrecalculatedDepthTexture, 2);
+//    glActiveTexture(GL_TEXTURE2);
+//    glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
+//    glUniform1i(sphereRaytracingPrecalculatedDepthTexture, 2);
     
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexture);
@@ -1328,9 +1331,9 @@
     glBindTexture(GL_TEXTURE_2D, depthPassTexture);
     glUniform1i(sphereAmbientOcclusionDepthTexture, 0);
 
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
-    glUniform1i(sphereAmbientOcclusionPrecalculatedDepthTexture, 2);
+//    glActiveTexture(GL_TEXTURE2);
+//    glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
+//    glUniform1i(sphereAmbientOcclusionPrecalculatedDepthTexture, 2);
     
     glUniformMatrix3fv(sphereAmbientOcclusionModelViewMatrix, 1, 0, ambientOcclusionModelViewMatrix);
     glUniformMatrix3fv(sphereAmbientOcclusionOrthographicMatrix, 1, 0, orthographicMatrix);
@@ -1620,9 +1623,9 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
     // Draw the spheres
     [sphereAOLookupPrecalculationProgram use];
     
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
-    glUniform1i(sphereAOLookupPrecalculatedDepthTexture, 2);
+//    glActiveTexture(GL_TEXTURE2);
+//    glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
+//    glUniform1i(sphereAOLookupPrecalculatedDepthTexture, 2);
         
     glUniformMatrix3fv(sphereAOLookupInverseModelViewMatrix, 1, 0, inverseMatrix);    
     

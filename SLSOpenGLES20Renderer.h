@@ -69,6 +69,8 @@
     GLfloat lightDirection[3];
     GLfloat orthographicMatrix[9];
     
+    CGSize currentViewportSize;
+    
     unsigned int widthOfAtomAOTexturePatch;
     GLfloat normalizedAOTexturePatchWidth;
     

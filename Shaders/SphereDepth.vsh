@@ -16,11 +16,12 @@ varying mediump float adjustedSphereRadius;
 uniform mediump mat3 modelViewProjMatrix;
 uniform mediump float sphereRadius;
 uniform mediump mat3 orthographicMatrix;
+uniform mediump vec3 translation;
 
 void main()
 {
     vec3 transformedPosition;
-	transformedPosition = modelViewProjMatrix * position;
+	transformedPosition = modelViewProjMatrix * (position + translation);
     impostorSpaceCoordinate = inputImpostorSpaceCoordinate.xy;
     depthLookupCoordinate = (inputImpostorSpaceCoordinate + 1.0) / 2.0;
     

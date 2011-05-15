@@ -106,6 +106,7 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
 - (void)convert3DTransform:(CATransform3D *)transform3D to3x3Matrix:(GLfloat *)matrix;
 - (void)print3DTransform:(CATransform3D *)transform3D;
 - (void)printMatrix:(GLfloat *)fixedPointMatrix;
+- (void)apply3DTransform:(CATransform3D *)transform3D toPoint:(GLfloat *)sourcePoint result:(GLfloat *)resultingPoint;
 
 // Model manipulation
 - (void)rotateModelFromScreenDisplacementInX:(float)xRotation inY:(float)yRotation;

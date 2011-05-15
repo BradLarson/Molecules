@@ -155,6 +155,23 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
 	NSLog(@"___________________________");			
 }
 
+- (void)apply3DTransform:(CATransform3D *)transform3D toPoint:(GLfloat *)sourcePoint result:(GLfloat *)resultingPoint;
+{
+//        | A B C D |
+//    M = | E F G H |
+//        | I J K L |
+//        | M N O P |
+    
+//    A.x1+B.y1+C.z1+D
+//    E.x1+F.y1+G.z1+H
+//    I.x1+J.y1+K.z1+L
+//    M.x1+N.y1+O.z1+P
+
+    resultingPoint[0] = sourcePoint[0] * transform3D->m11 + sourcePoint[1] * transform3D->m12 + sourcePoint[2] * transform3D->m13 + transform3D->m14;
+    resultingPoint[1] = sourcePoint[0] * transform3D->m21 + sourcePoint[1] * transform3D->m22 + sourcePoint[2] * transform3D->m23 + transform3D->m24;
+    resultingPoint[2] = sourcePoint[0] * transform3D->m31 + sourcePoint[1] * transform3D->m32 + sourcePoint[2] * transform3D->m33 + transform3D->m34;
+}
+
 #pragma mark -
 #pragma mark Model manipulation
 
@@ -188,11 +205,22 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
 
 - (void)translateModelByScreenDisplacementInX:(float)xTranslation inY:(float)yTranslation;
 {
+    float scalingForMovement;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        scalingForMovement = 85.0f;
+    }
+    else
+    {
+        scalingForMovement = 200.0f;
+    }
+    
+
     // Translate the model by the accumulated amount
 	float currentScaleFactor = sqrt(pow(currentCalculatedMatrix.m11, 2.0f) + pow(currentCalculatedMatrix.m12, 2.0f) + pow(currentCalculatedMatrix.m13, 2.0f));	
 
-	xTranslation = xTranslation / (currentScaleFactor * currentScaleFactor);
-	yTranslation = yTranslation / (currentScaleFactor * currentScaleFactor);
+	xTranslation = xTranslation * scalingForMovement / (currentScaleFactor * currentScaleFactor);
+	yTranslation = yTranslation * scalingForMovement / (currentScaleFactor * currentScaleFactor);
 
 	// Use the (0,4,8) components to figure the eye's X axis in the model coordinate system, translate along that
 	CATransform3D temporaryMatrix = CATransform3DTranslate(currentCalculatedMatrix, xTranslation * currentCalculatedMatrix.m11, xTranslation * currentCalculatedMatrix.m21, xTranslation * currentCalculatedMatrix.m31);

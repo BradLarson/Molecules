@@ -53,15 +53,6 @@
 		stepsSinceLastRotation = 0;
 		previousTimestamp = 0;
         
-		if ([SLSMoleculeAppDelegate isRunningOniPad])
-		{
-			scalingForMovement = 85.0f;
-		}
-		else
-		{
-			scalingForMovement = 200.0f;
-		}
-		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleFinishOfMoleculeRendering:) name:@"MoleculeRenderingEnded" object:nil];		
 	}
 	return self;
@@ -442,8 +433,8 @@
 		return CGPointZero;
 	
 	// The movement ranges are averaged out 
-	commonDirection.x = ((directionOfTouch1.x + directionOfTouch2.x) / 2.0f) * scalingForMovement;
-	commonDirection.y = ((directionOfTouch1.y + directionOfTouch2.y) / 2.0f) * scalingForMovement;
+	commonDirection.x = ((directionOfTouch1.x + directionOfTouch2.x) / 2.0f);
+	commonDirection.y = ((directionOfTouch1.y + directionOfTouch2.y) / 2.0f);
 	
 
 	return commonDirection;

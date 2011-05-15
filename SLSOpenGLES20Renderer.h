@@ -17,11 +17,11 @@
 {
     GLProgram *sphereDepthProgram;
 	GLint sphereDepthPositionAttribute, sphereDepthImpostorSpaceAttribute, sphereDepthModelViewMatrix;
-    GLint sphereDepthRadius, sphereDepthOrthographicMatrix;
+    GLint sphereDepthRadius, sphereDepthOrthographicMatrix, sphereDepthTranslation;
     GLint sphereDepthPrecalculatedDepthTexture;
     
     GLProgram *cylinderDepthProgram;
-    GLint cylinderDepthPositionAttribute, cylinderDepthDirectionAttribute, cylinderDepthImpostorSpaceAttribute, cylinderDepthModelViewMatrix;
+    GLint cylinderDepthPositionAttribute, cylinderDepthDirectionAttribute, cylinderDepthImpostorSpaceAttribute, cylinderDepthModelViewMatrix, cylinderDepthTranslation;
     GLint cylinderDepthRadius, cylinderDepthOrthographicMatrix;
     
     GLuint depthPassTexture;
@@ -29,11 +29,11 @@
     
     GLProgram *sphereRaytracingProgram;
 	GLint sphereRaytracingPositionAttribute, sphereRaytracingImpostorSpaceAttribute, sphereRaytracingAOOffsetAttribute, sphereRaytracingModelViewMatrix;
-    GLint sphereRaytracingLightPosition, sphereRaytracingRadius, sphereRaytracingColor, sphereRaytracingOrthographicMatrix, sphereRaytracingInverseModelViewMatrix;
+    GLint sphereRaytracingLightPosition, sphereRaytracingRadius, sphereRaytracingColor, sphereRaytracingOrthographicMatrix, sphereRaytracingInverseModelViewMatrix, sphereRaytracingTranslation;
     GLint sphereRaytracingDepthTexture, sphereRaytracingPrecalculatedDepthTexture, sphereRaytracingAOTexture, sphereRaytracingTexturePatchWidth, sphereRaytracingPrecalculatedAOLookupTexture;
     
 	GLProgram *cylinderRaytracingProgram;
-    GLint cylinderRaytracingPositionAttribute, cylinderRaytracingDirectionAttribute, cylinderRaytracingImpostorSpaceAttribute, cylinderRaytracingAOOffsetAttribute, cylinderRaytracingModelViewMatrix;
+    GLint cylinderRaytracingPositionAttribute, cylinderRaytracingDirectionAttribute, cylinderRaytracingImpostorSpaceAttribute, cylinderRaytracingAOOffsetAttribute, cylinderRaytracingModelViewMatrix, cylinderRaytracingTranslation;
     GLint cylinderRaytracingLightPosition, cylinderRaytracingRadius, cylinderRaytracingColor, cylinderRaytracingOrthographicMatrix;
     GLint cylinderRaytracingDepthTexture, cylinderRaytracingInverseModelViewMatrix, cylinderRaytracingAOTexture, cylinderRaytracingTexturePatchWidth;
     
@@ -68,6 +68,7 @@
     GLfloat previousAmbientOcclusionOffset[2];
     GLfloat lightDirection[3];
     GLfloat orthographicMatrix[9];
+    GLfloat accumulatedModelTranslation[3];
     
     CGSize currentViewportSize;
     
@@ -97,8 +98,8 @@
 - (void)addBondAmbientOcclusionTextureOffset:(GLfloat *)ambientOcclusionOffset;
 
 // OpenGL drawing routines
-- (void)renderDepthTextureForModelViewMatrix:(GLfloat *)depthModelViewMatrix;
-- (void)renderRaytracedSceneForModelViewMatrix:(GLfloat *)raytracingModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix;
+- (void)renderDepthTextureForModelViewMatrix:(GLfloat *)depthModelViewMatrix translation:(GLfloat *)modelTranslation;
+- (void)renderRaytracedSceneForModelViewMatrix:(GLfloat *)raytracingModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix translation:(GLfloat *)modelTranslation;
 - (void)renderAmbientOcclusionTextureForModelViewMatrix:(GLfloat *)ambientOcclusionModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix fractionOfTotal:(GLfloat)fractionOfTotal;
 - (void)prepareAmbientOcclusionMap;
 - (void)precalculateAOLookupTextureForInverseMatrix:(GLfloat *)inverseMatrix;

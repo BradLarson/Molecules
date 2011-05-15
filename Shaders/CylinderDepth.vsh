@@ -5,6 +5,7 @@ attribute vec3 inputImpostorSpaceCoordinate;
 uniform mat3 modelViewProjMatrix;
 uniform mediump float cylinderRadius;
 uniform mediump mat3 orthographicMatrix;
+uniform mediump vec3 translation;
 
 varying mediump vec2 impostorSpaceCoordinate;
 varying mediump float depthOffsetAlongCenterAxis;
@@ -21,8 +22,8 @@ void main()
     
     depthAdjustmentForOrthographicProjection = (vec3(0.0, 0.0, 0.5) * orthographicMatrix).z;
 
-	transformedPosition = modelViewProjMatrix * position;
-    transformedOtherPosition = modelViewProjMatrix * (position + direction);
+	transformedPosition = modelViewProjMatrix * (position + translation);
+    transformedOtherPosition = modelViewProjMatrix * (position + direction + translation);
     transformedDirection = transformedOtherPosition - transformedPosition;
 
     lengthOfCylinder = length(transformedDirection.xyz);

@@ -1,7 +1,6 @@
 precision mediump float;
 
 uniform mediump vec3 sphereColor;
-//uniform sampler2D precalculatedSphereDepthTexture;
 uniform sampler2D depthTexture;
 uniform sampler2D ambientOcclusionTexture;
 uniform sampler2D precalculatedAOLookupTexture;

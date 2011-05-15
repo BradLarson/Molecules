@@ -18,12 +18,13 @@ varying mediump float adjustedSphereRadius;
 uniform mediump mat3 modelViewProjMatrix;
 uniform mediump mat3 orthographicMatrix;
 uniform mediump float sphereRadius;
+uniform mediump vec3 translation;
 
 void main()
 {
     ambientOcclusionTextureBase = ambientOcclusionTextureOffset;
     
-	vec3 transformedPosition = modelViewProjMatrix * position;
+	vec3 transformedPosition = modelViewProjMatrix * (position + translation);
     impostorSpaceCoordinate = inputImpostorSpaceCoordinate;
     depthLookupCoordinate = (inputImpostorSpaceCoordinate / 2.0) + 0.5;
 

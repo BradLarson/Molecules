@@ -110,27 +110,27 @@
 
 - (void)translateModelByScreenDisplacementInX:(float)xTranslation inY:(float)yTranslation;
 {
-    /*
     // Translate the model by the accumulated amount
 	float currentScaleFactor = sqrt(pow(currentCalculatedMatrix.m11, 2.0f) + pow(currentCalculatedMatrix.m12, 2.0f) + pow(currentCalculatedMatrix.m13, 2.0f));	
 	
-	xTranslation = xTranslation / (currentScaleFactor * currentScaleFactor * 322.0);
-	yTranslation = yTranslation / (currentScaleFactor * currentScaleFactor * 1000.0);
+	xTranslation = xTranslation * [[UIScreen mainScreen] scale] / (currentScaleFactor * currentScaleFactor * backingWidth * 0.5);
+	yTranslation = yTranslation * [[UIScreen mainScreen] scale] / (currentScaleFactor * currentScaleFactor * backingWidth * 0.5);
     
-    NSLog(@"Translation: %f, %f", xTranslation, yTranslation);
-
 	// Use the (0,4,8) components to figure the eye's X axis in the model coordinate system, translate along that
-	CATransform3D temporaryMatrix = CATransform3DTranslate(currentCalculatedMatrix, xTranslation * currentCalculatedMatrix.m11, xTranslation * currentCalculatedMatrix.m21, xTranslation * currentCalculatedMatrix.m31);
 	// Use the (1,5,9) components to figure the eye's Y axis in the model coordinate system, translate along that
-	temporaryMatrix = CATransform3DTranslate(temporaryMatrix, yTranslation * currentCalculatedMatrix.m12, yTranslation * currentCalculatedMatrix.m22, yTranslation * currentCalculatedMatrix.m32);	
 	
-	if ((temporaryMatrix.m11 >= -100.0) && (temporaryMatrix.m11 <= 100.0))
-    {
-		currentCalculatedMatrix = temporaryMatrix;
-    }
+    accumulatedModelTranslation[0] += xTranslation * currentCalculatedMatrix.m11 + yTranslation * currentCalculatedMatrix.m12;
+    accumulatedModelTranslation[1] += xTranslation * currentCalculatedMatrix.m21 + yTranslation * currentCalculatedMatrix.m22;
+    accumulatedModelTranslation[2] += xTranslation * currentCalculatedMatrix.m31 + yTranslation * currentCalculatedMatrix.m32;
+}
+
+- (void)resetModelViewMatrix;
+{
+    [super resetModelViewMatrix];
     
-    [self print3DTransform:&currentCalculatedMatrix];
-     */
+    accumulatedModelTranslation[0] = 0.0;
+    accumulatedModelTranslation[1] = 0.0;
+    accumulatedModelTranslation[2] = 0.0;
 }
 
 #pragma mark -
@@ -217,6 +217,20 @@
             //    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-2.0 far:2.0];
             //    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-0.5 far:0.5];
             [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-1.0 far:1.0];
+            
+            // 0 - Depth pass texture
+            // 1 - Ambient occlusion texture
+            // 2 - AO lookup texture
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, depthPassTexture);
+
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexture);
+
+            glActiveTexture(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_2D, sphereAOLookupTexture);
+
         });        
     });
     
@@ -359,6 +373,7 @@
     sphereDepthRadius = [sphereDepthProgram uniformIndex:@"sphereRadius"];
     sphereDepthOrthographicMatrix = [sphereDepthProgram uniformIndex:@"orthographicMatrix"];
     sphereDepthPrecalculatedDepthTexture = [sphereDepthProgram uniformIndex:@"precalculatedSphereDepthTexture"];
+    sphereDepthTranslation = [sphereDepthProgram uniformIndex:@"translation"];
     
     [sphereDepthProgram use];
     glEnableVertexAttribArray(sphereDepthPositionAttribute);
@@ -388,6 +403,7 @@
 	cylinderDepthModelViewMatrix = [cylinderDepthProgram uniformIndex:@"modelViewProjMatrix"];
     cylinderDepthRadius = [cylinderDepthProgram uniformIndex:@"cylinderRadius"];
     cylinderDepthOrthographicMatrix = [cylinderDepthProgram uniformIndex:@"orthographicMatrix"];
+    cylinderDepthTranslation = [cylinderDepthProgram uniformIndex:@"translation"];
     
     [cylinderDepthProgram use];
     glEnableVertexAttribArray(cylinderDepthPositionAttribute);
@@ -515,7 +531,8 @@
     sphereRaytracingTexturePatchWidth = [sphereRaytracingProgram uniformIndex:@"ambientOcclusionTexturePatchWidth"];
     sphereRaytracingAOTexture = [sphereRaytracingProgram uniformIndex:@"ambientOcclusionTexture"];
     sphereRaytracingPrecalculatedAOLookupTexture = [sphereRaytracingProgram uniformIndex:@"precalculatedAOLookupTexture"];
-    
+    sphereRaytracingTranslation = [sphereRaytracingProgram uniformIndex:@"translation"];
+
     [sphereRaytracingProgram use];
     glEnableVertexAttribArray(sphereRaytracingPositionAttribute);
     glEnableVertexAttribArray(sphereRaytracingImpostorSpaceAttribute);
@@ -553,6 +570,7 @@
     cylinderRaytracingInverseModelViewMatrix = [cylinderRaytracingProgram uniformIndex:@"inverseModelViewProjMatrix"];
     cylinderRaytracingTexturePatchWidth = [cylinderRaytracingProgram uniformIndex:@"ambientOcclusionTexturePatchWidth"];
     cylinderRaytracingAOTexture = [cylinderRaytracingProgram uniformIndex:@"ambientOcclusionTexture"];
+    cylinderRaytracingTranslation = [cylinderRaytracingProgram uniformIndex:@"translation"];
 
     [cylinderRaytracingProgram use];
     glEnableVertexAttribArray(cylinderRaytracingPositionAttribute);
@@ -876,12 +894,17 @@
         GLfloat inverseModelViewMatrix[9];
         [self convert3DTransform:&inverseMatrix to3x3Matrix:inverseModelViewMatrix];
         
-        [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
+        GLfloat currentTranslation[3];
+        currentTranslation[0] = accumulatedModelTranslation[0];
+        currentTranslation[1] = accumulatedModelTranslation[1];
+        currentTranslation[2] = accumulatedModelTranslation[2];
+        
+        [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix translation:currentTranslation];
         [self precalculateAOLookupTextureForInverseMatrix:inverseModelViewMatrix];
 //        [self displayTextureToScreen:sphereAOLookupTexture];
 //        [self displayTextureToScreen:depthPassTexture];
 //        [self displayTextureToScreen:ambientOcclusionTexture];
-        [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix];
+        [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix translation:currentTranslation];
         
         // Discarding is only supported starting with 4.0, so I need to do a check here for 3.2 devices
         //    const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
@@ -1161,13 +1184,10 @@
     isSceneReady = YES;
 }
 
-- (void)renderDepthTextureForModelViewMatrix:(GLfloat *)depthModelViewMatrix;
+- (void)renderDepthTextureForModelViewMatrix:(GLfloat *)depthModelViewMatrix translation:(GLfloat *)modelTranslation;
 {
     [self switchToDepthPassFramebuffer];
     
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, 0);
-
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glBlendEquation(GL_MIN_EXT);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -1175,13 +1195,9 @@
     // Draw the spheres
     [sphereDepthProgram use];
     
-//    glActiveTexture(GL_TEXTURE2);
-//    glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
-//    glUniform1i(sphereDepthPrecalculatedDepthTexture, 2);
-
     glUniformMatrix3fv(sphereDepthModelViewMatrix, 1, 0, depthModelViewMatrix);
-//    glUniformMatrix3fv(sphereDepthOrthographicMatrix, 1, 0, orthographicMatrix);
-
+    glUniform3fv(sphereDepthTranslation, 1, modelTranslation);
+    
     float sphereScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * atomRadiusScaleFactor;
     GLsizei atomVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
     
@@ -1217,6 +1233,8 @@
         
         glUniform1f(cylinderDepthRadius, bondRadius * cylinderScaleFactor);
         glUniformMatrix3fv(cylinderDepthModelViewMatrix, 1, 0, depthModelViewMatrix);
+        glUniform3fv(cylinderDepthTranslation, 1, modelTranslation);
+
 //        glUniformMatrix3fv(cylinderDepthOrthographicMatrix, 1, 0, orthographicMatrix);
         
         for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
@@ -1239,13 +1257,10 @@
                 glBindBuffer(GL_ARRAY_BUFFER, 0); 
             }
         }
-    }
-    
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, depthPassTexture);
+    }    
 }
 
-- (void)renderRaytracedSceneForModelViewMatrix:(GLfloat *)raytracingModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix;
+- (void)renderRaytracedSceneForModelViewMatrix:(GLfloat *)raytracingModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix translation:(GLfloat *)modelTranslation;
 {
     [self switchToDisplayFramebuffer];
     
@@ -1272,6 +1287,7 @@
     glUniformMatrix3fv(sphereRaytracingInverseModelViewMatrix, 1, 0, inverseMatrix);
 //    glUniformMatrix3fv(sphereRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
     glUniform1f(sphereRaytracingTexturePatchWidth, (normalizedAOTexturePatchWidth - 2.0 / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH) * 0.5);
+    glUniform3fv(sphereRaytracingTranslation, 1, modelTranslation);
 
     float sphereScaleFactor = overallMoleculeScaleFactor * currentModelScaleFactor * atomRadiusScaleFactor;
     GLsizei atomVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
@@ -1318,6 +1334,8 @@
         glUniformMatrix3fv(cylinderRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
 //        glUniformMatrix3fv(cylinderRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
         glUniformMatrix3fv(cylinderRaytracingInverseModelViewMatrix, 1, 0, inverseMatrix);
+        glUniform3fv(cylinderRaytracingTranslation, 1, modelTranslation);
+
         
         for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
         {
@@ -1354,16 +1372,9 @@
     
     glUniformMatrix3fv(sphereAmbientOcclusionInverseModelViewMatrix, 1, 0, inverseMatrix);
     
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, depthPassTexture);
     glUniform1i(sphereAmbientOcclusionDepthTexture, 0);
 
-//    glActiveTexture(GL_TEXTURE2);
-//    glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
-//    glUniform1i(sphereAmbientOcclusionPrecalculatedDepthTexture, 2);
-    
     glUniformMatrix3fv(sphereAmbientOcclusionModelViewMatrix, 1, 0, ambientOcclusionModelViewMatrix);
-//    glUniformMatrix3fv(sphereAmbientOcclusionOrthographicMatrix, 1, 0, orthographicMatrix);
     glUniform1f(sphereAmbientOcclusionTexturePatchWidth, normalizedAOTexturePatchWidth);
     glUniform1f(sphereAmbientOcclusionIntensityFactor, fractionOfTotal);
     
@@ -1428,9 +1439,6 @@
             glBindBuffer(GL_ARRAY_BUFFER, 0); 
         }
     }
-    
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexture);
 }
 
 /*
@@ -1523,18 +1531,13 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
             return;
         }
         
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//        	[[NSNotificationCenter defaultCenter] postNotificationName:kSLSMoleculeRenderingStartedNotification object:nil ];
-//        });
-        
-        glActiveTexture(GL_TEXTURE3);
-        glBindTexture(GL_TEXTURE_2D, 0);
-        
         // Use bilinear filtering here to smooth out the ambient occlusion shadowing
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, depthPassTexture);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+        
+        GLfloat zeroTranslation[3] = {0.0, 0.0, 0.0};
         
         
 //        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
@@ -1578,7 +1581,7 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
                 [self convert3DTransform:&inverseMatrix to3x3Matrix:inverseModelViewMatrix];
                 [self convert3DTransform:&currentSamplingRotationMatrix to3x3Matrix:currentModelViewMatrix];
                 
-                [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
+                [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix translation:zeroTranslation];
                 [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(0.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
                 //        [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(1.0 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -1596,7 +1599,7 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
                 [self convert3DTransform:&inverseMatrix to3x3Matrix:inverseModelViewMatrix];
                 [self convert3DTransform:&currentSamplingRotationMatrix to3x3Matrix:currentModelViewMatrix];
                 
-                [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix];
+                [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix translation:zeroTranslation];
                 [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(0.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -1629,9 +1632,6 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
 {
     [self switchToAOLookupFramebuffer];
 
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, 0);
-
     glBlendEquation(GL_FUNC_ADD);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -1652,9 +1652,6 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
 	glVertexAttribPointer(sphereAOLookupImpostorSpaceAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, sphereAOLookupTexture);
 }
 
 - (void)displayTextureToScreen:(GLuint)textureToDisplay;

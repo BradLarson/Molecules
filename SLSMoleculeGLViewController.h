@@ -38,7 +38,6 @@
 	float instantObjectScale, instantXRotation, instantYRotation, instantXTranslation, instantYTranslation, instantZTranslation;
 	CGPoint lastMovementPosition, previousDirectionOfPanning;
 	BOOL twoFingersAreMoving, pinchGestureUnderway;
-	float scalingForMovement;
 }
 
 @property (readwrite, retain, nonatomic) UIActionSheet *visualizationActionSheet;

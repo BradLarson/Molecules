@@ -26,7 +26,7 @@ void main()
 
     if ( (impostorSpaceCoordinate.t <= (-1.0 + displacementFromCurvature)) || (impostorSpaceCoordinate.t >= (1.0 + displacementFromCurvature)))
     {
-        discard;
+        gl_FragColor = vec4(1.0);
     }
 
 //    if ( impostorSpaceCoordinate.t <= (-1.0 + displacementFromCurvature))

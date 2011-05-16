@@ -203,8 +203,8 @@
 		previousTimestamp = 0;
 		CADisplayLink *aDisplayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(handleAutorotationTimer)];
 		[aDisplayLink setFrameInterval:2];
-//		[aDisplayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-		[aDisplayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+		[aDisplayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+//		[aDisplayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
         
 		self.displayLink = aDisplayLink;
 		

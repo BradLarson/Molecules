@@ -23,6 +23,9 @@ mediump float depthFromEncodedColor(mediump vec3 encodedColor)
 
 void main()
 {
+//    vec3 encodedColor = texture2D(depthTexture, normalizedViewCoordinate.xy).rgb;
+//    gl_FragColor = vec4(encodedColor, 1.0);
+
 //    gl_FragColor = vec4(1.0);
 
     float distanceFromCenter = length(impostorSpaceCoordinate);

@@ -3,30 +3,33 @@ precision mediump float;
 varying mediump vec2 impostorSpaceCoordinate;
 varying mediump float normalizedDepth;
 varying mediump float adjustedSphereRadius;
+varying mediump vec2 depthLookupCoordinate;
 
-//const vec3 stepValues = vec3(510.0, 255.0, 0.0);
-const vec3 stepValues = vec3(2.0, 1.0, 0.0);
-const float scaleDownFactor = 1.0 / 255.0;
+uniform lowp sampler2D sphereDepthMap;
+
+const lowp vec3 stepValues = vec3(2.0, 1.0, 0.0);
+const mediump float scaleDownFactor = 1.0 / 255.0;
 
 void main()
 {
 //    gl_FragColor = vec4(normalizedDepth * (impostorSpaceCoordinate + 1.0) / 2.0, normalizedDepth, 1.0);
-  
-    float distanceFromCenter = length(impostorSpaceCoordinate);
-    if (distanceFromCenter > 1.0)
+    lowp vec2 precalculatedDepthAndAlpha = texture2D(sphereDepthMap, depthLookupCoordinate).ra;
+
+    if (precalculatedDepthAndAlpha.g < 0.5)
     {
         gl_FragColor = vec4(1.0);
     }
     else
     {
-        float calculatedDepth = sqrt(1.0 - distanceFromCenter * distanceFromCenter);
-        mediump float currentDepthValue = normalizedDepth - adjustedSphereRadius * calculatedDepth;
+        float currentDepthValue = normalizedDepth - adjustedSphereRadius * precalculatedDepthAndAlpha.r;
         
         // Inlined color encoding for the depth values
-        float ceiledValue = ceil(currentDepthValue * 765.0);
+        currentDepthValue = currentDepthValue * 3.0;
+        //float ceiledValue = ceil(currentDepthValue * 765.0) * scaleDownFactor;
         
-        vec3 intDepthValue = (vec3(ceiledValue) * scaleDownFactor) - stepValues;
+        lowp vec3 intDepthValue = vec3(currentDepthValue) - stepValues;
+        lowp vec4 outputColor = vec4(intDepthValue, 1.0);
         
-        gl_FragColor = vec4(intDepthValue, 1.0);
+        gl_FragColor = outputColor;
     }
 }

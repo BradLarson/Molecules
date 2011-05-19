@@ -14,7 +14,7 @@
 #define AOLOOKUPTEXTUREWIDTH 128
 //#define AOLOOKUPTEXTUREWIDTH 64
 //#define SPHEREDEPTHTEXTUREWIDTH 256
-#define SPHEREDEPTHTEXTUREWIDTH 32
+#define SPHEREDEPTHTEXTUREWIDTH 256
 
 @implementation SLSOpenGLES20Renderer
 
@@ -221,6 +221,7 @@
             // 0 - Depth pass texture
             // 1 - Ambient occlusion texture
             // 2 - AO lookup texture
+            // 3 - Sphere depth precalculation texture
 
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, depthPassTexture);
@@ -231,6 +232,8 @@
             glActiveTexture(GL_TEXTURE2);
             glBindTexture(GL_TEXTURE_2D, sphereAOLookupTexture);
 
+            glActiveTexture(GL_TEXTURE3);
+            glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
         });        
     });
     
@@ -374,7 +377,8 @@
     sphereDepthOrthographicMatrix = [sphereDepthProgram uniformIndex:@"orthographicMatrix"];
     sphereDepthPrecalculatedDepthTexture = [sphereDepthProgram uniformIndex:@"precalculatedSphereDepthTexture"];
     sphereDepthTranslation = [sphereDepthProgram uniformIndex:@"translation"];
-    
+    sphereDepthMapTexture = [sphereDepthProgram uniformIndex:@"sphereDepthMap"];
+
     [sphereDepthProgram use];
     glEnableVertexAttribArray(sphereDepthPositionAttribute);
     glEnableVertexAttribArray(sphereDepthImpostorSpaceAttribute);
@@ -532,6 +536,7 @@
     sphereRaytracingAOTexture = [sphereRaytracingProgram uniformIndex:@"ambientOcclusionTexture"];
     sphereRaytracingPrecalculatedAOLookupTexture = [sphereRaytracingProgram uniformIndex:@"precalculatedAOLookupTexture"];
     sphereRaytracingTranslation = [sphereRaytracingProgram uniformIndex:@"translation"];
+    sphereRaytracingDepthMapTexture = [sphereRaytracingProgram uniformIndex:@"sphereDepthMap"];
 
     [sphereRaytracingProgram use];
     glEnableVertexAttribArray(sphereRaytracingPositionAttribute);
@@ -629,13 +634,15 @@
     [sphereAOLookupPrecalculationProgram use];
     glEnableVertexAttribArray(sphereAOLookupImpostorSpaceAttribute);
     
-//    [self generateSphereDepthMapTexture];
+    [self generateSphereDepthMapTexture];
     
     glDisable(GL_DEPTH_TEST); 
     glDisable(GL_ALPHA_TEST); 
     glEnable(GL_BLEND);
     glBlendEquation(GL_FUNC_ADD);
     glBlendFunc(GL_ONE, GL_ONE);
+//    glAlphaFunc(GL_ALWAYS, 0);
+    glDepthMask(GL_FALSE);
 }
 
 - (void)switchToDisplayFramebuffer;
@@ -705,10 +712,10 @@
 
     glGenTextures(1, &sphereDepthMappingTexture);
 
-    glActiveTexture(GL_TEXTURE2);
+    glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -722,7 +729,7 @@
         for (unsigned int currentRowInTexture = 0; currentRowInTexture < SPHEREDEPTHTEXTUREWIDTH; currentRowInTexture++)
         {
             float normalizedXLocation = -1.0 + 2.0 * (float)currentRowInTexture / (float)SPHEREDEPTHTEXTUREWIDTH;
-            unsigned char currentDepthByte = 0, currentAmbientLightingByte = 0, currentSpecularLightingByte = 0, alphaByte = 255;
+            unsigned char currentDepthByte = 0, currentAmbientLightingByte = 0, currentSpecularLightingByte = 0, alphaByte = 0;
             
             float distanceFromCenter = sqrt(normalizedXLocation * normalizedXLocation + normalizedYLocation * normalizedYLocation);
             float currentSphereDepth = 0.0;
@@ -780,7 +787,7 @@
     
 //	glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, SPHEREDEPTHTEXTUREWIDTH, SPHEREDEPTHTEXTUREWIDTH, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, sphereDepthTextureData);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, SPHEREDEPTHTEXTUREWIDTH, SPHEREDEPTHTEXTUREWIDTH, 0, GL_RGBA, GL_UNSIGNED_BYTE, sphereDepthTextureData);
-//    glGenerateMipmap(GL_TEXTURE_2D);
+    glGenerateMipmap(GL_TEXTURE_2D);
 //    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
 
     free(sphereDepthTextureData);
@@ -859,7 +866,7 @@
         [self switchToDisplayFramebuffer];
         
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         [self presentRenderBuffer];
     });
@@ -886,7 +893,7 @@
         
         [EAGLContext setCurrentContext:context];
 
-//        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
+        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
         
         GLfloat currentModelViewMatrix[9];
         [self convert3DTransform:&currentCalculatedMatrix to3x3Matrix:currentModelViewMatrix];
@@ -910,20 +917,19 @@
 //        [self displayTextureToScreen:ambientOcclusionTexture];
         [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix translation:currentTranslation scale:currentScaleFactor];
         
-        // Discarding is only supported starting with 4.0, so I need to do a check here for 3.2 devices
-        //    const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
-        //    glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
+        const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
+        glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
 
 //        dispatch_sync(dispatch_get_main_queue(), ^{
             [self presentRenderBuffer];
 //        });
         
-        const GLenum discards[]  = {GL_COLOR_ATTACHMENT0};
-        glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
+//        const GLenum discards[]  = {GL_COLOR_ATTACHMENT0};
+//        glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
 
-//        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
-//        
-//        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
+        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
+        
+        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
         
         dispatch_semaphore_signal(frameRenderingSemaphore);
     });
@@ -1201,7 +1207,8 @@
     
     glUniformMatrix3fv(sphereDepthModelViewMatrix, 1, 0, depthModelViewMatrix);
     glUniform3fv(sphereDepthTranslation, 1, modelTranslation);
-    
+    glUniform1i(sphereDepthMapTexture, 3);
+
     float sphereScaleFactor = overallMoleculeScaleFactor * scaleFactor * atomRadiusScaleFactor;
     GLsizei atomVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
     
@@ -1292,6 +1299,7 @@
 //    glUniformMatrix3fv(sphereRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
     glUniform1f(sphereRaytracingTexturePatchWidth, (normalizedAOTexturePatchWidth - 2.0 / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH) * 0.5);
     glUniform3fv(sphereRaytracingTranslation, 1, modelTranslation);
+    glUniform1i(sphereRaytracingDepthMapTexture, 3);
 
     float sphereScaleFactor = overallMoleculeScaleFactor * scaleFactor * atomRadiusScaleFactor;
     GLsizei atomVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
@@ -1620,15 +1628,7 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, depthPassTexture);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-        
-        /*
-         glActiveTexture(GL_TEXTURE3);
-         glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexture);
-         
-         glGenerateMipmap(GL_TEXTURE_2D);
-         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-         */
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );        
     });
 }
 

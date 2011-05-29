@@ -947,12 +947,12 @@
         
         GLfloat currentScaleFactor = currentModelScaleFactor;
 
-        [self precalculateAOLookupTextureForInverseMatrix:inverseModelViewMatrix];
+//        [self precalculateAOLookupTextureForInverseMatrix:inverseModelViewMatrix];
         [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix translation:currentTranslation scale:currentScaleFactor];
 //        [self displayTextureToScreen:sphereAOLookupTexture];
-//        [self displayTextureToScreen:depthPassTexture];
+        [self displayTextureToScreen:depthPassTexture];
 //        [self displayTextureToScreen:ambientOcclusionTexture];
-        [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix translation:currentTranslation scale:currentScaleFactor];
+//        [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix translation:currentTranslation scale:currentScaleFactor];
         
 //        const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
 //        glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
@@ -988,7 +988,12 @@
 
 - (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint;
 {
-    GLushort baseToAddToIndices = numberOfAtomVertices[atomType];
+    GLushort baseToAddToIndices = numberOfAtomVertices[currentAtomVBO];
+    if (baseToAddToIndices > 65000)
+    {
+        baseToAddToIndices = 0;
+        currentAtomVBO++;
+    }    
     
     GLfloat newVertex[3];
     //    newVertex[0] = newPoint.x;
@@ -996,8 +1001,8 @@
     newVertex[1] = newPoint.y;
     newVertex[2] = newPoint.z;
     
+    
     // Square coordinate generation
-
     GLfloat lowerLeftTexture[2] = {-1.0, -1.0};
     GLfloat lowerRightTexture[2] = {1.0, -1.0};
     GLfloat upperLeftTexture[2] = {-1.0, 1.0};
@@ -1005,18 +1010,18 @@
     
     // Add four copies of this vertex, that will be translated in the vertex shader into the billboard
     // Interleave texture coordinates in VBO
-    [self addVertex:newVertex forAtomType:atomType];
-    [self addTextureCoordinate:lowerLeftTexture forAtomType:atomType];
-    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
-    [self addVertex:newVertex forAtomType:atomType];
-    [self addTextureCoordinate:lowerRightTexture forAtomType:atomType];
-    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
-    [self addVertex:newVertex forAtomType:atomType];
-    [self addTextureCoordinate:upperLeftTexture forAtomType:atomType];
-    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
-    [self addVertex:newVertex forAtomType:atomType];
-    [self addTextureCoordinate:upperRightTexture forAtomType:atomType];
-    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
+    [self addVertex:newVertex forAtomType:currentAtomVBO];
+    [self addTextureCoordinate:lowerLeftTexture forAtomType:currentAtomVBO];
+    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:currentAtomVBO];
+    [self addVertex:newVertex forAtomType:currentAtomVBO];
+    [self addTextureCoordinate:lowerRightTexture forAtomType:currentAtomVBO];
+    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:currentAtomVBO];
+    [self addVertex:newVertex forAtomType:currentAtomVBO];
+    [self addTextureCoordinate:upperLeftTexture forAtomType:currentAtomVBO];
+    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:currentAtomVBO];
+    [self addVertex:newVertex forAtomType:currentAtomVBO];
+    [self addTextureCoordinate:upperRightTexture forAtomType:currentAtomVBO];
+    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:currentAtomVBO];
     
     //    123243
     GLushort newIndices[6];
@@ -1027,7 +1032,7 @@
     newIndices[4] = baseToAddToIndices + 3;
     newIndices[5] = baseToAddToIndices + 2;
     
-    [self addIndices:newIndices size:6 forAtomType:atomType];
+    [self addIndices:newIndices size:6 forAtomType:currentAtomVBO];
 
     
     /*
@@ -1053,9 +1058,9 @@
     
     for (unsigned int currentTextureCoordinate = 0; currentTextureCoordinate < 9; currentTextureCoordinate++)
     {
-        [self addVertex:newVertex forAtomType:atomType];
-        [self addTextureCoordinate:octagonPoints[currentTextureCoordinate] forAtomType:atomType];
-        [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
+        [self addVertex:newVertex forAtomType:currentAtomVBO];
+        [self addTextureCoordinate:octagonPoints[currentTextureCoordinate] forAtomType:currentAtomVBO];
+        [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:currentAtomVBO];
         
     }
     
@@ -1072,7 +1077,7 @@
     newIndices[indexCounter++] = baseToAddToIndices;
     newIndices[indexCounter] = baseToAddToIndices + 1;
     
-    [self addIndices:newIndices size:24 forAtomType:atomType];
+    [self addIndices:newIndices size:24 forAtomType:currentAtomVBO];
 */
      
      previousAmbientOcclusionOffset[0] += normalizedAOTexturePatchWidth;

@@ -27,7 +27,18 @@ void main()
 {
 	vec3 transformedPosition = modelViewProjMatrix * position;
 //    impostorSpaceCoordinate = inputImpostorSpaceCoordinate;
-    impostorSpaceCoordinate = inputImpostorSpaceCoordinate * (1.0 + 2.0 / (AMBIENTOCCLUSIONTEXTUREWIDTH * ambientOcclusionTexturePatchWidth));
+    vec2 adjustedImpostorSpaceCoordinate;
+    if (inputImpostorSpaceCoordinate.x != 0.0)
+    {
+        adjustedImpostorSpaceCoordinate = sign(inputImpostorSpaceCoordinate);
+    }
+    else
+    {
+        adjustedImpostorSpaceCoordinate = vec2(0.0, 0.0);
+    }
+        
+    
+    impostorSpaceCoordinate = adjustedImpostorSpaceCoordinate * (1.0 + 2.0 / (AMBIENTOCCLUSIONTEXTUREWIDTH * ambientOcclusionTexturePatchWidth));
 
     adjustedSphereRadius = sphereRadius;
     
@@ -37,5 +48,5 @@ void main()
     
     normalizedViewCoordinate = (transformedPosition / 2.0) + 0.5;
 
-    gl_Position = vec4(ambientOcclusionTextureOffset * 2.0 - vec2(1.0) + (ambientOcclusionTexturePatchWidth * inputImpostorSpaceCoordinate), 0.0, 1.0);
+    gl_Position = vec4(ambientOcclusionTextureOffset * 2.0 - vec2(1.0) + (ambientOcclusionTexturePatchWidth * adjustedImpostorSpaceCoordinate), 0.0, 1.0);
 }

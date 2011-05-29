@@ -273,11 +273,9 @@
         if (viewDepthBuffer == 0)
         {
             glGenRenderbuffers(1, depthbufferPointer);
-            NSLog(@"Generating depth buffer");
         }
         else
         {
-            NSLog(@"Didn't generate depth buffer");
         }
 
         glBindRenderbuffer(GL_RENDERBUFFER, *depthbufferPointer);
@@ -998,6 +996,8 @@
     newVertex[1] = newPoint.y;
     newVertex[2] = newPoint.z;
     
+    // Square coordinate generation
+
     GLfloat lowerLeftTexture[2] = {-1.0, -1.0};
     GLfloat lowerRightTexture[2] = {1.0, -1.0};
     GLfloat upperLeftTexture[2] = {-1.0, 1.0};
@@ -1028,8 +1028,54 @@
     newIndices[5] = baseToAddToIndices + 2;
     
     [self addIndices:newIndices size:6 forAtomType:atomType];
+
     
-    previousAmbientOcclusionOffset[0] += normalizedAOTexturePatchWidth;
+    /*
+    // Octagonal coordinate generation
+    GLfloat positiveSideComponent = 1.0 - 2.0 / (sqrt(2) + 2);
+    GLfloat negativeSideComponent = -1.0 + 2.0 / (sqrt(2) + 2);
+    
+    GLfloat octagonPoints[9][2] = {
+        {0.0, 0.0},
+        {negativeSideComponent, 1.0},
+        {positiveSideComponent, 1.0},
+        {1.0, positiveSideComponent},
+        {1.0, negativeSideComponent},
+        {positiveSideComponent, -1.0},
+        {negativeSideComponent, -1.0},
+        {-1.0, negativeSideComponent},
+        {-1.0, positiveSideComponent}
+    };
+    
+    // Add nine copies of this vertex, that will be translated in the vertex shader into the billboard
+    // Interleave texture coordinates in VBO
+    
+    
+    for (unsigned int currentTextureCoordinate = 0; currentTextureCoordinate < 9; currentTextureCoordinate++)
+    {
+        [self addVertex:newVertex forAtomType:atomType];
+        [self addTextureCoordinate:octagonPoints[currentTextureCoordinate] forAtomType:atomType];
+        [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
+        
+    }
+    
+    unsigned int indexCounter = 0;
+    GLushort newIndices[24];
+    for (unsigned int currentTriangleInOctagon = 0; currentTriangleInOctagon < 7; currentTriangleInOctagon++)
+    {
+        newIndices[indexCounter++] = baseToAddToIndices + 1 + currentTriangleInOctagon;
+        newIndices[indexCounter++] = baseToAddToIndices;
+        newIndices[indexCounter++] = baseToAddToIndices + 2 + currentTriangleInOctagon;
+    }
+    
+    newIndices[indexCounter++] = baseToAddToIndices + 8;
+    newIndices[indexCounter++] = baseToAddToIndices;
+    newIndices[indexCounter] = baseToAddToIndices + 1;
+    
+    [self addIndices:newIndices size:24 forAtomType:atomType];
+*/
+     
+     previousAmbientOcclusionOffset[0] += normalizedAOTexturePatchWidth;
     if (previousAmbientOcclusionOffset[0] > (1.0 - normalizedAOTexturePatchWidth * 0.15))
     {
         previousAmbientOcclusionOffset[0] = normalizedAOTexturePatchWidth / 2.0;
@@ -1374,18 +1420,10 @@
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    if (shouldDrawBonds)
-    {
-        // TODO - Find a way to remove this by drawing cylinders in the depth test
-        glDisable(GL_DEPTH_TEST);
-    }
-    else
-    {
-        glColorMask(0.0, 0.0, 0.0, 0.0);
-        [self writeDepthValuesForOpaqueAreasForModelViewMatrix:raytracingModelViewMatrix translation:modelTranslation scale:scaleFactor];
-        glColorMask(1.0, 1.0, 1.0, 1.0);
-        glDepthMask(GL_FALSE);
-    }
+    glColorMask(0.0, 0.0, 0.0, 0.0);
+    [self writeDepthValuesForOpaqueAreasForModelViewMatrix:raytracingModelViewMatrix translation:modelTranslation scale:scaleFactor];
+    glColorMask(1.0, 1.0, 1.0, 1.0);
+    glDepthMask(GL_FALSE);
     
 //    glClear(GL_COLOR_BUFFER_BIT);
 //
@@ -1468,6 +1506,10 @@
                 // Bind the index buffer and draw to the screen
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bondIndexBufferHandle[currentBondVBOIndex]);
                 glDrawElements(GL_TRIANGLES, numberOfBondIndicesInBuffer[currentBondVBOIndex], GL_UNSIGNED_SHORT, NULL);
+
+                // Unbind the buffers
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
+                glBindBuffer(GL_ARRAY_BUFFER, 0); 
             }
         }
     }        
@@ -1740,10 +1782,15 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
 {
     [self switchToAOLookupFramebuffer];
 
-    glBlendEquation(GL_FUNC_ADD);
+    glDisable(GL_DEPTH_TEST);
+    glBlendEquation(GL_MAX_EXT);
+    glDepthMask(GL_FALSE);
+    glEnable(GL_BLEND);
+    
+//    glBlendEquation(GL_FUNC_ADD);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     // Draw the spheres
     [sphereAOLookupPrecalculationProgram use];
@@ -1760,6 +1807,7 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
 	glVertexAttribPointer(sphereAOLookupImpostorSpaceAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glEnable(GL_DEPTH_TEST);
 }
 
 - (void)displayTextureToScreen:(GLuint)textureToDisplay;

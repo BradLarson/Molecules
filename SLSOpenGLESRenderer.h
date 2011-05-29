@@ -85,7 +85,7 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
     unsigned int numberOfAtomVertices[NUM_ATOMTYPES], numberOfBondVertices[MAX_BOND_VBOS], numberOfAtomIndices[NUM_ATOMTYPES], numberOfBondIndices[MAX_BOND_VBOS];
 
     NSMutableData *bondVBOs[MAX_BOND_VBOS], *bondIndexBuffers[MAX_BOND_VBOS];
-    unsigned int currentBondVBO;
+    unsigned int currentBondVBO, currentAtomVBO;
     
     dispatch_queue_t openGLESContextQueue;
     dispatch_semaphore_t frameRenderingSemaphore;

@@ -493,6 +493,7 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
     }
     
     currentBondVBO = 0;
+    currentAtomVBO = 0;
 }
 
 - (void)terminateMoleculeRendering;

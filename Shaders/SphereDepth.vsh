@@ -27,6 +27,7 @@ void main()
     depthLookupCoordinate = (impostorSpaceCoordinate / 2.0) + 0.5;
     
     transformedPosition.xy = transformedPosition.xy + inputImpostorSpaceCoordinate.xy * vec2(sphereRadius);
+    transformedPosition.z = transformedPosition.z - sphereRadius;
     transformedPosition = transformedPosition * orthographicMatrix;
 
     float depthAdjustmentForOrthographicProjection = (vec3(0.0, 0.0, 0.5) * orthographicMatrix).z;

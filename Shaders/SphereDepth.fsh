@@ -21,7 +21,7 @@ void main()
     }
     else
     {
-        float currentDepthValue = normalizedDepth - adjustedSphereRadius * precalculatedDepthAndAlpha.r;
+        float currentDepthValue = normalizedDepth + adjustedSphereRadius - adjustedSphereRadius * precalculatedDepthAndAlpha.r;
         
         // Inlined color encoding for the depth values
         currentDepthValue = currentDepthValue * 3.0;

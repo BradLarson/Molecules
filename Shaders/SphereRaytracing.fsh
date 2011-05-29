@@ -32,7 +32,7 @@ void main()
     }
     else
     {
-        float currentDepthValue = normalizedViewCoordinate.z - adjustedSphereRadius * precalculatedDepthAndLighting.r;        
+        float currentDepthValue = normalizedViewCoordinate.z + adjustedSphereRadius - adjustedSphereRadius * precalculatedDepthAndLighting.r;        
         vec3 encodedColor = texture2D(depthTexture, normalizedViewCoordinate.xy).rgb;
         float previousDepthValue = depthFromEncodedColor(encodedColor);
       

@@ -15,6 +15,10 @@
 
 @interface SLSOpenGLES20Renderer : SLSOpenGLESRenderer 
 {
+    GLProgram *sphereDepthWriteProgram;
+	GLint sphereDepthWritePositionAttribute, sphereDepthWriteImpostorSpaceAttribute, sphereDepthWriteModelViewMatrix;
+    GLint sphereDepthWriteRadius, sphereDepthWriteOrthographicMatrix, sphereDepthWriteTranslation;
+
     GLProgram *sphereDepthProgram;
 	GLint sphereDepthPositionAttribute, sphereDepthImpostorSpaceAttribute, sphereDepthModelViewMatrix;
     GLint sphereDepthRadius, sphereDepthOrthographicMatrix, sphereDepthTranslation, sphereDepthMapTexture;
@@ -99,6 +103,7 @@
 
 // OpenGL drawing routines
 - (void)renderDepthTextureForModelViewMatrix:(GLfloat *)depthModelViewMatrix translation:(GLfloat *)modelTranslation scale:(GLfloat)scaleFactor;
+- (void)writeDepthValuesForOpaqueAreasForModelViewMatrix:(GLfloat *)depthModelViewMatrix translation:(GLfloat *)modelTranslation scale:(GLfloat)scaleFactor;
 - (void)renderRaytracedSceneForModelViewMatrix:(GLfloat *)raytracingModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix translation:(GLfloat *)modelTranslation scale:(GLfloat)scaleFactor;
 - (void)renderAmbientOcclusionTextureForModelViewMatrix:(GLfloat *)ambientOcclusionModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix fractionOfTotal:(GLfloat)fractionOfTotal;
 - (void)prepareAmbientOcclusionMap;

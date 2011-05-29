@@ -157,9 +157,12 @@
     [sphereDepthProgram use];
     glUniformMatrix3fv(sphereDepthOrthographicMatrix, 1, 0, orthographicMatrix);
 
+    [sphereDepthWriteProgram use];
+    glUniformMatrix3fv(sphereDepthWriteOrthographicMatrix, 1, 0, orthographicMatrix);
+
     [cylinderDepthProgram use];
     glUniformMatrix3fv(cylinderDepthOrthographicMatrix, 1, 0, orthographicMatrix);
-    
+
     [sphereRaytracingProgram use];
     glUniformMatrix3fv(sphereRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
 
@@ -196,7 +199,7 @@
             
             [self createFramebuffer:&viewFramebuffer size:CGSizeZero renderBuffer:&viewRenderbuffer depthBuffer:&viewDepthBuffer texture:NULL layer:glLayer];    
             //    [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:&depthPassDepthBuffer texture:&depthPassTexture layer:glLayer];
-            [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:NULL texture:&depthPassTexture layer:glLayer];
+            [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:&viewDepthBuffer texture:&depthPassTexture layer:glLayer];
 
             if (!ambientOcclusionFramebuffer)
             {
@@ -267,7 +270,16 @@
     
     if (depthbufferPointer != NULL)
     {
-        glGenRenderbuffers(1, depthbufferPointer);
+        if (viewDepthBuffer == 0)
+        {
+            glGenRenderbuffers(1, depthbufferPointer);
+            NSLog(@"Generating depth buffer");
+        }
+        else
+        {
+            NSLog(@"Didn't generate depth buffer");
+        }
+
         glBindRenderbuffer(GL_RENDERBUFFER, *depthbufferPointer);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, bufferSize.width, bufferSize.height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, *depthbufferPointer);
@@ -382,7 +394,7 @@
     [sphereDepthProgram use];
     glEnableVertexAttribArray(sphereDepthPositionAttribute);
     glEnableVertexAttribArray(sphereDepthImpostorSpaceAttribute);
-        
+
     cylinderDepthProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"CylinderDepth" fragmentShaderFilename:@"CylinderDepth"];
 	[cylinderDepthProgram addAttribute:@"position"];
 	[cylinderDepthProgram addAttribute:@"direction"];
@@ -413,6 +425,33 @@
     glEnableVertexAttribArray(cylinderDepthPositionAttribute);
     glEnableVertexAttribArray(cylinderDepthDirectionAttribute);
     glEnableVertexAttribArray(cylinderDepthImpostorSpaceAttribute);
+
+    sphereDepthWriteProgram = [[GLProgram alloc] initWithVertexShaderFilename:@"SphereDepthWrite" fragmentShaderFilename:@"SphereDepthWrite"];
+	[sphereDepthWriteProgram addAttribute:@"position"];
+	[sphereDepthWriteProgram addAttribute:@"inputImpostorSpaceCoordinate"];
+	if (![sphereDepthWriteProgram link])
+	{
+		NSLog(@"Raytracing shader link failed");
+		NSString *progLog = [sphereDepthWriteProgram programLog];
+		NSLog(@"Program Log: %@", progLog); 
+		NSString *fragLog = [sphereDepthWriteProgram fragmentShaderLog];
+		NSLog(@"Frag Log: %@", fragLog);
+		NSString *vertLog = [sphereDepthWriteProgram vertexShaderLog];
+		NSLog(@"Vert Log: %@", vertLog);
+		[sphereDepthWriteProgram release];
+		sphereDepthWriteProgram = nil;
+	}
+    
+    sphereDepthWritePositionAttribute = [sphereDepthWriteProgram attributeIndex:@"position"];
+    sphereDepthWriteImpostorSpaceAttribute = [sphereDepthWriteProgram attributeIndex:@"inputImpostorSpaceCoordinate"];
+	sphereDepthWriteModelViewMatrix = [sphereDepthWriteProgram uniformIndex:@"modelViewProjMatrix"];
+    sphereDepthWriteRadius = [sphereDepthWriteProgram uniformIndex:@"sphereRadius"];
+    sphereDepthWriteOrthographicMatrix = [sphereDepthWriteProgram uniformIndex:@"orthographicMatrix"];
+    sphereDepthWriteTranslation = [sphereDepthWriteProgram uniformIndex:@"translation"];
+    
+    [sphereDepthWriteProgram use];
+    glEnableVertexAttribArray(sphereDepthWritePositionAttribute);
+    glEnableVertexAttribArray(sphereDepthWriteImpostorSpaceAttribute);    
 }
 
 - (void)initializeAmbientOcclusionShaders;
@@ -576,7 +615,7 @@
     cylinderRaytracingTexturePatchWidth = [cylinderRaytracingProgram uniformIndex:@"ambientOcclusionTexturePatchWidth"];
     cylinderRaytracingAOTexture = [cylinderRaytracingProgram uniformIndex:@"ambientOcclusionTexture"];
     cylinderRaytracingTranslation = [cylinderRaytracingProgram uniformIndex:@"translation"];
-
+    
     [cylinderRaytracingProgram use];
     glEnableVertexAttribArray(cylinderRaytracingPositionAttribute);
     glEnableVertexAttribArray(cylinderRaytracingImpostorSpaceAttribute);
@@ -649,7 +688,7 @@
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, viewFramebuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, viewRenderbuffer);
-    
+
     CGSize newViewportSize = CGSizeMake(backingWidth, backingHeight);
 
     if (!CGSizeEqualToSize(newViewportSize, currentViewportSize))
@@ -909,16 +948,16 @@
         currentTranslation[2] = accumulatedModelTranslation[2];
         
         GLfloat currentScaleFactor = currentModelScaleFactor;
-        
-        [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix translation:currentTranslation scale:currentScaleFactor];
+
         [self precalculateAOLookupTextureForInverseMatrix:inverseModelViewMatrix];
+        [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix translation:currentTranslation scale:currentScaleFactor];
 //        [self displayTextureToScreen:sphereAOLookupTexture];
 //        [self displayTextureToScreen:depthPassTexture];
 //        [self displayTextureToScreen:ambientOcclusionTexture];
         [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix translation:currentTranslation scale:currentScaleFactor];
         
-        const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
-        glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
+//        const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
+//        glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
 
 //        dispatch_sync(dispatch_get_main_queue(), ^{
             [self presentRenderBuffer];
@@ -1200,8 +1239,15 @@
     
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glBlendEquation(GL_MIN_EXT);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+    glDepthFunc(GL_LEQUAL);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
+    [self writeDepthValuesForOpaqueAreasForModelViewMatrix:depthModelViewMatrix translation:modelTranslation scale:scaleFactor];
+    glDepthMask(GL_FALSE);
+
     // Draw the spheres
     [sphereDepthProgram use];
     
@@ -1246,8 +1292,6 @@
         glUniformMatrix3fv(cylinderDepthModelViewMatrix, 1, 0, depthModelViewMatrix);
         glUniform3fv(cylinderDepthTranslation, 1, modelTranslation);
 
-//        glUniformMatrix3fv(cylinderDepthOrthographicMatrix, 1, 0, orthographicMatrix);
-        
         for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
         {
             // Draw bonds next
@@ -1269,21 +1313,82 @@
             }
         }
     }    
+    
+    glDisable(GL_DEPTH_TEST);
+}
+
+- (void)writeDepthValuesForOpaqueAreasForModelViewMatrix:(GLfloat *)depthModelViewMatrix translation:(GLfloat *)modelTranslation scale:(GLfloat)scaleFactor;
+{
+//    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
+        
+    // Draw the spheres
+    [sphereDepthWriteProgram use];
+    
+    glUniformMatrix3fv(sphereDepthWriteModelViewMatrix, 1, 0, depthModelViewMatrix);
+    glUniform3fv(sphereDepthWriteTranslation, 1, modelTranslation);
+    
+    float sphereScaleFactor = overallMoleculeScaleFactor * scaleFactor * atomRadiusScaleFactor;
+    GLsizei atomVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
+    
+    for (unsigned int currentAtomType = 0; currentAtomType < NUM_ATOMTYPES; currentAtomType++)
+    {
+        if (atomIndexBufferHandle[currentAtomType] != 0)
+        {
+            glUniform1f(sphereDepthWriteRadius, atomProperties[currentAtomType].atomRadius * sphereScaleFactor);
+            
+            // Bind the VBO and attach it to the program
+            glBindBuffer(GL_ARRAY_BUFFER, atomVertexBufferHandles[currentAtomType]); 
+            glVertexAttribPointer(sphereDepthWritePositionAttribute, 3, GL_FLOAT, 0, atomVBOStride, (char *)NULL + 0);
+            glVertexAttribPointer(sphereDepthWriteImpostorSpaceAttribute, 2, GL_FLOAT, 0, atomVBOStride, (char *)NULL + (sizeof(GLfloat) * 3));
+            
+            // Bind the index buffer and draw to the screen
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, atomIndexBufferHandle[currentAtomType]);    
+            glDrawElements(GL_TRIANGLES, numberOfIndicesInBuffer[currentAtomType], GL_UNSIGNED_SHORT, NULL);
+            
+            // Unbind the buffers
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
+            glBindBuffer(GL_ARRAY_BUFFER, 0); 
+        }
+    }
+     
+    glEnable(GL_BLEND);
+//    glDepthMask(GL_FALSE);
+//    glDisable(GL_DEPTH_TEST);
 }
 
 - (void)renderRaytracedSceneForModelViewMatrix:(GLfloat *)raytracingModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix translation:(GLfloat *)modelTranslation scale:(GLfloat)scaleFactor;
 {
     [self switchToDisplayFramebuffer];
     
-    // 0 - Depth pass texture
-    // 1 - Ambient occlusion texture
-    // 2 - AO lookup texture
-    
+//    glEnable(GL_DEPTH_TEST);
+//    glDepthMask(GL_FALSE);
+
     glBlendEquation(GL_MAX_EXT);
     
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+    glDepthFunc(GL_LEQUAL);
+    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    if (shouldDrawBonds)
+    {
+        // TODO - Find a way to remove this by drawing cylinders in the depth test
+        glDisable(GL_DEPTH_TEST);
+    }
+    else
+    {
+        glColorMask(0.0, 0.0, 0.0, 0.0);
+        [self writeDepthValuesForOpaqueAreasForModelViewMatrix:raytracingModelViewMatrix translation:modelTranslation scale:scaleFactor];
+        glColorMask(1.0, 1.0, 1.0, 1.0);
+        glDepthMask(GL_FALSE);
+    }
+    
+//    glClear(GL_COLOR_BUFFER_BIT);
+//
     // Draw the spheres
     [sphereRaytracingProgram use];
         
@@ -1296,7 +1401,6 @@
 
     glUniformMatrix3fv(sphereRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
     glUniformMatrix3fv(sphereRaytracingInverseModelViewMatrix, 1, 0, inverseMatrix);
-//    glUniformMatrix3fv(sphereRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
     glUniform1f(sphereRaytracingTexturePatchWidth, (normalizedAOTexturePatchWidth - 2.0 / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH) * 0.5);
     glUniform3fv(sphereRaytracingTranslation, 1, modelTranslation);
     glUniform1i(sphereRaytracingDepthMapTexture, 3);
@@ -1328,7 +1432,7 @@
     }
         
     if (shouldDrawBonds)
-    {
+    {        
         // Draw the cylinders
         [cylinderRaytracingProgram use];
         
@@ -1344,7 +1448,6 @@
         glUniform1f(cylinderRaytracingRadius, bondRadius * cylinderScaleFactor);
         glUniform3f(cylinderRaytracingColor, 0.75, 0.75, 0.75);
         glUniformMatrix3fv(cylinderRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
-//        glUniformMatrix3fv(cylinderRaytracingOrthographicMatrix, 1, 0, orthographicMatrix);
         glUniformMatrix3fv(cylinderRaytracingInverseModelViewMatrix, 1, 0, inverseMatrix);
         glUniform3fv(cylinderRaytracingTranslation, 1, modelTranslation);
 
@@ -1368,6 +1471,8 @@
             }
         }
     }        
+    
+    glDisable(GL_DEPTH_TEST);
 }
 
 - (void)renderAmbientOcclusionTextureForModelViewMatrix:(GLfloat *)ambientOcclusionModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix fractionOfTotal:(GLfloat)fractionOfTotal;
@@ -1426,7 +1531,6 @@
     
     glUniform1f(cylinderAmbientOcclusionRadius, bondRadius * cylinderScaleFactor);
     glUniformMatrix3fv(cylinderAmbientOcclusionModelViewMatrix, 1, 0, ambientOcclusionModelViewMatrix);
-//    glUniformMatrix3fv(cylinderAmbientOcclusionOrthographicMatrix, 1, 0, orthographicMatrix);
     glUniform1f(cylinderAmbientOcclusionTexturePatchWidth, normalizedAOTexturePatchWidth);
     glUniform1f(cylinderAmbientOcclusionIntensityFactor, fractionOfTotal);
     
@@ -1661,11 +1765,15 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
 - (void)displayTextureToScreen:(GLuint)textureToDisplay;
 {
     [self switchToDisplayFramebuffer];
+    glDisable(GL_DEPTH_TEST);
+    glBlendEquation(GL_MAX_EXT);
+    glDepthMask(GL_FALSE);
+    glEnable(GL_BLEND);
 
     [passthroughProgram use];
     
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     static const GLfloat squareVertices[] = {
         -1.0f, -1.0f,
@@ -1690,6 +1798,7 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
+    glEnable(GL_DEPTH_TEST);
 }
 
 @end

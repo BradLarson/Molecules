@@ -75,6 +75,8 @@
 		BCCB1EFB1361E6BC006F00A0 /* PlainDisplay.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCCB1EF91361E6BC006F00A0 /* PlainDisplay.fsh */; };
 		BCCB1EFC1361E6BC006F00A0 /* PlainDisplay.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BCCB1EFA1361E6BC006F00A0 /* PlainDisplay.vsh */; };
 		BCD12CFA11308E1000737166 /* SLSMoleculeiPadRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */; };
+		BCD301631391D0C000C26201 /* SphereDepthWrite.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCD301611391D0C000C26201 /* SphereDepthWrite.fsh */; };
+		BCD301641391D0C000C26201 /* SphereDepthWrite.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BCD301621391D0C000C26201 /* SphereDepthWrite.vsh */; };
 		BCDC9F9D0EB37B3400ADCFA5 /* Localized.strings in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F9C0EB37B3400ADCFA5 /* Localized.strings */; };
 		BCDFF560115469C1005C984C /* RotationIconiPad.png in Resources */ = {isa = PBXBuildFile; fileRef = BCDFF55F115469BF005C984C /* RotationIconiPad.png */; };
 		BCDFF57311546FB2005C984C /* RotationIconiPadCancel.png in Resources */ = {isa = PBXBuildFile; fileRef = BCDFF57211546FB2005C984C /* RotationIconiPadCancel.png */; };
@@ -182,6 +184,8 @@
 		BCCB1EFA1361E6BC006F00A0 /* PlainDisplay.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = PlainDisplay.vsh; path = Shaders/PlainDisplay.vsh; sourceTree = "<group>"; };
 		BCD12CF711308E1000737166 /* SLSMoleculeiPadRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSMoleculeiPadRootViewController.h; sourceTree = "<group>"; };
 		BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeiPadRootViewController.m; sourceTree = "<group>"; };
+		BCD301611391D0C000C26201 /* SphereDepthWrite.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SphereDepthWrite.fsh; path = Shaders/SphereDepthWrite.fsh; sourceTree = "<group>"; };
+		BCD301621391D0C000C26201 /* SphereDepthWrite.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SphereDepthWrite.vsh; path = Shaders/SphereDepthWrite.vsh; sourceTree = "<group>"; };
 		BCDC9F870EB3760300ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = French; path = French.lproj/Info.plist; sourceTree = "<group>"; };
 		BCDC9F9A0EB37B1E00ADCFA5 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localized.strings; sourceTree = "<group>"; };
 		BCDC9F9E0EB37B4100ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localized.strings; sourceTree = "<group>"; };
@@ -318,6 +322,8 @@
 				BCA2E7DC135A1B9B00D7206C /* CylinderRaytracing.fsh */,
 				BCA2E81D135E54C400D7206C /* CylinderAmbientOcclusion.vsh */,
 				BCA2E81C135E54C400D7206C /* CylinderAmbientOcclusion.fsh */,
+				BCD301611391D0C000C26201 /* SphereDepthWrite.fsh */,
+				BCD301621391D0C000C26201 /* SphereDepthWrite.vsh */,
 				BCA2E7DF135A1B9B00D7206C /* SphereDepth.vsh */,
 				BCA2E7DE135A1B9B00D7206C /* SphereDepth.fsh */,
 				BCA2E7E1135A1B9B00D7206C /* SphereRaytracing.vsh */,
@@ -499,6 +505,8 @@
 				BCA2E7E5135A1B9B00D7206C /* CylinderRaytracing.vsh in Resources */,
 				BCA2E7E6135A1B9B00D7206C /* SphereDepth.fsh in Resources */,
 				BCA2E7E7135A1B9B00D7206C /* SphereDepth.vsh in Resources */,
+				BCD301631391D0C000C26201 /* SphereDepthWrite.fsh in Resources */,
+				BCD301641391D0C000C26201 /* SphereDepthWrite.vsh in Resources */,
 				BCA2E7E8135A1B9B00D7206C /* SphereRaytracing.fsh in Resources */,
 				BCA2E7E9135A1B9B00D7206C /* SphereRaytracing.vsh in Resources */,
 				BCA2E814135BBA3000D7206C /* SphereAmbientOcclusion.fsh in Resources */,

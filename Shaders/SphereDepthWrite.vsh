@@ -9,18 +9,8 @@ uniform mediump vec3 translation;
 void main()
 {
     mediump vec3 transformedPosition = modelViewProjMatrix * (position + translation);
-    mediump vec2 insetCoordinate = inputImpostorSpaceCoordinate * 0.7;
-    
-/*    if (inputImpostorSpaceCoordinate.x != 0.0)
-    {
-        insetCoordinate = normalize(inputImpostorSpaceCoordinate.xy);
-    }
-    else
-    {
-        insetCoordinate = inputImpostorSpaceCoordinate.xy;
-    }*/
-//    mediump vec2 insetRectangleCoordinate = inputImpostorSpaceCoordinate.xy;
-    
+    mediump vec2 insetCoordinate = inputImpostorSpaceCoordinate * 0.707107;
+        
     transformedPosition.xy = transformedPosition.xy + insetCoordinate * vec2(sphereRadius);
     transformedPosition = transformedPosition * orthographicMatrix;
     

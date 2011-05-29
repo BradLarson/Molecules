@@ -673,13 +673,15 @@
     
     [self generateSphereDepthMapTexture];
     
-    glDisable(GL_DEPTH_TEST); 
+//    glDisable(GL_DEPTH_TEST); 
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
     glDisable(GL_ALPHA_TEST); 
     glEnable(GL_BLEND);
     glBlendEquation(GL_FUNC_ADD);
     glBlendFunc(GL_ONE, GL_ONE);
 //    glAlphaFunc(GL_ALWAYS, 0);
-    glDepthMask(GL_FALSE);
+//    glDepthMask(GL_FALSE);
 }
 
 - (void)switchToDisplayFramebuffer;
@@ -947,12 +949,12 @@
         
         GLfloat currentScaleFactor = currentModelScaleFactor;
 
-//        [self precalculateAOLookupTextureForInverseMatrix:inverseModelViewMatrix];
+        [self precalculateAOLookupTextureForInverseMatrix:inverseModelViewMatrix];
         [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix translation:currentTranslation scale:currentScaleFactor];
 //        [self displayTextureToScreen:sphereAOLookupTexture];
-        [self displayTextureToScreen:depthPassTexture];
+//        [self displayTextureToScreen:depthPassTexture];
 //        [self displayTextureToScreen:ambientOcclusionTexture];
-//        [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix translation:currentTranslation scale:currentScaleFactor];
+        [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix translation:currentTranslation scale:currentScaleFactor];
         
 //        const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
 //        glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
@@ -988,12 +990,7 @@
 
 - (void)addAtomToVertexBuffers:(SLSAtomType)atomType atPoint:(SLS3DPoint)newPoint;
 {
-    GLushort baseToAddToIndices = numberOfAtomVertices[currentAtomVBO];
-    if (baseToAddToIndices > 65000)
-    {
-        baseToAddToIndices = 0;
-        currentAtomVBO++;
-    }    
+    GLushort baseToAddToIndices = numberOfAtomVertices[atomType];
     
     GLfloat newVertex[3];
     //    newVertex[0] = newPoint.x;
@@ -1001,8 +998,8 @@
     newVertex[1] = newPoint.y;
     newVertex[2] = newPoint.z;
     
-    
     // Square coordinate generation
+    
     GLfloat lowerLeftTexture[2] = {-1.0, -1.0};
     GLfloat lowerRightTexture[2] = {1.0, -1.0};
     GLfloat upperLeftTexture[2] = {-1.0, 1.0};
@@ -1010,18 +1007,18 @@
     
     // Add four copies of this vertex, that will be translated in the vertex shader into the billboard
     // Interleave texture coordinates in VBO
-    [self addVertex:newVertex forAtomType:currentAtomVBO];
-    [self addTextureCoordinate:lowerLeftTexture forAtomType:currentAtomVBO];
-    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:currentAtomVBO];
-    [self addVertex:newVertex forAtomType:currentAtomVBO];
-    [self addTextureCoordinate:lowerRightTexture forAtomType:currentAtomVBO];
-    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:currentAtomVBO];
-    [self addVertex:newVertex forAtomType:currentAtomVBO];
-    [self addTextureCoordinate:upperLeftTexture forAtomType:currentAtomVBO];
-    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:currentAtomVBO];
-    [self addVertex:newVertex forAtomType:currentAtomVBO];
-    [self addTextureCoordinate:upperRightTexture forAtomType:currentAtomVBO];
-    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:currentAtomVBO];
+    [self addVertex:newVertex forAtomType:atomType];
+    [self addTextureCoordinate:lowerLeftTexture forAtomType:atomType];
+    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
+    [self addVertex:newVertex forAtomType:atomType];
+    [self addTextureCoordinate:lowerRightTexture forAtomType:atomType];
+    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
+    [self addVertex:newVertex forAtomType:atomType];
+    [self addTextureCoordinate:upperLeftTexture forAtomType:atomType];
+    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
+    [self addVertex:newVertex forAtomType:atomType];
+    [self addTextureCoordinate:upperRightTexture forAtomType:atomType];
+    [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
     
     //    123243
     GLushort newIndices[6];
@@ -1032,53 +1029,53 @@
     newIndices[4] = baseToAddToIndices + 3;
     newIndices[5] = baseToAddToIndices + 2;
     
-    [self addIndices:newIndices size:6 forAtomType:currentAtomVBO];
-
+    [self addIndices:newIndices size:6 forAtomType:atomType];
+    
     
     /*
-    // Octagonal coordinate generation
-    GLfloat positiveSideComponent = 1.0 - 2.0 / (sqrt(2) + 2);
-    GLfloat negativeSideComponent = -1.0 + 2.0 / (sqrt(2) + 2);
-    
-    GLfloat octagonPoints[9][2] = {
-        {0.0, 0.0},
-        {negativeSideComponent, 1.0},
-        {positiveSideComponent, 1.0},
-        {1.0, positiveSideComponent},
-        {1.0, negativeSideComponent},
-        {positiveSideComponent, -1.0},
-        {negativeSideComponent, -1.0},
-        {-1.0, negativeSideComponent},
-        {-1.0, positiveSideComponent}
-    };
-    
-    // Add nine copies of this vertex, that will be translated in the vertex shader into the billboard
-    // Interleave texture coordinates in VBO
-    
-    
-    for (unsigned int currentTextureCoordinate = 0; currentTextureCoordinate < 9; currentTextureCoordinate++)
-    {
-        [self addVertex:newVertex forAtomType:currentAtomVBO];
-        [self addTextureCoordinate:octagonPoints[currentTextureCoordinate] forAtomType:currentAtomVBO];
-        [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:currentAtomVBO];
-        
-    }
-    
-    unsigned int indexCounter = 0;
-    GLushort newIndices[24];
-    for (unsigned int currentTriangleInOctagon = 0; currentTriangleInOctagon < 7; currentTriangleInOctagon++)
-    {
-        newIndices[indexCounter++] = baseToAddToIndices + 1 + currentTriangleInOctagon;
-        newIndices[indexCounter++] = baseToAddToIndices;
-        newIndices[indexCounter++] = baseToAddToIndices + 2 + currentTriangleInOctagon;
-    }
-    
-    newIndices[indexCounter++] = baseToAddToIndices + 8;
-    newIndices[indexCounter++] = baseToAddToIndices;
-    newIndices[indexCounter] = baseToAddToIndices + 1;
-    
-    [self addIndices:newIndices size:24 forAtomType:currentAtomVBO];
-*/
+     // Octagonal coordinate generation
+     GLfloat positiveSideComponent = 1.0 - 2.0 / (sqrt(2) + 2);
+     GLfloat negativeSideComponent = -1.0 + 2.0 / (sqrt(2) + 2);
+     
+     GLfloat octagonPoints[9][2] = {
+     {0.0, 0.0},
+     {negativeSideComponent, 1.0},
+     {positiveSideComponent, 1.0},
+     {1.0, positiveSideComponent},
+     {1.0, negativeSideComponent},
+     {positiveSideComponent, -1.0},
+     {negativeSideComponent, -1.0},
+     {-1.0, negativeSideComponent},
+     {-1.0, positiveSideComponent}
+     };
+     
+     // Add nine copies of this vertex, that will be translated in the vertex shader into the billboard
+     // Interleave texture coordinates in VBO
+     
+     
+     for (unsigned int currentTextureCoordinate = 0; currentTextureCoordinate < 9; currentTextureCoordinate++)
+     {
+     [self addVertex:newVertex forAtomType:atomType];
+     [self addTextureCoordinate:octagonPoints[currentTextureCoordinate] forAtomType:atomType];
+     [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
+     
+     }
+     
+     unsigned int indexCounter = 0;
+     GLushort newIndices[24];
+     for (unsigned int currentTriangleInOctagon = 0; currentTriangleInOctagon < 7; currentTriangleInOctagon++)
+     {
+     newIndices[indexCounter++] = baseToAddToIndices + 1 + currentTriangleInOctagon;
+     newIndices[indexCounter++] = baseToAddToIndices;
+     newIndices[indexCounter++] = baseToAddToIndices + 2 + currentTriangleInOctagon;
+     }
+     
+     newIndices[indexCounter++] = baseToAddToIndices + 8;
+     newIndices[indexCounter++] = baseToAddToIndices;
+     newIndices[indexCounter] = baseToAddToIndices + 1;
+     
+     [self addIndices:newIndices size:24 forAtomType:atomType];
+     */
      
      previousAmbientOcclusionOffset[0] += normalizedAOTexturePatchWidth;
     if (previousAmbientOcclusionOffset[0] > (1.0 - normalizedAOTexturePatchWidth * 0.15))
@@ -1290,7 +1287,6 @@
     
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glBlendEquation(GL_MIN_EXT);
-    glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
     glDepthFunc(GL_LEQUAL);
 
@@ -1363,14 +1359,11 @@
                 glBindBuffer(GL_ARRAY_BUFFER, 0); 
             }
         }
-    }    
-    
-    glDisable(GL_DEPTH_TEST);
+    }        
 }
 
 - (void)writeDepthValuesForOpaqueAreasForModelViewMatrix:(GLfloat *)depthModelViewMatrix translation:(GLfloat *)modelTranslation scale:(GLfloat)scaleFactor;
 {
-//    glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
         
     // Draw the spheres
@@ -1404,24 +1397,17 @@
     }
      
     glEnable(GL_BLEND);
-//    glDepthMask(GL_FALSE);
-//    glDisable(GL_DEPTH_TEST);
 }
 
 - (void)renderRaytracedSceneForModelViewMatrix:(GLfloat *)raytracingModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix translation:(GLfloat *)modelTranslation scale:(GLfloat)scaleFactor;
 {
     [self switchToDisplayFramebuffer];
     
-//    glEnable(GL_DEPTH_TEST);
-//    glDepthMask(GL_FALSE);
-
     glBlendEquation(GL_MAX_EXT);
     
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     
-    glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
-    glDepthFunc(GL_LEQUAL);
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -1518,8 +1504,6 @@
             }
         }
     }        
-    
-    glDisable(GL_DEPTH_TEST);
 }
 
 - (void)renderAmbientOcclusionTextureForModelViewMatrix:(GLfloat *)ambientOcclusionModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix fractionOfTotal:(GLfloat)fractionOfTotal;
@@ -1788,9 +1772,8 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
     [self switchToAOLookupFramebuffer];
 
     glDisable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
     glBlendEquation(GL_MAX_EXT);
-    glDepthMask(GL_FALSE);
-    glEnable(GL_BLEND);
     
 //    glBlendEquation(GL_FUNC_ADD);
 
@@ -1812,6 +1795,8 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
 	glVertexAttribPointer(sphereAOLookupImpostorSpaceAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+    glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
 }
 

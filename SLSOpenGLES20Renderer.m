@@ -199,7 +199,7 @@
             
             [self createFramebuffer:&viewFramebuffer size:CGSizeZero renderBuffer:&viewRenderbuffer depthBuffer:&viewDepthBuffer texture:NULL layer:glLayer];    
             //    [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:&depthPassDepthBuffer texture:&depthPassTexture layer:glLayer];
-            [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:&viewDepthBuffer texture:&depthPassTexture layer:glLayer];
+            [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:&depthPassDepthBuffer texture:&depthPassTexture layer:glLayer];
 
             if (!ambientOcclusionFramebuffer)
             {
@@ -270,14 +270,7 @@
     
     if (depthbufferPointer != NULL)
     {
-        if (viewDepthBuffer == 0)
-        {
-            glGenRenderbuffers(1, depthbufferPointer);
-        }
-        else
-        {
-        }
-
+        glGenRenderbuffers(1, depthbufferPointer);
         glBindRenderbuffer(GL_RENDERBUFFER, *depthbufferPointer);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, bufferSize.width, bufferSize.height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, *depthbufferPointer);
@@ -680,6 +673,10 @@
     glEnable(GL_BLEND);
     glBlendEquation(GL_FUNC_ADD);
     glBlendFunc(GL_ONE, GL_ONE);
+
+    glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+
 //    glAlphaFunc(GL_ALWAYS, 0);
 //    glDepthMask(GL_FALSE);
 }
@@ -956,16 +953,11 @@
 //        [self displayTextureToScreen:ambientOcclusionTexture];
         [self renderRaytracedSceneForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix translation:currentTranslation scale:currentScaleFactor];
         
-//        const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
-//        glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
+        const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
+        glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
 
-//        dispatch_sync(dispatch_get_main_queue(), ^{
-            [self presentRenderBuffer];
-//        });
+        [self presentRenderBuffer];
         
-//        const GLenum discards[]  = {GL_COLOR_ATTACHMENT0};
-//        glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
-
         CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
         
         NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
@@ -998,6 +990,7 @@
     newVertex[1] = newPoint.y;
     newVertex[2] = newPoint.z;
     
+    /*
     // Square coordinate generation
     
     GLfloat lowerLeftTexture[2] = {-1.0, -1.0};
@@ -1020,63 +1013,120 @@
     [self addTextureCoordinate:upperRightTexture forAtomType:atomType];
     [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
     
-    //    123243
+    //    123324
     GLushort newIndices[6];
     newIndices[0] = baseToAddToIndices;
     newIndices[1] = baseToAddToIndices + 1;
     newIndices[2] = baseToAddToIndices + 2;
-    newIndices[3] = baseToAddToIndices + 1;
-    newIndices[4] = baseToAddToIndices + 3;
-    newIndices[5] = baseToAddToIndices + 2;
+    newIndices[3] = baseToAddToIndices + 2;
+    newIndices[4] = baseToAddToIndices + 1;
+    newIndices[5] = baseToAddToIndices + 3;
+
     
     [self addIndices:newIndices size:6 forAtomType:atomType];
-    
+*/
+     
     
     /*
-     // Octagonal coordinate generation
+    // Hexagonal coordinate generation, using raster-optimized layout
+    
+    GLfloat positiveSideComponent = 2.0 / sqrt(3);
+    GLfloat negativeSideComponent = -2.0 / sqrt(3);
+
+    GLfloat hexagonPoints[6][2] = {
+        {negativeSideComponent, 1.0},
+        {negativeSideComponent, -1.0},
+        {1.0, 0.0},
+        {positiveSideComponent, 1.0},
+        {-1.0, 0.0},
+        {positiveSideComponent, -1.0}
+    };
+    
+    for (unsigned int currentTextureCoordinate = 0; currentTextureCoordinate < 6; currentTextureCoordinate++)
+    {
+        [self addVertex:newVertex forAtomType:atomType];
+        [self addTextureCoordinate:hexagonPoints[currentTextureCoordinate] forAtomType:atomType];
+        [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
+    }
+    
+    // 123,341,152,263
+    GLushort newIndices[12];
+    newIndices[0] = baseToAddToIndices;
+    newIndices[1] = baseToAddToIndices + 1;
+    newIndices[2] = baseToAddToIndices + 2;
+
+    newIndices[3] = baseToAddToIndices + 2;
+    newIndices[4] = baseToAddToIndices + 3;
+    newIndices[5] = baseToAddToIndices;
+
+    newIndices[6] = baseToAddToIndices + 0;
+    newIndices[7] = baseToAddToIndices + 4;
+    newIndices[8] = baseToAddToIndices + 1;
+
+    newIndices[9] = baseToAddToIndices + 1;
+    newIndices[10] = baseToAddToIndices + 5;
+    newIndices[11] = baseToAddToIndices + 2;
+    
+    [self addIndices:newIndices size:12 forAtomType:atomType];
+    
+    */
+    
+
+    // Octagonal coordinate generation, using raster-optimized layout
      GLfloat positiveSideComponent = 1.0 - 2.0 / (sqrt(2) + 2);
      GLfloat negativeSideComponent = -1.0 + 2.0 / (sqrt(2) + 2);
      
-     GLfloat octagonPoints[9][2] = {
-     {0.0, 0.0},
-     {negativeSideComponent, 1.0},
-     {positiveSideComponent, 1.0},
-     {1.0, positiveSideComponent},
-     {1.0, negativeSideComponent},
-     {positiveSideComponent, -1.0},
-     {negativeSideComponent, -1.0},
-     {-1.0, negativeSideComponent},
-     {-1.0, positiveSideComponent}
+     GLfloat octagonPoints[8][2] = {
+         {negativeSideComponent, 1.0},
+         {-1.0, negativeSideComponent},
+         {1.0, positiveSideComponent},
+         {positiveSideComponent, -1.0},
+         {1.0, negativeSideComponent},
+         {positiveSideComponent, 1.0},
+         {-1.0, positiveSideComponent},
+         {negativeSideComponent, -1.0},
      };
      
-     // Add nine copies of this vertex, that will be translated in the vertex shader into the billboard
+     // Add eight copies of this vertex, that will be translated in the vertex shader into the billboard
      // Interleave texture coordinates in VBO
      
-     
-     for (unsigned int currentTextureCoordinate = 0; currentTextureCoordinate < 9; currentTextureCoordinate++)
+     for (unsigned int currentTextureCoordinate = 0; currentTextureCoordinate < 8; currentTextureCoordinate++)
      {
-     [self addVertex:newVertex forAtomType:atomType];
-     [self addTextureCoordinate:octagonPoints[currentTextureCoordinate] forAtomType:atomType];
-     [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];
-     
+         [self addVertex:newVertex forAtomType:atomType];
+         [self addTextureCoordinate:octagonPoints[currentTextureCoordinate] forAtomType:atomType];
+         [self addAmbientOcclusionTextureOffset:previousAmbientOcclusionOffset forAtomType:atomType];     
      }
+
+    // 123, 324, 345, 136, 217, 428
+    
+    GLushort newIndices[18];
+    newIndices[0] = baseToAddToIndices;
+    newIndices[1] = baseToAddToIndices + 1;
+    newIndices[2] = baseToAddToIndices + 2;
+
+    newIndices[3] = baseToAddToIndices + 2;
+    newIndices[4] = baseToAddToIndices + 1;
+    newIndices[5] = baseToAddToIndices + 3;
+
+    newIndices[6] = baseToAddToIndices + 2;
+    newIndices[7] = baseToAddToIndices + 3;
+    newIndices[8] = baseToAddToIndices + 4;
+
+    newIndices[9] = baseToAddToIndices;
+    newIndices[10] = baseToAddToIndices + 2;
+    newIndices[11] = baseToAddToIndices + 5;
+
+    newIndices[12] = baseToAddToIndices + 1;
+    newIndices[13] = baseToAddToIndices;
+    newIndices[14] = baseToAddToIndices + 6;
+
+    newIndices[15] = baseToAddToIndices + 3;
+    newIndices[16] = baseToAddToIndices + 1;
+    newIndices[17] = baseToAddToIndices + 7;
      
-     unsigned int indexCounter = 0;
-     GLushort newIndices[24];
-     for (unsigned int currentTriangleInOctagon = 0; currentTriangleInOctagon < 7; currentTriangleInOctagon++)
-     {
-     newIndices[indexCounter++] = baseToAddToIndices + 1 + currentTriangleInOctagon;
-     newIndices[indexCounter++] = baseToAddToIndices;
-     newIndices[indexCounter++] = baseToAddToIndices + 2 + currentTriangleInOctagon;
-     }
+    [self addIndices:newIndices size:18 forAtomType:atomType];
      
-     newIndices[indexCounter++] = baseToAddToIndices + 8;
-     newIndices[indexCounter++] = baseToAddToIndices;
-     newIndices[indexCounter] = baseToAddToIndices + 1;
-     
-     [self addIndices:newIndices size:24 forAtomType:atomType];
-     */
-     
+    
      previousAmbientOcclusionOffset[0] += normalizedAOTexturePatchWidth;
     if (previousAmbientOcclusionOffset[0] > (1.0 - normalizedAOTexturePatchWidth * 0.15))
     {
@@ -1360,6 +1410,9 @@
             }
         }
     }        
+
+    const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
+    glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
 }
 
 - (void)writeDepthValuesForOpaqueAreasForModelViewMatrix:(GLfloat *)depthModelViewMatrix translation:(GLfloat *)modelTranslation scale:(GLfloat)scaleFactor;

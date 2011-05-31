@@ -25,42 +25,35 @@ mediump float depthFromEncodedColor(mediump vec3 encodedColor)
 void main()
 {
     lowp vec4 precalculatedDepthAndLighting = texture2D(sphereDepthMap, depthLookupCoordinate);
+    lowp float alphaComponent = 1.0;
   
-    if (precalculatedDepthAndLighting.a < 0.5)
-    {
-        gl_FragColor = vec4(0.0);
-    }
-    else
-    {
-        float currentDepthValue = normalizedViewCoordinate.z + adjustedSphereRadius - adjustedSphereRadius * precalculatedDepthAndLighting.r;        
-        vec3 encodedColor = texture2D(depthTexture, normalizedViewCoordinate.xy).rgb;
-        float previousDepthValue = depthFromEncodedColor(encodedColor);
+//    gl_FragColor = vec4(1.0);
+    
+    alphaComponent = step(0.5, precalculatedDepthAndLighting.a);
+
+    float currentDepthValue = normalizedViewCoordinate.z + adjustedSphereRadius - adjustedSphereRadius * precalculatedDepthAndLighting.r;        
+    vec3 encodedColor = texture2D(depthTexture, normalizedViewCoordinate.xy).rgb;
+    float previousDepthValue = depthFromEncodedColor(encodedColor);
       
         // Check to see that this fragment is the frontmost one for this area
-        if ( (currentDepthValue - 0.002) > (previousDepthValue) )
-        {
-            gl_FragColor = vec4(0.0);
-        }
-        else
-        {            
-           lowp vec2 lookupTextureCoordinate = texture2D(precalculatedAOLookupTexture, depthLookupCoordinate).st;
-           lookupTextureCoordinate = (lookupTextureCoordinate * 2.0) - 1.0;
-            
-            vec2 textureCoordinateForAOLookup = ambientOcclusionTextureBase + ambientOcclusionTexturePatchWidth * lookupTextureCoordinate;
-            lowp float ambientOcclusionIntensity = texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).r;
-            
-            // Ambient lighting            
-            lowp float lightingIntensity = 0.2 + 1.7 * precalculatedDepthAndLighting.g * ambientOcclusionIntensity;
-            lowp vec3 finalSphereColor = sphereColor * lightingIntensity;
-            
-            // Specular lighting
-            finalSphereColor = finalSphereColor + (precalculatedDepthAndLighting.b * ambientOcclusionIntensity);
-            
-            gl_FragColor = vec4(finalSphereColor, 1.0);
+    alphaComponent = alphaComponent * step((currentDepthValue - 0.002), previousDepthValue);
+
+    lowp vec2 lookupTextureCoordinate = texture2D(precalculatedAOLookupTexture, depthLookupCoordinate).st;
+    lookupTextureCoordinate = (lookupTextureCoordinate * 2.0) - 1.0;
+    
+    vec2 textureCoordinateForAOLookup = ambientOcclusionTextureBase + ambientOcclusionTexturePatchWidth * lookupTextureCoordinate;
+    lowp float ambientOcclusionIntensity = texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).r;
+    
+    // Ambient lighting            
+    lowp float lightingIntensity = 0.2 + 1.7 * precalculatedDepthAndLighting.g * ambientOcclusionIntensity;
+    lowp vec3 finalSphereColor = sphereColor * lightingIntensity;
+    
+    // Specular lighting
+    finalSphereColor = finalSphereColor + (precalculatedDepthAndLighting.b * ambientOcclusionIntensity);
+    
+    gl_FragColor = vec4(finalSphereColor * alphaComponent, alphaComponent);
 //            gl_FragColor = vec4(texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).rgb, 1.0);
 //            gl_FragColor = vec4(textureCoordinateForAOLookup, 0.0, 1.0);
             //    gl_FragColor = vec4(normalizedViewCoordinate, 1.0);
             //    gl_FragColor = vec4(precalculatedDepthAndLighting, 1.0);
-        }
-    }
 }

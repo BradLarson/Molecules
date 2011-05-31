@@ -15,12 +15,14 @@ void main()
 //    gl_FragColor = vec4(normalizedDepth * (impostorSpaceCoordinate + 1.0) / 2.0, normalizedDepth, 1.0);
     lowp vec2 precalculatedDepthAndAlpha = texture2D(sphereDepthMap, depthLookupCoordinate).ra;
 
-    if (precalculatedDepthAndAlpha.g < 0.5)
-    {
-        gl_FragColor = vec4(1.0);
-    }
-    else
-    {
+    float inCircleMultiplier = step(0.5, precalculatedDepthAndAlpha.g);
+    
+//    if (precalculatedDepthAndAlpha.g < 0.5)
+//    {
+//        gl_FragColor = vec4(1.0);
+//    }
+//    else
+//    {
         float currentDepthValue = normalizedDepth + adjustedSphereRadius - adjustedSphereRadius * precalculatedDepthAndAlpha.r;
         
         // Inlined color encoding for the depth values
@@ -28,8 +30,10 @@ void main()
         //float ceiledValue = ceil(currentDepthValue * 765.0) * scaleDownFactor;
         
         lowp vec3 intDepthValue = vec3(currentDepthValue) - stepValues;
-        lowp vec4 outputColor = vec4(intDepthValue, 1.0);
-        
-        gl_FragColor = outputColor;
-    }
+//        lowp vec4 outputColor = vec4(intDepthValue, 1.0);
+//        
+//        gl_FragColor = outputColor;
+
+    gl_FragColor = vec4(1.0 - inCircleMultiplier) + vec4(intDepthValue, inCircleMultiplier);
+//    }
 }

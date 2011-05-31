@@ -101,6 +101,16 @@
     return YES;
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [glViewController handleStartOfAutorotation];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [glViewController handleEndOfAutorotation];
+}
+
 - (void)didReceiveMemoryWarning 
 {
     // Releases the view if it doesn't have a superview.

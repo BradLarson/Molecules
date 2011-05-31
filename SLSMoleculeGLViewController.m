@@ -280,6 +280,16 @@
 //	}
 }
 
+- (void)handleStartOfAutorotation;
+{
+    [openGLESRenderer suspendRenderingDuringRotation];
+}
+
+- (void)handleEndOfAutorotation;
+{
+    [openGLESRenderer resumeRenderingDuringRotation];
+}
+
 #pragma mark -
 #pragma mark Manage molecule rendering state
 

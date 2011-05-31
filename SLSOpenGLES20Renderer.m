@@ -750,7 +750,8 @@
 
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -908,6 +909,16 @@
     });
 }
 
+- (void)suspendRenderingDuringRotation;
+{
+    dispatch_semaphore_wait(frameRenderingSemaphore, DISPATCH_TIME_FOREVER);
+}
+
+- (void)resumeRenderingDuringRotation;
+{
+    dispatch_semaphore_signal(frameRenderingSemaphore);
+}
+
 #pragma mark -
 #pragma mark Actual OpenGL rendering
 
@@ -929,7 +940,7 @@
         
         [EAGLContext setCurrentContext:context];
 
-        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
+//        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
         
         GLfloat currentModelViewMatrix[9];
         [self convert3DTransform:&currentCalculatedMatrix to3x3Matrix:currentModelViewMatrix];
@@ -958,9 +969,9 @@
 
         [self presentRenderBuffer];
         
-        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
+//        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
         
-        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
+//        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
         
         dispatch_semaphore_signal(frameRenderingSemaphore);
     });
@@ -1723,11 +1734,14 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
  
 - (void)prepareAmbientOcclusionMap;
 {    
+    dispatch_semaphore_wait(frameRenderingSemaphore, DISPATCH_TIME_FOREVER);
+
     dispatch_sync(openGLESContextQueue, ^{
         [EAGLContext setCurrentContext:context];
 
         if (isRenderingCancelled)
         {
+            dispatch_semaphore_signal(frameRenderingSemaphore);
             return;
         }
         
@@ -1766,7 +1780,8 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
             for (unsigned int currentAOSamplingPoint = 0; currentAOSamplingPoint < AMBIENTOCCLUSIONSAMPLINGPOINTS; currentAOSamplingPoint++)
             {        
                 if (isRenderingCancelled)
-                {
+                {        
+                    dispatch_semaphore_signal(frameRenderingSemaphore);
                     return;
                 }
                 
@@ -1816,7 +1831,9 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, depthPassTexture);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );        
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+        
+        dispatch_semaphore_signal(frameRenderingSemaphore);
     });
 }
 

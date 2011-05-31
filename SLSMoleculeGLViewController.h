@@ -60,6 +60,8 @@
 - (void)resizeView;
 - (void)runOpenGLBenchmarks;
 - (void)updateSizeOfGLView:(NSNotification *)note;
+- (void)handleStartOfAutorotation;
+- (void)handleEndOfAutorotation;
 
 // Manage molecule rendering state
 - (void)handleFinishOfMoleculeRendering:(NSNotification *)note;

@@ -122,6 +122,8 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
 - (void)startDrawingFrame;
 - (void)configureProjection;
 - (void)presentRenderBuffer;
+- (void)suspendRenderingDuringRotation;
+- (void)resumeRenderingDuringRotation;
 
 // Actual OpenGL rendering
 - (void)renderFrameForMolecule:(SLSMolecule *)molecule;

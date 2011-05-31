@@ -37,7 +37,7 @@ void main()
       
         // Check to see that this fragment is the frontmost one for this area
     alphaComponent = alphaComponent * step((currentDepthValue - 0.002), previousDepthValue);
-
+    
     lowp vec2 lookupTextureCoordinate = texture2D(precalculatedAOLookupTexture, depthLookupCoordinate).st;
     lookupTextureCoordinate = (lookupTextureCoordinate * 2.0) - 1.0;
     

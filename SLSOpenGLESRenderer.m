@@ -279,6 +279,16 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
     NSAssert(NO, @"Method not overridden");
 }
 
+- (void)suspendRenderingDuringRotation;
+{
+    
+}
+
+- (void)resumeRenderingDuringRotation;
+{
+    
+}
+
 #pragma mark -
 #pragma mark Actual OpenGL rendering
 

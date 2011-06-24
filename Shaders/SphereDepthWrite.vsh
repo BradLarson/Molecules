@@ -13,6 +13,7 @@ void main()
     mediump vec2 insetCoordinate = inputImpostorSpaceCoordinate * 0.91017; // Octagon
         
     transformedPosition.xy = transformedPosition.xy + insetCoordinate * vec2(sphereRadius);
+    transformedPosition.z = transformedPosition.z + sphereRadius;
     transformedPosition = transformedPosition * orthographicMatrix;
     
     gl_Position = vec4(transformedPosition, 1.0);

@@ -1468,8 +1468,9 @@
     [self switchToDisplayFramebuffer];
     
     glBlendEquation(GL_MAX_EXT);
-    
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+//    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     
     glDepthMask(GL_TRUE);
     
@@ -1479,7 +1480,7 @@
     [self writeDepthValuesForOpaqueAreasForModelViewMatrix:raytracingModelViewMatrix translation:modelTranslation scale:scaleFactor];
     glColorMask(1.0, 1.0, 1.0, 1.0);
     glDepthMask(GL_FALSE);
-    
+
 //    glClear(GL_COLOR_BUFFER_BIT);
 //
     // Draw the spheres
@@ -1568,6 +1569,7 @@
             }
         }
     }        
+    
 }
 
 - (void)renderAmbientOcclusionTextureForModelViewMatrix:(GLfloat *)ambientOcclusionModelViewMatrix inverseMatrix:(GLfloat *)inverseMatrix fractionOfTotal:(GLfloat)fractionOfTotal;

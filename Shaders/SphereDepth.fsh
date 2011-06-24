@@ -13,14 +13,15 @@ void main()
 {
     lowp vec2 precalculatedDepthAndAlpha = texture2D(sphereDepthMap, depthLookupCoordinate).ra;
     
-    float inCircleMultiplier = step(0.5, precalculatedDepthAndAlpha.g);
+    float outOfCircleMultiplier = step(precalculatedDepthAndAlpha.g, 0.5);
     
-    float currentDepthValue = normalizedDepth + adjustedSphereRadius - adjustedSphereRadius * precalculatedDepthAndAlpha.r;
+    float currentDepthValue = normalizedDepth - adjustedSphereRadius * precalculatedDepthAndAlpha.r;
     
     // Inlined color encoding for the depth values
     currentDepthValue = currentDepthValue * 3.0;
     
     lowp vec3 intDepthValue = vec3(currentDepthValue) - stepValues;
-
-    gl_FragColor = vec4(1.0 - inCircleMultiplier) + vec4(intDepthValue, inCircleMultiplier);
+    
+    vec3 temporaryColor = vec3(outOfCircleMultiplier) + vec3(1.0 - outOfCircleMultiplier) * intDepthValue;
+    gl_FragColor = vec4(temporaryColor, 1.0);
 }

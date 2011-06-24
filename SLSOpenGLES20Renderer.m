@@ -1467,10 +1467,9 @@
 {
     [self switchToDisplayFramebuffer];
     
-    glBlendEquation(GL_MIN_EXT);
+    glBlendEquation(GL_MAX_EXT);
 
-//    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     
     glDepthMask(GL_TRUE);
     

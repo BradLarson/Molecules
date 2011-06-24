@@ -56,7 +56,7 @@ void main()
     
     if ( (impostorSpaceCoordinate.t <= (-1.0 + displacementFromCurvature)) || (impostorSpaceCoordinate.t >= (1.0 + displacementFromCurvature)))
     {
-        gl_FragColor = vec4(1.0, 1.0, 1.0, 0.0);
+        gl_FragColor = vec4(0.0);
     }
     else
     {
@@ -66,7 +66,7 @@ void main()
         //if ( (floor(currentDepthValue * 765.0)) > (ceil(previousDepthValue * 765.0)) )
         if ( (currentDepthValue - 0.002) > (previousDepthValue) )
         {
-            gl_FragColor = vec4(1.0, 1.0, 1.0, 0.0);
+            gl_FragColor = vec4(0.0);
         }
         else
         {

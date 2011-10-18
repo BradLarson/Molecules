@@ -170,10 +170,9 @@ typedef void (*GLLogFunction) (GLuint program,
     
     char *logBytes = malloc(logLength);
     logFunc(object, logLength, &charsWritten, logBytes);
-    NSString *log = [[[NSString alloc] initWithBytes:logBytes 
+    NSString *log = [[NSString alloc] initWithBytes:logBytes 
                                               length:logLength 
-                                            encoding:NSUTF8StringEncoding] 
-                      autorelease];
+                                            encoding:NSUTF8StringEncoding];
     free(logBytes);
     return log;
 }
@@ -219,8 +218,6 @@ typedef void (*GLLogFunction) (GLuint program,
 // START:dealloc
 - (void)dealloc
 {
-    [attributes release];
-    [uniforms release];
   
     if (vertShader)
         glDeleteShader(vertShader);
@@ -231,7 +228,6 @@ typedef void (*GLLogFunction) (GLuint program,
     if (program)
         glDeleteProgram(program);
        
-    [super dealloc];
 }
 // END:dealloc
 @end

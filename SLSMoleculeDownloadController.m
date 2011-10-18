@@ -33,9 +33,6 @@
 - (void)dealloc;
 {
 	[self cancelDownload];
-	[codeForCurrentlyDownloadingMolecule release];
-	[titleForCurrentlyDownloadingMolecule release];
-	[super dealloc];
 }
 
 #pragma mark -
@@ -63,7 +60,6 @@
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"File already exists", @"Localized", nil) message:NSLocalizedStringFromTable(@"This molecule has already been downloaded", @"Localized", nil)
 													   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil, nil];
 		[alert show];
-		[alert release];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"MoleculeDidFinishDownloading" object:nil];
 		return;
 	}
@@ -84,7 +80,6 @@
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Connection failed", @"Localized", nil) message:errorMessage
 													   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil, nil];
 		[alert show];
-		[alert release];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"MoleculeDidFinishDownloading" object:nil];
 		return;
 	}
@@ -117,7 +112,7 @@
 		// Create the NSMutableData that will hold
 		// the received data
 		// receivedData is declared as a method instance elsewhere
-		downloadedFileContents = [[NSMutableData data] retain];
+		downloadedFileContents = [NSMutableData data];
 	} 
 	else 
 	{
@@ -129,11 +124,9 @@
 
 - (void)downloadCompleted;
 {
-	[downloadConnection release];
 	downloadConnection = nil;
 	
 
-	[downloadedFileContents release];
 	downloadedFileContents = nil;
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
@@ -162,7 +155,6 @@
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Connection failed", @"Localized", nil) message:errorMessage
 												   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil, nil];
 	[alert show];
-	[alert release];
 	
 	[self downloadCompleted];
 }
@@ -205,7 +197,6 @@
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Could not find file", @"Localized", nil) message:errorMessage
 													   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil, nil];
 		[alert show];
-		[alert release];		
 		[connection cancel];
 		[self downloadCompleted];
 		return;

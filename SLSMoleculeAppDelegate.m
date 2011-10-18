@@ -34,7 +34,6 @@
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	if (!window) 
 	{
-		[self release];
 		return NO;
 	}
 	window.backgroundColor = [UIColor blackColor];
@@ -101,15 +100,6 @@
 	return YES;
 }
 
-- (void)dealloc 
-{
-	[splitViewController release];
-	[initialDatabaseLoadLock release];
-	[molecules release];
-	[rootViewController release];
-	[window release];
-	[super dealloc];
-}
 
 #pragma mark -
 #pragma mark Device-specific interface control
@@ -225,73 +215,73 @@
 {
 	[initialDatabaseLoadLock lock];
 
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	rootViewController.molecules = nil;
+	@autoreleasepool {
+		rootViewController.molecules = nil;
 
-	if ([self createEditableCopyOfDatabaseIfNeeded])
-	{
-		// The database needed to be recreated, so scan and copy over the default files
-		[self performSelectorOnMainThread:@selector(showStatusIndicator) withObject:nil waitUntilDone:NO];
-		
-		[self connectToDatabase];
-		// Before anything else, move included PDB files to /Documents if the program hasn't been run before
-		// User might have intentionally deleted files, so don't recopy the files in that case
-		NSError *error = nil;
-		// Grab the /Documents directory path
-		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-		NSString *documentsDirectory = [paths objectAtIndex:0];
-		
-		NSFileManager *fileManager = [NSFileManager defaultManager];
-		// Iterate through all files sitting in the application's Resources directory
-		// TODO: Can you fast enumerate this?
-		NSDirectoryEnumerator *direnum = [fileManager enumeratorAtPath:[[NSBundle mainBundle] resourcePath]];
-		NSString *pname;
-		while ((pname = [direnum nextObject]))
+		if ([self createEditableCopyOfDatabaseIfNeeded])
 		{
-			if ([[pname pathExtension] isEqualToString:@"gz"])
+			// The database needed to be recreated, so scan and copy over the default files
+			[self performSelectorOnMainThread:@selector(showStatusIndicator) withObject:nil waitUntilDone:NO];
+			
+			[self connectToDatabase];
+			// Before anything else, move included PDB files to /Documents if the program hasn't been run before
+			// User might have intentionally deleted files, so don't recopy the files in that case
+			NSError *error = nil;
+			// Grab the /Documents directory path
+			NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+			NSString *documentsDirectory = [paths objectAtIndex:0];
+			
+			NSFileManager *fileManager = [NSFileManager defaultManager];
+			// Iterate through all files sitting in the application's Resources directory
+			// TODO: Can you fast enumerate this?
+			NSDirectoryEnumerator *direnum = [fileManager enumeratorAtPath:[[NSBundle mainBundle] resourcePath]];
+			NSString *pname;
+			while ((pname = [direnum nextObject]))
 			{
-				NSString *preloadedPDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:pname];
-				NSString *installedPDBPath = [documentsDirectory stringByAppendingPathComponent:pname];
-				if (![fileManager fileExistsAtPath:installedPDBPath])
+				if ([[pname pathExtension] isEqualToString:@"gz"])
 				{
-					// Move included PDB files to /Documents
-					[[NSFileManager defaultManager]	copyItemAtPath:preloadedPDBPath toPath:installedPDBPath error:&error];
-					if (error != nil)
+					NSString *preloadedPDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:pname];
+					NSString *installedPDBPath = [documentsDirectory stringByAppendingPathComponent:pname];
+					if (![fileManager fileExistsAtPath:installedPDBPath])
 					{
+						// Move included PDB files to /Documents
+						[[NSFileManager defaultManager]	copyItemAtPath:preloadedPDBPath toPath:installedPDBPath error:&error];
+						if (error != nil)
+						{
 //						NSLog(@"Failed to copy over PDB files with error: '%@'.", [error localizedDescription]);
-						// TODO: Report the file copying problem to the user or do something about it
+							// TODO: Report the file copying problem to the user or do something about it
+						}
 					}
+					
 				}
-				
 			}
+			
+			[self loadMissingMoleculesIntoDatabase];
+			
+			[[NSUserDefaults standardUserDefaults] synchronize];		
+			[self performSelectorOnMainThread:@selector(hideStatusIndicator) withObject:nil waitUntilDone:YES];
+		}
+		else
+		{
+			// The MySQL database has been created, so load molecules from the database
+			[self connectToDatabase];
+			// TODO: Check to make sure that the proper version of the database is installed
+			[self loadAllMoleculesFromDatabase];
+			[self loadMissingMoleculesIntoDatabase];		
 		}
 		
-		[self loadMissingMoleculesIntoDatabase];
-		
-		[[NSUserDefaults standardUserDefaults] synchronize];		
-		[self performSelectorOnMainThread:@selector(hideStatusIndicator) withObject:nil waitUntilDone:YES];
-	}
-	else
-	{
-		// The MySQL database has been created, so load molecules from the database
-		[self connectToDatabase];
-		// TODO: Check to make sure that the proper version of the database is installed
-		[self loadAllMoleculesFromDatabase];
-		[self loadMissingMoleculesIntoDatabase];		
-	}
-	
-	rootViewController.database = database;
-	rootViewController.molecules = molecules;
-	[initialDatabaseLoadLock unlock];
+		rootViewController.database = database;
+		rootViewController.molecules = molecules;
+		[initialDatabaseLoadLock unlock];
 
-	if ([SLSMoleculeAppDelegate isRunningOniPad])
-	{
-		[[rootViewController.tableViewController tableView] performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+		if ([SLSMoleculeAppDelegate isRunningOniPad])
+		{
+			[[rootViewController.tableViewController tableView] performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+		}
+		
+		if (!isHandlingCustomURLMoleculeDownload)
+			[rootViewController loadInitialMolecule];
 	}
-	
-	if (!isHandlingCustomURLMoleculeDownload)
-		[rootViewController loadInitialMolecule];
-	[pool release];
 }
 
 - (void)loadAllMoleculesFromDatabase;
@@ -307,7 +297,6 @@
 			if (newMolecule != nil)
 				[molecules addObject:newMolecule];
 				
-			[newMolecule release];
 		}
 	}
 	// "Finalize" the statement - releases the resources associated with the statement.
@@ -365,11 +354,9 @@
 					[rootViewController.tableViewController.tableView reloadData];				
 				}					
 			}
-			[newMolecule release];			
 		}
 	}
 	
-	[moleculeFilenameLookupTable release];
 }
 
 #pragma mark -
@@ -445,7 +432,7 @@
 		
 		NSString *pathComponentForCustomURL = [[url host] stringByAppendingString:[url path]];
 		NSString *locationOfRemotePDBFile = [NSString stringWithFormat:@"http://%@", pathComponentForCustomURL];
-		nameOfDownloadedMolecule = [[pathComponentForCustomURL lastPathComponent] retain];
+		nameOfDownloadedMolecule = [pathComponentForCustomURL lastPathComponent];
 		
 		// Check to make sure that the file has not already been downloaded, if so, just switch to it
 		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -484,7 +471,6 @@
 			}
 			[rootViewController loadInitialMolecule];
 			
-			[nameOfDownloadedMolecule release];
 			nameOfDownloadedMolecule = nil;
 			[initialDatabaseLoadLock unlock];
 			return YES;
@@ -500,7 +486,6 @@
 		if ([url isFileURL])
 		{
 
-			[nameOfDownloadedMolecule release];
 			nameOfDownloadedMolecule = nil;
 		}
 		else
@@ -518,7 +503,7 @@
 			downloadConnection = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
 			if (downloadConnection) 
 			{
-				downloadedFileContents = [[NSMutableData data] retain];
+				downloadedFileContents = [NSMutableData data];
 			} 
 			else 
 			{
@@ -532,15 +517,12 @@
 
 - (void)downloadCompleted;
 {
-	[downloadConnection release];
 	downloadConnection = nil;
 	
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
-	[downloadedFileContents release];
 	downloadedFileContents = nil;
 	[self hideStatusIndicator];
-	[nameOfDownloadedMolecule release];
 	nameOfDownloadedMolecule = nil;
 }
 
@@ -577,7 +559,6 @@
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error in downloaded file", @"Localized", nil) message:NSLocalizedStringFromTable(@"The molecule file is either corrupted or not of a supported format", @"Localized", nil)
 														   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles:nil, nil];
 			[alert show];
-			[alert release];
 			
 			// Delete the corrupted or sunsupported file
 			NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -589,7 +570,6 @@
 				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Could not delete file", @"Localized", nil) message:[error localizedDescription]
 															   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles:nil, nil];
 				[alert show];
-				[alert release];					
 				return;
 			}
 			
@@ -597,7 +577,6 @@
 		else
 		{			
 			[molecules addObject:newMolecule];
-			[newMolecule release];
 			
 			[rootViewController updateTableListOfMolecules];
 			[rootViewController selectedMoleculeDidChange:([molecules count] - 1)];
@@ -617,7 +596,6 @@
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Connection failed", @"Localized", nil) message:NSLocalizedStringFromTable(@"Could not connect to the Protein Data Bank", @"Localized", nil)
 												   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil, nil];
 	[alert show];
-	[alert release];
 	
 	[self downloadCompleted];
 }
@@ -658,7 +636,6 @@
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Could not find file", @"Localized", nil) message:[NSString stringWithFormat:NSLocalizedStringFromTable(@"No such file exists on the server: %@", @"Localized", nil), nameOfDownloadedMolecule]
 													   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil, nil];
 		[alert show];
-		[alert release];		
 		[connection cancel];
 		[self downloadCompleted];
 		return;

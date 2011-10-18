@@ -21,23 +21,18 @@
 	{
 		// this title will appear in the navigation bar
 		self.title = newTitle;
-		content = [newContent retain];
+		content = newContent;
 	}
 	
 	return self;
 }
 
-- (void)dealloc
-{	
-	[content release];
-	[super dealloc];
-}
 
 - (UITextView *)create_UITextView
 {
 	CGRect frame = CGRectMake(0.0f, 0.0f, 100.0f, 390.0f);
 	
-	UITextView *textView = [[[UITextView alloc] initWithFrame:frame] autorelease];
+	UITextView *textView = [[UITextView alloc] initWithFrame:frame];
     textView.textColor = [UIColor blackColor];
     textView.font = [UIFont fontWithName:@"Arial" size:18.0];
     textView.backgroundColor = [UIColor whiteColor];
@@ -93,7 +88,7 @@
 	if (cell == nil)
 	{
 //		cell = [[[SLSCellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kSLSCellTextView_ID] autorelease];
-        cell = [[[SLSCellTextView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSLSCellTextView_ID] autorelease];
+        cell = [[SLSCellTextView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSLSCellTextView_ID];
 	}
 	
 	// this cell hosts the UISwitch control

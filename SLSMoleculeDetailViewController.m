@@ -45,7 +45,6 @@
 		//	label.text = @"Text";
 		
 		self.tableView.tableHeaderView = label;
-		[label release];
 		
 		if ([SLSMoleculeAppDelegate isRunningOniPad])
 		{
@@ -55,10 +54,6 @@
 	return self;
 }
 
-- (void)dealloc 
-{
-	[super dealloc];
-}
 
 - (void)viewDidLoad 
 {
@@ -152,7 +147,7 @@
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:StatisticsCellIdentifier];
 		if (cell == nil) 
 		{
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:StatisticsCellIdentifier] autorelease];
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:StatisticsCellIdentifier];
 			
 			cell.detailTextLabel.textColor = [UIColor colorWithRed:50.0f/255.0f green:79.0f/255.0f blue:133.0f/255.0f alpha:1.0f];
             cell.detailTextLabel.highlightedTextColor = [UIColor whiteColor];			
@@ -188,7 +183,7 @@
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MyIdentifier];
 	if (cell == nil) {
 //		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:MyIdentifier] autorelease];
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier] autorelease];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
 	}
 	cell.textLabel.text = [self textForIndexPath:indexPath];
 	
@@ -246,7 +241,7 @@
 	
 	label.text = text;
 	
-	return [label autorelease];
+	return label;
 }
 
 //#define HEIGHTPERLINE 23.0
@@ -336,7 +331,6 @@
 	{
 		SLSTextViewController *nextViewController = [[SLSTextViewController alloc] initWithTitle:[self tableView:tableView titleForHeaderInSection:indexPath.section] andContent:[self textForIndexPath:indexPath]];
 		[self.navigationController pushViewController:nextViewController animated:YES];
-		[nextViewController release];
 	}
 	
 }

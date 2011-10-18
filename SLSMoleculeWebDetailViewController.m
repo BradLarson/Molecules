@@ -38,7 +38,6 @@
 	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Back", @"Localized", nil) style:UIBarButtonItemStylePlain target:self action:@selector(goBackInWebView)];
 	backButtonItem.enabled = NO;
 	self.navigationItem.rightBarButtonItem = backButtonItem;
-	[backButtonItem release];	
         
     NSURLRequest *theRequest = [NSURLRequest requestWithURL:moleculeDetailWebPageURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
     [webDetailView loadRequest:theRequest];
@@ -54,14 +53,10 @@
 - (void)dealloc 
 {
 	webDetailView.delegate = nil;
-	[webDetailView release];
     
     [loadingActivityIndicator removeFromSuperview];
-    [loadingActivityIndicator release];
     loadingActivityIndicator = nil;
 
-    [moleculeDetailWebPageURL release];
-    [super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
@@ -117,7 +112,6 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     [loadingActivityIndicator removeFromSuperview];
-    [loadingActivityIndicator release];
     loadingActivityIndicator = nil;
     
 	if (![webDetailView canGoBack])

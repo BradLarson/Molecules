@@ -70,7 +70,7 @@ typedef struct {
 @property (readwrite, nonatomic) BOOL isBeingDisplayed, isRenderingCancelled;
 @property (readonly) BOOL isDoneRendering;
 @property (readonly) unsigned int numberOfAtoms, numberOfStructures;
-@property (readwrite, retain) NSValue *previousTerminalAtomValue;
+@property (readwrite, strong) NSValue *previousTerminalAtomValue;
 @property (readwrite, nonatomic) SLSVisualizationType currentVisualizationType;
 @property (readwrite) unsigned int numberOfStructureBeingDisplayed;
 

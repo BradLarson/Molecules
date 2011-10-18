@@ -23,7 +23,7 @@
 
 - (id)initWithContext:(EAGLContext *)newContext;
 {
-	if (![super initWithContext:newContext])
+	if (!(self = [super initWithContext:newContext]))
     {
 		return nil;
     }
@@ -84,7 +84,6 @@
         sphereAOLookupTexture = 0;
     }
 
-	[super dealloc];
 }
 
 #pragma mark -
@@ -369,7 +368,6 @@
 		NSLog(@"Frag Log: %@", fragLog);
 		NSString *vertLog = [sphereDepthProgram vertexShaderLog];
 		NSLog(@"Vert Log: %@", vertLog);
-		[sphereDepthProgram release];
 		sphereDepthProgram = nil;
 	}
     
@@ -400,7 +398,6 @@
 		NSLog(@"Frag Log: %@", fragLog);
 		NSString *vertLog = [cylinderDepthProgram vertexShaderLog];
 		NSLog(@"Vert Log: %@", vertLog);
-		[cylinderDepthProgram release];
 		cylinderDepthProgram = nil;
 	}
     
@@ -429,7 +426,6 @@
 		NSLog(@"Frag Log: %@", fragLog);
 		NSString *vertLog = [sphereDepthWriteProgram vertexShaderLog];
 		NSLog(@"Vert Log: %@", vertLog);
-		[sphereDepthWriteProgram release];
 		sphereDepthWriteProgram = nil;
 	}
     
@@ -467,7 +463,6 @@
 		NSLog(@"Frag Log: %@", fragLog);
 		NSString *vertLog = [sphereAmbientOcclusionProgram vertexShaderLog];
 		NSLog(@"Vert Log: %@", vertLog);
-		[sphereAmbientOcclusionProgram release];
 		sphereAmbientOcclusionProgram = nil;
 	}
     
@@ -502,7 +497,6 @@
 		NSLog(@"Frag Log: %@", fragLog);
 		NSString *vertLog = [cylinderAmbientOcclusionProgram vertexShaderLog];
 		NSLog(@"Vert Log: %@", vertLog);
-		[cylinderAmbientOcclusionProgram release];
 		cylinderAmbientOcclusionProgram = nil;
 	}
     
@@ -547,7 +541,6 @@
 		NSLog(@"Frag Log: %@", fragLog);
 		NSString *vertLog = [sphereRaytracingProgram vertexShaderLog];
 		NSLog(@"Vert Log: %@", vertLog);
-		[sphereRaytracingProgram release];
 		sphereRaytracingProgram = nil;
 	}
     
@@ -588,7 +581,6 @@
 		NSLog(@"Frag Log: %@", fragLog);
 		NSString *vertLog = [cylinderRaytracingProgram vertexShaderLog];
 		NSLog(@"Vert Log: %@", vertLog);
-		[cylinderRaytracingProgram release];
 		cylinderRaytracingProgram = nil;
 	}
     
@@ -627,7 +619,6 @@
 		NSLog(@"Frag Log: %@", fragLog);
 		NSString *vertLog = [passthroughProgram vertexShaderLog];
 		NSLog(@"Vert Log: %@", vertLog);
-		[passthroughProgram release];
 		passthroughProgram = nil;
 	}
     
@@ -653,7 +644,6 @@
 		NSLog(@"Frag Log: %@", fragLog);
 		NSString *vertLog = [sphereAOLookupPrecalculationProgram vertexShaderLog];
 		NSLog(@"Vert Log: %@", vertLog);
-		[sphereAOLookupPrecalculationProgram release];
 		sphereAOLookupPrecalculationProgram = nil;
 	}
     

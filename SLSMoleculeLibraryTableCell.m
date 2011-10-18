@@ -24,10 +24,6 @@
     return self;
 }
 
-- (void)dealloc 
-{
-    [super dealloc];
-}
 
 
 //- (void)setSelected:(BOOL)selected animated:(BOOL)animated 

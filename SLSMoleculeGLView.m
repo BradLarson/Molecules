@@ -66,7 +66,6 @@
             openGLESRenderer = [[SLSOpenGLES20Renderer alloc] initWithContext:aContext];
         }
 
-        [aContext release];
         
         [openGLESRenderer createFramebuffersForLayer:eaglLayer];
         [openGLESRenderer clearScreen];

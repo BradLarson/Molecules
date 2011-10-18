@@ -40,9 +40,9 @@
 	BOOL twoFingersAreMoving, pinchGestureUnderway;
 }
 
-@property (readwrite, retain, nonatomic) UIActionSheet *visualizationActionSheet;
-@property (readwrite, retain, nonatomic) SLSMolecule *moleculeToDisplay;
-@property (readwrite, retain, nonatomic) CADisplayLink *displayLink;
+@property (readwrite, strong, nonatomic) UIActionSheet *visualizationActionSheet;
+@property (readwrite, strong, nonatomic) SLSMolecule *moleculeToDisplay;
+@property (readwrite, strong, nonatomic) CADisplayLink *displayLink;
 
 // Display indicator control
 - (void)showScanningIndicator:(NSNotification *)note;

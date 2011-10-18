@@ -93,18 +93,10 @@
 
 - (void)dealloc 
 {
-    [downloadController release];
     downloadController = nil;
     
-    [currentXMLElementString release];
     currentXMLElementString = nil;
 
-	[keywordSearchBar release];
-	[searchResultRetrievalConnection release];
-	[searchResultTitles release];
-	[searchResultIDs release];
-	[downloadedFileContents release];
-	[super dealloc];
 }
 
 #pragma mark -
@@ -113,13 +105,10 @@
 - (BOOL)performSearchWithKeyword:(NSString *)keyword;
 {
 	// Clear the old search results table
-	[searchResultTitles release];
 	searchResultTitles = nil;
 	
-	[searchResultIDs release];
 	searchResultIDs = nil;
     
-    [searchResultIUPACNames release];
     searchResultIUPACNames = nil;
 
 	NSString *searchURL = nil;
@@ -143,10 +132,9 @@
 	NSURLRequest *pdbSearchRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:searchURL]
 													cachePolicy:NSURLRequestUseProtocolCachePolicy
 												timeoutInterval:60.0];
-	[searchURL release];
 	searchResultRetrievalConnection = [[NSURLConnection alloc] initWithRequest:pdbSearchRequest delegate:self];
 	
-	downloadedFileContents = [[NSMutableData data] retain];
+	downloadedFileContents = [NSMutableData data];
 	
 	if (searchResultRetrievalConnection) 
 	{
@@ -163,7 +151,6 @@
 {
 	if (!appendData)
 	{
-		[searchResultRetrievalConnection release];
 		searchResultRetrievalConnection = nil;
 
 		searchResultTitles = [[NSMutableArray alloc] init];
@@ -171,7 +158,6 @@
 	}
 	else
 	{
-		[nextResultsRetrievalConnection release];
 		nextResultsRetrievalConnection = nil;
 	}	
     
@@ -190,7 +176,6 @@
 - (void)processPDBSearchResults;
 {
     NSString *titlesAndPDBCodeString = [[NSString alloc] initWithData:downloadedFileContents encoding:NSASCIIStringEncoding];
-	[downloadedFileContents release];
 	downloadedFileContents = nil;
 	
 	NSRange locationOfHTMLTag = [titlesAndPDBCodeString rangeOfString:@"<html"];
@@ -202,7 +187,6 @@
 		{
 			// No results match this query
 			currentPageOfResults = 1;
-			[titlesAndPDBCodeString release];
 			[self.tableView reloadData];		
 			return;
 		}
@@ -239,7 +223,6 @@
 		{
 			// No results match this query
 			currentPageOfResults = 1;
-			[titlesAndPDBCodeString release];
 			[self.tableView reloadData];		
 			return;
 		}
@@ -274,16 +257,13 @@
 	}	
 	
 	currentPageOfResults = 1;
-	[titlesAndPDBCodeString release];
 }
 
 - (void)processPubChemKeywordSearch;
 {    
-    [currentXMLElementString release];
     currentXMLElementString = nil;
     
 	searchResultsParser = [[NSXMLParser alloc] initWithData:downloadedFileContents];
-	[downloadedFileContents release];
 	downloadedFileContents = nil;
 
     searchResultsParser.delegate = self;
@@ -313,17 +293,15 @@
     isRetrievingCompoundNames = YES;
     NSString *searchURL = [[NSString alloc] initWithFormat:@"http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pccompound&id=%@", compoundIDList];
     
-    [compoundIDList release];
     
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 	
 	NSURLRequest *sdfSearchRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:searchURL]
 													cachePolicy:NSURLRequestUseProtocolCachePolicy
 												timeoutInterval:60.0];
-	[searchURL release];
 	searchResultRetrievalConnection = [[NSURLConnection alloc] initWithRequest:sdfSearchRequest delegate:self];
 	
-	downloadedFileContents = [[NSMutableData data] retain];
+	downloadedFileContents = [NSMutableData data];
 	
 	if (!searchResultRetrievalConnection) 
 	{
@@ -336,14 +314,11 @@
     
     searchResultIUPACNames = [[NSMutableArray alloc] init];
 
-    [searchResultRetrievalConnection release];
     searchResultRetrievalConnection = nil;
 
-    [currentXMLElementString release];
     currentXMLElementString = nil;
     
 	searchResultsParser = [[NSXMLParser alloc] initWithData:downloadedFileContents];
-	[downloadedFileContents release];
 	downloadedFileContents = nil;
     
     searchResultsParser.delegate = self;
@@ -361,10 +336,9 @@
 	NSURLRequest *pdbSearchRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:nextResultsURL]
 													cachePolicy:NSURLRequestUseProtocolCachePolicy
 												timeoutInterval:60.0];
-	[nextResultsURL release];
 	nextResultsRetrievalConnection = [[NSURLConnection alloc] initWithRequest:pdbSearchRequest delegate:self];
 	
-	downloadedFileContents = [[NSMutableData data] retain];
+	downloadedFileContents = [NSMutableData data];
 	
 	if (nextResultsRetrievalConnection) 
 	{
@@ -424,7 +398,7 @@
 		if (cell == nil) 
 		{		
 //			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"SearchInProgress"] autorelease];
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"SearchInProgress"] autorelease];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"SearchInProgress"];
             
 //            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 //            {
@@ -445,7 +419,6 @@
 			[spinningIndicator startAnimating];
 			spinningIndicator.frame = frame;
 			[cell.contentView addSubview:spinningIndicator];
-			[spinningIndicator release];
 			cell.accessoryType = UITableViewCellAccessoryNone;
 			cell.textLabel.font = [UIFont systemFontOfSize:16.0];
 			cell.textLabel.textAlignment = UITextAlignmentCenter;
@@ -463,7 +436,7 @@
 		if (cell == nil) 
 		{		
 //			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"NoResults"] autorelease];
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoResults"] autorelease];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoResults"];
 
 //            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 //            {
@@ -488,7 +461,7 @@
 		{		
             
 //            cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"DownloadInProgress"] autorelease];
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DownloadInProgress"] autorelease];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DownloadInProgress"];
 
 //            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 //            {
@@ -509,7 +482,6 @@
             [spinningIndicator startAnimating];
             spinningIndicator.frame = frame;
             [cell.contentView addSubview:spinningIndicator];
-            [spinningIndicator release];
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.textLabel.font = [UIFont systemFontOfSize:16.0];
             cell.textLabel.textAlignment = UITextAlignmentCenter;
@@ -524,7 +496,7 @@
 			if (cell == nil) 
 			{		
 //				cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"LoadMore"] autorelease];
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LoadMore"] autorelease];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LoadMore"];
 
 //                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 //                {
@@ -548,7 +520,7 @@
 			cell = [tableView dequeueReusableCellWithIdentifier:NSLocalizedStringFromTable(@"Results", @"Localized", nil)];
 			if (cell == nil) 
 			{		
-				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:NSLocalizedStringFromTable(@"Results", @"Localized", nil)] autorelease];
+				cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:NSLocalizedStringFromTable(@"Results", @"Localized", nil)];
 
 //                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 //                {
@@ -675,7 +647,6 @@
     SLSMoleculeWebDetailViewController *detailViewController = [[SLSMoleculeWebDetailViewController alloc] initWithURL:[NSURL URLWithString:webDetailAddress]];
     
     [self.navigationController pushViewController:detailViewController animated:YES];
-    [detailViewController release];
 }
 
 - (void)didReceiveMemoryWarning 
@@ -709,10 +680,8 @@
 
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
 {
-    [searchResultTitles release];
 	searchResultTitles = nil;
 	
-	[searchResultIDs release];
 	searchResultIDs = nil;
 
     switch (selectedScope)
@@ -750,17 +719,13 @@
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Connection failed", @"Localized", nil) message:connectionError
 												   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil, nil];
 	[alert show];
-	[alert release];
 	
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
-	[downloadedFileContents release];
 	downloadedFileContents = nil;
 	
-	[searchResultRetrievalConnection release];
 	searchResultRetrievalConnection = nil;
 	
-	[nextResultsRetrievalConnection release];
 	nextResultsRetrievalConnection = nil;
 	
 	[self.tableView reloadData];
@@ -776,7 +741,6 @@
 	if (searchCancelled)
 	{
 		[connection cancel];
-		[downloadedFileContents release];
 		downloadedFileContents = nil;
 		
 		// Release connection?
@@ -878,7 +842,6 @@
         }
     }
 	
-	[currentXMLElementString release];
     currentXMLElementString = nil;
 }
 

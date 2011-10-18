@@ -32,7 +32,6 @@ NSString* kSLSCellTextView_ID = @"SLSCellTextViewID";
 - (void)setView:(UITextView *)inView
 {
 	view = inView;
-	[self.view retain];
 	[self.contentView addSubview:inView];
 	[self layoutSubviews];
 }
@@ -50,10 +49,5 @@ NSString* kSLSCellTextView_ID = @"SLSCellTextViewID";
 									contentRect.size.height - 16.0f);
 }
 
-- (void)dealloc
-{
-    [view release];
-    [super dealloc];
-}
 
 @end

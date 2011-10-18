@@ -15,7 +15,6 @@
 
 - (id)initWithGzippedData: (NSData *)gzippedData;
 {
-	[gzippedData retain];
 	if ([gzippedData length] == 0) return nil;
 	
 	unsigned full_length = [gzippedData length];
@@ -34,8 +33,6 @@
 	
 	if (inflateInit2(&strm, (15+32)) != Z_OK) 
 	{
-		[gzippedData release];
-		[decompressed release];
 		return nil;
 	}
 	while (!done)
@@ -53,15 +50,12 @@
 	}
 	if (inflateEnd (&strm) != Z_OK) 
 	{
-		[decompressed release];
 		return nil;
 	}
 	
 	// Set real length.
 	[decompressed setLength: strm.total_out];
 	id newObject = [self initWithBytes:[decompressed bytes] length:[decompressed length]];
-	[decompressed release];
-	[gzippedData release];
 	return newObject;
 }
 

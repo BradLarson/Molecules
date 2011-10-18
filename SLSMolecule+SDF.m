@@ -39,7 +39,6 @@
 //	}
 	if (sdfData == nil)
 	{
-		[atomCoordinates release];
 		return NO;
 	}
 
@@ -48,14 +47,11 @@
 	
 	// Load the file into a string for processing
 	NSString *sdfFileContents = [[NSString alloc] initWithData:sdfData encoding:NSASCIIStringEncoding];
-	[sdfData release];
     
     NSRange locationOfHTMLTag = [sdfFileContents rangeOfString:@"<html"];
 	if (locationOfHTMLTag.location != NSNotFound)
     {
         // Error in download
-        [sdfFileContents release];
-		[atomCoordinates release];
 		return NO;
     }
     
@@ -217,7 +213,6 @@
             break;
         }
     }
-    [sdfFileContents release];
 	
 	if (numberOfAtoms > 0)
 	{		
@@ -237,7 +232,6 @@
 		}
 	}
 
-    [atomCoordinates release];
 	
     if (title == nil)
 	{

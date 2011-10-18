@@ -32,15 +32,6 @@
     return self;
 }
 
-- (void)dealloc 
-{
-	[rotationButton release];
-
-	[tableViewController release];
-	[glViewController release];
-	[tableNavigationController release];
-	[super dealloc];
-}
 
 - (void)loadView 
 {
@@ -50,34 +41,31 @@
 	backgroundView.backgroundColor = [UIColor blackColor];
 		
 	self.view = backgroundView;
-	[backgroundView release];
 	toggleViewDisabled = NO;
 
 	SLSMoleculeGLViewController *viewController = [[SLSMoleculeGLViewController alloc] initWithNibName:nil bundle:nil];
 	self.glViewController = viewController;
-	[viewController release];
 	
 	[self.view addSubview:glViewController.view];
 	
-	UIButton *infoButton = [[UIButton buttonWithType:UIButtonTypeInfoLight] retain];
+	UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
 	infoButton.frame = CGRectMake(320.0f - 70.0f, 460.0f - 70.0f, 70.0f, 70.0f);
 	[infoButton addTarget:glViewController action:@selector(switchToTableView) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
 	[glViewController.view addSubview:infoButton];
-	[infoButton release];
 	
 	rotationButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	
 	UIImage *rotationImage = [UIImage imageNamed:@"RotationIcon.png"];
 	if (rotationImage == nil)
 	{
-		rotationImage = [[[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIcon" ofType:@"png"]] autorelease];
+		rotationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIcon" ofType:@"png"]];
 	}
 	[rotationButton setImage:rotationImage forState:UIControlStateNormal];
 	
 	UIImage *selectedRotationImage = [UIImage imageNamed:@"RotationIconSelected.png"];
 	if (selectedRotationImage == nil)
 	{
-		selectedRotationImage = [[[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIconSelected" ofType:@"png"]] autorelease];
+		selectedRotationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RotationIconSelected" ofType:@"png"]];
 	}
 	[rotationButton setImage:selectedRotationImage forState:UIControlStateSelected];
 	
@@ -265,8 +253,7 @@
 		return;
 	}
 	
-	[molecules release];
-	molecules = [newValue retain];
+	molecules = newValue;
 	tableViewController.molecules = molecules;
 	
 	NSInteger indexOfInitialMolecule = [[NSUserDefaults standardUserDefaults] integerForKey:@"indexOfLastSelectedMolecule"];

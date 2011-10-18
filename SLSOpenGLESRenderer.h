@@ -91,7 +91,7 @@ static const SLSAtomProperties atomProperties[NUM_ATOMTYPES] = {
     dispatch_semaphore_t frameRenderingSemaphore;
 }
 
-@property(readwrite, retain, nonatomic) EAGLContext *context;
+@property(readwrite, strong, nonatomic) EAGLContext *context;
 @property(readonly) BOOL isFrameRenderingFinished, isSceneReady;
 @property(readonly) NSInteger totalNumberOfVertices, totalNumberOfTriangles;
 @property(readwrite, nonatomic) float atomRadiusScaleFactor, bondRadiusScaleFactor, overallMoleculeScaleFactor;

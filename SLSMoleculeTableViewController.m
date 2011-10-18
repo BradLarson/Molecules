@@ -46,14 +46,12 @@
 
 			UIBarButtonItem *downloadButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(displayMoleculeDownloadView)];
 			self.navigationItem.leftBarButtonItem = downloadButtonItem;
-			[downloadButtonItem release];
 		}
 		else
 		{
 //			tableTextColor = [[UIColor blackColor] retain];
 			UIBarButtonItem *modelButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"3D Model", @"Localized", nil) style:UIBarButtonItemStylePlain target:self action:@selector(switchBackToGLView)];
 			self.navigationItem.leftBarButtonItem = modelButtonItem;
-			[modelButtonItem release];
 		}
 	}
 	return self;
@@ -80,12 +78,6 @@
 	}	
 }
 
-- (void)dealloc 
-{
-	[tableTextColor release];
-	[molecules release];
-	[super dealloc];
-}
 
 #pragma mark -
 #pragma mark View switching
@@ -100,7 +92,6 @@
     SLSMoleculeSearchViewController *searchViewController = [[SLSMoleculeSearchViewController alloc] initWithStyle:UITableViewStylePlain];
     
     [self.navigationController pushViewController:searchViewController animated:YES];
-    [searchViewController release];
 
 /*    
 	SLSMoleculeDataSourceViewController *dataSourceViewController = [[SLSMoleculeDataSourceViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -128,7 +119,6 @@
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Error in downloaded file", @"Localized", nil) message:NSLocalizedStringFromTable(@"The molecule file is either corrupted or not of a supported format", @"Localized", nil)
 													   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil, nil];
 		[alert show];
-		[alert release];
 		
 		// Delete the corrupted or sunsupported file
 		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -140,7 +130,6 @@
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Could not delete file", @"Localized", nil) message:[error localizedDescription]
 														   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles: nil, nil];
 			[alert show];
-			[alert release];					
 			return;
 		}
 		
@@ -148,7 +137,6 @@
 	else
 	{
 		[molecules addObject:newMolecule];
-		[newMolecule release];
 		
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         {
@@ -169,7 +157,7 @@
 
 + (CAGradientLayer *)glowGradientForSize:(CGSize)gradientSize;
 {
-	CAGradientLayer *newGlow = [[[CAGradientLayer alloc] init] autorelease];
+	CAGradientLayer *newGlow = [[CAGradientLayer alloc] init];
 	//	self.tableView.rowHeight = 20.0f + MAXHEIGHTFOREQUATIONSINTABLEVIEW;
 	
 	CGRect newGlowFrame = CGRectMake(0, 0, gradientSize.width, gradientSize.height);
@@ -178,24 +166,27 @@
 //	CGColorRef middleColor = [UIColor colorWithRed:0.5585f green:0.7695f blue:1.0f alpha:0.0f].CGColor;
 //	CGColorRef bottomColor = [UIColor colorWithRed:0.5585f green:0.672f blue:1.0f alpha:0.14f].CGColor;
 //	CGColorRef topColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.33f].CGColor;
-	CGColorRef topColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.20f].CGColor;
-	CGColorRef middleColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.0f].CGColor;
-	CGColorRef bottomColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.08f].CGColor;
-	newGlow.colors = [NSArray arrayWithObjects:(id)(topColor), (id)(middleColor), (id)(bottomColor), nil];
+	UIColor *topColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.20f];
+	UIColor *middleColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.0f];
+	UIColor *bottomColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.08f];
+    
+//    gradientLayer.colors = [NSArray arrayWithObjects:[[UIColor darkGrayColor] CGColor],
+//                            [[UIColor lightGrayColor] CGColor], nil];
+	newGlow.colors = [NSArray arrayWithObjects:(id)[topColor CGColor], (id)[middleColor CGColor], (id)[bottomColor CGColor], nil];
 	return newGlow;
 }
 
 + (CAGradientLayer *)shadowGradientForSize:(CGSize)gradientSize;
 {
-	CAGradientLayer *newShadow = [[[CAGradientLayer alloc] init] autorelease];
+	CAGradientLayer *newShadow = [[CAGradientLayer alloc] init];
 	newShadow.startPoint = CGPointMake(1.0f, 0.5);
 	newShadow.endPoint = CGPointMake(0.9f, 0.5);
 	
 	CGRect newShadowFrame = CGRectMake(0, 0, gradientSize.width, gradientSize.height);
 	newShadow.frame = newShadowFrame;
-	CGColorRef rightColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.5f].CGColor;
-	CGColorRef leftColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:1.0f].CGColor;
-	newShadow.colors = [NSArray arrayWithObjects:(id)(rightColor), (id)(leftColor), nil];
+	UIColor *rightColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.5f];
+	UIColor *leftColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:1.0f];
+	newShadow.colors = [NSArray arrayWithObjects:(id)[rightColor CGColor], (id)[leftColor CGColor], nil];
 	return newShadow;
 }
 
@@ -215,7 +206,7 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:@"Download"];
 		if (cell == nil) 
 		{
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Download"] autorelease];
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Download"];
             
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
             {
@@ -239,7 +230,7 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:@"Molecules"];
 		if (cell == nil) 
 		{
-			cell = [[[SLSMoleculeLibraryTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Molecules"] autorelease];
+			cell = [[SLSMoleculeLibraryTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Molecules"];
 
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
             {
@@ -266,10 +257,10 @@
                 if (![(SLSMoleculeLibraryTableCell *)cell isSelected])
                 {
                     CAGradientLayer *glowGradient = [(SLSMoleculeLibraryTableCell *)cell highlightGradientLayer];
-                    CGColorRef topColor = [UIColor colorWithRed:0.5f green:0.7f blue:1.0f alpha:0.6f].CGColor;
-                    CGColorRef middleColor = [UIColor colorWithRed:0.5f green:0.7f blue:1.0f alpha:0.1f].CGColor;
-                    CGColorRef bottomColor = [UIColor colorWithRed:0.5585f green:0.672f blue:1.0f alpha:0.30f].CGColor;
-                    glowGradient.colors = [NSArray arrayWithObjects:(id)(topColor), (id)(middleColor), (id)(bottomColor), nil];
+                    UIColor *topColor = [UIColor colorWithRed:0.5f green:0.7f blue:1.0f alpha:0.6f];
+                    UIColor *middleColor = [UIColor colorWithRed:0.5f green:0.7f blue:1.0f alpha:0.1f];
+                    UIColor *bottomColor = [UIColor colorWithRed:0.5585f green:0.672f blue:1.0f alpha:0.30f];
+                    glowGradient.colors = [NSArray arrayWithObjects:(id)[topColor CGColor], [middleColor CGColor], [bottomColor CGColor], nil];
                     
                     [(SLSMoleculeLibraryTableCell *)cell setIsSelected:YES];
                 }
@@ -281,10 +272,10 @@
                 if ([(SLSMoleculeLibraryTableCell *)cell isSelected])
                 {
                     CAGradientLayer *glowGradient = [(SLSMoleculeLibraryTableCell *)cell highlightGradientLayer];
-                    CGColorRef topColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.20f].CGColor;
-                    CGColorRef middleColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.0f].CGColor;
-                    CGColorRef bottomColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.08f].CGColor;
-                    glowGradient.colors = [NSArray arrayWithObjects:(id)(topColor), (id)(middleColor), (id)(bottomColor), nil];
+                    UIColor *topColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.20f];
+                    UIColor *middleColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.0f];
+                    UIColor *bottomColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.08f];
+                    glowGradient.colors = [NSArray arrayWithObjects:(id)[topColor CGColor], [middleColor CGColor], [bottomColor CGColor], nil];
 
                     [(SLSMoleculeLibraryTableCell *)cell setIsSelected:NO];
                 }
@@ -363,7 +354,6 @@
 		SLSMoleculeDetailViewController *detailViewController = [[SLSMoleculeDetailViewController alloc] initWithStyle:UITableViewStyleGrouped andMolecule: [molecules objectAtIndex:(index - 1)]];
 		
 		[self.navigationController pushViewController:detailViewController animated:YES];
-		[detailViewController release];
 		
 	}
 }

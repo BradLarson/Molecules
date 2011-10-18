@@ -33,8 +33,8 @@
 	NSMutableArray *molecules;
 }
 
-@property (nonatomic, retain) UIWindow *window;
-@property (nonatomic, retain) SLSMoleculeRootViewController *rootViewController;
+@property (nonatomic, strong) UIWindow *window;
+@property (nonatomic, strong) SLSMoleculeRootViewController *rootViewController;
 
 // Device-specific interface control
 + (BOOL)isRunningOniPad;

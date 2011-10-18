@@ -21,16 +21,16 @@
 @interface SLSMoleculeTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
 {
 	NSMutableArray *molecules;
-	SLSMoleculeRootViewController *delegate;
+	SLSMoleculeRootViewController *__unsafe_unretained delegate;
 	NSInteger selectedIndex;
 	UIColor *tableTextColor;
 	
 	sqlite3 *database;
 }
 
-@property(readwrite,assign) SLSMoleculeRootViewController *delegate;
+@property(readwrite,unsafe_unretained) SLSMoleculeRootViewController *delegate;
 @property(readwrite,assign) sqlite3 *database;
-@property(readwrite,retain) NSMutableArray *molecules;
+@property(readwrite,strong) NSMutableArray *molecules;
 @property(readwrite) NSInteger selectedIndex;
 
 // Initialization and teardown

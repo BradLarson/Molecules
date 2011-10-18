@@ -62,9 +62,7 @@
 {
 //	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[self.displayLink invalidate];
-	self.displayLink = nil;
 	
-	[super dealloc];
 }
 
 - (void)loadView 
@@ -76,7 +74,6 @@
 	self.view = glView;
     openGLESRenderer = glView.openGLESRenderer;
 	
-	[glView release];
 }
 
 #pragma mark -
@@ -87,7 +84,6 @@
 	if (scanningActivityIndicator != nil)
 	{
 		[scanningActivityIndicator removeFromSuperview];
-		[scanningActivityIndicator release];
 		scanningActivityIndicator = nil;		
 	}
 	
@@ -99,7 +95,6 @@
 	if (renderingActivityLabel != nil)
 	{
 		[renderingActivityLabel removeFromSuperview];
-		[renderingActivityLabel release];
 		renderingActivityLabel = nil;
 	}
 	
@@ -122,11 +117,9 @@
 - (void)hideScanningIndicator:(NSNotification *)note;
 {
 	[renderingActivityLabel removeFromSuperview];
-	[renderingActivityLabel release];
 	renderingActivityLabel = nil;
 	
 	[scanningActivityIndicator removeFromSuperview];
-	[scanningActivityIndicator release];
 	scanningActivityIndicator = nil;
 }
 
@@ -135,7 +128,6 @@
 	if (renderingProgressIndicator != nil)
 	{
 		[renderingProgressIndicator removeFromSuperview];
-		[renderingProgressIndicator release];
 		renderingProgressIndicator = nil;
 	}
 	
@@ -147,7 +139,6 @@
 	if (renderingActivityLabel != nil)
 	{
 		[renderingActivityLabel removeFromSuperview];
-		[renderingActivityLabel release];
 		renderingActivityLabel = nil;
 	}
 	
@@ -179,10 +170,8 @@
 	[renderingActivityLabel removeFromSuperview];
 	[renderingProgressIndicator removeFromSuperview];
 
-	[renderingActivityLabel release];
 	renderingActivityLabel = nil;
 	
-	[renderingProgressIndicator release];
 	renderingProgressIndicator = nil;
 }
 
@@ -370,7 +359,7 @@
     {
         actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
     }
-	return [actionSheet autorelease];
+	return actionSheet;
 }
 
 #pragma mark -
@@ -455,7 +444,7 @@
 	if (isAutorotating)
 		[self startOrStopAutorotation:nil];
 
-    NSMutableSet *currentTouches = [[[event touchesForView:self.view] mutableCopy] autorelease];
+    NSMutableSet *currentTouches = [[event touchesForView:self.view] mutableCopy];
     [currentTouches minusSet:touches];
 	
 	// New touches are not yet included in the current touches for the view
@@ -572,7 +561,7 @@
 	if (isAutorotating)
 		[self startOrStopAutorotation:nil];
 	
-    NSMutableSet *remainingTouches = [[[event touchesForView:self.view] mutableCopy] autorelease];
+    NSMutableSet *remainingTouches = [[event touchesForView:self.view] mutableCopy];
     [remainingTouches minusSet:touches];
 	if ([remainingTouches count] < 2)
 	{
@@ -706,8 +695,7 @@
         [openGLESRenderer freeVertexBuffers];
     }
     
-	[moleculeToDisplay release];
-	moleculeToDisplay = [newMolecule retain];
+	moleculeToDisplay = newMolecule;
     if ([openGLESRenderer isKindOfClass:[SLSOpenGLES20Renderer class]])
     {
         [moleculeToDisplay switchToDefaultVisualizationMode];

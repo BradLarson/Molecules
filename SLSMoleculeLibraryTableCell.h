@@ -12,11 +12,11 @@
 
 @interface SLSMoleculeLibraryTableCell : UITableViewCell 
 {
-    CAGradientLayer *highlightGradientLayer;
+    CAGradientLayer *__unsafe_unretained highlightGradientLayer;
     BOOL isSelected;
 }
 
-@property(assign, nonatomic) CAGradientLayer *highlightGradientLayer;
+@property(unsafe_unretained, nonatomic) CAGradientLayer *highlightGradientLayer;
 @property(assign, nonatomic) BOOL isSelected;
 
 @end

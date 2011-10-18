@@ -18,6 +18,6 @@ extern NSString *kSLSCellTextView_ID;
     UITextView *view;
 }
 
-@property (nonatomic, retain) UITextView *view;
+@property (nonatomic, strong) UITextView *view;
 
 @end

@@ -19,7 +19,7 @@
 	UILabel *nameLabel;	
 }
 
-@property (nonatomic, retain) SLSMolecule *molecule;
+@property (nonatomic, strong) SLSMolecule *molecule;
 - (id)initWithStyle:(UITableViewStyle)style andMolecule:(SLSMolecule *)newMolecule;
 
 - (UILabel *)createLabelForIndexPath:(NSIndexPath *)indexPath;

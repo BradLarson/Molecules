@@ -31,11 +31,11 @@
 	sqlite3 *database;
 }
 
-@property (nonatomic, retain) SLSMoleculeGLViewController *glViewController;
+@property (nonatomic, strong) SLSMoleculeGLViewController *glViewController;
 @property (nonatomic, readonly) UINavigationController *tableNavigationController;
 @property (nonatomic, readonly) SLSMoleculeTableViewController *tableViewController;
 @property (nonatomic, assign) sqlite3 *database;
-@property (nonatomic, retain) NSMutableArray *molecules;
+@property (nonatomic, strong) NSMutableArray *molecules;
 
 // Manage the switching of views
 - (void)toggleView:(NSNotification *)note;

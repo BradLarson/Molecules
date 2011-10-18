@@ -17,7 +17,7 @@
     UIActivityIndicatorView *loadingActivityIndicator;
 }
 
-@property (retain, nonatomic) NSURL *moleculeDetailWebPageURL;
+@property (strong, nonatomic) NSURL *moleculeDetailWebPageURL;
 
 // Initialization and teardown
 - (id)initWithURL:(NSURL *)moleculeWebPageURL;

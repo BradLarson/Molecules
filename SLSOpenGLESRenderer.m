@@ -19,9 +19,9 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
 
 - (id)initWithContext:(EAGLContext *)newContext;
 {
-	if (![super init])
+    if (!(self = [super init]))
     {
-		return nil;
+        return nil;
     }
 
     self.context = newContext;
@@ -64,11 +64,9 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
 		[EAGLContext setCurrentContext:nil];
 	}
 	
-	[context release];	
     
     dispatch_release(openGLESContextQueue);
     
-	[super dealloc];
 }
 
 #pragma mark -
@@ -395,7 +393,6 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
                 numberOfIndicesInBuffer[currentAtomIndexBufferIndex] = ([atomIndexBuffers[currentAtomIndexBufferIndex] length] / sizeof(GLushort));
                 
                 // Now that the data are in the OpenGL buffer, can release the NSData
-                [atomIndexBuffers[currentAtomIndexBufferIndex] release];
                 atomIndexBuffers[currentAtomIndexBufferIndex] = nil;
             }
             else
@@ -412,7 +409,6 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
                 glBindBuffer(GL_ARRAY_BUFFER, atomVertexBufferHandles[currentAtomVBOIndex]);
                 glBufferData(GL_ARRAY_BUFFER, [atomVBOs[currentAtomVBOIndex] length], (void *)[atomVBOs[currentAtomVBOIndex] bytes], GL_STATIC_DRAW); 
                 
-                [atomVBOs[currentAtomVBOIndex] release];
                 atomVBOs[currentAtomVBOIndex] = nil;
             }
             else
@@ -431,14 +427,12 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
                 
                 numberOfBondIndicesInBuffer[currentBondVBOIndex] = ([bondIndexBuffers[currentBondVBOIndex] length] / sizeof(GLushort));
                 
-                [bondIndexBuffers[currentBondVBOIndex] release];
                 bondIndexBuffers[currentBondVBOIndex] = nil;
                 
                 glGenBuffers(1, &bondVertexBufferHandle[currentBondVBOIndex]);
                 glBindBuffer(GL_ARRAY_BUFFER, bondVertexBufferHandle[currentBondVBOIndex]);
                 glBufferData(GL_ARRAY_BUFFER, [bondVBOs[currentBondVBOIndex] length], (void *)[bondVBOs[currentBondVBOIndex] bytes], GL_STATIC_DRAW); 
                 
-                [bondVBOs[currentBondVBOIndex] release];
                 bondVBOs[currentBondVBOIndex] = nil;
             }
         }    
@@ -513,7 +507,6 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
     {
         if (atomVBOs[currentVBOIndex] != nil)
         {
-            [atomVBOs[currentVBOIndex] release];
             atomVBOs[currentVBOIndex] = nil;
         }
     }
@@ -522,17 +515,14 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
     {
         if (atomIndexBuffers[currentIndexBufferIndex] != nil)
         {
-            [atomIndexBuffers[currentIndexBufferIndex] release];
             atomIndexBuffers[currentIndexBufferIndex] = nil;
         }
     }
     
     for (unsigned int currentBondVBOIndex = 0; currentBondVBOIndex < MAX_BOND_VBOS; currentBondVBOIndex++)
     {
-        [bondVBOs[currentBondVBOIndex] release];
         bondVBOs[currentBondVBOIndex] = nil;
         
-        [bondIndexBuffers[currentBondVBOIndex] release];
         bondIndexBuffers[currentBondVBOIndex] = nil;
     }    
 }

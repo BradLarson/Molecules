@@ -32,10 +32,6 @@
 	return self;
 }
 
-- (void)dealloc 
-{
-    [super dealloc];
-}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
@@ -64,7 +60,7 @@
 	if (cell == nil) 
 	{
 //		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"Download"] autorelease];
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Download"] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Download"];
 		cell.textLabel.textColor = [UIColor blackColor];
 	}		
 	
@@ -92,7 +88,6 @@
 			SLSMoleculeSearchViewController *searchViewController = [[SLSMoleculeSearchViewController alloc] initWithStyle:UITableViewStylePlain];
 			
 			[self.navigationController pushViewController:searchViewController animated:YES];
-			[searchViewController release];
 		}; break;
 		case 1: 
 		{
@@ -100,7 +95,6 @@
 			SLSMoleculeCustomDownloadViewController *customURLViewController = [[SLSMoleculeCustomDownloadViewController alloc] initWithNibName:nil bundle:nil];
 			
 			[self.navigationController pushViewController:customURLViewController animated:YES];
-			[customURLViewController release];
 		}; break;
 	}
 	

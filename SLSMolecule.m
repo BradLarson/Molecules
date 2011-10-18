@@ -47,9 +47,11 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 
 - (id)init;
 {
-	if (![super init])
-		return nil;
-	
+    if (!(self = [super init]))
+    {
+        return nil;
+    }
+        
 	numberOfStructures = 1;
 	numberOfStructureBeingDisplayed = 1;
 	
@@ -82,8 +84,10 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 
 - (id)initWithFilename:(NSString *)newFilename database:(sqlite3 *)newDatabase title:(NSString *)newTitle;
 {
-	if (![self init])
-		return nil;
+    if (!(self = [super init]))
+    {
+        return nil;
+    }
 
 	database = newDatabase;
 	filename = [newFilename copy];
@@ -96,7 +100,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
     }
 	else
     {
-		filenameWithoutExtension = [[filename substringToIndex:rangeUntilFirstPeriod.location] retain];	
+		filenameWithoutExtension = [filename substringToIndex:rangeUntilFirstPeriod.location];	
     }
 	
 	if (insertMoleculeSQLStatement == nil) 
@@ -142,8 +146,10 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 
 - (id)initWithSQLStatement:(sqlite3_stmt *)moleculeRetrievalStatement database:(sqlite3 *)newDatabase;
 {
-	if (![self init])
-		return nil;
+    if (!(self = [super init]))
+    {
+        return nil;
+    }
 
 	database = newDatabase;
 	
@@ -152,21 +158,21 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 	databaseKey = sqlite3_column_int(moleculeRetrievalStatement, 0);
 	char *stringResult = (char *)sqlite3_column_text(moleculeRetrievalStatement, 1);
 	NSString *sqlString =  (stringResult) ? [NSString stringWithUTF8String:stringResult]  : @"";
-	filename = [[sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"] retain];
+	filename = [sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"];
 	
 	NSRange rangeUntilFirstPeriod = [filename rangeOfString:@"."];
 	if (rangeUntilFirstPeriod.location == NSNotFound)
 		filenameWithoutExtension = filename;
 	else
-		filenameWithoutExtension = [[filename substringToIndex:rangeUntilFirstPeriod.location] retain];
+		filenameWithoutExtension = [filename substringToIndex:rangeUntilFirstPeriod.location];
 	
 	stringResult = (char *)sqlite3_column_text(moleculeRetrievalStatement, 2);
 	sqlString =  (stringResult) ? [NSString stringWithUTF8String:stringResult]  : @"";
-	title = [[sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"] retain];
+	title = [sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"];
 
 	stringResult = (char *)sqlite3_column_text(moleculeRetrievalStatement, 3);
 	sqlString =  (stringResult) ? [NSString stringWithUTF8String:stringResult]  : @"";
-	compound = [[sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"] retain];
+	compound = [sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"];
 	
 	// Ignore the format for now
 	//	stringResult = (char *)sqlite3_column_text(moleculeRetrievalStatement, 4);
@@ -209,28 +215,10 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Could not delete file", @"Localized", nil) message:[error localizedDescription]
 													   delegate:self cancelButtonTitle:NSLocalizedStringFromTable(@"OK", @"Localized", nil) otherButtonTitles:nil, nil];
 		[alert show];
-		[alert release];					
 		return;
 	}
 }
 
-- (void)dealloc;
-{
-	[title release];
-	[filename release];
-	[filenameWithoutExtension release];
-	[keywords release];
-	[journalAuthor release];
-	[journalTitle release];
-	[journalReference release];
-	[sequence release];
-	[compound release];
-	[source release];
-	[author release];
-	[previousTerminalAtomValue release];
-	
-	[super dealloc];
-}
 
 + (BOOL)isFiletypeSupportedForFile:(NSString *)filePath;
 {
@@ -663,33 +651,27 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 		{
 			case MOLECULESOURCE:  
 			{
-				[source release];
-				source = [[sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"] retain];
+				source = [sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"];
 			}; break;
 			case MOLECULEAUTHOR:  
 			{
-				[author release];
-				author = [[sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"] retain];
+				author = [sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"];
 			}; break;
 			case JOURNALAUTHOR:  
 			{
-				[journalAuthor release];
-				journalAuthor = [[sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"] retain];
+				journalAuthor = [sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"];
 			}; break;
 			case JOURNALTITLE:  
 			{
-				[journalTitle release];
-				journalTitle = [[sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"] retain];
+				journalTitle = [sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"];
 			}; break;
 			case JOURNALREFERENCE:  
 			{
-				[journalReference release];
-				journalReference = [[sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"] retain];
+				journalReference = [sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"];
 			}; break;
 			case MOLECULESEQUENCE:  
 			{
-				[sequence release];
-				sequence = [[sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"] retain];
+				sequence = [sqlString stringByReplacingOccurrencesOfString:@"''" withString:@"'"];
 			}; break;
 		}
 	}
@@ -844,72 +826,72 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 - (BOOL)renderMolecule:(SLSOpenGLESRenderer *)openGLESRenderer;
 {
     currentRenderer = openGLESRenderer;
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
     
-	isDoneRendering = NO;
-	[self performSelectorOnMainThread:@selector(showStatusIndicator) withObject:nil waitUntilDone:NO];
+		isDoneRendering = NO;
+		[self performSelectorOnMainThread:@selector(showStatusIndicator) withObject:nil waitUntilDone:NO];
     
     [openGLESRenderer initiateMoleculeRendering];
     
     openGLESRenderer.overallMoleculeScaleFactor = scaleAdjustmentForX;
 
-	currentFeatureBeingRendered = 0;
+		currentFeatureBeingRendered = 0;
     
-	switch(currentVisualizationType)
-	{
-		case BALLANDSTICK:
+		switch(currentVisualizationType)
 		{
+			case BALLANDSTICK:
+			{
             [openGLESRenderer configureBasedOnNumberOfAtoms:[self countAtomsForFirstStructure] numberOfBonds:[self countBondsForFirstStructure]];
-			totalNumberOfFeaturesToRender = numberOfAtoms + numberOfBonds;
+				totalNumberOfFeaturesToRender = numberOfAtoms + numberOfBonds;
 
             openGLESRenderer.bondRadiusScaleFactor = 0.15;
             openGLESRenderer.atomRadiusScaleFactor = 0.35;
-			
-			[self readAndRenderAtoms:openGLESRenderer];
-			[self readAndRenderBonds:openGLESRenderer];
+				
+				[self readAndRenderAtoms:openGLESRenderer];
+				[self readAndRenderBonds:openGLESRenderer];
 //            openGLESRenderer.atomRadiusScaleFactor = 0.27;
-		}; break;
-		case SPACEFILLING:
-		{
+			}; break;
+			case SPACEFILLING:
+			{
             [openGLESRenderer configureBasedOnNumberOfAtoms:[self countAtomsForFirstStructure] numberOfBonds:0];
-			totalNumberOfFeaturesToRender = numberOfAtoms;
+				totalNumberOfFeaturesToRender = numberOfAtoms;
 
             openGLESRenderer.atomRadiusScaleFactor = 1.0;
             [self readAndRenderAtoms:openGLESRenderer];
-		}; break;
-		case CYLINDRICAL:
-		{
+			}; break;
+			case CYLINDRICAL:
+			{
             [openGLESRenderer configureBasedOnNumberOfAtoms:0 numberOfBonds:[self countBondsForFirstStructure]];
 
-			totalNumberOfFeaturesToRender = numberOfBonds;
+				totalNumberOfFeaturesToRender = numberOfBonds;
 
             openGLESRenderer.bondRadiusScaleFactor = 0.15;
-			[self readAndRenderBonds:openGLESRenderer];
-		}; break;
-	}
-	
-	if (!isRenderingCancelled)
-	{
+				[self readAndRenderBonds:openGLESRenderer];
+			}; break;
+		}
+		
+		if (!isRenderingCancelled)
+		{
         [openGLESRenderer bindVertexBuffersForMolecule];
 //        }
 //        else
 //        {
 //            [openGLESRenderer performSelectorOnMainThread:@selector(bindVertexBuffersForMolecule) withObject:nil waitUntilDone:YES];   
 //        }		
-	}
-	else
-	{
+		}
+		else
+		{
         isBeingDisplayed = NO;
         isRenderingCancelled = NO;
         
         [openGLESRenderer terminateMoleculeRendering];
+		}
+		
+    
+		isDoneRendering = YES;
+		[self performSelectorOnMainThread:@selector(hideStatusIndicator) withObject:nil waitUntilDone:YES];
+    
 	}
-	
-    
-	isDoneRendering = YES;
-	[self performSelectorOnMainThread:@selector(hideStatusIndicator) withObject:nil waitUntilDone:YES];
-    
-	[pool release];
     
     currentRenderer = nil;
 	return YES;

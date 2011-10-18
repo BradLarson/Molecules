@@ -37,11 +37,9 @@
 	backgroundView.backgroundColor = [UIColor blackColor];
 	backgroundView.autoresizesSubviews = YES;
 	self.view = backgroundView;
-	[backgroundView release];
 	
 	SLSMoleculeGLViewController *viewController = [[SLSMoleculeGLViewController alloc] initWithNibName:nil bundle:nil];
 	self.glViewController = viewController;
-	[viewController release];
 	
 	[self.view addSubview:glViewController.view];
 	glViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -54,17 +52,14 @@
 	UIImage *screenImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"69-display" ofType:@"png"]];	
 	screenBarButton = [[UIBarButtonItem alloc] initWithImage:screenImage style:UIBarButtonItemStylePlain target:self action:@selector(displayOnExternalOrLocalScreen:)];
 	screenBarButton.width = 44.0f;
-	[screenImage release];	
 
 	UIImage *downloadImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"57-download" ofType:@"png"]];	
 	UIBarButtonItem *downloadBarButton = [[UIBarButtonItem alloc] initWithImage:downloadImage style:UIBarButtonItemStylePlain target:self action:@selector(showDownloadOptions:)];
 	downloadBarButton.width = 44.0f;
-	[downloadImage release];
 	
 	UIImage *visualizationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"VisualizationIcon" ofType:@"png"]];	
 	visualizationBarButton = [[UIBarButtonItem alloc] initWithImage:visualizationImage style:UIBarButtonItemStylePlain target:self action:@selector(showVisualizationModes:)];
 	visualizationBarButton.width = 44.0f;
-	[visualizationImage release];
 	
 	spacerItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 
@@ -90,7 +85,6 @@
     [mainToolbar setItems:[NSArray arrayWithObjects:spacerItem, visualizationBarButton, rotationBarButton, nil] animated:NO];
 //	}
 		
-	[downloadBarButton release];
 
 	glViewController.view.frame = CGRectMake(mainScreenFrame.origin.x, mainToolbar.bounds.size.height, mainScreenFrame.size.width, mainScreenFrame.size.height -  mainToolbar.bounds.size.height);
 }
@@ -126,16 +120,6 @@
     // e.g. self.myOutlet = nil;
 }
 
-- (void)dealloc 
-{
-	[visualizationBarButton release];
-	[spacerItem release];
-	[mainToolbar release];
-	[selectedRotationImage release];
-	[unselectedRotationImage release];
-	[rotationBarButton release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Bar response methods
@@ -161,7 +145,6 @@
 	moleculeTablePopover = nil;
 	
 	[downloadOptionsPopover dismissPopoverAnimated:YES];
-	[downloadOptionsPopover release];
 	downloadOptionsPopover = nil;
 }
 
@@ -176,10 +159,8 @@
 	SLSMoleculeDataSourceViewController *dataSourceViewController = [[SLSMoleculeDataSourceViewController alloc] initWithStyle:UITableViewStylePlain];
 //	dataSourceViewController.delegate = self;
 	[downloadNavigationController pushViewController:dataSourceViewController animated:NO];
-	[dataSourceViewController release];
 	
 	downloadOptionsPopover = [[UIPopoverController alloc] initWithContentViewController:downloadNavigationController];
-	[downloadNavigationController release];
 	[downloadOptionsPopover setDelegate:self];
 	[downloadOptionsPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 //	[downloadOptionsPopover release];
@@ -234,7 +215,6 @@
 	NSMutableArray *items = [[mainToolbar items] mutableCopy];
     [items insertObject:screenBarButton atIndex:[items indexOfObject:spacerItem] + 1];
     [mainToolbar setItems:items animated:YES];
-    [items release];
 }
 
 - (void)handleDisconnectionOfMonitor:(NSNotification *)note;
@@ -242,13 +222,11 @@
 	NSMutableArray *items = [[mainToolbar items] mutableCopy];
     [items removeObject:screenBarButton];
     [mainToolbar setItems:items animated:YES];
-    [items release];	
 	
 	if (externalWindow != nil)
 	{
 		[self.view addSubview:glViewController.view];
 		[glViewController updateSizeOfGLView:nil];
-		[externalWindow release];		
 		externalWindow = nil;
 	}
 	externalScreen = nil;
@@ -264,7 +242,6 @@
 		glViewController.view.frame = CGRectMake(mainScreenFrame.origin.x, mainToolbar.bounds.size.height, mainScreenFrame.size.width, mainScreenFrame.size.height -  mainToolbar.bounds.size.height);
 
 		// Move view back to local window
-		[externalWindow release];
 		externalWindow = nil;
 	}
 	else
@@ -313,7 +290,6 @@
 - (void)splitViewController:(UISplitViewController*)svc popoverController:(UIPopoverController*)pc willPresentViewController:(UIViewController *)aViewController
 {
 	[downloadOptionsPopover dismissPopoverAnimated:YES];
-	[downloadOptionsPopover release];
 	downloadOptionsPopover = nil;
 //	[downloadOptionsPopover release];
 	
@@ -330,7 +306,6 @@
     NSMutableArray *items = [[mainToolbar items] mutableCopy];
     [items insertObject:barButtonItem atIndex:0];
     [mainToolbar setItems:items animated:YES];
-    [items release];
 }
 
 - (void)splitViewController:(UISplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)button
@@ -340,7 +315,6 @@
     NSMutableArray *items = [[mainToolbar items] mutableCopy];
     [items removeObjectAtIndex:0];
     [mainToolbar setItems:items animated:YES];
-    [items release];
 }	
 
 #pragma mark -
@@ -350,7 +324,6 @@
 {
 	if (popoverController == downloadOptionsPopover)
 	{
-		[downloadOptionsPopover release];
 		downloadOptionsPopover = nil;
 	}
 	else if (popoverController == moleculeTablePopover)

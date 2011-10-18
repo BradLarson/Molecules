@@ -100,7 +100,6 @@ void normalize(GLfloat *v)
 {    
     [self freeVertexBuffers];
     	
-	[super dealloc];
 }
 
 

@@ -60,10 +60,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	NSInteger index = [indexPath row];
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSLocalizedStringFromTable(@"Download", @"Localized", nil)];
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Download"];
 	if (cell == nil) 
 	{
-		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:NSLocalizedStringFromTable(@"Download", @"Localized", nil)] autorelease];
+//		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"Download"] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Download"] autorelease];
 		cell.textLabel.textColor = [UIColor blackColor];
 	}		
 	

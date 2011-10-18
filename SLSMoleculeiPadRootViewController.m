@@ -50,12 +50,12 @@
 	mainToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	mainToolbar.tintColor = [UIColor blackColor];
 	[backgroundView addSubview:mainToolbar];
-
+    
 	UIImage *screenImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"69-display" ofType:@"png"]];	
 	screenBarButton = [[UIBarButtonItem alloc] initWithImage:screenImage style:UIBarButtonItemStylePlain target:self action:@selector(displayOnExternalOrLocalScreen:)];
 	screenBarButton.width = 44.0f;
 	[screenImage release];	
-	
+
 	UIImage *downloadImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"57-download" ofType:@"png"]];	
 	UIBarButtonItem *downloadBarButton = [[UIBarButtonItem alloc] initWithImage:downloadImage style:UIBarButtonItemStylePlain target:self action:@selector(showDownloadOptions:)];
 	downloadBarButton.width = 44.0f;

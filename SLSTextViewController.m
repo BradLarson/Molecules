@@ -92,7 +92,8 @@
 	
 	if (cell == nil)
 	{
-		cell = [[[SLSCellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kSLSCellTextView_ID] autorelease];
+//		cell = [[[SLSCellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kSLSCellTextView_ID] autorelease];
+        cell = [[[SLSCellTextView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSLSCellTextView_ID] autorelease];
 	}
 	
 	// this cell hosts the UISwitch control

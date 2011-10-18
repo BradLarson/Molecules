@@ -423,7 +423,8 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:@"SearchInProgress"];
 		if (cell == nil) 
 		{		
-			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"SearchInProgress"] autorelease];
+//			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"SearchInProgress"] autorelease];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"SearchInProgress"] autorelease];
             
 //            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 //            {
@@ -461,7 +462,8 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:@"NoResults"];
 		if (cell == nil) 
 		{		
-			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"NoResults"] autorelease];
+//			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"NoResults"] autorelease];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoResults"] autorelease];
 
 //            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 //            {
@@ -485,8 +487,9 @@
 		if (cell == nil) 
 		{		
             
-            cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"DownloadInProgress"] autorelease];
-            
+//            cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"DownloadInProgress"] autorelease];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DownloadInProgress"] autorelease];
+
 //            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 //            {
 //                cell.backgroundColor = [UIColor blackColor];
@@ -520,7 +523,8 @@
 			cell = [tableView dequeueReusableCellWithIdentifier:@"LoadMore"];
 			if (cell == nil) 
 			{		
-				cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"LoadMore"] autorelease];
+//				cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:@"LoadMore"] autorelease];
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LoadMore"] autorelease];
 
 //                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 //                {

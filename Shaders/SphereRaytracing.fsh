@@ -52,8 +52,8 @@ void main()
     finalSphereColor = finalSphereColor + (precalculatedDepthAndLighting.b * ambientOcclusionIntensity);
     
     gl_FragColor = vec4(finalSphereColor * alphaComponent, alphaComponent);
-//            gl_FragColor = vec4(texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).rgb, 1.0);
-//            gl_FragColor = vec4(textureCoordinateForAOLookup, 0.0, 1.0);
+//            gl_FragColor = vec4(texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).rgb * alphaComponent, alphaComponent);
+//            gl_FragColor = vec4(textureCoordinateForAOLookup * alphaComponent, 0.0, alphaComponent);
             //    gl_FragColor = vec4(normalizedViewCoordinate, 1.0);
             //    gl_FragColor = vec4(precalculatedDepthAndLighting, 1.0);
 }

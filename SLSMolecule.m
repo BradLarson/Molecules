@@ -84,7 +84,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 
 - (id)initWithFilename:(NSString *)newFilename database:(sqlite3 *)newDatabase title:(NSString *)newTitle;
 {
-    if (!(self = [super init]))
+    if (!(self = [self init]))
     {
         return nil;
     }
@@ -146,7 +146,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 
 - (id)initWithSQLStatement:(sqlite3_stmt *)moleculeRetrievalStatement database:(sqlite3 *)newDatabase;
 {
-    if (!(self = [super init]))
+    if (!(self = [self init]))
     {
         return nil;
     }
@@ -917,8 +917,8 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 	// Bind the query variables.
 	sqlite3_bind_int(retrieveAtomSQLStatement, 1, databaseKey);
 	sqlite3_bind_int(retrieveAtomSQLStatement, 2, numberOfStructureBeingDisplayed);
-	
-	while ((sqlite3_step(retrieveAtomSQLStatement) == SQLITE_ROW) && !isRenderingCancelled)
+    	
+    while ((sqlite3_step(retrieveAtomSQLStatement) == SQLITE_ROW) && !isRenderingCancelled)
 	{
 		//(id,molecule,residue,structure,element,x,y,z);"
 		if ( (currentFeatureBeingRendered % 100) == 0)

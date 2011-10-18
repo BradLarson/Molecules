@@ -930,7 +930,7 @@
         
         [EAGLContext setCurrentContext:context];
 
-//        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
+        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
         
         GLfloat currentModelViewMatrix[9];
         [self convert3DTransform:&currentCalculatedMatrix to3x3Matrix:currentModelViewMatrix];
@@ -959,9 +959,9 @@
 
         [self presentRenderBuffer];
         
-//        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
+        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
         
-//        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
+        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
         
         dispatch_semaphore_signal(frameRenderingSemaphore);
     });
@@ -1133,7 +1133,7 @@
     {
         previousAmbientOcclusionOffset[0] = normalizedAOTexturePatchWidth / 2.0;
         previousAmbientOcclusionOffset[1] += normalizedAOTexturePatchWidth;
-    }
+    }    
 }
 
 - (void)addBondToVertexBuffersWithStartPoint:(SLS3DPoint)startPoint endPoint:(SLS3DPoint)endPoint bondColor:(GLubyte *)bondColor bondType:(SLSBondType)bondType;

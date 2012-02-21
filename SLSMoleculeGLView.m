@@ -73,6 +73,49 @@
 	return self;
 }
 
+-(void)snapUIImage
+{
+//    From http://stackoverflow.com/q/4787311/19679
+    
+    int s = 1;
+    UIScreen* screen = [ UIScreen mainScreen ];
+    if ( [ screen respondsToSelector:@selector(scale) ] )
+        s = (int) [ screen scale ];
+    
+    const int w = self.frame.size.width;
+    const int h = self.frame.size.height;
+    const NSInteger myDataLength = w * h * 4 * s * s;
+    // allocate array and read pixels into it.
+    GLubyte *buffer = (GLubyte *) malloc(myDataLength);
+    glReadPixels(0, 0, w*s, h*s, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+    // gl renders "upside down" so swap top to bottom into new array.
+    // there's gotta be a better way, but this works.
+    GLubyte *buffer2 = (GLubyte *) malloc(myDataLength);
+    for(int y = 0; y < h*s; y++)
+    {
+        memcpy( buffer2 + (h*s - 1 - y) * w * 4 * s, buffer + (y * 4 * w * s), w * 4 * s );
+    }
+    free(buffer); // work with the flipped buffer, so get rid of the original one.
+    
+    // make data provider with data.
+    CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, buffer2, myDataLength, NULL);
+    // prep the ingredients
+    int bitsPerComponent = 8;
+    int bitsPerPixel = 32;
+    int bytesPerRow = 4 * w * s;
+    CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
+    CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault;
+    CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
+    // make the cgimage
+    CGImageRef imageRef = CGImageCreate(w*s, h*s, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, NULL, NO, renderingIntent);
+    // then make the uiimage from that
+    UIImage *myImage = [ UIImage imageWithCGImage:imageRef scale:s orientation:UIImageOrientationUp ];
+    UIImageWriteToSavedPhotosAlbum( myImage, nil, nil, nil );
+    CGImageRelease( imageRef );
+    CGDataProviderRelease(provider);
+    CGColorSpaceRelease(colorSpaceRef);
+    free(buffer2);
+}
 
 #pragma mark -
 #pragma mark UIView methods

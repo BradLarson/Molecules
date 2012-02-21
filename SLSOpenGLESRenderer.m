@@ -66,7 +66,7 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
 	
     
     dispatch_release(openGLESContextQueue);
-    
+    dispatch_release(frameRenderingSemaphore);
 }
 
 #pragma mark -

@@ -21,4 +21,6 @@
 
 @property(readonly) SLSOpenGLESRenderer *openGLESRenderer;
 
+-(void)snapUIImage;
+
 @end

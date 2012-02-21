@@ -54,12 +54,6 @@
         ambientOcclusionFramebuffer = 0;
     }
     
-    if (ambientOcclusionRenderbuffer)
-    {
-        glDeleteRenderbuffers(1, &ambientOcclusionRenderbuffer);
-        ambientOcclusionRenderbuffer = 0;
-    }
-
     if (ambientOcclusionTexture)
     {
         glDeleteTextures(1, &ambientOcclusionTexture);
@@ -70,12 +64,6 @@
     {
         glDeleteFramebuffers(1, &sphereAOLookupFramebuffer);
         sphereAOLookupFramebuffer = 0;
-    }
-    
-    if (sphereAOLookupRenderbuffer)
-    {
-        glDeleteRenderbuffers(1, &sphereAOLookupRenderbuffer);
-        sphereAOLookupRenderbuffer = 0;
     }
     
     if (sphereAOLookupTexture)
@@ -198,16 +186,16 @@
             
             [self createFramebuffer:&viewFramebuffer size:CGSizeZero renderBuffer:&viewRenderbuffer depthBuffer:&viewDepthBuffer texture:NULL layer:glLayer];    
             //    [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:&depthPassDepthBuffer texture:&depthPassTexture layer:glLayer];
-            [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:&depthPassDepthBuffer texture:&depthPassTexture layer:glLayer];
+            [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:NULL depthBuffer:&depthPassDepthBuffer texture:&depthPassTexture layer:glLayer];
 
             if (!ambientOcclusionFramebuffer)
             {
-                [self createFramebuffer:&ambientOcclusionFramebuffer size:CGSizeMake(AMBIENTOCCLUSIONTEXTUREWIDTH, AMBIENTOCCLUSIONTEXTUREWIDTH) renderBuffer:&ambientOcclusionRenderbuffer depthBuffer:NULL texture:&ambientOcclusionTexture layer:glLayer];                
+                [self createFramebuffer:&ambientOcclusionFramebuffer size:CGSizeMake(AMBIENTOCCLUSIONTEXTUREWIDTH, AMBIENTOCCLUSIONTEXTUREWIDTH) renderBuffer:NULL depthBuffer:NULL texture:&ambientOcclusionTexture layer:glLayer];                
             }
             
             if (!sphereAOLookupFramebuffer)
             {
-                [self createFramebuffer:&sphereAOLookupFramebuffer size:CGSizeMake(AOLOOKUPTEXTUREWIDTH, AOLOOKUPTEXTUREWIDTH) renderBuffer:&sphereAOLookupRenderbuffer depthBuffer:NULL texture:&sphereAOLookupTexture layer:glLayer];
+                [self createFramebuffer:&sphereAOLookupFramebuffer size:CGSizeMake(AOLOOKUPTEXTUREWIDTH, AOLOOKUPTEXTUREWIDTH) renderBuffer:NULL depthBuffer:NULL texture:&sphereAOLookupTexture layer:glLayer];
             }
 
             [self switchToDisplayFramebuffer];
@@ -688,7 +676,6 @@
 - (void)switchToDepthPassFramebuffer;
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, depthPassFramebuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, depthPassRenderbuffer);
     
     CGSize newViewportSize = CGSizeMake(backingWidth, backingHeight);
     
@@ -702,7 +689,6 @@
 - (void)switchToAmbientOcclusionFramebuffer;
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, ambientOcclusionFramebuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, ambientOcclusionRenderbuffer);
     
     CGSize newViewportSize = CGSizeMake(AMBIENTOCCLUSIONTEXTUREWIDTH, AMBIENTOCCLUSIONTEXTUREWIDTH);
     
@@ -716,7 +702,6 @@
 - (void)switchToAOLookupFramebuffer;
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, sphereAOLookupFramebuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, sphereAOLookupRenderbuffer);
     
     CGSize newViewportSize = CGSizeMake(AOLOOKUPTEXTUREWIDTH, AOLOOKUPTEXTUREWIDTH);
     
@@ -854,12 +839,6 @@
             depthPassFramebuffer = 0;
         }
         
-        if (depthPassRenderbuffer)
-        {
-            glDeleteRenderbuffers(1, &depthPassRenderbuffer);
-            depthPassRenderbuffer = 0;
-        }
-
         if (depthPassDepthBuffer)
         {
             glDeleteRenderbuffers(1, &depthPassDepthBuffer);
@@ -930,7 +909,7 @@
         
         [EAGLContext setCurrentContext:context];
 
-        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
+//        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
         
         GLfloat currentModelViewMatrix[9];
         [self convert3DTransform:&currentCalculatedMatrix to3x3Matrix:currentModelViewMatrix];
@@ -959,9 +938,9 @@
 
         [self presentRenderBuffer];
         
-        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
+//        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
         
-        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
+//        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
         
         dispatch_semaphore_signal(frameRenderingSemaphore);
     });

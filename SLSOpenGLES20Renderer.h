@@ -29,7 +29,7 @@
     GLint cylinderDepthRadius, cylinderDepthOrthographicMatrix;
     
     GLuint depthPassTexture;
-    GLuint depthPassRenderbuffer, depthPassFramebuffer, depthPassDepthBuffer;
+    GLuint depthPassFramebuffer, depthPassDepthBuffer;
     
     GLProgram *sphereRaytracingProgram;
 	GLint sphereRaytracingPositionAttribute, sphereRaytracingImpostorSpaceAttribute, sphereRaytracingAOOffsetAttribute, sphereRaytracingModelViewMatrix;
@@ -56,7 +56,7 @@
     GLint sphereAOLookupPrecalculatedDepthTexture;
 
     GLuint sphereAOLookupTexture;
-    GLuint sphereAOLookupRenderbuffer, sphereAOLookupFramebuffer;
+    GLuint sphereAOLookupFramebuffer;
 
 #ifdef ENABLETEXTUREDISPLAYDEBUGGING
     GLProgram *passthroughProgram;
@@ -65,7 +65,7 @@
 #endif
     
     GLuint ambientOcclusionTexture;
-    GLuint ambientOcclusionRenderbuffer, ambientOcclusionFramebuffer;
+    GLuint ambientOcclusionFramebuffer;
     
     GLuint sphereDepthMappingTexture;
 

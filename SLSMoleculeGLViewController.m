@@ -545,7 +545,7 @@
 	{
 		if (moleculeToDisplay.isDoneRendering == YES)
 		{
-            [(SLSMoleculeGLView *)self.view snapUIImage];
+//            [(SLSMoleculeGLView *)self.view snapUIImage];
             
 			UIActionSheet *actionSheet = [self actionSheetForVisualizationState];
 			[actionSheet showInView:self.view];

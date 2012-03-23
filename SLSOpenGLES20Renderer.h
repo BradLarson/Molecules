@@ -79,6 +79,8 @@
     unsigned int widthOfAtomAOTexturePatch;
     GLfloat normalizedAOTexturePatchWidth;
     
+    unsigned int ambientOcclusionTextureWidth, ambientOcclusionLookupTextureWidth, sphereDepthTextureWidth;
+    
     BOOL shouldDrawBonds;
 }
 

@@ -64,7 +64,7 @@ void main()
         float previousDepthValue = depthFromEncodedColor(texture2D(depthTexture, normalizedViewCoordinate.xy));
         
         //if ( (floor(currentDepthValue * 765.0)) > (ceil(previousDepthValue * 765.0)) )
-        if ( (currentDepthValue - 0.002) > (previousDepthValue) )
+        if ( (currentDepthValue - 0.006) > (previousDepthValue) )
         {
             gl_FragColor = vec4(0.0);
         }
@@ -81,7 +81,7 @@ void main()
             vec2 textureCoordinateForAOLookup = ambientOcclusionTextureBase + ambientOcclusionTexturePatchWidth * 0.5 * textureCoordinateForCylinderSurfacePosition(aoNormal);
             vec3 ambientOcclusionIntensity = texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).rgb;
             
-            float lightingIntensity = 0.2 + 1.3 * clamp(dot(lightPosition, normal), 0.0, 1.0) * ambientOcclusionIntensity.r;
+            float lightingIntensity = 0.1 + clamp(dot(lightPosition, normal), 0.0, 1.0) * ambientOcclusionIntensity.r;
             finalCylinderColor *= lightingIntensity;
             
             // Per fragment specular lighting

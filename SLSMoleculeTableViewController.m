@@ -162,16 +162,10 @@
 	
 	CGRect newGlowFrame = CGRectMake(0, 0, gradientSize.width, gradientSize.height);
 	newGlow.frame = newGlowFrame;
-//	CGColorRef topColor = [UIColor colorWithRed:0.5585f green:0.7695f blue:1.0f alpha:0.33f].CGColor;
-//	CGColorRef middleColor = [UIColor colorWithRed:0.5585f green:0.7695f blue:1.0f alpha:0.0f].CGColor;
-//	CGColorRef bottomColor = [UIColor colorWithRed:0.5585f green:0.672f blue:1.0f alpha:0.14f].CGColor;
-//	CGColorRef topColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.33f].CGColor;
 	UIColor *topColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.20f];
 	UIColor *middleColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.0f];
 	UIColor *bottomColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.08f];
     
-//    gradientLayer.colors = [NSArray arrayWithObjects:[[UIColor darkGrayColor] CGColor],
-//                            [[UIColor lightGrayColor] CGColor], nil];
 	newGlow.colors = [NSArray arrayWithObjects:(id)[topColor CGColor], (id)[middleColor CGColor], (id)[bottomColor CGColor], nil];
 	return newGlow;
 }
@@ -260,7 +254,7 @@
                     UIColor *topColor = [UIColor colorWithRed:0.5f green:0.7f blue:1.0f alpha:0.6f];
                     UIColor *middleColor = [UIColor colorWithRed:0.5f green:0.7f blue:1.0f alpha:0.1f];
                     UIColor *bottomColor = [UIColor colorWithRed:0.5585f green:0.672f blue:1.0f alpha:0.30f];
-                    glowGradient.colors = [NSArray arrayWithObjects:(id)[topColor CGColor], [middleColor CGColor], [bottomColor CGColor], nil];
+                    glowGradient.colors = [NSArray arrayWithObjects:(id)[topColor CGColor], (id)[middleColor CGColor], (id)[bottomColor CGColor], nil];
                     
                     [(SLSMoleculeLibraryTableCell *)cell setIsSelected:YES];
                 }
@@ -275,7 +269,7 @@
                     UIColor *topColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.20f];
                     UIColor *middleColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.0f];
                     UIColor *bottomColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.08f];
-                    glowGradient.colors = [NSArray arrayWithObjects:(id)[topColor CGColor], [middleColor CGColor], [bottomColor CGColor], nil];
+                    glowGradient.colors = [NSArray arrayWithObjects:(id)[topColor CGColor], (id)[middleColor CGColor], (id)[bottomColor CGColor], nil];
 
                     [(SLSMoleculeLibraryTableCell *)cell setIsSelected:NO];
                 }

@@ -36,7 +36,23 @@
 		<string>MoleculesIcon@2x.png</string>
 		<string>MoleculesIcon.png</string>
 		<string>MoleculesIcon72.png</string>
+		<string>MoleculesIcon72@2x.png</string>
 	</array>
+	<key>CFBundleIcons</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>MoleculesIcon@2x.png</string>
+				<string>MoleculesIcon.png</string>
+				<string>MoleculesIcon72.png</string>
+				<string>MoleculesIcon72@2x.png</string>
+			</array>
+			<key>UIPrerenderedIcon</key>
+			<true/>
+		</dict>
+	</dict>
 	<key>CFBundleIdentifier</key>
 	<string>com.sunsetlakesoftware.Molecules</string>
 	<key>CFBundleInfoDictionaryVersion</key>

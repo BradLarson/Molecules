@@ -41,6 +41,11 @@
 	if ([SLSMoleculeAppDelegate isRunningOniPad])
 	{
 		UISplitViewController *newSplitViewController = [[UISplitViewController alloc] init];
+        if ([newSplitViewController respondsToSelector:@selector(setPresentsWithGesture:)])
+        {
+            [newSplitViewController setPresentsWithGesture:NO];
+        }
+        
 		rootViewController = [[SLSMoleculeiPadRootViewController alloc] init];
 		[rootViewController loadView];
 		newSplitViewController.viewControllers = [NSArray arrayWithObjects:rootViewController.tableNavigationController, rootViewController, nil];

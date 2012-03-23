@@ -10,12 +10,6 @@
 #import "SLSOpenGLES20Renderer.h"
 #import "GLProgram.h"
 
-#define AMBIENTOCCLUSIONTEXTUREWIDTH 512
-#define AOLOOKUPTEXTUREWIDTH 128
-//#define AOLOOKUPTEXTUREWIDTH 64
-//#define SPHEREDEPTHTEXTUREWIDTH 256
-#define SPHEREDEPTHTEXTUREWIDTH 256
-
 @implementation SLSOpenGLES20Renderer
 
 #pragma mark -
@@ -30,6 +24,30 @@
 
    //  0.312757, 0.248372, 0.916785
     // 0.0, -0.7071, 0.7071
+    
+    [EAGLContext setCurrentContext:context];
+    GLint maxTextureSize; 
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+    
+    // Use higher-resolution textures on the A5 and higher GPUs, because they can support it
+    if (maxTextureSize > 2048)
+    {
+//        ambientOcclusionTextureWidth = 2048;
+//        ambientOcclusionLookupTextureWidth = 512;
+//        sphereDepthTextureWidth = 512;
+        ambientOcclusionTextureWidth = 1024;
+        ambientOcclusionLookupTextureWidth = 128;
+        sphereDepthTextureWidth = 1024;
+        NSLog(@"Running on an A5 GPU");
+    }
+    else
+    {
+        ambientOcclusionTextureWidth = 512;
+        ambientOcclusionLookupTextureWidth = 128;
+        sphereDepthTextureWidth = 256;
+        NSLog(@"Running on an A4 GPU");
+    }
+
     
     currentViewportSize = CGSizeZero;
     
@@ -190,12 +208,12 @@
 
             if (!ambientOcclusionFramebuffer)
             {
-                [self createFramebuffer:&ambientOcclusionFramebuffer size:CGSizeMake(AMBIENTOCCLUSIONTEXTUREWIDTH, AMBIENTOCCLUSIONTEXTUREWIDTH) renderBuffer:NULL depthBuffer:NULL texture:&ambientOcclusionTexture layer:glLayer];                
+                [self createFramebuffer:&ambientOcclusionFramebuffer size:CGSizeMake(ambientOcclusionTextureWidth, ambientOcclusionTextureWidth) renderBuffer:NULL depthBuffer:NULL texture:&ambientOcclusionTexture layer:glLayer];                
             }
             
             if (!sphereAOLookupFramebuffer)
             {
-                [self createFramebuffer:&sphereAOLookupFramebuffer size:CGSizeMake(AOLOOKUPTEXTUREWIDTH, AOLOOKUPTEXTUREWIDTH) renderBuffer:NULL depthBuffer:NULL texture:&sphereAOLookupTexture layer:glLayer];
+                [self createFramebuffer:&sphereAOLookupFramebuffer size:CGSizeMake(ambientOcclusionLookupTextureWidth, ambientOcclusionLookupTextureWidth) renderBuffer:NULL depthBuffer:NULL texture:&sphereAOLookupTexture layer:glLayer];
             }
 
             [self switchToDisplayFramebuffer];
@@ -284,6 +302,8 @@
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
                 glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
+//                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
 
                 
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bufferSize.width, bufferSize.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
@@ -690,11 +710,11 @@
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, ambientOcclusionFramebuffer);
     
-    CGSize newViewportSize = CGSizeMake(AMBIENTOCCLUSIONTEXTUREWIDTH, AMBIENTOCCLUSIONTEXTUREWIDTH);
+    CGSize newViewportSize = CGSizeMake(ambientOcclusionTextureWidth, ambientOcclusionTextureWidth);
     
     if (!CGSizeEqualToSize(newViewportSize, currentViewportSize))
     {        
-        glViewport(0, 0, AMBIENTOCCLUSIONTEXTUREWIDTH, AMBIENTOCCLUSIONTEXTUREWIDTH);
+        glViewport(0, 0, ambientOcclusionTextureWidth, ambientOcclusionTextureWidth);
         currentViewportSize = newViewportSize;
     }
 }
@@ -703,11 +723,11 @@
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, sphereAOLookupFramebuffer);
     
-    CGSize newViewportSize = CGSizeMake(AOLOOKUPTEXTUREWIDTH, AOLOOKUPTEXTUREWIDTH);
+    CGSize newViewportSize = CGSizeMake(ambientOcclusionLookupTextureWidth, ambientOcclusionLookupTextureWidth);
     
     if (!CGSizeEqualToSize(newViewportSize, currentViewportSize))
     {        
-        glViewport(0, 0, AOLOOKUPTEXTUREWIDTH, AOLOOKUPTEXTUREWIDTH);
+        glViewport(0, 0, ambientOcclusionLookupTextureWidth, ambientOcclusionLookupTextureWidth);
         currentViewportSize = newViewportSize;
     }
 }
@@ -719,14 +739,14 @@
     // Luminance for depth: This takes only 95 ms on an iPad 1, so it's worth it for the 8% - 18% per-frame speedup 
     // Full lighting precalculation: This only takes 264 ms on an iPad 1
     
-    unsigned char *sphereDepthTextureData = (unsigned char *)malloc(SPHEREDEPTHTEXTUREWIDTH * SPHEREDEPTHTEXTUREWIDTH * 4);
+    unsigned char *sphereDepthTextureData = (unsigned char *)malloc(sphereDepthTextureWidth * sphereDepthTextureWidth * 4);
 
     glGenTextures(1, &sphereDepthMappingTexture);
 
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -735,12 +755,12 @@
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 //    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
         
-    for (unsigned int currentColumnInTexture = 0; currentColumnInTexture < SPHEREDEPTHTEXTUREWIDTH; currentColumnInTexture++)
+    for (unsigned int currentColumnInTexture = 0; currentColumnInTexture < sphereDepthTextureWidth; currentColumnInTexture++)
     {
-        float normalizedYLocation = -1.0 + 2.0 * (float)currentColumnInTexture / (float)SPHEREDEPTHTEXTUREWIDTH;
-        for (unsigned int currentRowInTexture = 0; currentRowInTexture < SPHEREDEPTHTEXTUREWIDTH; currentRowInTexture++)
+        float normalizedYLocation = -1.0 + 2.0 * (float)currentColumnInTexture / (float)sphereDepthTextureWidth;
+        for (unsigned int currentRowInTexture = 0; currentRowInTexture < sphereDepthTextureWidth; currentRowInTexture++)
         {
-            float normalizedXLocation = -1.0 + 2.0 * (float)currentRowInTexture / (float)SPHEREDEPTHTEXTUREWIDTH;
+            float normalizedXLocation = -1.0 + 2.0 * (float)currentRowInTexture / (float)sphereDepthTextureWidth;
             unsigned char currentDepthByte = 0, currentAmbientLightingByte = 0, currentSpecularLightingByte = 0, alphaByte = 0;
             
             float distanceFromCenter = sqrt(normalizedXLocation * normalizedXLocation + normalizedYLocation * normalizedYLocation);
@@ -773,17 +793,21 @@
                 dotProductForLighting = 1.0;
             }
             
+//            float ambientLightingProduct = dotProductForLighting + 0.4;
+//            ambientLightingProduct = MIN(1.0, ambientLightingProduct);
+            
             currentAmbientLightingByte = round(255.0 * dotProductForLighting);
             
             // Finally, do the specular lighting factor
-            float specularIntensity = pow(dotProductForLighting, 60.0);
+            float specularIntensity = pow(dotProductForLighting, 40.0);
 //            currentSpecularLightingByte = round(255.0 * specularIntensity * 0.48);
-            currentSpecularLightingByte = round(255.0 * specularIntensity * 0.6);
+//            currentSpecularLightingByte = round(255.0 * specularIntensity * 0.6);
+            currentSpecularLightingByte = round(255.0 * specularIntensity * 0.5);
 
-            sphereDepthTextureData[currentColumnInTexture * SPHEREDEPTHTEXTUREWIDTH * 4 + (currentRowInTexture * 4)] = currentDepthByte;
-            sphereDepthTextureData[currentColumnInTexture * SPHEREDEPTHTEXTUREWIDTH * 4 + (currentRowInTexture * 4) + 1] = currentAmbientLightingByte;
-            sphereDepthTextureData[currentColumnInTexture * SPHEREDEPTHTEXTUREWIDTH * 4 + (currentRowInTexture * 4) + 2] = currentSpecularLightingByte;            
-            sphereDepthTextureData[currentColumnInTexture * SPHEREDEPTHTEXTUREWIDTH * 4 + (currentRowInTexture * 4) + 3] = alphaByte;
+            sphereDepthTextureData[currentColumnInTexture * sphereDepthTextureWidth * 4 + (currentRowInTexture * 4)] = currentDepthByte;
+            sphereDepthTextureData[currentColumnInTexture * sphereDepthTextureWidth * 4 + (currentRowInTexture * 4) + 1] = currentAmbientLightingByte;
+            sphereDepthTextureData[currentColumnInTexture * sphereDepthTextureWidth * 4 + (currentRowInTexture * 4) + 2] = currentSpecularLightingByte;            
+            sphereDepthTextureData[currentColumnInTexture * sphereDepthTextureWidth * 4 + (currentRowInTexture * 4) + 3] = alphaByte;
 /*            
             float lightingIntensity = 0.2 + 1.3 * clamp(dot(lightPosition, normal), 0.0, 1.0) * ambientOcclusionIntensity.r;
             finalSphereColor *= lightingIntensity;
@@ -797,8 +821,8 @@
         }
     }
     
-//	glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, SPHEREDEPTHTEXTUREWIDTH, SPHEREDEPTHTEXTUREWIDTH, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, sphereDepthTextureData);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, SPHEREDEPTHTEXTUREWIDTH, SPHEREDEPTHTEXTUREWIDTH, 0, GL_RGBA, GL_UNSIGNED_BYTE, sphereDepthTextureData);
+//	glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, sphereDepthTextureWidth, sphereDepthTextureWidth, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, sphereDepthTextureData);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sphereDepthTextureWidth, sphereDepthTextureWidth, 0, GL_RGBA, GL_UNSIGNED_BYTE, sphereDepthTextureData);
     glGenerateMipmap(GL_TEXTURE_2D);
 //    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
 
@@ -909,7 +933,7 @@
         
         [EAGLContext setCurrentContext:context];
 
-//        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
+        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
         
         GLfloat currentModelViewMatrix[9];
         [self convert3DTransform:&currentCalculatedMatrix to3x3Matrix:currentModelViewMatrix];
@@ -938,9 +962,9 @@
 
         [self presentRenderBuffer];
         
-//        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
+        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
         
-//        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
+        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
         
         dispatch_semaphore_signal(frameRenderingSemaphore);
     });
@@ -951,8 +975,8 @@
 
 - (void)configureBasedOnNumberOfAtoms:(unsigned int)numberOfAtoms numberOfBonds:(unsigned int)numberOfBonds;
 {
-    widthOfAtomAOTexturePatch = (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH / (ceil(sqrt((GLfloat)numberOfAtoms + (GLfloat)numberOfBonds)));
-    normalizedAOTexturePatchWidth = (GLfloat)widthOfAtomAOTexturePatch / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH;
+    widthOfAtomAOTexturePatch = (GLfloat)ambientOcclusionTextureWidth / (ceil(sqrt((GLfloat)numberOfAtoms + (GLfloat)numberOfBonds)));
+    normalizedAOTexturePatchWidth = (GLfloat)widthOfAtomAOTexturePatch / (GLfloat)ambientOcclusionTextureWidth;
     
     previousAmbientOcclusionOffset[0] = normalizedAOTexturePatchWidth / 2.0;
     previousAmbientOcclusionOffset[1] = normalizedAOTexturePatchWidth / 2.0;
@@ -1463,7 +1487,7 @@
 
     glUniformMatrix3fv(sphereRaytracingModelViewMatrix, 1, 0, raytracingModelViewMatrix);
     glUniformMatrix3fv(sphereRaytracingInverseModelViewMatrix, 1, 0, inverseMatrix);
-    glUniform1f(sphereRaytracingTexturePatchWidth, (normalizedAOTexturePatchWidth - 2.0 / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH) * 0.5);
+    glUniform1f(sphereRaytracingTexturePatchWidth, (normalizedAOTexturePatchWidth - 2.0 / (GLfloat)ambientOcclusionTextureWidth) * 0.5);
     glUniform3fv(sphereRaytracingTranslation, 1, modelTranslation);
     glUniform1i(sphereRaytracingDepthMapTexture, 3);
 
@@ -1501,7 +1525,7 @@
         glUniform3fv(cylinderRaytracingLightPosition, 1, lightDirection);
         glUniform1i(cylinderRaytracingDepthTexture, 0);	
         glUniform1i(cylinderRaytracingAOTexture, 1);
-        glUniform1f(cylinderRaytracingTexturePatchWidth, normalizedAOTexturePatchWidth - 0.5 / (GLfloat)AMBIENTOCCLUSIONTEXTUREWIDTH);
+        glUniform1f(cylinderRaytracingTexturePatchWidth, normalizedAOTexturePatchWidth - 0.5 / (GLfloat)ambientOcclusionTextureWidth);
         
         float cylinderScaleFactor = overallMoleculeScaleFactor * scaleFactor * bondRadiusScaleFactor;
         GLsizei bondVBOStride = sizeof(GLfloat) * 3 + sizeof(GLfloat) * 3 + sizeof(GLfloat) * 2 + sizeof(GLfloat) * 2;
@@ -1619,7 +1643,7 @@
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
             glBindBuffer(GL_ARRAY_BUFFER, 0); 
         }
-    }
+    }        
 }
 
 /*
@@ -1785,7 +1809,7 @@ static float ambientOcclusionRotationAngles[AMBIENTOCCLUSIONSAMPLINGPOINTS][2] =
                 [self convert3DTransform:&currentSamplingRotationMatrix to3x3Matrix:currentModelViewMatrix];
                 
                 [self renderDepthTextureForModelViewMatrix:currentModelViewMatrix translation:zeroTranslation scale:1.0];
-                [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(0.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
+                [self renderAmbientOcclusionTextureForModelViewMatrix:currentModelViewMatrix inverseMatrix:inverseModelViewMatrix fractionOfTotal:(1.5 / (GLfloat)AMBIENTOCCLUSIONSAMPLINGPOINTS)];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[NSNotificationCenter defaultCenter] postNotificationName:kSLSMoleculeRenderingUpdateNotification object:[NSNumber numberWithFloat:((float)currentAOSamplingPoint * 2.0 + 1.0) / ((float)AMBIENTOCCLUSIONSAMPLINGPOINTS * 2.0)] ];    

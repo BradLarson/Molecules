@@ -34,6 +34,12 @@
 		BC4FB75D0E4F6BB000B316CD /* greenButton.png in Resources */ = {isa = PBXBuildFile; fileRef = BC4FB75C0E4F6BAF00B316CD /* greenButton.png */; };
 		BC4FB7BA0E4F80DB00B316CD /* redButton.png in Resources */ = {isa = PBXBuildFile; fileRef = BC4FB7B90E4F80DB00B316CD /* redButton.png */; };
 		BC540D101145E04600045DE1 /* MoleculesIcon72.png in Resources */ = {isa = PBXBuildFile; fileRef = BC540D0F1145E04500045DE1 /* MoleculesIcon72.png */; };
+		BC54D56E151A3951003F4A41 /* VisualizationIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC54D56D151A3951003F4A41 /* VisualizationIcon@2x.png */; };
+		BC54D571151A3C2E003F4A41 /* RotationIconiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC54D56F151A3C2E003F4A41 /* RotationIconiPad@2x.png */; };
+		BC54D572151A3C2E003F4A41 /* RotationIconiPadCancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC54D570151A3C2E003F4A41 /* RotationIconiPadCancel@2x.png */; };
+		BC54D574151A4953003F4A41 /* MoleculesIcon72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC54D573151A4953003F4A41 /* MoleculesIcon72@2x.png */; };
+		BC54D577151A4C91003F4A41 /* Default-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC54D575151A4C91003F4A41 /* Default-Landscape@2x.png */; };
+		BC54D578151A4C91003F4A41 /* Default-Portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC54D576151A4C91003F4A41 /* Default-Portrait@2x.png */; };
 		BC57EBFB1358DE9000FA1060 /* GLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = BC57EBFA1358DE9000FA1060 /* GLProgram.m */; };
 		BC5BB79C0E200C3B0001DFD0 /* 1BNA.pdb.gz in Resources */ = {isa = PBXBuildFile; fileRef = BC5BB79B0E200C3B0001DFD0 /* 1BNA.pdb.gz */; };
 		BC5BB7DF0E2020B10001DFD0 /* 1EVE.pdb.gz in Resources */ = {isa = PBXBuildFile; fileRef = BC5BB7DD0E2020B10001DFD0 /* 1EVE.pdb.gz */; };
@@ -124,6 +130,12 @@
 		BC4FB75C0E4F6BAF00B316CD /* greenButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = greenButton.png; sourceTree = "<group>"; };
 		BC4FB7B90E4F80DB00B316CD /* redButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redButton.png; sourceTree = "<group>"; };
 		BC540D0F1145E04500045DE1 /* MoleculesIcon72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MoleculesIcon72.png; sourceTree = "<group>"; };
+		BC54D56D151A3951003F4A41 /* VisualizationIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VisualizationIcon@2x.png"; sourceTree = "<group>"; };
+		BC54D56F151A3C2E003F4A41 /* RotationIconiPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RotationIconiPad@2x.png"; sourceTree = "<group>"; };
+		BC54D570151A3C2E003F4A41 /* RotationIconiPadCancel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RotationIconiPadCancel@2x.png"; sourceTree = "<group>"; };
+		BC54D573151A4953003F4A41 /* MoleculesIcon72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MoleculesIcon72@2x.png"; sourceTree = "<group>"; };
+		BC54D575151A4C91003F4A41 /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x.png"; sourceTree = "<group>"; };
+		BC54D576151A4C91003F4A41 /* Default-Portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x.png"; sourceTree = "<group>"; };
 		BC57EBF91358DE9000FA1060 /* GLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLProgram.h; sourceTree = "<group>"; };
 		BC57EBFA1358DE9000FA1060 /* GLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLProgram.m; sourceTree = "<group>"; };
 		BC5BB79B0E200C3B0001DFD0 /* 1BNA.pdb.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = 1BNA.pdb.gz; sourceTree = "<group>"; };
@@ -225,10 +237,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				BC67B8BE137C4B7A0075A361 /* Default@2x.png */,
-				BC2795BC11625065006DE4C8 /* Default.png */,
-				BC2795B81162500A006DE4C8 /* Default-Landscape.png */,
-				BC2795B91162500A006DE4C8 /* Default-Portrait.png */,
 				BCC7617C0E0EF8180050DD95 /* Application Control */,
 				BCC7617D0E0EF8260050DD95 /* Molecules */,
 				BCC7617B0E0EF7F10050DD95 /* 3D Molecule Display */,
@@ -256,15 +264,23 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BC2795BC11625065006DE4C8 /* Default.png */,
+				BC67B8BE137C4B7A0075A361 /* Default@2x.png */,
+				BC2795B81162500A006DE4C8 /* Default-Landscape.png */,
+				BC54D575151A4C91003F4A41 /* Default-Landscape@2x.png */,
+				BC2795B91162500A006DE4C8 /* Default-Portrait.png */,
+				BC54D576151A4C91003F4A41 /* Default-Portrait@2x.png */,
+				BC54D56F151A3C2E003F4A41 /* RotationIconiPad@2x.png */,
+				BC54D570151A3C2E003F4A41 /* RotationIconiPadCancel@2x.png */,
 				BC6A9FCB11CAA8CB00E62D55 /* MoleculesIcon@2x.png */,
-				BC286E2511C47956005D720C /* RotationIconSelected@2x.png */,
-				BC286E0F11C4751E005D720C /* RotationIcon@2x.png */,
 				BC835183117545C600B478D5 /* 69-display.png */,
 				BC281A6911727A89005B7946 /* Document-molecules-64.png */,
 				BC281A6A11727A89005B7946 /* Document-molecules-320.png */,
 				BCDFF5AD1154819A005C984C /* 57-download.png */,
 				BCF496CB1040FB9D00BE82D5 /* RotationIconSelected.png */,
+				BC286E2511C47956005D720C /* RotationIconSelected@2x.png */,
 				BCF495211040945400BE82D5 /* RotationIcon.png */,
+				BC286E0F11C4751E005D720C /* RotationIcon@2x.png */,
 				BCDC9F9C0EB37B3400ADCFA5 /* Localized.strings */,
 				BC4E97F90E69F8E1006CD291 /* molecules.sql */,
 				BC4FB7B90E4F80DB00B316CD /* redButton.png */,
@@ -272,6 +288,7 @@
 				BC61CAFB0E2317EE0074BE04 /* 4TRA.pdb.gz */,
 				BC5BBCD30E219AB90001DFD0 /* MoleculesIcon.png */,
 				BC540D0F1145E04500045DE1 /* MoleculesIcon72.png */,
+				BC54D573151A4953003F4A41 /* MoleculesIcon72@2x.png */,
 				BC5BBBF90E216A170001DFD0 /* 1TRZ.pdb.gz */,
 				BC5BB7DD0E2020B10001DFD0 /* 1EVE.pdb.gz */,
 				BC5BB79B0E200C3B0001DFD0 /* 1BNA.pdb.gz */,
@@ -281,6 +298,7 @@
 				BCDFF55F115469BF005C984C /* RotationIconiPad.png */,
 				BCDFF57211546FB2005C984C /* RotationIconiPadCancel.png */,
 				BCDFF57F115473AD005C984C /* VisualizationIcon.png */,
+				BC54D56D151A3951003F4A41 /* VisualizationIcon@2x.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -520,6 +538,12 @@
 				BC67B8BC137B5DF10075A361 /* SphereAOLookup.fsh in Resources */,
 				BC67B8BD137B5DF10075A361 /* SphereAOLookup.vsh in Resources */,
 				BC67B8BF137C4B7A0075A361 /* Default@2x.png in Resources */,
+				BC54D56E151A3951003F4A41 /* VisualizationIcon@2x.png in Resources */,
+				BC54D571151A3C2E003F4A41 /* RotationIconiPad@2x.png in Resources */,
+				BC54D572151A3C2E003F4A41 /* RotationIconiPadCancel@2x.png in Resources */,
+				BC54D574151A4953003F4A41 /* MoleculesIcon72@2x.png in Resources */,
+				BC54D577151A4C91003F4A41 /* Default-Landscape@2x.png in Resources */,
+				BC54D578151A4C91003F4A41 /* Default-Portrait@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -717,7 +741,7 @@
 					armv6,
 				);
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos2.0]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -732,7 +756,7 @@
 				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos2.0]" = "";
+				"PROVISIONING_PROFILE[sdk=*]" = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				WARNING_CFLAGS = "";

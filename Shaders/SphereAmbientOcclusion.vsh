@@ -6,6 +6,7 @@
 //
 
 #define AMBIENTOCCLUSIONTEXTUREWIDTH 512.0
+//#define AMBIENTOCCLUSIONTEXTUREWIDTH 2048.0
 
 attribute vec3 position;
 attribute vec2 inputImpostorSpaceCoordinate;

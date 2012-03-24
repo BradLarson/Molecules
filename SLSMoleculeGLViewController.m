@@ -277,6 +277,11 @@
 - (void)handleEndOfAutorotation;
 {
     [openGLESRenderer resumeRenderingDuringRotation];
+    
+    if (!isAutorotating)
+    {
+        [openGLESRenderer renderFrameForMolecule:moleculeToDisplay];
+    }
 }
 
 #pragma mark -

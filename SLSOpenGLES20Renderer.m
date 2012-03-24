@@ -38,16 +38,13 @@
         ambientOcclusionTextureWidth = 1024;
         ambientOcclusionLookupTextureWidth = 128;
         sphereDepthTextureWidth = 1024;
-        NSLog(@"Running on an A5 GPU");
     }
     else
     {
         ambientOcclusionTextureWidth = 512;
         ambientOcclusionLookupTextureWidth = 128;
         sphereDepthTextureWidth = 256;
-        NSLog(@"Running on an A4 GPU");
     }
-
     
     currentViewportSize = CGSizeZero;
     
@@ -933,7 +930,7 @@
         
         [EAGLContext setCurrentContext:context];
 
-        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
+//        CFTimeInterval previousTimestamp = CFAbsoluteTimeGetCurrent();
         
         GLfloat currentModelViewMatrix[9];
         [self convert3DTransform:&currentCalculatedMatrix to3x3Matrix:currentModelViewMatrix];
@@ -962,9 +959,9 @@
 
         [self presentRenderBuffer];
         
-        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
-        
-        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
+//        CFTimeInterval frameDuration = CFAbsoluteTimeGetCurrent() - previousTimestamp;
+//        
+//        NSLog(@"Frame duration: %f ms", frameDuration * 1000.0);
         
         dispatch_semaphore_signal(frameRenderingSemaphore);
     });

@@ -83,6 +83,9 @@
 		BCD12CFA11308E1000737166 /* SLSMoleculeiPadRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */; };
 		BCD301631391D0C000C26201 /* SphereDepthWrite.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCD301611391D0C000C26201 /* SphereDepthWrite.fsh */; };
 		BCD301641391D0C000C26201 /* SphereDepthWrite.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BCD301621391D0C000C26201 /* SphereDepthWrite.vsh */; };
+		BCD40722151D0CFA00E622EA /* SLSAtomColorKeyController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD40721151D0CFA00E622EA /* SLSAtomColorKeyController.m */; };
+		BCD4072F151D702600E622EA /* 98-palette.png in Resources */ = {isa = PBXBuildFile; fileRef = BCD4072D151D702600E622EA /* 98-palette.png */; };
+		BCD40730151D702600E622EA /* 98-palette@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCD4072E151D702600E622EA /* 98-palette@2x.png */; };
 		BCDC9F9D0EB37B3400ADCFA5 /* Localized.strings in Resources */ = {isa = PBXBuildFile; fileRef = BCDC9F9C0EB37B3400ADCFA5 /* Localized.strings */; };
 		BCDFF560115469C1005C984C /* RotationIconiPad.png in Resources */ = {isa = PBXBuildFile; fileRef = BCDFF55F115469BF005C984C /* RotationIconiPad.png */; };
 		BCDFF57311546FB2005C984C /* RotationIconiPadCancel.png in Resources */ = {isa = PBXBuildFile; fileRef = BCDFF57211546FB2005C984C /* RotationIconiPadCancel.png */; };
@@ -198,6 +201,10 @@
 		BCD12CF811308E1000737166 /* SLSMoleculeiPadRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSMoleculeiPadRootViewController.m; sourceTree = "<group>"; };
 		BCD301611391D0C000C26201 /* SphereDepthWrite.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SphereDepthWrite.fsh; path = Shaders/SphereDepthWrite.fsh; sourceTree = "<group>"; };
 		BCD301621391D0C000C26201 /* SphereDepthWrite.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SphereDepthWrite.vsh; path = Shaders/SphereDepthWrite.vsh; sourceTree = "<group>"; };
+		BCD40720151D0CFA00E622EA /* SLSAtomColorKeyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSAtomColorKeyController.h; sourceTree = "<group>"; };
+		BCD40721151D0CFA00E622EA /* SLSAtomColorKeyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSAtomColorKeyController.m; sourceTree = "<group>"; };
+		BCD4072D151D702600E622EA /* 98-palette.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "98-palette.png"; sourceTree = "<group>"; };
+		BCD4072E151D702600E622EA /* 98-palette@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "98-palette@2x.png"; sourceTree = "<group>"; };
 		BCDC9F870EB3760300ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = French; path = French.lproj/Info.plist; sourceTree = "<group>"; };
 		BCDC9F9A0EB37B1E00ADCFA5 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localized.strings; sourceTree = "<group>"; };
 		BCDC9F9E0EB37B4100ADCFA5 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localized.strings; sourceTree = "<group>"; };
@@ -264,6 +271,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BCD4072D151D702600E622EA /* 98-palette.png */,
+				BCD4072E151D702600E622EA /* 98-palette@2x.png */,
 				BC2795BC11625065006DE4C8 /* Default.png */,
 				BC67B8BE137C4B7A0075A361 /* Default@2x.png */,
 				BC2795B81162500A006DE4C8 /* Default-Landscape.png */,
@@ -386,6 +395,8 @@
 				BCB3A67C13553FC1000A286B /* SLSOpenGLES11Renderer.m */,
 				BCB3A67E13553FD2000A286B /* SLSOpenGLES20Renderer.h */,
 				BCB3A67F13553FD2000A286B /* SLSOpenGLES20Renderer.m */,
+				BCD40720151D0CFA00E622EA /* SLSAtomColorKeyController.h */,
+				BCD40721151D0CFA00E622EA /* SLSAtomColorKeyController.m */,
 				BCA2E7D9135A1B7B00D7206C /* Shaders */,
 				BC57EBF91358DE9000FA1060 /* GLProgram.h */,
 				BC57EBFA1358DE9000FA1060 /* GLProgram.m */,
@@ -544,6 +555,8 @@
 				BC54D574151A4953003F4A41 /* MoleculesIcon72@2x.png in Resources */,
 				BC54D577151A4C91003F4A41 /* Default-Landscape@2x.png in Resources */,
 				BC54D578151A4C91003F4A41 /* Default-Portrait@2x.png in Resources */,
+				BCD4072F151D702600E622EA /* 98-palette.png in Resources */,
+				BCD40730151D702600E622EA /* 98-palette@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -579,6 +592,7 @@
 				BC15728A136CC58A00EEFBEC /* SLSMoleculeLibraryTableCell.m in Sources */,
 				BC15728D136CD96800EEFBEC /* SLSMoleculeWebDetailViewController.m in Sources */,
 				BC33740C1370C6830036428C /* SLSMolecule+SDF.m in Sources */,
+				BCD40722151D0CFA00E622EA /* SLSAtomColorKeyController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,18 +14,9 @@
 #import "SLSMoleculeGLViewController.h"
 #import "SLSMoleculeDataSourceViewController.h"
 #import "SLSMoleculeGLView.h"
+#import "SLSAtomColorKeyController.h"
 
 @implementation SLSMoleculeiPadRootViewController
-
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-        // Custom initialization
-    }
-    return self;
-}
-*/
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView 
@@ -49,13 +40,9 @@
 	mainToolbar.tintColor = [UIColor blackColor];
 	[backgroundView addSubview:mainToolbar];
     
-	UIImage *screenImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"69-display" ofType:@"png"]];	
-	screenBarButton = [[UIBarButtonItem alloc] initWithImage:screenImage style:UIBarButtonItemStylePlain target:self action:@selector(displayOnExternalOrLocalScreen:)];
-	screenBarButton.width = 44.0f;
-
-	UIImage *downloadImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"57-download" ofType:@"png"]];	
-	UIBarButtonItem *downloadBarButton = [[UIBarButtonItem alloc] initWithImage:downloadImage style:UIBarButtonItemStylePlain target:self action:@selector(showDownloadOptions:)];
-	downloadBarButton.width = 44.0f;
+	UIImage *screenImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"98-palette" ofType:@"png"]];	
+	colorKeyBarButton = [[UIBarButtonItem alloc] initWithImage:screenImage style:UIBarButtonItemStylePlain target:self action:@selector(showColorKey:)];
+	colorKeyBarButton.width = 44.0f;
 	
 	UIImage *visualizationImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"VisualizationIcon" ofType:@"png"]];	
 	visualizationBarButton = [[UIBarButtonItem alloc] initWithImage:visualizationImage style:UIBarButtonItemStylePlain target:self action:@selector(showVisualizationModes:)];
@@ -67,25 +54,8 @@
 	rotationBarButton = [[UIBarButtonItem alloc] initWithImage:unselectedRotationImage style:UIBarButtonItemStylePlain target:glViewController action:@selector(startOrStopAutorotation:)];
 	rotationBarButton.width = 44.0f;
 	
-/*	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleConnectionOfMonitor:) name:UIScreenDidConnectNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDisconnectionOfMonitor:) name:UIScreenDidDisconnectNotification object:nil];
-
-	if ([[UIScreen screens] count] > 1)
-	{
-		for (UIScreen *currentScreen in [UIScreen screens])
-		{
-			if (currentScreen != [UIScreen mainScreen])
-				externalScreen = currentScreen;
-		}
-		[mainToolbar setItems:[NSArray arrayWithObjects:spacerItem, screenBarButton, downloadBarButton, visualizationBarButton, rotationBarButton, nil] animated:NO];
-	}
-	else
-	{*/
-		[mainToolbar setItems:[NSArray arrayWithObjects:spacerItem, downloadBarButton, visualizationBarButton, rotationBarButton, nil] animated:NO];
-    [mainToolbar setItems:[NSArray arrayWithObjects:spacerItem, visualizationBarButton, rotationBarButton, nil] animated:NO];
-//	}
+    [mainToolbar setItems:[NSArray arrayWithObjects:spacerItem, colorKeyBarButton, visualizationBarButton, rotationBarButton, nil] animated:NO];
 		
-
 	glViewController.view.frame = CGRectMake(mainScreenFrame.origin.x, mainToolbar.bounds.size.height, mainScreenFrame.size.width, mainScreenFrame.size.height -  mainToolbar.bounds.size.height);
 }
 
@@ -124,18 +94,12 @@
 #pragma mark -
 #pragma mark Bar response methods
 
-/*- (void)showMolecules:(id)sender;
-{
-	moleculeListPopover = [[UIPopoverController alloc] initWithContentViewController:self.tableNavigationController];
-	[self.tableNavigationController setContentSizeForViewInPopover:CGSizeMake(320.0f, round(0.5f * self.view.bounds.size.height))];
-	[moleculeListPopover setDelegate:self];
-	[moleculeListPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-}*/
-
 - (void)showVisualizationModes:(id)sender;
 {
 	if (glViewController.visualizationActionSheet != nil)
+    {
 		return;
+    }
 	
 	UIActionSheet *actionSheet = [glViewController actionSheetForVisualizationState];
 	[actionSheet showFromBarButtonItem:visualizationBarButton animated:YES];
@@ -146,12 +110,17 @@
 	
 	[downloadOptionsPopover dismissPopoverAnimated:YES];
 	downloadOptionsPopover = nil;
+    
+    [colorKeyPopover dismissPopoverAnimated:YES];
+	colorKeyPopover = nil;
 }
 
 - (void)showDownloadOptions:(id)sender;
 {
 	if (downloadOptionsPopover != nil)
+    {
 		return;
+    }
 	
 	UINavigationController *downloadNavigationController = [[UINavigationController alloc] init];
 	downloadNavigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
@@ -171,6 +140,35 @@
 	[moleculeTablePopover dismissPopoverAnimated:YES];
 	moleculeTablePopover = nil;
 	
+	[colorKeyPopover dismissPopoverAnimated:YES];
+	colorKeyPopover = nil;
+}
+
+- (void)showColorKey:(id)sender;
+{
+	if (colorKeyPopover != nil)
+    {
+		return;
+    }
+	
+	UINavigationController *colorKeyNavigationController = [[UINavigationController alloc] init];
+	colorKeyNavigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+	
+	SLSAtomColorKeyController *dataSourceViewController = [[SLSAtomColorKeyController alloc] initWithStyle:UITableViewStylePlain];
+	[colorKeyNavigationController pushViewController:dataSourceViewController animated:NO];
+	
+	colorKeyPopover = [[UIPopoverController alloc] initWithContentViewController:colorKeyNavigationController];
+	[colorKeyPopover setDelegate:self];
+	[colorKeyPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	
+	[glViewController.visualizationActionSheet dismissWithClickedButtonIndex:2 animated:YES];
+	glViewController.visualizationActionSheet = nil;
+    
+	[moleculeTablePopover dismissPopoverAnimated:YES];
+	moleculeTablePopover = nil;
+	
+	[downloadOptionsPopover dismissPopoverAnimated:YES];
+	downloadOptionsPopover = nil;
 }
 
 #pragma mark -
@@ -213,14 +211,14 @@
 {
 	externalScreen = [note object];
 	NSMutableArray *items = [[mainToolbar items] mutableCopy];
-    [items insertObject:screenBarButton atIndex:[items indexOfObject:spacerItem] + 1];
+//    [items insertObject:screenBarButton atIndex:[items indexOfObject:spacerItem] + 1];
     [mainToolbar setItems:items animated:YES];
 }
 
 - (void)handleDisconnectionOfMonitor:(NSNotification *)note;
 {
 	NSMutableArray *items = [[mainToolbar items] mutableCopy];
-    [items removeObject:screenBarButton];
+//    [items removeObject:screenBarButton];
     [mainToolbar setItems:items animated:YES];
 	
 	if (externalWindow != nil)
@@ -291,7 +289,6 @@
 {
 	[downloadOptionsPopover dismissPopoverAnimated:YES];
 	downloadOptionsPopover = nil;
-//	[downloadOptionsPopover release];
 	
 	[glViewController.visualizationActionSheet dismissWithClickedButtonIndex:2 animated:YES];
 	glViewController.visualizationActionSheet = nil;
@@ -329,6 +326,10 @@
 	else if (popoverController == moleculeTablePopover)
 	{
 		moleculeTablePopover = nil;
+	}
+	else if (popoverController == colorKeyPopover)
+	{
+		colorKeyPopover = nil;
 	}
 }
 

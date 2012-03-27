@@ -654,9 +654,6 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
-				GCC_THUMB_SUPPORT = YES;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				"GCC_THUMB_SUPPORT[arch=armv7]" = YES;
 				INFOPLIST_FILE = English.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				PRODUCT_NAME = Molecules;
@@ -678,7 +675,6 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_THUMB_SUPPORT = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -686,8 +682,12 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-fstrict-aliasing";
+				"OTHER_CFLAGS[arch=armv6]" = (
+					"-fstrict-aliasing",
+					"-mno-thumb",
+				);
+				"OTHER_CFLAGS[arch=armv7]" = "-fstrict-aliasing";
 				OTHER_LDFLAGS = "-lz";
-				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -706,8 +706,6 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Molecules_Prefix.pch;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				"GCC_THUMB_SUPPORT[arch=armv7]" = YES;
 				INFOPLIST_FILE = English.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				PRODUCT_NAME = Molecules;
@@ -737,8 +735,12 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-fstrict-aliasing";
+				"OTHER_CFLAGS[arch=armv6]" = (
+					"-fstrict-aliasing",
+					"-mno-thumb",
+				);
+				"OTHER_CFLAGS[arch=armv7]" = "-fstrict-aliasing";
 				OTHER_LDFLAGS = "-lz";
-				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -759,7 +761,6 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_THUMB_SUPPORT = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -767,8 +768,12 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-fstrict-aliasing";
+				"OTHER_CFLAGS[arch=armv6]" = (
+					"-fstrict-aliasing",
+					"-mno-thumb",
+				);
+				"OTHER_CFLAGS[arch=armv7]" = "-fstrict-aliasing";
 				OTHER_LDFLAGS = "-lz";
-				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=*]" = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;

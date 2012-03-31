@@ -55,8 +55,9 @@ void main()
     // Specular lighting    
     finalSphereColor = finalSphereColor + ( (precalculatedDepthAndLighting.b * ambientOcclusionIntensity) * (vec3(1.0) - finalSphereColor));
     
-    gl_FragColor = vec4(finalSphereColor * alphaComponent, alphaComponent);
-//            gl_FragColor = vec4(texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).rgb * alphaComponent, alphaComponent);
+    gl_FragColor = vec4(finalSphereColor * alphaComponent, alphaComponent); // Black background
+//    gl_FragColor = vec4(finalSphereColor * alphaComponent + (1.0 - 1.0 * alphaComponent), alphaComponent); // White background
+//            gl_FragColor = vec4(texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).rgb * alphaComponent + (1.0 - 1.0 * alphaComponent), alphaComponent);
 //            gl_FragColor = vec4(textureCoordinateForAOLookup * alphaComponent, 0.0, alphaComponent);
             //    gl_FragColor = vec4(normalizedViewCoordinate, 1.0);
             //    gl_FragColor = vec4(precalculatedDepthAndLighting, 1.0);

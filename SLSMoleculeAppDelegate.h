@@ -40,6 +40,7 @@
 + (BOOL)isRunningOniPad;
 
 // Database access
+- (NSString *)cachesDirectory;
 - (NSString *)applicationSupportDirectory;
 - (BOOL)createEditableCopyOfDatabaseIfNeeded; 
 - (void)connectToDatabase;

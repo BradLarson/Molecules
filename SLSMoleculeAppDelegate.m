@@ -140,6 +140,21 @@
 #pragma mark -
 #pragma mark Database access
 
+- (NSString *)cachesDirectory;
+{	
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+	
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	if ([fileManager fileExistsAtPath:basePath] == NO)
+	{
+		NSError *error = nil;
+		[fileManager createDirectoryAtPath:basePath withIntermediateDirectories:NO attributes:nil error:&error];
+	}
+	
+    return basePath;
+}
+
 - (NSString *)applicationSupportDirectory;
 {	
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
@@ -165,10 +180,16 @@
     NSString *writableDBPath = [documentsDirectory stringByAppendingPathComponent:@"molecules.sql"];
     if ([fileManager fileExistsAtPath:writableDBPath])
 	{
-		[fileManager moveItemAtPath:writableDBPath toPath:[[self applicationSupportDirectory] stringByAppendingPathComponent:@"molecules.sql"] error:&error];
+		[fileManager moveItemAtPath:writableDBPath toPath:[[self cachesDirectory] stringByAppendingPathComponent:@"molecules.sql"] error:&error];
 	}
 	
-	writableDBPath = [[self applicationSupportDirectory] stringByAppendingPathComponent:@"molecules.sql"];
+    // Move the older database to the proper location for iCloud
+    if ([fileManager fileExistsAtPath:[[self applicationSupportDirectory] stringByAppendingPathComponent:@"molecules.sql"]])
+	{
+		[fileManager moveItemAtPath:[[self applicationSupportDirectory] stringByAppendingPathComponent:@"molecules.sql"] toPath:[[self cachesDirectory] stringByAppendingPathComponent:@"molecules.sql"] error:&error];
+	}
+    
+	writableDBPath = [[self cachesDirectory] stringByAppendingPathComponent:@"molecules.sql"];
 	
     if ([fileManager fileExistsAtPath:writableDBPath])
 		return NO;
@@ -187,7 +208,7 @@
 	molecules = [[NSMutableArray alloc] init];
 	
 	// The database is stored in the application bundle. 
-    NSString *path = [[self applicationSupportDirectory] stringByAppendingPathComponent:@"molecules.sql"];
+    NSString *path = [[self cachesDirectory] stringByAppendingPathComponent:@"molecules.sql"];
     // Open the database. The database was prepared outside the application.
     if (sqlite3_open([path UTF8String], &database) == SQLITE_OK) 
 	{

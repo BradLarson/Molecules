@@ -184,66 +184,64 @@
 - (BOOL)createFramebuffersForLayer:(CAEAGLLayer *)glLayer;
 {
     dispatch_async(openGLESContextQueue, ^{
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            [EAGLContext setCurrentContext:context];
-            
-            // Need this to make the layer dimensions an even multiple of 32 for performance reasons
-            // Also, the 4.2 Simulator will not display the frame otherwise
-            /*	CGRect layerBounds = glLayer.bounds;
-             CGFloat newWidth = (CGFloat)((int)layerBounds.size.width / 32) * 32.0f;
-             CGFloat newHeight = (CGFloat)((int)layerBounds.size.height / 32) * 32.0f;
-             
-             NSLog(@"Bounds before: %@", NSStringFromCGRect(glLayer.bounds));
-             
-             glLayer.bounds = CGRectMake(layerBounds.origin.x, layerBounds.origin.y, newWidth, newHeight);
-             
-             NSLog(@"Bounds after: %@", NSStringFromCGRect(glLayer.bounds));
-             */
-            glEnable(GL_TEXTURE_2D);
-            
-            [self createFramebuffer:&viewFramebuffer size:CGSizeZero renderBuffer:&viewRenderbuffer depthBuffer:&viewDepthBuffer texture:NULL layer:glLayer];    
-            //    [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:&depthPassDepthBuffer texture:&depthPassTexture layer:glLayer];
-            [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:NULL depthBuffer:&depthPassDepthBuffer texture:&depthPassTexture layer:glLayer];
+        [EAGLContext setCurrentContext:context];
+        
+        // Need this to make the layer dimensions an even multiple of 32 for performance reasons
+        // Also, the 4.2 Simulator will not display the frame otherwise
+        /*	CGRect layerBounds = glLayer.bounds;
+         CGFloat newWidth = (CGFloat)((int)layerBounds.size.width / 32) * 32.0f;
+         CGFloat newHeight = (CGFloat)((int)layerBounds.size.height / 32) * 32.0f;
+         
+         NSLog(@"Bounds before: %@", NSStringFromCGRect(glLayer.bounds));
+         
+         glLayer.bounds = CGRectMake(layerBounds.origin.x, layerBounds.origin.y, newWidth, newHeight);
+         
+         NSLog(@"Bounds after: %@", NSStringFromCGRect(glLayer.bounds));
+         */
+        glEnable(GL_TEXTURE_2D);
+        
+        [self createFramebuffer:&viewFramebuffer size:CGSizeZero renderBuffer:&viewRenderbuffer depthBuffer:&viewDepthBuffer texture:NULL layer:glLayer];    
+        //    [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:&depthPassRenderbuffer depthBuffer:&depthPassDepthBuffer texture:&depthPassTexture layer:glLayer];
+        [self createFramebuffer:&depthPassFramebuffer size:CGSizeMake(backingWidth, backingHeight) renderBuffer:NULL depthBuffer:&depthPassDepthBuffer texture:&depthPassTexture layer:glLayer];
 
-            if (!ambientOcclusionFramebuffer)
-            {
-                [self createFramebuffer:&ambientOcclusionFramebuffer size:CGSizeMake(ambientOcclusionTextureWidth, ambientOcclusionTextureWidth) renderBuffer:NULL depthBuffer:NULL texture:&ambientOcclusionTexture layer:glLayer];                
-            }
-            
-            if (!sphereAOLookupFramebuffer)
-            {
-                [self createFramebuffer:&sphereAOLookupFramebuffer size:CGSizeMake(ambientOcclusionLookupTextureWidth, ambientOcclusionLookupTextureWidth) renderBuffer:NULL depthBuffer:NULL texture:&sphereAOLookupTexture layer:glLayer];
-            }
+        if (!ambientOcclusionFramebuffer)
+        {
+            [self createFramebuffer:&ambientOcclusionFramebuffer size:CGSizeMake(ambientOcclusionTextureWidth, ambientOcclusionTextureWidth) renderBuffer:NULL depthBuffer:NULL texture:&ambientOcclusionTexture layer:glLayer];                
+        }
+        
+        if (!sphereAOLookupFramebuffer)
+        {
+            [self createFramebuffer:&sphereAOLookupFramebuffer size:CGSizeMake(ambientOcclusionLookupTextureWidth, ambientOcclusionLookupTextureWidth) renderBuffer:NULL depthBuffer:NULL texture:&sphereAOLookupTexture layer:glLayer];
+        }
 
-            [self switchToDisplayFramebuffer];
-            glViewport(0, 0, backingWidth, backingHeight);
-            
-            currentViewportSize = CGSizeMake(backingWidth, backingHeight);
-            
-            //    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-3.0 far:3.0];
-            //    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-2.0 far:2.0];
-            //    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-0.5 far:0.5];
-            [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-1.0 far:1.0];
-            
-            // 0 - Depth pass texture
-            // 1 - Ambient occlusion texture
-            // 2 - AO lookup texture
-            // 3 - Sphere depth precalculation texture
+        [self switchToDisplayFramebuffer];
+        glViewport(0, 0, backingWidth, backingHeight);
+        
+        currentViewportSize = CGSizeMake(backingWidth, backingHeight);
+        
+        //    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-3.0 far:3.0];
+        //    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-2.0 far:2.0];
+        //    [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-0.5 far:0.5];
+        [self loadOrthoMatrix:orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) top:(1.0 * (GLfloat)backingHeight / (GLfloat)backingWidth) near:-1.0 far:1.0];
+        
+        // 0 - Depth pass texture
+        // 1 - Ambient occlusion texture
+        // 2 - AO lookup texture
+        // 3 - Sphere depth precalculation texture
 
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, depthPassTexture);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, depthPassTexture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 
-            glActiveTexture(GL_TEXTURE1);
-            glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexture);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexture);
 
-            glActiveTexture(GL_TEXTURE2);
-            glBindTexture(GL_TEXTURE_2D, sphereAOLookupTexture);
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, sphereAOLookupTexture);
 
-            glActiveTexture(GL_TEXTURE3);
-            glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
-        });        
+        glActiveTexture(GL_TEXTURE3);
+        glBindTexture(GL_TEXTURE_2D, sphereDepthMappingTexture);
     });
     
     return YES;

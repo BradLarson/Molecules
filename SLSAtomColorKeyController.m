@@ -18,31 +18,6 @@ typedef enum { COLORKEY_HYDROGEN, COLORKEY_CARBON, COLORKEY_NITROGEN, COLORKEY_O
 
 @implementation SLSAtomColorKeyController
 
-+ (CAGradientLayer *)atomColorOverlayGradientForSize:(CGSize)gradientSize;
-{
-	CAGradientLayer *newGlow = [[CAGradientLayer alloc] init];
-	
-	CGRect newGlowFrame = CGRectMake(0, 0, gradientSize.width, gradientSize.height);
-	newGlow.frame = newGlowFrame;
-
-    UIColor *topColor = [UIColor colorWithRed:((float)atomProperties[OXYGEN].redComponent / 255.0) green:((float)atomProperties[OXYGEN].greenComponent / 255.0) blue:((float)atomProperties[OXYGEN].blueComponent / 255.0) alpha:0.80f];
-	UIColor *middleColor = [UIColor colorWithRed:((float)atomProperties[OXYGEN].redComponent / 255.0) green:((float)atomProperties[OXYGEN].greenComponent / 255.0) blue:((float)atomProperties[OXYGEN].blueComponent / 255.0) alpha:0.2f];
-	UIColor *bottomColor = [UIColor colorWithRed:((float)atomProperties[OXYGEN].redComponent / 255.0) green:((float)atomProperties[OXYGEN].greenComponent / 255.0) blue:((float)atomProperties[OXYGEN].blueComponent / 255.0) alpha:0.4f];
-
-	newGlow.colors = [NSArray arrayWithObjects:(id)[topColor CGColor], (id)[middleColor CGColor], (id)[bottomColor CGColor], nil];
-	return newGlow;
-}
-
-+ (void)adjustGradient:(CAGradientLayer *)gradientLayer toMatchAtomType:(SLSAtomType)atomType;
-{
-//    UIColor *topColor = [UIColor colorWithRed:((float)atomProperties[atomType].redComponent / 255.0) green:((float)atomProperties[atomType].greenComponent / 255.0) blue:((float)atomProperties[atomType].blueComponent / 255.0) alpha:1.0f];
-    UIColor *topColor = [UIColor whiteColor];
-	UIColor *middleColor = [UIColor colorWithRed:((float)atomProperties[atomType].redComponent / 255.0) green:((float)atomProperties[atomType].greenComponent / 255.0) blue:((float)atomProperties[atomType].blueComponent / 255.0) alpha:0.3f];
-	UIColor *bottomColor = [UIColor colorWithRed:((float)atomProperties[atomType].redComponent / 255.0) green:((float)atomProperties[atomType].greenComponent / 255.0) blue:((float)atomProperties[atomType].blueComponent / 255.0) alpha:0.65f];
-    
-	gradientLayer.colors = [NSArray arrayWithObjects:(id)[topColor CGColor], (id)[middleColor CGColor], (id)[bottomColor CGColor], nil];
-}
-
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -104,9 +79,8 @@ typedef enum { COLORKEY_HYDROGEN, COLORKEY_CARBON, COLORKEY_NITROGEN, COLORKEY_O
         cell.textLabel.textColor = [UIColor colorWithWhite:0.1 alpha:1.0];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
-//        cell.contentView.backgroundColor = [UIColor blackColor];
-//        cell.backgroundColor = [UIColor blackColor];
         
+        // Specular highlight
         CAGradientLayer *newGlow = [[CAGradientLayer alloc] init];
         CGRect newGlowFrame = CGRectMake(0.0, 7.0, self.view.frame.size.width, 14.0);
         newGlow.frame = newGlowFrame;
@@ -118,6 +92,7 @@ typedef enum { COLORKEY_HYDROGEN, COLORKEY_CARBON, COLORKEY_NITROGEN, COLORKEY_O
         newGlow.colors = [NSArray arrayWithObjects:(id)[topColor CGColor], (id)[middleColor CGColor], (id)[bottomColor CGColor], nil];
         [cell.layer insertSublayer:newGlow atIndex:10];
 
+        // Bottom shadow
         CAGradientLayer *newShadow = [[CAGradientLayer alloc] init];
         CGRect newShadowFrame = CGRectMake(0, 24.0, self.view.frame.size.width, 24.0);
         newShadow.frame = newShadowFrame;
@@ -128,6 +103,7 @@ typedef enum { COLORKEY_HYDROGEN, COLORKEY_CARBON, COLORKEY_NITROGEN, COLORKEY_O
         newShadow.colors = [NSArray arrayWithObjects:(id)[topShadowColor CGColor], (id)[middleShadowColor CGColor], nil];
         [cell.layer insertSublayer:newShadow atIndex:10];
 
+        // Top shadow
         CAGradientLayer *newShadow2 = [[CAGradientLayer alloc] init];
         CGRect newShadowFrame2 = CGRectMake(0, 0.0, self.view.frame.size.width, 10.0);
         newShadow2.frame = newShadowFrame2;
@@ -137,116 +113,108 @@ typedef enum { COLORKEY_HYDROGEN, COLORKEY_CARBON, COLORKEY_NITROGEN, COLORKEY_O
         
         newShadow2.colors = [NSArray arrayWithObjects:(id)[topShadowColor2 CGColor], (id)[middleShadowColor2 CGColor], nil];
         [cell.layer insertSublayer:newShadow2 atIndex:9];
-
-        
-//        CAGradientLayer *glowGradientLayer = [SLSAtomColorKeyController atomColorOverlayGradientForSize:CGSizeMake(self.view.frame.size.width, 48.0)];
-//        [(SLSMoleculeLibraryTableCell *)cell setHighlightGradientLayer:glowGradientLayer];
-//        [cell.layer insertSublayer:glowGradientLayer atIndex:10];
     }		
     
-    SLSAtomType atomType = CARBON;
+//    SLSAtomType atomType = CARBON;
     switch (index)
     {
         case COLORKEY_CARBON:
         {
-            atomType = CARBON;
+//            atomType = CARBON;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Carbon", @"Localized", nil);  
         }; break;
         case COLORKEY_HYDROGEN:
         {
-            atomType = HYDROGEN;
+//            atomType = HYDROGEN;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Hydrogen", @"Localized", nil);  
         }; break;
         case COLORKEY_NITROGEN:
         {
-            atomType = NITROGEN;
+//            atomType = NITROGEN;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Nitrogen", @"Localized", nil);  
         }; break;
         case COLORKEY_OXYGEN:
         {
-            atomType = OXYGEN;
+//            atomType = OXYGEN;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Oxygen", @"Localized", nil);  
         }; break;
         case COLORKEY_FLUORINE:
         {
-            atomType = FLUORINE;
+//            atomType = FLUORINE;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Fluorine", @"Localized", nil);  
         }; break;
         case COLORKEY_SODIUM:
         {
-            atomType = SODIUM;
+//            atomType = SODIUM;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Sodium", @"Localized", nil);  
         }; break;
         case COLORKEY_MAGNESIUM:
         {
-            atomType = MAGNESIUM;
+//            atomType = MAGNESIUM;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Magnesium", @"Localized", nil);  
         }; break;
         case COLORKEY_SILICON:
         {
-            atomType = SILICON;
+//            atomType = SILICON;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Silicon", @"Localized", nil);  
         }; break;
         case COLORKEY_PHOSPHOROUS:
         {
-            atomType = PHOSPHOROUS;
+//            atomType = PHOSPHOROUS;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Phosphorous", @"Localized", nil);  
         }; break;
         case COLORKEY_SULFUR:
         {
-            atomType = SULFUR;
+//            atomType = SULFUR;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Sulfur", @"Localized", nil);  
         }; break;
         case COLORKEY_CHLORINE:
         {
-            atomType = CHLORINE;
+//            atomType = CHLORINE;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Chlorine", @"Localized", nil);  
         }; break;
         case COLORKEY_CALCIUM:
         {
-            atomType = CALCIUM;
+//            atomType = CALCIUM;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Calcium", @"Localized", nil);  
         }; break;
         case COLORKEY_IRON:
         {
-            atomType = IRON;
+//            atomType = IRON;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Iron", @"Localized", nil);  
         }; break;
         case COLORKEY_ZINC:
         {
-            atomType = ZINC;
+//            atomType = ZINC;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Zinc", @"Localized", nil);  
         }; break;
         case COLORKEY_BROMINE:
         {
-            atomType = BROMINE;
+//            atomType = BROMINE;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Bromine", @"Localized", nil);  
         }; break;
         case COLORKEY_CADMIUM:
         {
-            atomType = CADMIUM;
+//            atomType = CADMIUM;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Cadmium", @"Localized", nil);  
         }; break;
         case COLORKEY_IODINE:
         {
-            atomType = IODINE;
+//            atomType = IODINE;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Iodine", @"Localized", nil);  
         }; break;
         default: 
         {
-            atomType = UNKNOWN;
+//            atomType = UNKNOWN;
             cell.textLabel.text = NSLocalizedStringFromTable(@"Unknown", @"Localized", nil);  
         }; break;
     }
 
-//    [SLSAtomColorKeyController adjustGradient:[(SLSMoleculeLibraryTableCell *)cell highlightGradientLayer] toMatchAtomType:atomType];
-    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-//    cell.backgroundColor = [UIColor redColor];
     cell.backgroundColor = [UIColor blackColor];
     
     switch ([indexPath row])

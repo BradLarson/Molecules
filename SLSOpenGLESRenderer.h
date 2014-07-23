@@ -26,7 +26,7 @@ extern NSString *const kSLSMoleculeShadowCalculationEndedNotification;
 // OpenGL helper functions
 void normalize(GLfloat *v);
 
-typedef typedef struct { 
+typedef struct { 
     GLubyte redComponent;
     GLubyte greenComponent;
     GLubyte blueComponent;

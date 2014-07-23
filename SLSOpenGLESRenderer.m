@@ -388,7 +388,7 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
             {
                 glGenBuffers(1, &atomIndexBufferHandle[currentAtomIndexBufferIndex]);
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, atomIndexBufferHandle[currentAtomIndexBufferIndex]);   
-                glBufferData(GL_ELEMENT_ARRAY_BUFFER, [atomIndexBuffers[currentAtomIndexBufferIndex] length], (GLushort *)[atomIndexBuffers[currentAtomIndexBufferIndex] bytes], GL_STATIC_DRAW);    
+                glBufferData(GL_ELEMENT_ARRAY_BUFFER, [atomIndexBuffers[currentAtomIndexBufferIndex] length], (GLushort *)[atomIndexBuffers[currentAtomIndexBufferIndex] bytes], GL_STATIC_DRAW);
                 
                 numberOfIndicesInBuffer[currentAtomIndexBufferIndex] = ([atomIndexBuffers[currentAtomIndexBufferIndex] length] / sizeof(GLushort));
                 
@@ -407,7 +407,7 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
             {
                 glGenBuffers(1, &atomVertexBufferHandles[currentAtomVBOIndex]);
                 glBindBuffer(GL_ARRAY_BUFFER, atomVertexBufferHandles[currentAtomVBOIndex]);
-                glBufferData(GL_ARRAY_BUFFER, [atomVBOs[currentAtomVBOIndex] length], (void *)[atomVBOs[currentAtomVBOIndex] bytes], GL_STATIC_DRAW); 
+                glBufferData(GL_ARRAY_BUFFER, [atomVBOs[currentAtomVBOIndex] length], (void *)[atomVBOs[currentAtomVBOIndex] bytes], GL_STATIC_DRAW);
                 
                 atomVBOs[currentAtomVBOIndex] = nil;
             }

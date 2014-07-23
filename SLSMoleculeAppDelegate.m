@@ -52,11 +52,13 @@
 		newSplitViewController.delegate = (SLSMoleculeiPadRootViewController *)rootViewController;
 		splitViewController = newSplitViewController;
 		[window addSubview:splitViewController.view];
+        self.window.rootViewController = splitViewController;
 	}
 	else
 	{
 		rootViewController = [[SLSMoleculeRootViewController alloc] init];
 		[window addSubview:rootViewController.view];
+        self.window.rootViewController = rootViewController;
 	}
 	
 	

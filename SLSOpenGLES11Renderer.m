@@ -249,7 +249,7 @@ void normalize(GLfloat *v)
     }
 
     dispatch_async(openGLESContextQueue, ^{
-        //    CFAbsoluteTime elapsedTime, startTime = CFAbsoluteTimeGetCurrent();
+//        CFAbsoluteTime elapsedTime, startTime = CFAbsoluteTimeGetCurrent();
         
         isFrameRenderingFinished = NO;
         
@@ -291,8 +291,8 @@ void normalize(GLfloat *v)
         [self presentRenderBuffer];
         isFrameRenderingFinished = YES;
         
-        //    elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
-        //	NSLog(@"Render time: %.1f ms, Triangles per second: %.0f", elapsedTime * 1000.0, (CGFloat)totalNumberOfTriangles / elapsedTime);
+//        elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
+//        NSLog(@"Render time: %.1f ms, Triangles per second: %.0f", elapsedTime * 1000.0, (CGFloat)totalNumberOfTriangles / elapsedTime);
         
         dispatch_semaphore_signal(frameRenderingSemaphore);
     });

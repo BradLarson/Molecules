@@ -769,6 +769,8 @@ static NSDictionary *pdbResidueLookupTable;
 				}		
 				else if ([lineIdentifier isEqualToString:@"SEQRES"])
 				{
+//#warning: Fix the sequence information here, which isn't processing right
+                    
 					if (sequence == nil)
 					{
 						sequence = [[currentLine substringFromIndex:14] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];

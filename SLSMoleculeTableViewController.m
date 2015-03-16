@@ -319,7 +319,22 @@
 		index++;
         indexPath = [NSIndexPath indexPathForRow:index inSection:[indexPath section]];
 	}
-	
+    
+    static CFAbsoluteTime lastTapTime = -1;
+    static NSInteger lastIndex = -1;
+    
+    CFAbsoluteTime currentTime = CFAbsoluteTimeGetCurrent();
+    
+    if (((currentTime - lastTapTime) <= 1) && (lastIndex == index)) {
+        // recognize a double-tap on the same row index as a selection, AND toggle back to Molecule view
+        lastTapTime = lastIndex = -1;
+        [self switchBackToGLView];
+        return;
+    }
+    
+    lastTapTime = currentTime;
+    lastIndex = index;
+
 	if (index == 0)
 	{
 		[self displayMoleculeDownloadView];

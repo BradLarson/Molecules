@@ -35,7 +35,7 @@ typedef enum { COLORKEY_HYDROGEN, COLORKEY_CARBON, COLORKEY_NITROGEN, COLORKEY_O
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
     {
-		self.contentSizeForViewInPopover = CGSizeMake(250.0f, 864.0f);
+		self.preferredContentSize = CGSizeMake(250.0f, 864.0f);
 //		self.contentSizeForViewInPopover = CGSizeMake(200.0f, 864.0f);
     }
 

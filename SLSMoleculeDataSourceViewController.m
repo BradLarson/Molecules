@@ -23,7 +23,7 @@
 	{
 		if ([SLSMoleculeAppDelegate isRunningOniPad])
 		{
-			self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
+			self.preferredContentSize = CGSizeMake(320.0, 600.0);
 		}
 		
 		self.navigationItem.title = NSLocalizedStringFromTable(@"Online Data Source", @"Localized", nil);

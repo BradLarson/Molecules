@@ -27,7 +27,7 @@
 {
 	if ((self = [super initWithStyle:style])) 
 	{
-		self.view.frame = [[UIScreen mainScreen] applicationFrame];
+		self.view.frame = [[UIScreen mainScreen] bounds];
 		self.view.autoresizesSubviews = YES;
 		self.molecule = newMolecule;
 		[newMolecule readMetadataFromDatabaseIfNecessary];
@@ -40,15 +40,15 @@
 		label.backgroundColor = [UIColor groupTableViewBackgroundColor];	
 		label.text = molecule.compound;
 		label.numberOfLines = 3;
-		label.lineBreakMode = UILineBreakModeWordWrap;
-		label.textAlignment = UITextAlignmentCenter;
+        label.lineBreakMode = NSLineBreakByWordWrapping;
+		label.textAlignment = NSTextAlignmentCenter;
 		//	label.text = @"Text";
 		
 		self.tableView.tableHeaderView = label;
 		
 		if ([SLSMoleculeAppDelegate isRunningOniPad])
 		{
-			self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
+			self.preferredContentSize = CGSizeMake(320.0, 600.0);
 		}		
 	}
 	return self;

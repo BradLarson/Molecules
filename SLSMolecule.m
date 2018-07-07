@@ -508,7 +508,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 	sqlite3_bind_double(updateMoleculeSQLStatement, 13, maximumXPosition);
 	sqlite3_bind_double(updateMoleculeSQLStatement, 14, maximumYPosition);
 	sqlite3_bind_double(updateMoleculeSQLStatement, 15, maximumZPosition);
-	sqlite3_bind_int(updateMoleculeSQLStatement, 16, databaseKey);
+	sqlite3_bind_int64(updateMoleculeSQLStatement, 16, databaseKey);
 
 	// Execute the query.
 	int success = sqlite3_step(updateMoleculeSQLStatement);
@@ -530,7 +530,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
         }
     }
 	// Bind the query variables.
-	sqlite3_bind_int(insertMetadataSQLStatement, 1, databaseKey);
+	sqlite3_bind_int64(insertMetadataSQLStatement, 1, databaseKey);
 	sqlite3_bind_int(insertMetadataSQLStatement, 2, metadataType);
 	sqlite3_bind_text(insertMetadataSQLStatement, 3, [[metadata stringByReplacingOccurrencesOfString:@"'" withString:@"''"] UTF8String], -1, SQLITE_TRANSIENT);
     int success = sqlite3_step(insertMetadataSQLStatement);
@@ -552,9 +552,9 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
     }
 	// Bind the query variables.
 	sqlite3_clear_bindings(insertAtomSQLStatement);
-	sqlite3_bind_int(insertAtomSQLStatement, 1, databaseKey);
+	sqlite3_bind_int64(insertAtomSQLStatement, 1, databaseKey);
 	sqlite3_bind_int(insertAtomSQLStatement, 2, residueKey);
-	sqlite3_bind_int(insertAtomSQLStatement, 3, structureNumber);
+	sqlite3_bind_int64(insertAtomSQLStatement, 3, structureNumber);
 	sqlite3_bind_int(insertAtomSQLStatement, 4, atomType);
 	sqlite3_bind_double(insertAtomSQLStatement, 5, (double)newPoint.x);
 	sqlite3_bind_double(insertAtomSQLStatement, 6, (double)newPoint.y);
@@ -602,9 +602,9 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
     }
 	// Bind the query variables.
 	sqlite3_clear_bindings(insertBondSQLStatement);
-	sqlite3_bind_int(insertBondSQLStatement, 1, databaseKey);
-	sqlite3_bind_int(insertBondSQLStatement, 2, residueKey);
-	sqlite3_bind_int(insertBondSQLStatement, 3, structureNumber);
+	sqlite3_bind_int64(insertBondSQLStatement, 1, databaseKey);
+	sqlite3_bind_int64(insertBondSQLStatement, 2, residueKey);
+	sqlite3_bind_int64(insertBondSQLStatement, 3, structureNumber);
 	sqlite3_bind_int(insertBondSQLStatement, 4, bondType);
 	sqlite3_bind_double(insertBondSQLStatement, 5, (double)startPoint.x);
 	sqlite3_bind_double(insertBondSQLStatement, 6, (double)startPoint.y);
@@ -638,7 +638,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 	}
 	
 	// Bind the query variables.
-	sqlite3_bind_int(retrieveMetadataSQLStatement, 1, databaseKey);
+	sqlite3_bind_int64(retrieveMetadataSQLStatement, 1, databaseKey);
 
 	while (sqlite3_step(retrieveMetadataSQLStatement) == SQLITE_ROW) 
 	{
@@ -690,7 +690,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 		if (sqlite3_prepare_v2(database, sql, -1, &deleteMoleculeSQLStatement, NULL) != SQLITE_OK) 
 			NSAssert1(0, NSLocalizedStringFromTable(@"Error: failed to prepare statement with message '%s'.", @"Localized", nil), sqlite3_errmsg(database));
 	}
-	sqlite3_bind_int(deleteMoleculeSQLStatement, 1, databaseKey);
+	sqlite3_bind_int64(deleteMoleculeSQLStatement, 1, databaseKey);
 	int success = sqlite3_step(deleteMoleculeSQLStatement);
 	sqlite3_reset(deleteMoleculeSQLStatement);
 	if (success != SQLITE_DONE) 
@@ -703,7 +703,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 		if (sqlite3_prepare_v2(database, sql, -1, &deleteMetadataSQLStatement, NULL) != SQLITE_OK) 
 			NSAssert1(0, NSLocalizedStringFromTable(@"Error: failed to prepare statement with message '%s'.", @"Localized", nil), sqlite3_errmsg(database));
 	}
-	sqlite3_bind_int(deleteMetadataSQLStatement, 1, databaseKey);
+	sqlite3_bind_int64(deleteMetadataSQLStatement, 1, databaseKey);
 	success = sqlite3_step(deleteMetadataSQLStatement);
 	sqlite3_reset(deleteMetadataSQLStatement);
 	if (success != SQLITE_DONE) 
@@ -716,7 +716,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 		if (sqlite3_prepare_v2(database, sql, -1, &deleteAtomSQLStatement, NULL) != SQLITE_OK) 
 			NSAssert1(0, NSLocalizedStringFromTable(@"Error: failed to prepare statement with message '%s'.", @"Localized", nil), sqlite3_errmsg(database));
 	}
-	sqlite3_bind_int(deleteAtomSQLStatement, 1, databaseKey);
+	sqlite3_bind_int64(deleteAtomSQLStatement, 1, databaseKey);
 	success = sqlite3_step(deleteAtomSQLStatement);
 	sqlite3_reset(deleteAtomSQLStatement);
 	if (success != SQLITE_DONE) 
@@ -729,7 +729,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 		if (sqlite3_prepare_v2(database, sql, -1, &deleteBondSQLStatement, NULL) != SQLITE_OK) 
 			NSAssert1(0, NSLocalizedStringFromTable(@"Error: failed to prepare statement with message '%s'.", @"Localized", nil), sqlite3_errmsg(database));
 	}
-	sqlite3_bind_int(deleteBondSQLStatement, 1, databaseKey);
+	sqlite3_bind_int64(deleteBondSQLStatement, 1, databaseKey);
 	success = sqlite3_step(deleteBondSQLStatement);
 	sqlite3_reset(deleteBondSQLStatement);
 	if (success != SQLITE_DONE) 
@@ -746,7 +746,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
     
 	if (sqlite3_prepare_v2(database, sql, -1, &atomCountingStatement, NULL) == SQLITE_OK) 
 	{
-        sqlite3_bind_int(atomCountingStatement, 1, databaseKey);
+        sqlite3_bind_int64(atomCountingStatement, 1, databaseKey);
         sqlite3_bind_int(atomCountingStatement, 2, numberOfStructureBeingDisplayed);
         
         if (sqlite3_step(atomCountingStatement) == SQLITE_ROW)
@@ -771,7 +771,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
     
 	if (sqlite3_prepare_v2(database, sql, -1, &bondCountingStatement, NULL) == SQLITE_OK) 
 	{
-        sqlite3_bind_int(bondCountingStatement, 1, databaseKey);
+        sqlite3_bind_int64(bondCountingStatement, 1, databaseKey);
         sqlite3_bind_int(bondCountingStatement, 2, numberOfStructureBeingDisplayed);
         
         if (sqlite3_step(bondCountingStatement) == SQLITE_ROW)
@@ -915,7 +915,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 	}
 	
 	// Bind the query variables.
-	sqlite3_bind_int(retrieveAtomSQLStatement, 1, databaseKey);
+	sqlite3_bind_int64(retrieveAtomSQLStatement, 1, databaseKey);
 	sqlite3_bind_int(retrieveAtomSQLStatement, 2, numberOfStructureBeingDisplayed);
     	
     while ((sqlite3_step(retrieveAtomSQLStatement) == SQLITE_ROW) && !isRenderingCancelled)
@@ -969,7 +969,7 @@ static sqlite3_stmt *deleteBondSQLStatement = nil;
 	}
 	
 	// Bind the query variables.
-	sqlite3_bind_int(retrieveBondSQLStatement, 1, databaseKey);
+	sqlite3_bind_int64(retrieveBondSQLStatement, 1, databaseKey);
 	sqlite3_bind_int(retrieveBondSQLStatement, 2, numberOfStructureBeingDisplayed);
     
 	while ((sqlite3_step(retrieveBondSQLStatement) == SQLITE_ROW) && !isRenderingCancelled)

@@ -21,7 +21,7 @@
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView 
 {
-	CGRect mainScreenFrame = [[UIScreen mainScreen] applicationFrame];
+	CGRect mainScreenFrame = [[UIScreen mainScreen] bounds];
 
 	UIView *backgroundView = [[UIView alloc] initWithFrame:mainScreenFrame];
 	backgroundView.opaque = YES;
@@ -236,7 +236,7 @@
 	{
 		// External window exists, need to move back locally
 		[self.view addSubview:glViewController.view];
-		CGRect mainScreenFrame = [[UIScreen mainScreen] applicationFrame];
+		CGRect mainScreenFrame = [[UIScreen mainScreen] bounds];
 		glViewController.view.frame = CGRectMake(mainScreenFrame.origin.x, mainToolbar.bounds.size.height, mainScreenFrame.size.width, mainScreenFrame.size.height -  mainToolbar.bounds.size.height);
 
 		// Move view back to local window

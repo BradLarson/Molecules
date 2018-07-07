@@ -63,10 +63,6 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
 	{
 		[EAGLContext setCurrentContext:nil];
 	}
-	
-    
-    dispatch_release(openGLESContextQueue);
-    dispatch_release(frameRenderingSemaphore);
 }
 
 #pragma mark -
@@ -298,7 +294,7 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
 #pragma mark -
 #pragma mark Molecule 3-D geometry generation
 
-- (void)configureBasedOnNumberOfAtoms:(unsigned int)numberOfAtoms numberOfBonds:(unsigned int)numberOfBonds;
+- (void)configureBasedOnNumberOfAtoms:(NSUInteger)numberOfAtoms numberOfBonds:(NSUInteger)numberOfBonds;
 {
     
 }
@@ -390,7 +386,7 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, atomIndexBufferHandle[currentAtomIndexBufferIndex]);   
                 glBufferData(GL_ELEMENT_ARRAY_BUFFER, [atomIndexBuffers[currentAtomIndexBufferIndex] length], (GLushort *)[atomIndexBuffers[currentAtomIndexBufferIndex] bytes], GL_STATIC_DRAW);
                 
-                numberOfIndicesInBuffer[currentAtomIndexBufferIndex] = ([atomIndexBuffers[currentAtomIndexBufferIndex] length] / sizeof(GLushort));
+                numberOfIndicesInBuffer[currentAtomIndexBufferIndex] = ((GLuint)[atomIndexBuffers[currentAtomIndexBufferIndex] length] / (GLuint)sizeof(GLushort));
                 
                 // Now that the data are in the OpenGL buffer, can release the NSData
                 atomIndexBuffers[currentAtomIndexBufferIndex] = nil;
@@ -425,7 +421,7 @@ NSString *const kSLSMoleculeShadowCalculationEndedNotification = @"MoleculeShado
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bondIndexBufferHandle[currentBondVBOIndex]);   
                 glBufferData(GL_ELEMENT_ARRAY_BUFFER, [bondIndexBuffers[currentBondVBOIndex] length], (GLushort *)[bondIndexBuffers[currentBondVBOIndex] bytes], GL_STATIC_DRAW);    
                 
-                numberOfBondIndicesInBuffer[currentBondVBOIndex] = ([bondIndexBuffers[currentBondVBOIndex] length] / sizeof(GLushort));
+                numberOfBondIndicesInBuffer[currentBondVBOIndex] = ((GLuint)[bondIndexBuffers[currentBondVBOIndex] length] / (GLuint)sizeof(GLushort));
                 
                 bondIndexBuffers[currentBondVBOIndex] = nil;
                 

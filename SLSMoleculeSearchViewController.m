@@ -28,7 +28,7 @@
 	{
 		// Initialize the search bar and title
 		
-		self.view.frame = [[UIScreen mainScreen] applicationFrame];
+		self.view.frame = [[UIScreen mainScreen] bounds];
 		self.view.autoresizesSubviews = YES;
 
 		keywordSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
@@ -62,7 +62,7 @@
 		
 		if ([SLSMoleculeAppDelegate isRunningOniPad])
 		{
-			self.contentSizeForViewInPopover = CGSizeMake(320.0, 700.0);
+			self.preferredContentSize = CGSizeMake(320.0, 700.0);
 		}
 		
 	}
@@ -329,7 +329,7 @@
 - (BOOL)grabNextSetOfSearchResults;
 {
 	currentPageOfResults++;
-	NSString *nextResultsURL = [[NSString alloc] initWithFormat:@"http://www.rcsb.org/pdb/results/results.do?outformat=text&gotopage=%d", currentPageOfResults];
+	NSString *nextResultsURL = [[NSString alloc] initWithFormat:@"http://www.rcsb.org/pdb/results/results.do?outformat=text&gotopage=%ld", currentPageOfResults];
 	
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 	
@@ -421,7 +421,7 @@
 			[cell.contentView addSubview:spinningIndicator];
 			cell.accessoryType = UITableViewCellAccessoryNone;
 			cell.textLabel.font = [UIFont systemFontOfSize:16.0];
-			cell.textLabel.textAlignment = UITextAlignmentCenter;
+			cell.textLabel.textAlignment = NSTextAlignmentCenter;
 		}
 		cell.textLabel.text = NSLocalizedStringFromTable(@"Searching...", @"Localized", nil);
 	}
@@ -450,7 +450,7 @@
 
 			cell.textLabel.font = [UIFont systemFontOfSize:16.0];
 			cell.textLabel.text = NSLocalizedStringFromTable(@"No results", @"Localized", nil);
-			cell.textLabel.textAlignment = UITextAlignmentCenter;
+			cell.textLabel.textAlignment = NSTextAlignmentCenter;
 			cell.accessoryType = UITableViewCellAccessoryNone;
 		}
 	}
@@ -484,7 +484,7 @@
             [cell.contentView addSubview:spinningIndicator];
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.textLabel.font = [UIFont systemFontOfSize:16.0];
-            cell.textLabel.textAlignment = UITextAlignmentCenter;
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
         }
         cell.textLabel.text = NSLocalizedStringFromTable(@"Downloading...", @"Localized", nil);        
     }
@@ -509,7 +509,7 @@
 //                }
                 
 				cell.textLabel.font = [UIFont systemFontOfSize:16.0];
-				cell.textLabel.textAlignment = UITextAlignmentCenter;
+				cell.textLabel.textAlignment = NSTextAlignmentCenter;
 				cell.textLabel.text = NSLocalizedStringFromTable(@"Load next 10 results", @"Localized", nil);
 				cell.accessoryType = UITableViewCellAccessoryNone;
 				cell.detailTextLabel.text = @"";
@@ -697,7 +697,7 @@
         }; break;
     }
     
-    currentSearchType = selectedScope;
+    currentSearchType = (SLSSearchType)selectedScope;
     [self.tableView reloadData];
 }
 

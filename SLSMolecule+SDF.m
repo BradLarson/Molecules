@@ -114,7 +114,7 @@
             
             NSString *atomElement = [[currentLine substringWithRange:NSMakeRange(31, 3)] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
-            [atomCoordinates setObject:[NSValue valueWithBytes:&atomCoordinate objCType:@encode(SLS3DPoint)] forKey:[NSNumber numberWithInt:atomSerialNumber]];
+            [atomCoordinates setObject:[NSValue valueWithBytes:&atomCoordinate objCType:@encode(SLS3DPoint)] forKey:[NSNumber numberWithInteger:atomSerialNumber]];
             atomSerialNumber++;
             
             SLSAtomType processedAtomType;
@@ -202,8 +202,8 @@
             NSUInteger indexForFirstAtom  = [[currentLine substringWithRange:NSMakeRange(0, 3)] intValue];
             NSUInteger indexForSecondAtom  = [[currentLine substringWithRange:NSMakeRange(3, 3)] intValue];
 
-            NSValue *startValue = [atomCoordinates objectForKey:[NSNumber numberWithInt:indexForFirstAtom]];
-            NSValue *endValue = [atomCoordinates objectForKey:[NSNumber numberWithInt:indexForSecondAtom]];
+            NSValue *startValue = [atomCoordinates objectForKey:[NSNumber numberWithInteger:indexForFirstAtom]];
+            NSValue *endValue = [atomCoordinates objectForKey:[NSNumber numberWithInteger:indexForSecondAtom]];
 
             [self addBondToDatabaseWithStartPoint:startValue endPoint:endValue bondType:SINGLEBOND structureNumber:1 residueKey:UNKNOWNRESIDUE];
         }

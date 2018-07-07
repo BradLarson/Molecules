@@ -971,7 +971,7 @@
 #pragma mark -
 #pragma mark Molecule 3-D geometry generation
 
-- (void)configureBasedOnNumberOfAtoms:(unsigned int)numberOfAtoms numberOfBonds:(unsigned int)numberOfBonds;
+- (void)configureBasedOnNumberOfAtoms:(NSUInteger)numberOfAtoms numberOfBonds:(NSUInteger)numberOfBonds;
 {
     widthOfAtomAOTexturePatch = (GLfloat)ambientOcclusionTextureWidth / (ceil(sqrt((GLfloat)numberOfAtoms + (GLfloat)numberOfBonds)));
     normalizedAOTexturePatchWidth = (GLfloat)widthOfAtomAOTexturePatch / (GLfloat)ambientOcclusionTextureWidth;

@@ -75,11 +75,13 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2.10</string>
+	<string>2.20</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIFileSharingEnabled</key>
 	<true/>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>UIStatusBarStyle</key>

@@ -35,14 +35,14 @@
 		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		{
-			self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
+			self.preferredContentSize = CGSizeMake(320.0, 600.0);
 		}
 		
 		if ([SLSMoleculeAppDelegate isRunningOniPad])
 		{
 //			self.tableView.backgroundColor = [UIColor blackColor];
 //			tableTextColor = [[UIColor whiteColor] retain];
-			self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
+			self.preferredContentSize = CGSizeMake(320.0, 600.0);
 
 			UIBarButtonItem *downloadButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(displayMoleculeDownloadView)];
 			self.navigationItem.leftBarButtonItem = downloadButtonItem;

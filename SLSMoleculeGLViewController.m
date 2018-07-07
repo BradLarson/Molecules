@@ -67,7 +67,7 @@
 
 - (void)loadView 
 {
-	CGRect applicationFrame = [[UIScreen mainScreen] applicationFrame];
+	CGRect applicationFrame = [[UIScreen mainScreen] bounds];
 	
 	SLSMoleculeGLView *glView = [[SLSMoleculeGLView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, applicationFrame.size.width, applicationFrame.size.height)];
 
@@ -101,7 +101,7 @@
 	renderingActivityLabel = [[UILabel alloc] initWithFrame:CGRectMake(round(self.view.frame.size.width / 2.0f - 219.0f / 2.0f), round(self.view.frame.size.height / 2.0f - 15.0f - 21.0f), 219.0f, 21.0f)];
 	renderingActivityLabel.font = [UIFont systemFontOfSize:17.0f];
 	renderingActivityLabel.text = [note object];
-	renderingActivityLabel.textAlignment = UITextAlignmentCenter;
+	renderingActivityLabel.textAlignment = NSTextAlignmentCenter;
 	renderingActivityLabel.backgroundColor = [UIColor clearColor];
 	renderingActivityLabel.textColor = [UIColor whiteColor];
 	
@@ -145,7 +145,7 @@
 	renderingActivityLabel = [[UILabel alloc] initWithFrame:CGRectMake(round(self.view.frame.size.width / 2.0f - 219.0f / 2.0f), round(self.view.frame.size.height / 2.0f - 15.0f - 21.0f), 219.0f, 21.0f)];
 	renderingActivityLabel.font = [UIFont systemFontOfSize:17.0f];
 	renderingActivityLabel.text = NSLocalizedStringFromTable(@"Rendering...", @"Localized", nil);
-	renderingActivityLabel.textAlignment = UITextAlignmentCenter;
+	renderingActivityLabel.textAlignment = NSTextAlignmentCenter;
 	renderingActivityLabel.backgroundColor = [UIColor clearColor];
 	renderingActivityLabel.textColor = [UIColor whiteColor];
 
@@ -604,7 +604,7 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	SLSVisualizationType newVisualizationType = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentVisualizationMode"];
+	SLSVisualizationType newVisualizationType = (SLSVisualizationType)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentVisualizationMode"];
 	
 	switch (newVisualizationType)
 	{
@@ -710,7 +710,7 @@
     }
     else
     {
-        moleculeToDisplay.currentVisualizationType = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentVisualizationMode"];
+        moleculeToDisplay.currentVisualizationType = (SLSVisualizationType)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentVisualizationMode"];
     }
     
 	moleculeToDisplay.isBeingDisplayed = YES;

@@ -35,8 +35,10 @@
 
 - (void)loadView 
 {
-	CGRect mainScreenFrame = [[UIScreen mainScreen] applicationFrame];
+	CGRect mainScreenFrame = [[UIScreen mainScreen] bounds];
 	
+    NSLog(@"Application frame: %f, %f", mainScreenFrame.size.width, mainScreenFrame.size.height);
+    
 	UIView *backgroundView = [[UIView alloc] initWithFrame:mainScreenFrame];
 	backgroundView.backgroundColor = [UIColor blackColor];
 		
@@ -49,7 +51,7 @@
 	[self.view addSubview:glViewController.view];
 	
 	UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
-	infoButton.frame = CGRectMake(320.0f - 70.0f, 460.0f - 70.0f, 70.0f, 70.0f);
+	infoButton.frame = CGRectMake(glViewController.view.bounds.size.width - 70.0f, glViewController.view.bounds.size.height - 70.0f, 70.0f, 70.0f);
 	[infoButton addTarget:glViewController action:@selector(switchToTableView) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
 	[glViewController.view addSubview:infoButton];
 	
@@ -71,7 +73,7 @@
 	
 	rotationButton.showsTouchWhenHighlighted = YES;
 	[rotationButton addTarget:glViewController action:@selector(startOrStopAutorotation:) forControlEvents:UIControlEventTouchUpInside];
-	rotationButton.frame = CGRectMake(0.0f, 460.0f - 70.0f, 70.0f, 70.0f);
+	rotationButton.frame = CGRectMake(0.0f, glViewController.view.bounds.size.height - 70.0f, 70.0f, 70.0f);
 	rotationButton.clipsToBounds = NO;
 	[glViewController.view addSubview:rotationButton];
 }
@@ -115,7 +117,7 @@
 		}
 		else
 			previousMolecule.isBeingDisplayed = YES;
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	}
 	[UIView commitAnimations];
 }

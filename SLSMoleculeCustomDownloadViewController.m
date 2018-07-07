@@ -39,7 +39,7 @@
 	if ([SLSMoleculeAppDelegate isRunningOniPad])
 	{
 		mainView.backgroundColor = [UIColor whiteColor];
-		self.contentSizeForViewInPopover = CGSizeMake(320.0f, 100.0f);
+		self.preferredContentSize = CGSizeMake(320.0f, 100.0f);
 	}
 	else
 	{

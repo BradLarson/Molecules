@@ -9,6 +9,8 @@ struct SDFFile: MolecularStructure {
     let minimumLimits: Coordinate
     let maximumLimits: Coordinate
     let suggestedScaleFactor: Coordinate
+    let metadata: MolecularMetadata? = nil
+    let structureCount: Int = 1
 
     init(data: Data) throws {
         guard let fileContents = String(data: data, encoding: .utf8) else {

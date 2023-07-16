@@ -36,7 +36,7 @@ struct MoleculeDisplayView: View {
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink {
-                    MoleculeMetadataView()
+                    MoleculeMetadataView(molecule: document.molecule)
                 } label: {
                     // TODO: Popover on iPad?
                     Image(systemName: "info.circle")

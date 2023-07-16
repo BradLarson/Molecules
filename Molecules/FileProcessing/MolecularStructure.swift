@@ -2,6 +2,7 @@ import Foundation
 
 /// All molecular file types need to conform to this protocol in order to be rendered.
 protocol MolecularStructure {
+    // TODO: Support multiple structures.
     var atoms: [Atom] { get }
     var bonds: [Bond] { get }
     var centerOfMass: Coordinate { get }
@@ -9,7 +10,21 @@ protocol MolecularStructure {
     var maximumLimits: Coordinate { get }
     var suggestedScaleFactor: Coordinate { get }
 
+    var structureCount: Int { get }
+    var metadata: MolecularMetadata? { get }
+
     init(data: Data) throws
+}
+
+
+/// Protein Data Bank files contain a lot of structure and publication metadata.
+struct MolecularMetadata {
+    let title: String
+    let compound: String
+    let authors: String
+    let source: String
+    let journal: String
+    let sequence: String
 }
 
 /// To aid in scaling and other rendering tasks, statistics of a molecule are captured during

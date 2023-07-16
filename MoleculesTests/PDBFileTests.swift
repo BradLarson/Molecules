@@ -1,8 +1,6 @@
 import XCTest
 @testable import Molecules
 
-// TODO: Add a suite of test molecules that are only used in unit tests.
-
 final class PDBFileTests: XCTestCase {
     
     func testLoadCaffeine() throws {
@@ -48,5 +46,12 @@ final class PDBFileTests: XCTestCase {
         for atom in dna.atoms {
             XCTAssert(atom.element != .unknown)
         }
+        let metadata = try XCTUnwrap(dna.metadata)
+        XCTAssertGreaterThan(metadata.title.count, 0)
+        XCTAssertGreaterThan(metadata.compound.count, 0)
+        XCTAssertGreaterThan(metadata.authors.count, 0)
+        XCTAssertGreaterThan(metadata.source.count, 0)
+        XCTAssertGreaterThan(metadata.journal.count, 0)
+        XCTAssertGreaterThan(metadata.sequence.count, 0)
     }
 }

@@ -8,6 +8,8 @@ struct XYZFile: MolecularStructure {
     let minimumLimits: Coordinate
     let maximumLimits: Coordinate
     let suggestedScaleFactor: Coordinate
+    let metadata: MolecularMetadata? = nil
+    let structureCount: Int = 1
 
     init(data: Data) throws {
         guard let fileContents = String(data: data, encoding: .utf8) else {
@@ -44,7 +46,6 @@ struct XYZFile: MolecularStructure {
             throw PDBFileError.emptyFile
         }
         self.atoms = parsedAtoms
-        self.bonds = parsedBonds
         self.centerOfMass = statistics.calculatedCenterOfMass(atomCount: parsedAtoms.count)
         self.minimumLimits = statistics.minimumLimits
         self.maximumLimits = statistics.maximumLimits

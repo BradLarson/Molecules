@@ -14,6 +14,8 @@ struct PDBFile: MolecularStructure {
     let minimumLimits: Coordinate
     let maximumLimits: Coordinate
     let suggestedScaleFactor: Coordinate
+    let metadata: MolecularMetadata?
+    let structureCount: Int
 
     init(data: Data) throws {
         guard let fileContents = String(data: data, encoding: .utf8) else {
@@ -24,6 +26,14 @@ struct PDBFile: MolecularStructure {
         var parsedBonds: [Bond] = []
         var globalAtomLookup: [Int: Atom] = [:]
         var statistics = MoleculeStatistics()
+        var stillCountingAtomsInFirstStructure = true
+        var numberOfStructures = 1
+        var title = ""
+        var source = ""
+        var compound = ""
+        var authors = ""
+        var journalReference = ""
+        var sequence = ""
 
         let lines = fileContents.components(separatedBy: "\n")
         for line in lines {
@@ -34,6 +44,7 @@ struct PDBFile: MolecularStructure {
             print("Identifier: |\(lineIdentifier)|")
             switch lineIdentifier {
             case "ATOM", "HETATM":
+                guard stillCountingAtomsInFirstStructure else { continue }
                 // TODO: If ATOM, insert bonds for previous residue when switching residues.
                 // Grab the X, Y, Z coordinates of the atom.
                 guard line.count >= 54 else { continue }
@@ -63,6 +74,7 @@ struct PDBFile: MolecularStructure {
                 print("Atom detected: \(newAtom)")
             case "TER": break
             case "CONECT":
+                guard stillCountingAtomsInFirstStructure else { continue }
                 // TODO: Properly handle bidirectional bonds.
                 guard line.count >= 11 else { continue }
                 guard let firstAtomSerial = Int(line.whitespaceTrimmedString(from: 6, to: 11)),
@@ -107,26 +119,68 @@ struct PDBFile: MolecularStructure {
                 parsedBonds.append(fourthBond)
                 print("Bond detected: \(fourthBond)")
 
-            case "MODEL": break
-            case "ENDMDL": break
-            case "TITLE": break
-            case "COMPND": break
-            case "SOURCE": break
-            case "AUTHOR": break
-            case "JRNL": break
-            case "SEQRES": break
+            case "MODEL":
+                guard line.count >= 16 else { continue }
+                guard let currentStructureNumber = Int(line.whitespaceTrimmedString(from: 12, to: 16)) else {
+                    continue
+                }
+                numberOfStructures = max(numberOfStructures, currentStructureNumber)
+            case "ENDMDL":
+                stillCountingAtomsInFirstStructure = false
+            case "TITLE":
+                guard line.count >= 10 else { continue }
+                let titleLine = line.dropFirst(10)
+                title += titleLine
+            case "COMPND":
+                guard line.count >= 20 else { continue }
+                let compoundIdentifier = line.whitespaceTrimmedString(from: 10, to: 20)
+                if compoundIdentifier == "MOLECULE:" {
+                    compound = String(line.dropFirst(20))
+                }
+            case "SOURCE":
+                guard line.count >= 10 else { continue }
+                let sourceLine = line.dropFirst(10)
+                source += sourceLine
+            case "AUTHOR":
+                guard line.count >= 10 else { continue }
+                let authorLine = line.dropFirst(10)
+                authors += authorLine
+            case "JRNL":
+                guard line.count >= 18 else { continue }
+                let journalIdentifier = line.whitespaceTrimmedString(from: 12, to: 16)
+                switch journalIdentifier {
+                case "REF", "REFN":
+                    let journalReferenceLine = line.dropFirst(18)
+                    journalReference += journalReferenceLine
+                    // TODO: Do something else with these journal fields.
+                case "AUTH": break
+                case "TITL": break
+                default: break
+                }
+            case "SEQRES":
+                guard line.count >= 14 else { continue }
+                let sequenceLine = line.dropFirst(14)
+                sequence += sequenceLine
             default: break
             }
         }
         guard parsedAtoms.count > 0 else {
             throw PDBFileError.emptyFile
         }
+        self.structureCount = numberOfStructures
         self.atoms = parsedAtoms
         self.bonds = parsedBonds
         self.centerOfMass = statistics.calculatedCenterOfMass(atomCount: parsedAtoms.count)
         self.minimumLimits = statistics.minimumLimits
         self.maximumLimits = statistics.maximumLimits
         self.suggestedScaleFactor = statistics.calculatedScaleFactor()
+        self.metadata = MolecularMetadata(
+            title: title,
+            compound: compound,
+            authors: authors,
+            source: source,
+            journal: journalReference,
+            sequence: sequence)
     }
 }
 

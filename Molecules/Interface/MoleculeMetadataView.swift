@@ -62,5 +62,14 @@ struct MoleculeMetadataView_Previews: PreviewProvider {
                 .toolbarRole(.automatic)
                 .navigationBarTitleDisplayMode(.inline)
         }
+
+        let buckyData = try! Bundle.main.loadData(forResource: "Buckminsterfullerene", withExtension: "sdf")
+        let buckyDocument = try! MoleculeDocument(data: buckyData, contentType: .sdf, filename: "Buckminsterfullerene.sdf")
+        NavigationStack {
+            MoleculeMetadataView(molecule: buckyDocument.molecule)
+                .navigationTitle("Buckminsterfullerene")
+                .toolbarRole(.automatic)
+                .navigationBarTitleDisplayMode(.inline)
+        }
     }
 }

@@ -26,6 +26,10 @@ struct PDBFile: MolecularStructure {
         var parsedBonds: [Bond] = []
         var globalAtomLookup: [Int: Atom] = [:]
         var statistics = MoleculeStatistics()
+        var currentResidue = 1
+        var currentResidueType: AminoAcidResidue?
+        var currentResidueAtoms: [String: Atom] = [:]
+        var previousTerminalAtom: Atom?
         var stillCountingAtomsInFirstStructure = true
         var numberOfStructures = 1
         var title = ""
@@ -41,11 +45,37 @@ struct PDBFile: MolecularStructure {
             guard line.count >= 6 else { continue }
 
             let lineIdentifier = line.prefix(6).trimmingCharacters(in: .whitespacesAndNewlines)
-            print("Identifier: |\(lineIdentifier)|")
             switch lineIdentifier {
             case "ATOM", "HETATM":
                 guard stillCountingAtomsInFirstStructure else { continue }
-                // TODO: If ATOM, insert bonds for previous residue when switching residues.
+                // At the start of a new residue, generate all bonds for the previous one.
+                if lineIdentifier == "ATOM" {
+                    guard line.count >= 27 else { continue }
+                    if let residueIdentifier = Int(line.whitespaceTrimmedString(from: 22, to: 27)),
+                       currentResidue != residueIdentifier {
+                        if let residueBonds = currentResidueType?.bonds(
+                            residueAtoms: &currentResidueAtoms,
+                            previousTerminalAtom: &previousTerminalAtom) {
+                            parsedBonds.append(contentsOf: residueBonds)
+                        }
+                        currentResidue = residueIdentifier
+                        currentResidueType = AminoAcidResidue(rawValue: line.whitespaceTrimmedString(from: 17, to: 20))
+                        if currentResidueType == nil {
+                            print("Unknown residue: \(line.whitespaceTrimmedString(from: 17, to: 20))")
+                        }
+                    }
+                } else {
+                    // Throw out water oxygens from biomolecule structures.
+                    if line.whitespaceTrimmedString(from: 17, to: 20) == "HOH" {
+                        continue
+                    }
+                    if let residueBonds = currentResidueType?.bonds(
+                        residueAtoms: &currentResidueAtoms,
+                        previousTerminalAtom: &previousTerminalAtom) {
+                        parsedBonds.append(contentsOf: residueBonds)
+                    }
+                    currentResidueType = nil
+                }
                 // Grab the X, Y, Z coordinates of the atom.
                 guard line.count >= 54 else { continue }
                 guard let xCoordinate = Float(line.whitespaceTrimmedString(from: 30, to: 38)),
@@ -68,11 +98,19 @@ struct PDBFile: MolecularStructure {
                 }
                 let element = Atom.Element(code: elementIdentifier)
                 let newAtom = Atom(element: element, location: atomCoordinate)
+                if lineIdentifier == "ATOM" {
+                    currentResidueAtoms[line.whitespaceTrimmedString(from: 12, to: 16)] = newAtom
+                }
                 parsedAtoms.append(newAtom)
                 globalAtomLookup[atomSerialNumber] = newAtom
-                
-                print("Atom detected: \(newAtom)")
-            case "TER": break
+            case "TER":
+                if let residueBonds = currentResidueType?.bonds(
+                    residueAtoms: &currentResidueAtoms,
+                    previousTerminalAtom: &previousTerminalAtom) {
+                    parsedBonds.append(contentsOf: residueBonds)
+                }
+                currentResidueType = nil
+                break
             case "CONECT":
                 guard stillCountingAtomsInFirstStructure else { continue }
                 // TODO: Properly handle bidirectional bonds.
@@ -90,7 +128,6 @@ struct PDBFile: MolecularStructure {
                 }
                 let firstBond = Bond(strength: .single, start: firstAtom.location, end: secondAtom.location)
                 parsedBonds.append(firstBond)
-                print("Bond detected: \(firstBond)")
                 guard line.count >= 21 else { continue }
                 guard let thirdAtomSerial = Int(line.whitespaceTrimmedString(from: 16, to: 21)),
                       thirdAtomSerial > 0,
@@ -99,7 +136,6 @@ struct PDBFile: MolecularStructure {
                 }
                 let secondBond = Bond(strength: .single, start: firstAtom.location, end: thirdAtom.location)
                 parsedBonds.append(secondBond)
-                print("Bond detected: \(secondBond)")
                 guard line.count >= 26 else { continue }
                 guard let fourthAtomSerial = Int(line.whitespaceTrimmedString(from: 21, to: 26)),
                       fourthAtomSerial > 0,
@@ -108,7 +144,6 @@ struct PDBFile: MolecularStructure {
                 }
                 let thirdBond = Bond(strength: .single, start: firstAtom.location, end: fourthAtom.location)
                 parsedBonds.append(thirdBond)
-                print("Bond detected: \(thirdBond)")
                 guard line.count >= 31 else { continue }
                 guard let fifthAtomSerial = Int(line.whitespaceTrimmedString(from: 26, to: 31)),
                       fifthAtomSerial > 0,
@@ -117,7 +152,6 @@ struct PDBFile: MolecularStructure {
                 }
                 let fourthBond = Bond(strength: .single, start: firstAtom.location, end: fifthAtom.location)
                 parsedBonds.append(fourthBond)
-                print("Bond detected: \(fourthBond)")
 
             case "MODEL":
                 guard line.count >= 16 else { continue }
@@ -167,6 +201,12 @@ struct PDBFile: MolecularStructure {
         guard parsedAtoms.count > 0 else {
             throw PDBFileError.emptyFile
         }
+        if let residueBonds = currentResidueType?.bonds(
+            residueAtoms: &currentResidueAtoms,
+            previousTerminalAtom: &previousTerminalAtom) {
+            parsedBonds.append(contentsOf: residueBonds)
+        }
+        currentResidueType = nil
         self.structureCount = numberOfStructures
         self.atoms = parsedAtoms
         self.bonds = parsedBonds

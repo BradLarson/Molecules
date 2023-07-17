@@ -56,6 +56,7 @@
 		BC5F1FEF2A5B51AF00416000 /* SphereRaytracing.metal in Sources */ = {isa = PBXBuildFile; fileRef = BC5F1FEE2A5B51AF00416000 /* SphereRaytracing.metal */; };
 		BC5F1FF12A5B63B800416000 /* MetalRenderingDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5F1FF02A5B63B800416000 /* MetalRenderingDevice.swift */; };
 		BC5F1FF32A5CD81400416000 /* RenderingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5F1FF22A5CD81400416000 /* RenderingTests.swift */; };
+		BCF265E32A6377D300374DB0 /* AminoAcidResidue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF265E22A6377D300374DB0 /* AminoAcidResidue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,6 +118,7 @@
 		BC5F1FEE2A5B51AF00416000 /* SphereRaytracing.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = SphereRaytracing.metal; sourceTree = "<group>"; };
 		BC5F1FF02A5B63B800416000 /* MetalRenderingDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalRenderingDevice.swift; sourceTree = "<group>"; };
 		BC5F1FF22A5CD81400416000 /* RenderingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderingTests.swift; sourceTree = "<group>"; };
+		BCF265E22A6377D300374DB0 /* AminoAcidResidue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AminoAcidResidue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,6 +240,7 @@
 				BC5F1F792A58EB5500416000 /* Atom.swift */,
 				BC5F1F7C2A58EB6300416000 /* Bond.swift */,
 				BC5F1F7F2A58EC5F00416000 /* Coordinate.swift */,
+				BCF265E22A6377D300374DB0 /* AminoAcidResidue.swift */,
 			);
 			path = FileProcessing;
 			sourceTree = "<group>";
@@ -455,6 +458,7 @@
 				BC5F1FA42A59E96E00416000 /* MoleculeDocument.swift in Sources */,
 				BC5F1FEF2A5B51AF00416000 /* SphereRaytracing.metal in Sources */,
 				BC5F1FCC2A5A29D400416000 /* MetalRenderView.swift in Sources */,
+				BCF265E32A6377D300374DB0 /* AminoAcidResidue.swift in Sources */,
 				BC5807052A56395400313289 /* MoleculesApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

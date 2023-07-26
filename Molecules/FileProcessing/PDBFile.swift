@@ -163,8 +163,7 @@ struct PDBFile: MolecularStructure {
                 stillCountingAtomsInFirstStructure = false
             case "TITLE":
                 guard line.count >= 10 else { continue }
-                let titleLine = line.dropFirst(10)
-                title += titleLine
+                line.cutAndAppend(to: &title, startingFrom: 10)
             case "COMPND":
                 guard line.count >= 20 else { continue }
                 let compoundIdentifier = line.whitespaceTrimmedString(from: 10, to: 20)
@@ -173,19 +172,16 @@ struct PDBFile: MolecularStructure {
                 }
             case "SOURCE":
                 guard line.count >= 10 else { continue }
-                let sourceLine = line.dropFirst(10)
-                source += sourceLine
+                line.cutAndAppend(to: &source, startingFrom: 10)
             case "AUTHOR":
                 guard line.count >= 10 else { continue }
-                let authorLine = line.dropFirst(10)
-                authors += authorLine
+                line.cutAndAppend(to: &authors, startingFrom: 10)
             case "JRNL":
                 guard line.count >= 18 else { continue }
                 let journalIdentifier = line.whitespaceTrimmedString(from: 12, to: 16)
                 switch journalIdentifier {
                 case "REF", "REFN":
-                    let journalReferenceLine = line.dropFirst(18)
-                    journalReference += journalReferenceLine
+                    line.cutAndAppend(to: &journalReference, startingFrom: 18)
                     // TODO: Do something else with these journal fields.
                 case "AUTH": break
                 case "TITL": break
@@ -193,8 +189,7 @@ struct PDBFile: MolecularStructure {
                 }
             case "SEQRES":
                 guard line.count >= 14 else { continue }
-                let sequenceLine = line.dropFirst(14)
-                sequence += sequenceLine
+                line.cutAndAppend(to: &sequence, startingFrom: 14)
             default: break
             }
         }
@@ -229,5 +224,13 @@ extension String {
         let startIndex = self.index(self.startIndex, offsetBy: start)
         let endIndex = self.index(self.startIndex, offsetBy: end)
         return self[startIndex..<endIndex].trimmingCharacters(in: .whitespaces)
+    }
+
+    func cutAndAppend(to buffer: inout String, startingFrom: Int) {
+        let choppedLine = self.dropFirst(startingFrom).trimmingCharacters(in: .whitespaces)
+        if !buffer.isEmpty {
+            buffer += "\n"
+        }
+        buffer += choppedLine
     }
 }

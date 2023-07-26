@@ -56,6 +56,8 @@
 		BC5F1FEF2A5B51AF00416000 /* SphereRaytracing.metal in Sources */ = {isa = PBXBuildFile; fileRef = BC5F1FEE2A5B51AF00416000 /* SphereRaytracing.metal */; };
 		BC5F1FF12A5B63B800416000 /* MetalRenderingDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5F1FF02A5B63B800416000 /* MetalRenderingDevice.swift */; };
 		BC5F1FF32A5CD81400416000 /* RenderingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5F1FF22A5CD81400416000 /* RenderingTests.swift */; };
+		BCD090CD2A7098850034650F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD090CC2A7098850034650F /* MoleculeRenderer.swift */; };
+		BCD090CF2A70A7960034650F /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD090CE2A70A7960034650F /* Matrix.swift */; };
 		BCF265E32A6377D300374DB0 /* AminoAcidResidue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF265E22A6377D300374DB0 /* AminoAcidResidue.swift */; };
 /* End PBXBuildFile section */
 
@@ -118,6 +120,8 @@
 		BC5F1FEE2A5B51AF00416000 /* SphereRaytracing.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = SphereRaytracing.metal; sourceTree = "<group>"; };
 		BC5F1FF02A5B63B800416000 /* MetalRenderingDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalRenderingDevice.swift; sourceTree = "<group>"; };
 		BC5F1FF22A5CD81400416000 /* RenderingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderingTests.swift; sourceTree = "<group>"; };
+		BCD090CC2A7098850034650F /* MoleculeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleculeRenderer.swift; sourceTree = "<group>"; };
+		BCD090CE2A70A7960034650F /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
 		BCF265E22A6377D300374DB0 /* AminoAcidResidue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AminoAcidResidue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -250,6 +254,8 @@
 			children = (
 				BC5F1FCB2A5A29D400416000 /* MetalRenderView.swift */,
 				BC5F1FF02A5B63B800416000 /* MetalRenderingDevice.swift */,
+				BCD090CC2A7098850034650F /* MoleculeRenderer.swift */,
+				BCD090CE2A70A7960034650F /* Matrix.swift */,
 				BC5F1FED2A5B421600416000 /* Shaders */,
 			);
 			path = Rendering;
@@ -449,6 +455,7 @@
 				BC5F1FCF2A5A34FD00416000 /* MoleculeMetadataView.swift in Sources */,
 				BC5F1F772A58D40500416000 /* MolecularStructure.swift in Sources */,
 				BC5F1FD52A5A4C5800416000 /* XYZFile.swift in Sources */,
+				BCD090CF2A70A7960034650F /* Matrix.swift in Sources */,
 				BC5F1FD22A5A4B5300416000 /* SDFFile.swift in Sources */,
 				BC5807072A56395400313289 /* MoleculeDisplayView.swift in Sources */,
 				BC5F1F7D2A58EB6300416000 /* Bond.swift in Sources */,
@@ -459,6 +466,7 @@
 				BC5F1FEF2A5B51AF00416000 /* SphereRaytracing.metal in Sources */,
 				BC5F1FCC2A5A29D400416000 /* MetalRenderView.swift in Sources */,
 				BCF265E32A6377D300374DB0 /* AminoAcidResidue.swift in Sources */,
+				BCD090CD2A7098850034650F /* MoleculeRenderer.swift in Sources */,
 				BC5807052A56395400313289 /* MoleculesApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

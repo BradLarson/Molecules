@@ -6,7 +6,7 @@ struct MoleculeDisplayView: View {
 
     var body: some View {
         ZStack {
-            MetalView(molecule: .constant(document.molecule))
+            MetalView(molecule: .constant(document.molecule), autorotate: $autorotate)
             VStack(alignment: .trailing) {
                 Spacer()
                 HStack {
@@ -37,6 +37,9 @@ struct MoleculeDisplayView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink {
                     MoleculeMetadataView(molecule: document.molecule)
+                        .navigationTitle("Details")
+                        .toolbarRole(.automatic)
+                        .navigationBarTitleDisplayMode(.inline)
                 } label: {
                     // TODO: Popover on iPad?
                     Image(systemName: "info.circle")

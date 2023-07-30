@@ -3,7 +3,7 @@ import XCTest
 
 final class RenderingTests: XCTestCase {
 
-    func testOctagonCoordinates() throws {
+    func testOctagonCoordinates() {
         var currentIndex: UInt16 = 0
         var indices: [UInt16] = []
         var vertices: [Float] = []

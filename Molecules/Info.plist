@@ -43,9 +43,9 @@
 	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
-    <key>UIUserInterfaceStyle</key>
-    <string>Dark</string>
-    <key>UTExportedTypeDeclarations</key>
+	<key>UIUserInterfaceStyle</key>
+	<string>Dark</string>
+	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
 			<key>UTTypeConformsTo</key>

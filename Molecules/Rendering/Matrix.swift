@@ -1,4 +1,4 @@
-import QuartzCore
+import Foundation
 
 // Originally from GPUImage3: https://github.com/BradLarson/GPUImage3
 
@@ -40,39 +40,10 @@ public struct Matrix4x4 {
                                                             0.0, 0.0, 0.0, 1.0])
 }
 
-public struct Matrix3x3 {
-    public let m11: Float, m12: Float, m13: Float
-    public let m21: Float, m22: Float, m23: Float
-    public let m31: Float, m32: Float, m33: Float
-    
-    public init(rowMajorValues: [Float]) {
-        guard rowMajorValues.count > 8 else {
-            fatalError("Tried to initialize a 3x3 matrix with fewer than 9 values")
-        }
-        
-        self.m11 = rowMajorValues[0]
-        self.m12 = rowMajorValues[1]
-        self.m13 = rowMajorValues[2]
-        
-        self.m21 = rowMajorValues[3]
-        self.m22 = rowMajorValues[4]
-        self.m23 = rowMajorValues[5]
-        
-        self.m31 = rowMajorValues[6]
-        self.m32 = rowMajorValues[7]
-        self.m33 = rowMajorValues[8]
-    }
-    
-    public static let identity = Matrix3x3(rowMajorValues: [1.0, 0.0, 0.0,
-                                                            0.0, 1.0, 0.0,
-                                                            0.0, 0.0, 1.0])
-    
-    public static let centerOnly = Matrix3x3(rowMajorValues: [0.0, 0.0, 0.0,
-                                                              0.0, 1.0, 0.0,
-                                                              0.0, 0.0, 0.0])
-}
+// MARK: -
+// MARK: Convenience construction.
 
-func orthographicMatrix(_ left: Float, right: Float, bottom: Float, top: Float, near: Float, far: Float, anchorTopLeft: Bool = false) -> Matrix4x4 {
+func orthographicMatrix(left: Float, right: Float, bottom: Float, top: Float, near: Float, far: Float, anchorTopLeft: Bool = false) -> Matrix4x4 {
     let r_l = right - left
     let t_b = top - bottom
     let f_n = far - near
@@ -96,47 +67,140 @@ func orthographicMatrix(_ left: Float, right: Float, bottom: Float, top: Float, 
         0.0, 0.0, 0.0, 1.0])
 }
 
+// MARK: -
+// MARK: Matrix manipulation.
 
-public extension Matrix4x4 {
-    init (_ transform3D: CATransform3D) {
-        self.m11 = Float(transform3D.m11)
-        self.m12 = Float(transform3D.m12)
-        self.m13 = Float(transform3D.m13)
-        self.m14 = Float(transform3D.m14)
-        
-        self.m21 = Float(transform3D.m21)
-        self.m22 = Float(transform3D.m22)
-        self.m23 = Float(transform3D.m23)
-        self.m24 = Float(transform3D.m24)
-        
-        self.m31 = Float(transform3D.m31)
-        self.m32 = Float(transform3D.m32)
-        self.m33 = Float(transform3D.m33)
-        self.m34 = Float(transform3D.m34)
-        
-        self.m41 = Float(transform3D.m41)
-        self.m42 = Float(transform3D.m42)
-        self.m43 = Float(transform3D.m43)
-        self.m44 = Float(transform3D.m44)
+extension Matrix4x4 {
+    /// Rotates a matrix by a specified angle about an axis.
+    /// - Parameters:
+    ///   - angle: The rotation angle, in radians.
+    ///   - x: The x component of the axis of rotation.
+    ///   - y: The y component of the axis of rotation.
+    ///   - z: The z component of the axis of rotation.
+    func rotated(angle: Float, x: Float, y: Float, z: Float) -> Matrix4x4 {
+        let distance = sqrt(x * x + y * y + z * z)
+        guard distance > 0 else { return self }
+
+        let normalizedX = -x / distance
+        let normalizedY = -y / distance
+        let normalizedZ = -z / distance
+
+        let rotation = Matrix4x4(rowMajorValues: [
+            cos(angle) + normalizedX * normalizedX * (1 - cos(angle)),
+            normalizedX * normalizedY * (1 - cos(angle)) - normalizedZ * sin(angle),
+            normalizedX * normalizedZ * (1 - cos(angle)) + normalizedY * sin(angle),
+            0,
+
+            normalizedY * normalizedX * (1 - cos(angle)) + normalizedZ * sin(angle),
+            cos(angle) + normalizedY * normalizedY * (1 - cos(angle)),
+            normalizedY * normalizedZ * (1 - cos(angle)) - normalizedX * sin(angle),
+            0,
+
+            normalizedZ * normalizedX * (1 - cos(angle)) - normalizedY * sin(angle),
+            normalizedZ * normalizedY * (1 - cos(angle)) + normalizedX * sin(angle),
+            cos(angle) + normalizedZ * normalizedZ * (1 - cos(angle)),
+            0,
+
+            0, 0, 0, 1
+        ])
+
+        return rotation * self
     }
-    
-    init (_ transform: CGAffineTransform) {
-        self.init(CATransform3DMakeAffineTransform(transform))
+
+    /// Scales a matrix by specified factors in each dimension.
+    /// - Parameters:
+    ///   - x: The scale factor to apply in the x dimension.
+    ///   - y: The scale factor to apply in the y dimension.
+    ///   - z: The scale factor to apply in the z dimension.
+    func scaled(x: Float, y: Float, z: Float) -> Matrix4x4 {
+        return Matrix4x4(rowMajorValues: [
+            m11 * x, m12 * x, m13 * x, m14 * x,
+            m21 * y, m22 * y, m23 * y, m24 * y,
+            m31 * z, m32 * z, m33 * z, m34 * z,
+            m41,     m42,     m43,     m44
+        ])
+    }
+
+    /// Returns the current scale factor.
+    var scale: Float {
+        return sqrt(pow(m11, 2.0) + pow(m12, 2.0) + pow(m13, 2.0))
+    }
+
+    /// Inverts the matrix. Assumes coordinate transform matrix. Not totally valid.
+    func inverted() -> Matrix4x4 {
+        return Matrix4x4(rowMajorValues: [
+            m11, m21, m31, -(m11 * m14 + m21 * m24 + m31 * m34),
+            m12, m22, m32, -(m12 * m24 + m22 * m24 + m32 * m34),
+            m13, m23, m33, -(m13 * m24 + m23 * m24 + m33 * m34),
+            m41, m42, m43, m44
+        ])
+    }
+
+    static func * (lhs: Matrix4x4, rhs: Matrix4x4) -> Matrix4x4 {
+        Matrix4x4(rowMajorValues: [
+            lhs.m11 * rhs.m11 + lhs.m12 * rhs.m21 + lhs.m13 * rhs.m31 + lhs.m14 * rhs.m41,
+            lhs.m11 * rhs.m12 + lhs.m12 * rhs.m22 + lhs.m13 * rhs.m32 + lhs.m14 * rhs.m42,
+            lhs.m11 * rhs.m13 + lhs.m12 * rhs.m23 + lhs.m13 * rhs.m33 + lhs.m14 * rhs.m43,
+            lhs.m11 * rhs.m14 + lhs.m12 * rhs.m24 + lhs.m13 * rhs.m34 + lhs.m14 * rhs.m44,
+
+            lhs.m21 * rhs.m11 + lhs.m22 * rhs.m21 + lhs.m23 * rhs.m31 + lhs.m24 * rhs.m41,
+            lhs.m21 * rhs.m12 + lhs.m22 * rhs.m22 + lhs.m23 * rhs.m32 + lhs.m24 * rhs.m42,
+            lhs.m21 * rhs.m13 + lhs.m22 * rhs.m23 + lhs.m23 * rhs.m33 + lhs.m24 * rhs.m43,
+            lhs.m21 * rhs.m14 + lhs.m22 * rhs.m24 + lhs.m23 * rhs.m34 + lhs.m24 * rhs.m44,
+
+            lhs.m31 * rhs.m11 + lhs.m32 * rhs.m21 + lhs.m33 * rhs.m31 + lhs.m34 * rhs.m41,
+            lhs.m31 * rhs.m12 + lhs.m32 * rhs.m22 + lhs.m33 * rhs.m32 + lhs.m34 * rhs.m42,
+            lhs.m31 * rhs.m13 + lhs.m32 * rhs.m23 + lhs.m33 * rhs.m33 + lhs.m34 * rhs.m43,
+            lhs.m31 * rhs.m14 + lhs.m32 * rhs.m24 + lhs.m33 * rhs.m34 + lhs.m34 * rhs.m44,
+
+            lhs.m41 * rhs.m11 + lhs.m42 * rhs.m21 + lhs.m43 * rhs.m31 + lhs.m44 * rhs.m41,
+            lhs.m41 * rhs.m12 + lhs.m42 * rhs.m22 + lhs.m43 * rhs.m32 + lhs.m44 * rhs.m42,
+            lhs.m41 * rhs.m13 + lhs.m42 * rhs.m23 + lhs.m43 * rhs.m33 + lhs.m44 * rhs.m43,
+            lhs.m41 * rhs.m14 + lhs.m42 * rhs.m24 + lhs.m43 * rhs.m34 + lhs.m44 * rhs.m44,
+        ])
     }
 }
 
-extension Matrix3x3 {
-    public func toFloatArray() -> [Float] {
-        // Row major, with zero-padding
-        return [m11, m12, m13, 0.0, m21, m22, m23, 0.0, m31, m32, m33, 0.0]
-        //        return [m11, m12, m13, m21, m22, m23, m31, m32, m33]
+// MARK: -
+// MARK: Matrix touch manipulation.
+
+extension Matrix4x4 {
+    func rotatedFromTouch(x: Float, y: Float) -> Matrix4x4 {
+        let totalRotation = sqrt(x * x + y * y)
+
+        return self.rotated(angle: totalRotation * .pi / 180.0,
+                            x: ((x / totalRotation) * m12 + (y / totalRotation) * m11),
+                            y: ((x / totalRotation) * m22 + (y / totalRotation) * m21),
+                            z: ((x / totalRotation) * m32 + (y / totalRotation) * m31))
+    }
+
+    func scaledFromTouch(scale: Float) -> Matrix4x4 {
+        return self.scaled(x: scale, y: scale, z: scale)
+    }
+
+    func translatedFromTouch(currentTranslation: Coordinate, x: Float, y: Float, backingWidth: Float) -> Coordinate {
+        let currentScaleFactor = self.scale
+
+        let xTranslation = x * 1.0 / (currentScaleFactor * currentScaleFactor * backingWidth * 0.5)
+        let yTranslation = y * 1.0 / (currentScaleFactor * currentScaleFactor * backingWidth * 0.5)
+
+        // Use the (0,4,8) components to figure the eye's X axis in the model coordinate system, translate along that
+        // Use the (1,5,9) components to figure the eye's Y axis in the model coordinate system, translate along that
+
+        return Coordinate(
+            x: currentTranslation.x + xTranslation * m11 + yTranslation * m12,
+            y: currentTranslation.y + xTranslation * m21 + yTranslation * m22,
+            z: currentTranslation.z + xTranslation * m31 + yTranslation * m32
+        )
     }
 }
+
+// MARK: -
+// MARK: Encoding to buffers.
 
 extension Matrix4x4 {
     public func toFloatArray() -> [Float] {
         // Row major
         return [m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44]
-        //        return [m11, m21, m31, m41, m12, m22, m32, m42, m13, m23, m33, m43, m14, m24, m34, m44]
     }
 }

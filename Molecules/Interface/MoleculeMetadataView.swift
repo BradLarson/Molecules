@@ -35,6 +35,7 @@ struct MoleculeMetadataView: View {
                 }
             }
         }
+        .scrollContentBackground(.hidden)
         .padding()
     }
 }

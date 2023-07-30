@@ -3,7 +3,7 @@ using namespace metal;
 
 typedef struct
 {
-    float3x3 modelViewProjMatrix;
+    float4x4 modelViewProjMatrix;
     float4x4 orthographicMatrix;
     float sphereRadius;
     float3 translation;
@@ -12,7 +12,7 @@ typedef struct
 typedef struct
 {
     float3 sphereColor;
-    float3x3 inverseModelViewProjMatrix;
+    float4x4 inverseModelViewProjMatrix;
     // TODO: Ambient occlusion texture and parameters.
 } SphereRaytracingFragmentUniform;
 
@@ -34,13 +34,14 @@ vertex SphereRaytracingVertexIO sphereRaytracingVertex(const device packed_float
         
 //    ambientOcclusionTextureBase = ambientOcclusionTextureOffset;
     
-    float3 transformedPosition = uniform.modelViewProjMatrix * (float3(position[vid]) + uniform.translation);
+    float4 transformedPosition = uniform.modelViewProjMatrix * (float4(position[vid], 1.0) + float4(uniform.translation, 0.0));
     outputVertices.impostorSpaceCoordinate = inputImpostorSpaceCoordinate[vid];
 
     transformedPosition.xy = transformedPosition.xy + inputImpostorSpaceCoordinate[vid].xy * float2(uniform.sphereRadius);
-    float4 transformedPosition2 = float4(transformedPosition, 1.0) * uniform.orthographicMatrix;
+    float4 transformedPosition2 = transformedPosition * uniform.orthographicMatrix;
+    transformedPosition2.z = (transformedPosition2.z + 1.0) * 0.5;
     
-    float4 depthAdjustmentPoint = float4(0.0, 0.0, 0.5, 1.0) * uniform.orthographicMatrix;
+    float4 depthAdjustmentPoint = float4(0.0, 0.0, 0.25, 1.0) * uniform.orthographicMatrix;
     float depthAdjustmentForOrthographicProjection = depthAdjustmentPoint.z / depthAdjustmentPoint.w;
     outputVertices.adjustedSphereRadius = uniform.sphereRadius * depthAdjustmentForOrthographicProjection;
 

@@ -39,7 +39,7 @@ class MetalRenderingDevice {
         }
 
         self.sphereRaytracingDescriptor = MTLRenderPipelineDescriptor()
-        self.sphereRaytracingDescriptor.depthAttachmentPixelFormat = .depth16Unorm
+        self.sphereRaytracingDescriptor.depthAttachmentPixelFormat = .depth32Float
         self.sphereRaytracingDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
         self.sphereRaytracingDescriptor.rasterSampleCount = 1
         self.sphereRaytracingDescriptor.vertexFunction = vertexFunction

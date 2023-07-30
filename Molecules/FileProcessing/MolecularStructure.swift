@@ -16,6 +16,12 @@ protocol MolecularStructure {
     init(data: Data) throws
 }
 
+extension MolecularStructure {
+    var overallScaleFactor: Float {
+        return min(suggestedScaleFactor.x, suggestedScaleFactor.y, suggestedScaleFactor.z)
+    }
+}
+
 
 /// Protein Data Bank files contain a lot of structure and publication metadata.
 struct MolecularMetadata {

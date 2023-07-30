@@ -9,6 +9,10 @@ class MetalRenderView: MTKView {
     var rotationGestureRecognizer: UIPanGestureRecognizer!
     var scaleGestureRecognizer: UIPinchGestureRecognizer!
     var panGestureRecognizer: UIPanGestureRecognizer!
+    var lastTranslation = CGPoint.zero
+    var lastScale: CGFloat = 1.0
+    // TODO: Communicate change in autorotation upwards to SwiftUI.
+    var autoRotating: Bool = true
 
     override init(frame frameRect: CGRect, device: MTLDevice?) {
         super.init(frame: frameRect, device: sharedMetalRenderingDevice.device)
@@ -34,7 +38,7 @@ class MetalRenderView: MTKView {
 
         self.framebufferOnly = true
         self.autoResizeDrawable = true
-        self.depthStencilPixelFormat = .depth16Unorm
+        self.depthStencilPixelFormat = .depth32Float
         self.device = sharedMetalRenderingDevice.device
         
         self.enableSetNeedsDisplay = true
@@ -42,7 +46,6 @@ class MetalRenderView: MTKView {
     }
     
     override func draw(_ rect:CGRect) {
-        print("Draw")
         guard let drawable = self.currentDrawable else {
             print("No drawable")
             return
@@ -53,8 +56,7 @@ class MetalRenderView: MTKView {
         }
         if let commandBuffer = sharedMetalRenderingDevice.commandQueue.makeCommandBuffer(),
            let renderPass = self.currentRenderPassDescriptor {
-            moleculeRenderer.renderMoleculeFrame(buffer: commandBuffer, renderPass: renderPass)
-//            commandBuffer?.clear(texture: texture, with: MTLClearColorMake(0.0, 1.0, 0.0, 1.0))
+            moleculeRenderer.renderMoleculeFrame(width: self.frame.width, height: self.frame.height, buffer: commandBuffer, renderPass: renderPass)
             commandBuffer.present(drawable)
             commandBuffer.commit()
         }
@@ -66,18 +68,46 @@ class MetalRenderView: MTKView {
 
 extension MetalRenderView {
     @objc func rotated(_ sender: UIPanGestureRecognizer) {
-        // TODO: Translate displacement into rotation matrix.
-        print("Rotation: \(sender.translation(in: self))")
+        self.autoRotating = false
+        let currentTranslation = sender.translation(in: self)
+        if sender.state == .began {
+            lastTranslation = CGPoint.zero
+        }
+        moleculeRenderer.rotateFromTouch(
+            x: Float(lastTranslation.x - currentTranslation.x),
+            y: Float(lastTranslation.y - currentTranslation.y))
+        lastTranslation = currentTranslation
+        self.setNeedsDisplay()
     }
 
     @objc func scaled(_ sender: UIPinchGestureRecognizer) {
-        // TODO: Translate into scale factor.
-        print("Scale: \(sender.scale)")
+        self.autoRotating = false
+        let currentScale = sender.scale
+        if sender.state == .began {
+            lastScale = 1.0
+        }
+        guard lastScale >= 0.01 else {
+            lastScale = currentScale
+            return
+        }
+        moleculeRenderer.scaleFromTouch(scale: Float(currentScale / lastScale))
+        lastScale = currentScale
+        self.setNeedsDisplay()
     }
 
     @objc func panned(_ sender: UIPanGestureRecognizer) {
-        // TODO: Translate into pan matrix.
-        print("Pan: \(sender.translation(in: self))")
+        self.autoRotating = false
+        let currentTranslation = sender.translation(in: self)
+        if sender.state == .began {
+            lastTranslation = CGPoint.zero
+        }
+        moleculeRenderer.translateFromTouch(
+            x: Float(currentTranslation.x - lastTranslation.x),
+            y: Float(lastTranslation.y - currentTranslation.y),
+            backingWidth: Float(self.frame.width)
+        )
+        lastTranslation = currentTranslation
+        self.setNeedsDisplay()
     }
 }
 
@@ -101,6 +131,7 @@ struct MetalView: UIViewRepresentable {
     
     func updateUIView(_ uiView: MetalRenderView, context: Context) {
         // TODO: Enable or disable the autorotation loop.
+        uiView.autoRotating = autorotate
         print("Autorotate: \(autorotate)")
         print("updating view")
     }

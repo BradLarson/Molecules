@@ -58,6 +58,7 @@
 		BC5F1FF32A5CD81400416000 /* RenderingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5F1FF22A5CD81400416000 /* RenderingTests.swift */; };
 		BCD090CD2A7098850034650F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD090CC2A7098850034650F /* MoleculeRenderer.swift */; };
 		BCD090CF2A70A7960034650F /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD090CE2A70A7960034650F /* Matrix.swift */; };
+		BCD090D12A748C860034650F /* MatrixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD090D02A748C860034650F /* MatrixTests.swift */; };
 		BCF265E32A6377D300374DB0 /* AminoAcidResidue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF265E22A6377D300374DB0 /* AminoAcidResidue.swift */; };
 /* End PBXBuildFile section */
 
@@ -122,6 +123,7 @@
 		BC5F1FF22A5CD81400416000 /* RenderingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderingTests.swift; sourceTree = "<group>"; };
 		BCD090CC2A7098850034650F /* MoleculeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleculeRenderer.swift; sourceTree = "<group>"; };
 		BCD090CE2A70A7960034650F /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
+		BCD090D02A748C860034650F /* MatrixTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixTests.swift; sourceTree = "<group>"; };
 		BCF265E22A6377D300374DB0 /* AminoAcidResidue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AminoAcidResidue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -202,6 +204,7 @@
 				BC5F1FD72A5A4CAB00416000 /* SDFFileTests.swift */,
 				BC5F1FD92A5A4EA900416000 /* XYZFileTests.swift */,
 				BC5F1FF22A5CD81400416000 /* RenderingTests.swift */,
+				BCD090D02A748C860034650F /* MatrixTests.swift */,
 			);
 			path = MoleculesTests;
 			sourceTree = "<group>";
@@ -475,6 +478,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCD090D12A748C860034650F /* MatrixTests.swift in Sources */,
 				BC5F1FD82A5A4CAB00416000 /* SDFFileTests.swift in Sources */,
 				BC5F1FDA2A5A4EA900416000 /* XYZFileTests.swift in Sources */,
 				BC5F1FF32A5CD81400416000 /* RenderingTests.swift in Sources */,

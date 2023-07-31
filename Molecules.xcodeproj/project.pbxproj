@@ -56,9 +56,11 @@
 		BC5F1FEF2A5B51AF00416000 /* SphereRaytracing.metal in Sources */ = {isa = PBXBuildFile; fileRef = BC5F1FEE2A5B51AF00416000 /* SphereRaytracing.metal */; };
 		BC5F1FF12A5B63B800416000 /* MetalRenderingDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5F1FF02A5B63B800416000 /* MetalRenderingDevice.swift */; };
 		BC5F1FF32A5CD81400416000 /* RenderingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5F1FF22A5CD81400416000 /* RenderingTests.swift */; };
+		BC8F86842A76ECF60038D748 /* CylinderRaytracing.metal in Sources */ = {isa = PBXBuildFile; fileRef = BC8F86832A76ECF60038D748 /* CylinderRaytracing.metal */; };
 		BCD090CD2A7098850034650F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD090CC2A7098850034650F /* MoleculeRenderer.swift */; };
 		BCD090CF2A70A7960034650F /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD090CE2A70A7960034650F /* Matrix.swift */; };
 		BCD090D12A748C860034650F /* MatrixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD090D02A748C860034650F /* MatrixTests.swift */; };
+		BCD090D32A76C4770034650F /* MoleculeRenderingOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD090D22A76C4770034650F /* MoleculeRenderingOptions.swift */; };
 		BCF265E32A6377D300374DB0 /* AminoAcidResidue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF265E22A6377D300374DB0 /* AminoAcidResidue.swift */; };
 /* End PBXBuildFile section */
 
@@ -121,9 +123,11 @@
 		BC5F1FEE2A5B51AF00416000 /* SphereRaytracing.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = SphereRaytracing.metal; sourceTree = "<group>"; };
 		BC5F1FF02A5B63B800416000 /* MetalRenderingDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalRenderingDevice.swift; sourceTree = "<group>"; };
 		BC5F1FF22A5CD81400416000 /* RenderingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderingTests.swift; sourceTree = "<group>"; };
+		BC8F86832A76ECF60038D748 /* CylinderRaytracing.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = CylinderRaytracing.metal; sourceTree = "<group>"; };
 		BCD090CC2A7098850034650F /* MoleculeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleculeRenderer.swift; sourceTree = "<group>"; };
 		BCD090CE2A70A7960034650F /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
 		BCD090D02A748C860034650F /* MatrixTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixTests.swift; sourceTree = "<group>"; };
+		BCD090D22A76C4770034650F /* MoleculeRenderingOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleculeRenderingOptions.swift; sourceTree = "<group>"; };
 		BCF265E22A6377D300374DB0 /* AminoAcidResidue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AminoAcidResidue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -278,6 +282,7 @@
 		BC5F1FED2A5B421600416000 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				BC8F86832A76ECF60038D748 /* CylinderRaytracing.metal */,
 				BC5F1FEE2A5B51AF00416000 /* SphereRaytracing.metal */,
 			);
 			path = Shaders;
@@ -288,6 +293,7 @@
 			children = (
 				BC5807062A56395400313289 /* MoleculeDisplayView.swift */,
 				BC5F1FCE2A5A34FD00416000 /* MoleculeMetadataView.swift */,
+				BCD090D22A76C4770034650F /* MoleculeRenderingOptions.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -465,10 +471,12 @@
 				BC5F1F7A2A58EB5500416000 /* Atom.swift in Sources */,
 				BC5F1FF12A5B63B800416000 /* MetalRenderingDevice.swift in Sources */,
 				BC5F1F742A579BEE00416000 /* PDBFile.swift in Sources */,
+				BC8F86842A76ECF60038D748 /* CylinderRaytracing.metal in Sources */,
 				BC5F1FA42A59E96E00416000 /* MoleculeDocument.swift in Sources */,
 				BC5F1FEF2A5B51AF00416000 /* SphereRaytracing.metal in Sources */,
 				BC5F1FCC2A5A29D400416000 /* MetalRenderView.swift in Sources */,
 				BCF265E32A6377D300374DB0 /* AminoAcidResidue.swift in Sources */,
+				BCD090D32A76C4770034650F /* MoleculeRenderingOptions.swift in Sources */,
 				BCD090CD2A7098850034650F /* MoleculeRenderer.swift in Sources */,
 				BC5807052A56395400313289 /* MoleculesApp.swift in Sources */,
 			);

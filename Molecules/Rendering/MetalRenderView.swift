@@ -2,6 +2,10 @@ import Foundation
 import MetalKit
 import SwiftUI
 
+protocol MetalRenderViewStatusDelegate: NSObject {
+    func updateAutorotation(rotating: Bool)
+}
+
 class MetalRenderView: MTKView {
     
     var moleculeRenderer: MoleculeRenderer!
@@ -11,8 +15,17 @@ class MetalRenderView: MTKView {
     var panGestureRecognizer: UIPanGestureRecognizer!
     var lastTranslation = CGPoint.zero
     var lastScale: CGFloat = 1.0
-    // TODO: Communicate change in autorotation upwards to SwiftUI.
-    var autoRotating: Bool = true
+    var autoRotating: Bool = true {
+        didSet {
+            autorotationDisplayLink.isPaused = !autoRotating
+            if !autoRotating {
+                statusDelegate?.updateAutorotation(rotating: false)
+            }
+        }
+    }
+    var autorotationDisplayLink: CADisplayLink!
+    weak var statusDelegate: MetalRenderViewStatusDelegate?
+    var hasPresented = false
 
     override init(frame frameRect: CGRect, device: MTLDevice?) {
         super.init(frame: frameRect, device: sharedMetalRenderingDevice.device)
@@ -43,6 +56,12 @@ class MetalRenderView: MTKView {
         
         self.enableSetNeedsDisplay = true
         self.isPaused = true
+
+        self.autorotationDisplayLink = CADisplayLink(
+            target: self,
+            selector: #selector(autorotationStep)
+        )
+        self.autorotationDisplayLink.add(to: .main, forMode: .default)
     }
     
     override func draw(_ rect:CGRect) {
@@ -60,6 +79,23 @@ class MetalRenderView: MTKView {
             commandBuffer.present(drawable)
             commandBuffer.commit()
         }
+    }
+
+    @objc func autorotationStep(displaylink: CADisplayLink) {
+        moleculeRenderer.rotateFromTouch(
+            x: 1.0,
+            y: 0.0)
+        self.setNeedsDisplay()
+    }
+
+    // FIXME: I should set up a more elegant way of handing switchover of renderers.
+    func pauseRendering() {
+        autorotationDisplayLink.isPaused = true
+    }
+
+    func resumeRendering() {
+        autorotationDisplayLink.isPaused = false
+        self.autoRotating = true
     }
 }
 
@@ -117,28 +153,55 @@ extension MetalRenderView {
 struct MetalView: UIViewRepresentable {
     @Binding var molecule: MolecularStructure
     @Binding var autorotate: Bool
-    
-    init(molecule: Binding<MolecularStructure>, autorotate: Binding<Bool>) {
+    @Binding var visualizationStyle: MoleculeVisualizationStyle
+
+    init(molecule: Binding<MolecularStructure>, autorotate: Binding<Bool>, visualizationStyle: Binding<MoleculeVisualizationStyle>) {
         self._molecule = molecule
         self._autorotate = autorotate
+        self._visualizationStyle = visualizationStyle
     }
     
     func makeUIView(context: Context) -> MetalRenderView {
         let view = MetalRenderView(frame: .zero, device: nil)
-        view.moleculeRenderer = MoleculeRenderer(molecule: molecule)
+        DispatchQueue.main.async {
+            self.visualizationStyle = molecule.defaultVisualizationStyle
+            view.hasPresented = true
+        }
+
+        view.moleculeRenderer = MoleculeRenderer(molecule: molecule, visualizationStyle: molecule.defaultVisualizationStyle)
+        view.statusDelegate = context.coordinator
         return view
     }
     
     func updateUIView(_ uiView: MetalRenderView, context: Context) {
-        // TODO: Enable or disable the autorotation loop.
-        uiView.autoRotating = autorotate
-        print("Autorotate: \(autorotate)")
-        print("updating view")
+        if (visualizationStyle != uiView.moleculeRenderer.visualizationStyle) && uiView.hasPresented {
+            uiView.pauseRendering()
+            uiView.moleculeRenderer = MoleculeRenderer(molecule: molecule, visualizationStyle: visualizationStyle)
+            uiView.resumeRendering()
+        } else {
+            uiView.autoRotating = autorotate
+        }
     }
     
     func dismantleUIView(_ uiView: MetalRenderView, coordinator: Coordinator) {
-        print("dismantling view")
-        // TODO: Handle removing the view
+    }
+
+    class Coordinator: NSObject, MetalRenderViewStatusDelegate {
+        var parent: MetalView
+
+        init(_ parent: MetalView) {
+            self.parent = parent
+        }
+
+        func updateAutorotation(rotating: Bool) {
+            DispatchQueue.main.async {
+                self.parent.autorotate = rotating
+            }
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(self)
     }
 }
 

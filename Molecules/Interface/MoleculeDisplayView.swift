@@ -7,10 +7,12 @@ struct MoleculeDisplayView: View {
     @Binding var document: MoleculeDocument
     @State private var autorotate = true
     @State private var showingMetadata = false
+    @State private var showingRenderingOptions = false
+    @State private var visualizationStyle = MoleculeVisualizationStyle.spacefilling
 
     var body: some View {
         ZStack {
-            MetalView(molecule: .constant(document.molecule), autorotate: $autorotate)
+            MetalView(molecule: .constant(document.molecule), autorotate: $autorotate, visualizationStyle: $visualizationStyle)
             VStack(alignment: .trailing) {
                 Spacer()
                 HStack {
@@ -30,12 +32,15 @@ struct MoleculeDisplayView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    // TODO: Rendering options
-                    print("Show rendering options")
+                    showingRenderingOptions = true
                 } label: {
                     Image(systemName: "rotate.3d")
                         .imageScale(.large)
                         .foregroundColor(.accentColor)
+                }
+                .popover(isPresented: $showingRenderingOptions) {
+                    MoleculeRenderingOptions(visualizationStyle: $visualizationStyle)
+                        .frame(width: 300, height: 150)
                 }
             }
             ToolbarItem(placement: .navigationBarTrailing) {

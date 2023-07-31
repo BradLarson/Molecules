@@ -10,6 +10,8 @@ class MetalRenderingDevice {
     let shaderLibrary: MTLLibrary
     let sphereRaytracingDescriptor: MTLRenderPipelineDescriptor
     let sphereRaytracingPipelineState: MTLRenderPipelineState
+    let cylinderRaytracingDescriptor: MTLRenderPipelineDescriptor
+    let cylinderRaytracingPipelineState: MTLRenderPipelineState
 
     init() {
         // Configure the Metal device and command queue.
@@ -30,11 +32,11 @@ class MetalRenderingDevice {
         }
 
         // Create the render pipeline state for the sphere raytracing shader.
-        guard let vertexFunction = self.shaderLibrary.makeFunction(name: "sphereRaytracingVertex") else {
+        guard let sphereVertexFunction = self.shaderLibrary.makeFunction(name: "sphereRaytracingVertex") else {
             fatalError("Sphere raytracing: could not load vertex function sphereRaytracingVertex")
         }
 
-        guard let fragmentFunction = self.shaderLibrary.makeFunction(name: "sphereRaytracingFragment") else {
+        guard let sphereFragmentFunction = self.shaderLibrary.makeFunction(name: "sphereRaytracingFragment") else {
             fatalError("Sphere raytracing: could not load fragment function sphereRaytracingFragment")
         }
 
@@ -42,8 +44,8 @@ class MetalRenderingDevice {
         self.sphereRaytracingDescriptor.depthAttachmentPixelFormat = .depth32Float
         self.sphereRaytracingDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
         self.sphereRaytracingDescriptor.rasterSampleCount = 1
-        self.sphereRaytracingDescriptor.vertexFunction = vertexFunction
-        self.sphereRaytracingDescriptor.fragmentFunction = fragmentFunction
+        self.sphereRaytracingDescriptor.vertexFunction = sphereVertexFunction
+        self.sphereRaytracingDescriptor.fragmentFunction = sphereFragmentFunction
 
         do {
             self.sphereRaytracingPipelineState = try self.device.makeRenderPipelineState(descriptor: self.sphereRaytracingDescriptor)
@@ -51,5 +53,29 @@ class MetalRenderingDevice {
             // TODO: Examine the potential error cases here.
             fatalError("Unable to create sphere raytracing render pipeline state with error: \(error)")
         }
+
+        // Create the render pipeline state for the cylinder raytracing shader.
+        guard let cylinderVertexFunction = self.shaderLibrary.makeFunction(name: "cylinderRaytracingVertex") else {
+            fatalError("Cylinder raytracing: could not load vertex function cylinderRaytracingVertex")
+        }
+
+        guard let cylinderFragmentFunction = self.shaderLibrary.makeFunction(name: "cylinderRaytracingFragment") else {
+            fatalError("Cylinder raytracing: could not load fragment function cylinderRaytracingFragment")
+        }
+
+        self.cylinderRaytracingDescriptor = MTLRenderPipelineDescriptor()
+        self.cylinderRaytracingDescriptor.depthAttachmentPixelFormat = .depth32Float
+        self.cylinderRaytracingDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        self.cylinderRaytracingDescriptor.rasterSampleCount = 1
+        self.cylinderRaytracingDescriptor.vertexFunction = cylinderVertexFunction
+        self.cylinderRaytracingDescriptor.fragmentFunction = cylinderFragmentFunction
+
+        do {
+            self.cylinderRaytracingPipelineState = try self.device.makeRenderPipelineState(descriptor: self.cylinderRaytracingDescriptor)
+        } catch {
+            // TODO: Examine the potential error cases here.
+            fatalError("Unable to create cylinder raytracing render pipeline state with error: \(error)")
+        }
+
     }
 }

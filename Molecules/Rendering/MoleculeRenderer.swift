@@ -1,12 +1,25 @@
 import MetalKit
 
+enum MoleculeVisualizationStyle {
+    case spacefilling
+    case ballAndStick
+}
+
 final class MoleculeRenderer {
     let molecule: MolecularStructure
+    let visualizationStyle: MoleculeVisualizationStyle
 
     var sphereVertexBuffers: [Atom.Element: MTLBuffer] = [:]
     var sphereImpostorSpaceCoordinateBuffers: [Atom.Element: MTLBuffer] = [:]
     var sphereIndexBuffers: [Atom.Element: MTLBuffer] = [:]
     var sphereIndexBufferCounts: [Atom.Element: Int] = [:]
+
+    var cylinderVertexBuffer: MTLBuffer?
+    var cylinderDirectionBuffer: MTLBuffer?
+    var cylinderImpostorSpaceCoordinateBuffer: MTLBuffer?
+    var cylinderIndexBuffer: MTLBuffer?
+    var cylinderIndexBufferCount: Int = 0
+
     let lowerScaleLimit: Float = -100.0
     let upperScaleLimit: Float = 100.0
 
@@ -18,8 +31,9 @@ final class MoleculeRenderer {
         0.050796, 0.990772,-0.125664, 0.000000,
         0.000000, 0.000000, 0.000000, 1.000000])
 
-    init(molecule: MolecularStructure) {
+    init(molecule: MolecularStructure, visualizationStyle: MoleculeVisualizationStyle) {
         self.molecule = molecule
+        self.visualizationStyle = visualizationStyle
         initializeMoleculeBuffers()
     }
 
@@ -73,12 +87,48 @@ final class MoleculeRenderer {
                                                                                                     options: [])!
             elementImpostorSpaceCoordinateBuffer.label = "Sphere impostor space buffer: \(element)"
             sphereImpostorSpaceCoordinateBuffers[element] = elementImpostorSpaceCoordinateBuffer
-            print("Vertices: \(elementComponents.vertices.count) in element: \(element)")
         }
 
-        // TODO: Loop through all bonds.
+        // If bonds are visible, populate all of them in a single buffer.
+        if visualizationStyle == .ballAndStick, molecule.bonds.count > 0 {
+            var cylinderVertices: [Float] = []
+            var cylinderDirections: [Float] = []
+            var cylinderIndices: [UInt16] = []
+            var cylinderImpostorSpaceCoordinates: [Float] = []
+            var cylinderIndex: UInt16 = 0
 
-        print("Number of atoms to initialize: \(molecule.atoms.count)")
+            for bond in molecule.bonds {
+                appendRectangularBondVertices(
+                    start: (bond.start - centerOfMass) * moleculeScaleFactor,
+                    end: (bond.end - centerOfMass) * moleculeScaleFactor,
+                    currentIndex: &cylinderIndex,
+                    indices: &cylinderIndices,
+                    vertices: &cylinderVertices,
+                    directions: &cylinderDirections,
+                    impostorSpaceCoordinates: &cylinderImpostorSpaceCoordinates)
+            }
+
+            cylinderIndexBuffer = sharedMetalRenderingDevice.device.makeBuffer(bytes: cylinderIndices,
+                                                                               length: cylinderIndices.count * MemoryLayout<UInt16>.size,
+                                                                               options: [])!
+            cylinderIndexBuffer?.label = "Cylinder index buffer"
+            cylinderIndexBufferCount = cylinderIndices.count
+
+            cylinderVertexBuffer = sharedMetalRenderingDevice.device.makeBuffer(bytes: cylinderVertices,
+                                                                                length: cylinderVertices.count * MemoryLayout<Float>.size,
+                                                                                options: [])!
+            cylinderVertexBuffer?.label = "Cylinder vertex buffer"
+
+            cylinderDirectionBuffer = sharedMetalRenderingDevice.device.makeBuffer(bytes: cylinderDirections,
+                                                                                   length: cylinderDirections.count * MemoryLayout<Float>.size,
+                                                                                   options: [])!
+            cylinderDirectionBuffer?.label = "Cylinder direction buffer"
+
+            cylinderImpostorSpaceCoordinateBuffer = sharedMetalRenderingDevice.device.makeBuffer(bytes: cylinderImpostorSpaceCoordinates,
+                                                                                                 length: cylinderImpostorSpaceCoordinates.count * MemoryLayout<Float>.size,
+                                                                                                 options: [])!
+            cylinderImpostorSpaceCoordinateBuffer?.label = "Cylinder impostor space buffer"
+        }
     }
 
     func renderMoleculeFrame(width: CGFloat, height: CGFloat, buffer: MTLCommandBuffer, renderPass: MTLRenderPassDescriptor) {
@@ -100,6 +150,12 @@ final class MoleculeRenderer {
         let depthStencilState = sharedMetalRenderingDevice.device.makeDepthStencilState(descriptor: depthStencilDescriptor)
         renderEncoder.setDepthStencilState(depthStencilState)
 
+        let atomRadiusScaleFactor: Float
+        switch visualizationStyle {
+        case .spacefilling: atomRadiusScaleFactor = 1.0
+        case .ballAndStick: atomRadiusScaleFactor = 0.35
+        }
+
         let moleculeScaleFactor = molecule.overallScaleFactor * currentScale
 
         for element in Atom.Element.allCases {
@@ -115,7 +171,7 @@ final class MoleculeRenderer {
             renderEncoder.setVertexBuffer(sphereImpostorSpaceCoordinateBuffer, offset: 0, index: 1)
             let vertexUniforms = sphereVertexUniforms(modelViewProjMatrix: modelViewProjMatrix,
                                                       orthographicMatrix: orthographicMatrix,
-                                                      sphereRadius: element.vanderWaalsRadius * moleculeScaleFactor,
+                                                      sphereRadius: element.vanderWaalsRadius * moleculeScaleFactor * atomRadiusScaleFactor,
                                                       translation: currentTranslation)
             let vertexUniformBuffer = sharedMetalRenderingDevice.device.makeBuffer(bytes: vertexUniforms,
                                                                                    length: vertexUniforms.count * MemoryLayout<Float>.size,
@@ -134,6 +190,39 @@ final class MoleculeRenderer {
             renderEncoder.drawIndexedPrimitives(type: .triangle, indexCount: sphereIndexBufferCount, indexType: .uint16, indexBuffer: sphereIndexBuffer, indexBufferOffset: 0)
         }
 
+        if visualizationStyle == .ballAndStick, molecule.bonds.count > 0 {
+            renderEncoder.setRenderPipelineState(sharedMetalRenderingDevice.cylinderRaytracingPipelineState)
+
+            // Setting cylinder vertex buffers.
+            let bondRadius: Float = 1.0
+            let bondRadiusScaleFactor: Float = 0.15
+            let bondColor = Atom.Element.Color(0.75, 0.75, 0.75)
+            renderEncoder.setVertexBuffer(cylinderVertexBuffer, offset: 0, index: 0)
+            renderEncoder.setVertexBuffer(cylinderDirectionBuffer, offset: 0, index: 1)
+            renderEncoder.setVertexBuffer(cylinderImpostorSpaceCoordinateBuffer, offset: 0, index: 2)
+            let vertexUniforms = cylinderVertexUniforms(modelViewProjMatrix: modelViewProjMatrix,
+                                                      orthographicMatrix: orthographicMatrix,
+                                                      cylinderRadius: bondRadius * moleculeScaleFactor * bondRadiusScaleFactor,
+                                                      translation: currentTranslation)
+            let vertexUniformBuffer = sharedMetalRenderingDevice.device.makeBuffer(bytes: vertexUniforms,
+                                                                                   length: vertexUniforms.count * MemoryLayout<Float>.size,
+                                                                                   options: [])!
+            renderEncoder.setVertexBuffer(vertexUniformBuffer, offset: 0, index: 4)
+
+            // Setting cylinder fragment buffers.
+            let fragmentUniforms = cylinderFragmentUniforms(cylinderColor: bondColor,
+                                                            inverseModelViewProjMatrix: modelViewProjMatrix.inverted())
+            let fragmentUniformBuffer = sharedMetalRenderingDevice.device.makeBuffer(bytes: fragmentUniforms,
+                                                                                     length: fragmentUniforms.count * MemoryLayout<Float>.size,
+                                                                                     options: [])!
+            renderEncoder.setFragmentBuffer(fragmentUniformBuffer, offset: 0, index: 1)
+
+            // Draw all cylinders for bonds.
+            if let cylinderIndexBuffer = cylinderIndexBuffer {
+                renderEncoder.drawIndexedPrimitives(type: .triangle, indexCount: cylinderIndexBufferCount, indexType: .uint16, indexBuffer: cylinderIndexBuffer, indexBufferOffset: 0)
+            }
+        }
+
         renderEncoder.endEncoding()
     }
 
@@ -143,6 +232,14 @@ final class MoleculeRenderer {
 
     func sphereFragmentUniforms(sphereColor: Atom.Element.Color, inverseModelViewProjMatrix: Matrix4x4) -> [Float] {
         return [sphereColor.red, sphereColor.green, sphereColor.blue, 0.0] + inverseModelViewProjMatrix.toFloatArray()
+    }
+
+    func cylinderVertexUniforms(modelViewProjMatrix: Matrix4x4, orthographicMatrix: Matrix4x4, cylinderRadius: Float, translation: Coordinate) -> [Float] {
+        return modelViewProjMatrix.toFloatArray() + orthographicMatrix.toFloatArray() + [cylinderRadius, 0.0, 0.0, 0.0, translation.x, translation.y, translation.z, 0.0]
+    }
+
+    func cylinderFragmentUniforms(cylinderColor: Atom.Element.Color, inverseModelViewProjMatrix: Matrix4x4) -> [Float] {
+        return [cylinderColor.red, cylinderColor.green, cylinderColor.blue, 0.0] + inverseModelViewProjMatrix.toFloatArray()
     }
 }
 
@@ -209,4 +306,47 @@ func appendOctagonVertices(
     indices += octagonIndices
 
     currentIndex += 8
+}
+
+func appendRectangularBondVertices(
+    start: Coordinate,
+    end: Coordinate,
+    currentIndex: inout UInt16,
+    indices: inout [UInt16],
+    vertices: inout [Float],
+    directions: inout [Float],
+    impostorSpaceCoordinates: inout [Float]
+) {
+    // Add the start and end points twice, to be displaced in the vertex shader.
+    let startVertex = [-start.x, start.y, start.z]
+    vertices.append(contentsOf: startVertex)
+    vertices.append(contentsOf: startVertex)
+    let endVertex = [-end.x, end.y, end.z]
+    vertices.append(contentsOf: endVertex)
+    vertices.append(contentsOf: endVertex)
+
+    // The same bond direction is used by each vertex.
+    let cylinderDirection = [start.x - end.x, end.y - start.y, end.z - start.z]
+    for _ in 0..<4 {
+        directions.append(contentsOf: cylinderDirection)
+    }
+
+    let cylinderImpostorCoordinates: [Float] = [
+        -1.0, -1.0,
+         1.0, -1.0,
+        -1.0,  1.0,
+         1.0,  1.0
+    ]
+    impostorSpaceCoordinates += cylinderImpostorCoordinates
+
+    let cylinderIndices: [UInt16] = [
+        currentIndex,
+        currentIndex + 1,
+        currentIndex + 2,
+        currentIndex + 1,
+        currentIndex + 3,
+        currentIndex + 2
+    ]
+    indices.append(contentsOf: cylinderIndices)
+    currentIndex += 4
 }

@@ -20,6 +20,14 @@ extension MolecularStructure {
     var overallScaleFactor: Float {
         return min(suggestedScaleFactor.x, suggestedScaleFactor.y, suggestedScaleFactor.z)
     }
+
+    var defaultVisualizationStyle: MoleculeVisualizationStyle {
+        if (atoms.count < 600) && (bonds.count > 0) {
+            return .ballAndStick
+        } else {
+            return .spacefilling
+        }
+    }
 }
 
 

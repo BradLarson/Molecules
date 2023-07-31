@@ -1,4 +1,3 @@
-import QuartzCore
 import XCTest
 @testable import Molecules
 
@@ -28,18 +27,6 @@ func assertEqual(_ lhs: Matrix4x4, _ rhs: Matrix4x4, accuracy: Float, file: Stat
 final class MatrixTests: XCTestCase {
 
     func testRotation() {
-//        let identity = CATransform3D(m11: 1.0, m12: 1.0, m13: 1.0, m14: 1.0,
-//                                     m21: 1.0, m22: 1.0, m23: 1.0, m24: 1.0,
-//                                     m31: 1.0, m32: 1.0, m33: 1.0, m34: 1.0,
-//                                     m41: 1.0, m42: 1.0, m43: 1.0, m44: 1.0)
-        let identity = CATransform3D(m11: 0.25, m12: 0.5, m13: 0.75, m14: 1.0,
-                                     m21: 1.25, m22: 1.5, m23: 1.75, m24: 1.0,
-                                     m31: 2.25, m32: 2.5, m33: 2.75, m34: 1.0,
-                                     m41: 1.0, m42: 1.0, m43: 1.0, m44: 1.0)
-        let scaled = CATransform3DRotate(identity, 1.0, 1.0, 1.0, 1.0)
-        print("Identity: \(identity)")
-        print("Rotated: \(scaled)")
-
         let startingMatrix = Matrix4x4(rowMajorValues: [
             0.25, 0.5, 0.75, 1.0,
             1.25, 1.5, 1.75, 1.0,

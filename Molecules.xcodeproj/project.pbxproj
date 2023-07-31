@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC38949A2A78429F00089C05 /* Document-molecules-320.png in Resources */ = {isa = PBXBuildFile; fileRef = BC3894962A78429F00089C05 /* Document-molecules-320.png */; };
+		BC38949B2A78429F00089C05 /* Document-molecules-64.png in Resources */ = {isa = PBXBuildFile; fileRef = BC3894972A78429F00089C05 /* Document-molecules-64.png */; };
 		BC5807052A56395400313289 /* MoleculesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5807042A56395400313289 /* MoleculesApp.swift */; };
 		BC5807072A56395400313289 /* MoleculeDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5807062A56395400313289 /* MoleculeDisplayView.swift */; };
 		BC5807092A56395900313289 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC5807082A56395900313289 /* Assets.xcassets */; };
@@ -82,6 +84,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BC3894962A78429F00089C05 /* Document-molecules-320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Document-molecules-320.png"; sourceTree = "<group>"; };
+		BC3894972A78429F00089C05 /* Document-molecules-64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Document-molecules-64.png"; sourceTree = "<group>"; };
 		BC5807012A56395400313289 /* Molecules.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Molecules.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC5807042A56395400313289 /* MoleculesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleculesApp.swift; sourceTree = "<group>"; };
 		BC5807062A56395400313289 /* MoleculeDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleculeDisplayView.swift; sourceTree = "<group>"; };
@@ -157,6 +161,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BC3894952A78429F00089C05 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				BC3894962A78429F00089C05 /* Document-molecules-320.png */,
+				BC3894972A78429F00089C05 /* Document-molecules-64.png */,
+			);
+			path = Icons;
+			sourceTree = "<group>";
+		};
 		BC5806F82A56395400313289 = {
 			isa = PBXGroup;
 			children = (
@@ -185,6 +198,7 @@
 				BC5F1FF42A62F52800416000 /* Interface */,
 				BC5F1F722A579BCE00416000 /* FileProcessing */,
 				BC5F1FA62A59FB1F00416000 /* Rendering */,
+				BC3894952A78429F00089C05 /* Icons */,
 				BC5F1F6E2A578BA000416000 /* Info.plist */,
 				BC5807082A56395900313289 /* Assets.xcassets */,
 				BC58070A2A56395900313289 /* Preview Content */,
@@ -411,6 +425,7 @@
 				BC5F1FE32A5B097E00416000 /* TheoreticalXenonPump.pdb.gz in Resources */,
 				BC5F1FE12A5B097E00416000 /* 3QE5.pdb.gz in Resources */,
 				BC5F1FB92A5A0D4300416000 /* TransferRNA.pdb in Resources */,
+				BC38949B2A78429F00089C05 /* Document-molecules-64.png in Resources */,
 				BC5F1FB32A5A0D4300416000 /* Insulin.pdb in Resources */,
 				BC5F1FDF2A5B097E00416000 /* Acetylcholinesterase.pdb.gz in Resources */,
 				BC5F1FB52A5A0D4300416000 /* Buckminsterfullerene.sdf in Resources */,
@@ -418,6 +433,7 @@
 				BC5F1F952A59DAC000416000 /* Heme.sdf in Resources */,
 				BC58070C2A56395900313289 /* Preview Assets.xcassets in Resources */,
 				BC5F1F9B2A59DAC000416000 /* Nanotube.pdb in Resources */,
+				BC38949A2A78429F00089C05 /* Document-molecules-320.png in Resources */,
 				BC5807092A56395900313289 /* Assets.xcassets in Resources */,
 				BC5F1FB12A5A0D4300416000 /* DNA.pdb in Resources */,
 				BC5F1F8D2A59DAC000416000 /* TheoreticalBearing.pdb in Resources */,
@@ -651,6 +667,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -683,6 +700,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

@@ -10,7 +10,7 @@ struct MoleculesApp: App {
 
     var body: some Scene {
         DocumentGroup(viewing: MoleculeDocument.self) { file in
-            MoleculeDisplayView(document: file.$document)
+            MoleculeDisplayView(document: file.document)
                 .toolbarRole(.automatic)
                 .navigationBarTitleDisplayMode(.inline)
         }
@@ -41,7 +41,9 @@ func copyBuiltInMoleculesIfNeeded() {
         for builtInMolecule in builtInMolecules {
             let filename = builtInMolecule.lastPathComponent
             let destinationInDocuments = documents.appendingPathComponent(filename)
-            try FileManager.default.copyItem(at: builtInMolecule, to: destinationInDocuments)
+            if !FileManager.default.fileExists(atPath: destinationInDocuments.path) {
+                try FileManager.default.copyItem(at: builtInMolecule, to: destinationInDocuments)
+            }
         }
     } catch {
         print("Error copying built-in molecules: \(error)")

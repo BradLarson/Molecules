@@ -97,6 +97,11 @@ class MetalRenderView: MTKView {
         autorotationDisplayLink.isPaused = false
         self.autoRotating = true
     }
+
+    deinit {
+        autorotationDisplayLink.isPaused = true
+        autorotationDisplayLink.invalidate()
+    }
 }
 
 // MARK: -

@@ -4,7 +4,7 @@ struct MoleculeDisplayView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
 
-    @Binding var document: MoleculeDocument
+    let document: MoleculeDocument
     @State private var autorotate = true
     @State private var showingMetadata = false
     @State private var showingRenderingOptions = false
@@ -80,7 +80,7 @@ struct MoleculeDisplayView_Previews: PreviewProvider {
         let data = try! Bundle.main.loadData(forResource: "Caffeine", withExtension: "pdb")
         let document = try! MoleculeDocument(data: data, contentType: .pdb, filename: "Caffeine.pdb")
         NavigationStack {
-            MoleculeDisplayView(document: .constant(document))
+            MoleculeDisplayView(document: document)
                 .navigationTitle("Caffeine")
                 .toolbarRole(.automatic)
                 .navigationBarTitleDisplayMode(.inline)
@@ -89,7 +89,7 @@ struct MoleculeDisplayView_Previews: PreviewProvider {
         .previewDisplayName("iPhone 14")
 
         NavigationStack {
-            MoleculeDisplayView(document: .constant(document))
+            MoleculeDisplayView(document: document)
                 .navigationTitle("Caffeine")
                 .toolbarRole(.automatic)
                 .navigationBarTitleDisplayMode(.inline)
@@ -98,7 +98,7 @@ struct MoleculeDisplayView_Previews: PreviewProvider {
         .previewDisplayName("iPad")
 
         NavigationStack {
-            MoleculeDisplayView(document: .constant(document))
+            MoleculeDisplayView(document: document)
                 .navigationTitle("Caffeine")
                 .toolbarRole(.automatic)
                 .navigationBarTitleDisplayMode(.inline)

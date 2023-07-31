@@ -6,8 +6,10 @@ import UniformTypeIdentifiers
 /// process gzip-compressed .pdb.gz files, although that type registration is currently via fairly
 /// broad .gz associations.
 struct MoleculeDocument: FileDocument {
-    static var readableContentTypes: [UTType] { [.pdb, .sdf, .xyz, .gzip] }
-    
+    static var readableContentTypes: [UTType] { [.pdb, .pdbimolebuilder, .sdf, .sdfmodizer, .xyz, .gzip] }
+    // NOTE: Leaving this in here in case I need to override and load all filetypes.
+//    static var readableContentTypes: [UTType] { [.item] }
+
     let molecule: MolecularStructure
 
     /// The initializer as used by SwiftUI.
@@ -25,9 +27,9 @@ struct MoleculeDocument: FileDocument {
     ///   - filename: The string filename, used for later processing.
     init(data: Data, contentType: UTType, filename: String) throws {
         switch contentType {
-        case .pdb:
+        case .pdb, .pdbimolebuilder:
             molecule = try PDBFile(data: data)
-        case .sdf:
+        case .sdf, .sdfmodizer:
             molecule = try SDFFile(data: data)
         case .xyz:
             molecule = try XYZFile(data: data)
@@ -58,6 +60,15 @@ extension UTType {
 
     static var xyz: UTType {
         UTType(exportedAs: "com.sunsetlakesoftware.molecules.xyz")
+    }
+
+    // FIXME: Find way to handle conflicting types, rather than enumerating them.
+    static var pdbimolebuilder: UTType {
+        UTType(importedAs: "hssong.chemistry.imolebuilder.pdb")
+    }
+
+    static var sdfmodizer: UTType {
+        UTType(importedAs: "com.yoyofr.modizer.vgmstream")
     }
 }
 

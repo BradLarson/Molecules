@@ -13,7 +13,7 @@ typedef struct
 {
     float3 sphereColor;
     float4x4 inverseModelViewProjMatrix;
-    // TODO: Ambient occlusion texture and parameters.
+    float ambientOcclusionTexturePatchWidth;
 } SphereRaytracingFragmentUniform;
 
 struct SphereRaytracingVertexIO
@@ -21,18 +21,19 @@ struct SphereRaytracingVertexIO
     float4 position [[position]];
     float2 impostorSpaceCoordinate [[user(impostorSpaceCoordinate)]];
     float3 normalizedViewCoordinate [[user(normalizedViewCoordinate)]];
+    float2 ambientOcclusionTextureBase [[user(ambientOcclusionTextureBase)]];
     float adjustedSphereRadius;
 };
 
 vertex SphereRaytracingVertexIO sphereRaytracingVertex(const device packed_float3 *position [[buffer(0)]],
                                                        const device packed_float2 *inputImpostorSpaceCoordinate [[buffer(1)]],
-                                                       //const device packed_float2 *ambientOcclusionTextureOffset [[buffer(2)]],
+                                                       const device packed_float2 *ambientOcclusionTextureOffset [[buffer(2)]],
                                                        constant SphereRaytracingVertexUniform& uniform [[buffer(3)]],
                                                        uint vid [[vertex_id]])
 {
     SphereRaytracingVertexIO outputVertices;
         
-//    ambientOcclusionTextureBase = ambientOcclusionTextureOffset;
+    outputVertices.ambientOcclusionTextureBase = ambientOcclusionTextureOffset[vid];
     
     float4 transformedPosition = uniform.modelViewProjMatrix * (float4(position[vid], 1.0) + float4(uniform.translation, 0.0));
     outputVertices.impostorSpaceCoordinate = inputImpostorSpaceCoordinate[vid];
@@ -57,9 +58,48 @@ struct FragmentColorDepth {
 
 constant half3 lightPosition = half3(0.312757, 0.248372, 0.916785);
 
+
+float2 ambientOcclusionLookupCoordinate(float2 impostorSpaceCoordinate,
+                                        float4x4 inverseModelViewProjMatrix,
+                                        float distanceFromCenter)
+{
+    float4 aoNormal;
+
+    if (distanceFromCenter > 1.0)
+    {
+        distanceFromCenter = 1.0;
+        aoNormal = float4(normalize(impostorSpaceCoordinate), 0.0, 1.0);
+    }
+    else
+    {
+        float precalculatedDepth = sqrt(1.0 - distanceFromCenter * distanceFromCenter);
+        aoNormal = float4(impostorSpaceCoordinate, -precalculatedDepth, 1.0);
+    }
+
+    // Ambient occlusion factor
+    aoNormal = inverseModelViewProjMatrix * aoNormal;
+    aoNormal.z = -aoNormal.z;
+
+    float4 absoluteSphereSurfacePosition = abs(aoNormal);
+    float d = absoluteSphereSurfacePosition.x + absoluteSphereSurfacePosition.y + absoluteSphereSurfacePosition.z;
+
+    float2 lookupTextureCoordinate;
+    if (aoNormal.z <= 0.0)
+    {
+        lookupTextureCoordinate = aoNormal.xy / d;
+    }
+    else
+    {
+        float2 theSign = aoNormal.xy / absoluteSphereSurfacePosition.xy;
+        //vec2 aSign = sign(aoNormal.xy);
+        lookupTextureCoordinate =  theSign  - absoluteSphereSurfacePosition.yx * (theSign / d);
+    }
+
+    return (lookupTextureCoordinate / 2.0) + 0.5;
+}
+
 fragment FragmentColorDepth sphereRaytracingFragment(SphereRaytracingVertexIO fragmentInput [[stage_in]],
-//                                 texture2d<half> ambientOcclusionTexture [[texture(0)]],
-//                                 texture2d<half> precalculatedAOLookupTexture [[texture(1)]],
+                                 texture2d<half> ambientOcclusionTexture [[texture(0)]],
                                  constant SphereRaytracingFragmentUniform& uniform [[ buffer(1) ]])
 {
     half distanceFromCenter = length(fragmentInput.impostorSpaceCoordinate);
@@ -69,14 +109,18 @@ fragment FragmentColorDepth sphereRaytracingFragment(SphereRaytracingVertexIO fr
     
     half currentDepthValue = fragmentInput.normalizedViewCoordinate.z - fragmentInput.adjustedSphereRadius * normalizedDepth;
 
-//    half2 lookupTextureCoordinate = ambientOcclusionLookupCoordinate(distanceFromCenter);
-//
-//    lookupTextureCoordinate = (lookupTextureCoordinate * 2.0h) - 1.0h;
-//
-//    half2 textureCoordinateForAOLookup = ambientOcclusionTextureBase + ambientOcclusionTexturePatchWidth * lookupTextureCoordinate;
-//    half ambientOcclusionIntensity = texture2D(ambientOcclusionTexture, textureCoordinateForAOLookup).r;
-    half ambientOcclusionIntensity = 1.0h;
-    
+    // Ambient occlusion sampling
+    float2 lookupTextureCoordinate = ambientOcclusionLookupCoordinate(fragmentInput.impostorSpaceCoordinate,
+                                                                      uniform.inverseModelViewProjMatrix,
+                                                                      distanceFromCenter);
+
+    lookupTextureCoordinate = (lookupTextureCoordinate * 2.0) - 1.0;
+
+    float2 textureCoordinateForAOLookup = fragmentInput.ambientOcclusionTextureBase + uniform.ambientOcclusionTexturePatchWidth * lookupTextureCoordinate;
+    textureCoordinateForAOLookup.y = 1.0 - textureCoordinateForAOLookup.y;
+    constexpr sampler ambientOcclusionSampler;
+    half ambientOcclusionIntensity = ambientOcclusionTexture.sample(ambientOcclusionSampler, textureCoordinateForAOLookup).x;
+
     // Ambient lighting
     half3 normal = half3(fragmentInput.impostorSpaceCoordinate.x, fragmentInput.impostorSpaceCoordinate.y, normalizedDepth);
     half ambientLightingIntensityFactor = clamp(dot(lightPosition, normal), 0.0h, 1.0h);

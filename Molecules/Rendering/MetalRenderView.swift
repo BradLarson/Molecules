@@ -181,7 +181,18 @@ struct MetalView: UIViewRepresentable {
     func updateUIView(_ uiView: MetalRenderView, context: Context) {
         if (visualizationStyle != uiView.moleculeRenderer.visualizationStyle) && uiView.hasPresented {
             uiView.pauseRendering()
+            // Store and load previous render state.
+            let previousScale = uiView.moleculeRenderer.currentScale
+            var previousTranslation = uiView.moleculeRenderer.currentTranslation
+            var previousModelViewProjMatrix = uiView.moleculeRenderer.modelViewProjMatrix
+
             uiView.moleculeRenderer = MoleculeRenderer(molecule: molecule, visualizationStyle: visualizationStyle)
+
+            uiView.moleculeRenderer.currentScale = previousScale
+            uiView.moleculeRenderer.currentTranslation = previousTranslation
+            uiView.moleculeRenderer.modelViewProjMatrix = previousModelViewProjMatrix
+
+            uiView.setNeedsDisplay()
             uiView.resumeRendering()
         } else {
             uiView.autoRotating = autorotate

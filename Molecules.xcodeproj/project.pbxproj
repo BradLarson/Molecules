@@ -59,6 +59,8 @@
 		BC5F1FF12A5B63B800416000 /* MetalRenderingDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5F1FF02A5B63B800416000 /* MetalRenderingDevice.swift */; };
 		BC5F1FF32A5CD81400416000 /* RenderingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5F1FF22A5CD81400416000 /* RenderingTests.swift */; };
 		BC8F86842A76ECF60038D748 /* CylinderRaytracing.metal in Sources */ = {isa = PBXBuildFile; fileRef = BC8F86832A76ECF60038D748 /* CylinderRaytracing.metal */; };
+		BCCC8D862A7897990078D3A7 /* SphereAmbientOcclusion.metal in Sources */ = {isa = PBXBuildFile; fileRef = BCCC8D852A7897990078D3A7 /* SphereAmbientOcclusion.metal */; };
+		BCCC8D882A79C54D0078D3A7 /* SphereDepth.metal in Sources */ = {isa = PBXBuildFile; fileRef = BCCC8D872A79C54D0078D3A7 /* SphereDepth.metal */; };
 		BCD090CD2A7098850034650F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD090CC2A7098850034650F /* MoleculeRenderer.swift */; };
 		BCD090CF2A70A7960034650F /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD090CE2A70A7960034650F /* Matrix.swift */; };
 		BCD090D12A748C860034650F /* MatrixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD090D02A748C860034650F /* MatrixTests.swift */; };
@@ -128,6 +130,8 @@
 		BC5F1FF02A5B63B800416000 /* MetalRenderingDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalRenderingDevice.swift; sourceTree = "<group>"; };
 		BC5F1FF22A5CD81400416000 /* RenderingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderingTests.swift; sourceTree = "<group>"; };
 		BC8F86832A76ECF60038D748 /* CylinderRaytracing.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = CylinderRaytracing.metal; sourceTree = "<group>"; };
+		BCCC8D852A7897990078D3A7 /* SphereAmbientOcclusion.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = SphereAmbientOcclusion.metal; sourceTree = "<group>"; };
+		BCCC8D872A79C54D0078D3A7 /* SphereDepth.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = SphereDepth.metal; sourceTree = "<group>"; };
 		BCD090CC2A7098850034650F /* MoleculeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleculeRenderer.swift; sourceTree = "<group>"; };
 		BCD090CE2A70A7960034650F /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
 		BCD090D02A748C860034650F /* MatrixTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixTests.swift; sourceTree = "<group>"; };
@@ -296,6 +300,8 @@
 		BC5F1FED2A5B421600416000 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				BCCC8D872A79C54D0078D3A7 /* SphereDepth.metal */,
+				BCCC8D852A7897990078D3A7 /* SphereAmbientOcclusion.metal */,
 				BC8F86832A76ECF60038D748 /* CylinderRaytracing.metal */,
 				BC5F1FEE2A5B51AF00416000 /* SphereRaytracing.metal */,
 			);
@@ -482,6 +488,7 @@
 				BC5F1FD52A5A4C5800416000 /* XYZFile.swift in Sources */,
 				BCD090CF2A70A7960034650F /* Matrix.swift in Sources */,
 				BC5F1FD22A5A4B5300416000 /* SDFFile.swift in Sources */,
+				BCCC8D882A79C54D0078D3A7 /* SphereDepth.metal in Sources */,
 				BC5807072A56395400313289 /* MoleculeDisplayView.swift in Sources */,
 				BC5F1F7D2A58EB6300416000 /* Bond.swift in Sources */,
 				BC5F1F7A2A58EB5500416000 /* Atom.swift in Sources */,
@@ -495,6 +502,7 @@
 				BCD090D32A76C4770034650F /* MoleculeRenderingOptions.swift in Sources */,
 				BCD090CD2A7098850034650F /* MoleculeRenderer.swift in Sources */,
 				BC5807052A56395400313289 /* MoleculesApp.swift in Sources */,
+				BCCC8D862A7897990078D3A7 /* SphereAmbientOcclusion.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

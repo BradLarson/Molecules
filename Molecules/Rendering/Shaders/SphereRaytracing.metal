@@ -91,11 +91,11 @@ float2 ambientOcclusionLookupCoordinate(float2 impostorSpaceCoordinate,
     else
     {
         float2 theSign = aoNormal.xy / absoluteSphereSurfacePosition.xy;
-        //vec2 aSign = sign(aoNormal.xy);
-        lookupTextureCoordinate =  theSign  - absoluteSphereSurfacePosition.yx * (theSign / d);
+        lookupTextureCoordinate = theSign - absoluteSphereSurfacePosition.yx * (theSign / d);
     }
 
-    return (lookupTextureCoordinate / 2.0) + 0.5;
+    // Using a slight inset here to avoid seam artifacts, should examine this further to fix.
+    return lookupTextureCoordinate / 2.1;
 }
 
 fragment FragmentColorDepth sphereRaytracingFragment(SphereRaytracingVertexIO fragmentInput [[stage_in]],
@@ -114,11 +114,10 @@ fragment FragmentColorDepth sphereRaytracingFragment(SphereRaytracingVertexIO fr
                                                                       uniform.inverseModelViewProjMatrix,
                                                                       distanceFromCenter);
 
-    lookupTextureCoordinate = (lookupTextureCoordinate * 2.0) - 1.0;
-
     float2 textureCoordinateForAOLookup = fragmentInput.ambientOcclusionTextureBase + uniform.ambientOcclusionTexturePatchWidth * lookupTextureCoordinate;
     textureCoordinateForAOLookup.y = 1.0 - textureCoordinateForAOLookup.y;
-    constexpr sampler ambientOcclusionSampler;
+    constexpr sampler ambientOcclusionSampler(mag_filter::linear,
+                                              min_filter::linear);
     half ambientOcclusionIntensity = ambientOcclusionTexture.sample(ambientOcclusionSampler, textureCoordinateForAOLookup).x;
 
     // Ambient lighting
@@ -130,7 +129,7 @@ fragment FragmentColorDepth sphereRaytracingFragment(SphereRaytracingVertexIO fr
     
     // Specular lighting
     half specularLightingIntensityFactor = pow(ambientLightingIntensityFactor, 60.0h) * 0.6h;
-    finalSphereColor = finalSphereColor + ((specularLightingIntensityFactor * ambientOcclusionIntensity)  * (half3(1.0h) - finalSphereColor));
+    finalSphereColor = finalSphereColor + ((specularLightingIntensityFactor * ambientOcclusionIntensity) * (half3(1.0h) - finalSphereColor));
 
     FragmentColorDepth colorDepth;
     colorDepth.color = half4(finalSphereColor * alphaComponent, 1.0);

@@ -195,7 +195,7 @@ final class MoleculeRenderer {
         sphereAmbientOcclusionTexture.label = "Ambient occlustion texture"
 
         // TODO: Extend ambient occlusion to ball-and-stick rendering modes.
-        if visualizationStyle == .ballAndStick {
+        if (visualizationStyle == .ballAndStick) || (molecule.atoms.count < 100) {
             // Set the ambient lighting texture to all-white for uniform illumination.
             if let commandBuffer = sharedMetalRenderingDevice.commandQueue.makeCommandBuffer() {
                 commandBuffer.clear(texture: sphereAmbientOcclusionTexture, with: MTLClearColorMake(1.0, 1.0, 1.0, 1.0))
@@ -206,24 +206,24 @@ final class MoleculeRenderer {
         }
 
         guard let commandBuffer = sharedMetalRenderingDevice.commandQueue.makeCommandBuffer() else { return }
-        commandBuffer.clear(texture: sphereAmbientOcclusionTexture, with: MTLClearColorMake(0.0, 0.0, 0.0, 0.0))
+        commandBuffer.clear(texture: sphereAmbientOcclusionTexture, with: MTLClearColorMake(0.0, 0.0, 0.0, 1.0))
         let sphereDepthTextureWidth = 1024
 
-        let intensityFactor: Float = 0.5 / Float(ambientOcclusionSamplingAngles.count)
-//        let intensityFactor: Float = 1.0
+        let depthTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm,
+                                                                              width: sphereDepthTextureWidth,
+                                                                              height: sphereDepthTextureWidth,
+                                                                              mipmapped: false)
+        depthTextureDescriptor.usage = [.renderTarget, .shaderRead, .shaderWrite]
+        guard let depthTexture = sharedMetalRenderingDevice.device.makeTexture(descriptor: depthTextureDescriptor) else {
+            fatalError("Could not create depth texture of size: (\(sphereDepthTextureWidth), \(sphereDepthTextureWidth))")
+        }
+        depthTexture.label = "Depth texture"
+
+
+        let intensityFactor: Float = 2.0 / Float(ambientOcclusionSamplingAngles.count)
         for (theta, phi) in ambientOcclusionSamplingAngles {
             var rotationMatrix = Matrix4x4.identity.rotated(angle: theta, x: 1.0, y: 0.0, z: 0.0)
             rotationMatrix = rotationMatrix.rotated(angle: phi, x: 0.0, y: 1.0, z: 0.0)
-
-            let depthTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm,
-                                                                                  width: sphereDepthTextureWidth,
-                                                                                  height: sphereDepthTextureWidth,
-                                                                                  mipmapped: false)
-            depthTextureDescriptor.usage = [.renderTarget, .shaderRead, .shaderWrite]
-            guard let depthTexture = sharedMetalRenderingDevice.device.makeTexture(descriptor: depthTextureDescriptor) else {
-                fatalError("Could not create depth texture of size: (\(sphereDepthTextureWidth), \(sphereDepthTextureWidth))")
-            }
-            depthTexture.label = "Depth texture"
 
             renderDepthTexture(targetModelViewProjMatrix: rotationMatrix, buffer: commandBuffer, depthTexture: depthTexture)
             renderAmbientOcclusion(targetModelViewProjMatrix: rotationMatrix, buffer: commandBuffer, depthTexture: depthTexture, intensityFactor: intensityFactor)
@@ -239,7 +239,7 @@ final class MoleculeRenderer {
     }
 
     func renderDepthTexture(targetModelViewProjMatrix: Matrix4x4, buffer: MTLCommandBuffer, depthTexture: MTLTexture) {
-        let orthographicMatrix = orthographicMatrix(left: -1.0, right: 1.0, bottom: Float(-1.0 * 1024 / 1024), top: Float(1024 / 1024), near: -1.0, far: 1.0)
+        let orthographicMatrix = orthographicMatrix(left: -1.0, right: 1.0, bottom: -1.0, top: 1.0, near: -1.0, far: 1.0)
 
         let depthStencilDescriptor1 = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .depth32Float,
                                                                                width: 1024,
@@ -314,7 +314,7 @@ final class MoleculeRenderer {
     }
 
     func renderAmbientOcclusion(targetModelViewProjMatrix: Matrix4x4, buffer: MTLCommandBuffer, depthTexture: MTLTexture, intensityFactor: Float) {
-        let orthographicMatrix = orthographicMatrix(left: -1.0, right: 1.0, bottom: Float(-1.0 * 1024 / 1024), top: Float(1024 / 1024), near: -1.0, far: 1.0)
+        let orthographicMatrix = orthographicMatrix(left: -1.0, right: 1.0, bottom: -1.0, top: 1.0, near: -1.0, far: 1.0)
 
         let renderPass = MTLRenderPassDescriptor()
         renderPass.colorAttachments[0].texture = sphereAmbientOcclusionTexture
@@ -375,20 +375,6 @@ final class MoleculeRenderer {
     }
 
     func renderMoleculeFrame(width: CGFloat, height: CGFloat, buffer: MTLCommandBuffer, renderPass: MTLRenderPassDescriptor) {
-        let sphereDepthTextureWidth = 1024
-        let depthTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm,
-                                                                              width: sphereDepthTextureWidth,
-                                                                              height: sphereDepthTextureWidth,
-                                                                              mipmapped: false)
-        depthTextureDescriptor.usage = [.renderTarget, .shaderRead, .shaderWrite]
-        guard let depthTexture = sharedMetalRenderingDevice.device.makeTexture(descriptor: depthTextureDescriptor) else {
-            fatalError("Could not create depth texture of size: (\(sphereDepthTextureWidth), \(sphereDepthTextureWidth))")
-        }
-        depthTexture.label = "Depth texture"
-//        renderDepthTexture(buffer: buffer, depthTexture: depthTexture)
-//        renderAmbientOcclusion(buffer: buffer, depthTexture: depthTexture, intensityFactor: 1.0)
-
-
         let orthographicMatrix = orthographicMatrix(left: -1.0, right: 1.0, bottom: Float(-1.0 * height / width), top: Float(height / width), near: -1.0, far: 1.0)
 
         renderPass.colorAttachments[0].clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0)

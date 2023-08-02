@@ -101,13 +101,12 @@ fragment half4 sphereAmbientOcclusionFragment(SphereAmbientOcclusionVertexIO fra
     currentPositionCoordinate.y = 1.0 - currentPositionCoordinate.y;
     float previousDepthValue = depthFromEncodedColor(float4(depthTexture.sample(depthSampler, currentPositionCoordinate.xy)));
 
-    return half4(1.0, 1.0, 1.0, 1.0);
-//    if ( (floor(currentPositionCoordinate.z * 765.0 - 5.0)) <= (ceil(previousDepthValue * 765.0)) )
-//    {
-//        return half4(half3(uniform.intensityFactor), 1.0h);
-//    }
-//    else
-//    {
-//        return half4(0.0h, 0.0h, 0.0h, 1.0h);
-//    }
+    if ( (floor(currentPositionCoordinate.z * 765.0 - 5.0)) <= (ceil(previousDepthValue * 765.0)) )
+    {
+        return half4(half3(uniform.intensityFactor), 1.0h);
+    }
+    else
+    {
+        return half4(0.0h, 0.0h, 0.0h, 1.0h);
+    }
 }

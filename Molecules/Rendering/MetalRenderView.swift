@@ -66,11 +66,9 @@ class MetalRenderView: MTKView {
     
     override func draw(_ rect:CGRect) {
         guard let drawable = self.currentDrawable else {
-            print("No drawable")
             return
         }
         guard let moleculeRenderer = moleculeRenderer else {
-            print("No molecule renderer")
             return
         }
         if let commandBuffer = sharedMetalRenderingDevice.commandQueue.makeCommandBuffer(),
